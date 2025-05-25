@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/05/25 16:01:49 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/05/25 16:26:27 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,14 @@
 # define RUN_BACKGROUND 7
 # define HEREDOC 8
 
+// TYPES OF NODES
+
+# define COMMAND_NODE 1
+# define PIPE_NODE 2
+# define REDIRECT_NODE 3
+
 typedef	struct	s_command t_commaned;
+typedef	struct	s_tree t_tree;
 
 typedef	struct s_node
 {
@@ -35,8 +42,8 @@ typedef	struct s_node
 
 typedef	struct	s_pipe
 {
-	t_commaned *left;
-	t_commaned *right;
+	t_tree *left;
+	t_tree *right;
 }	t_pipe;
 
 typedef	struct	s_command
@@ -64,4 +71,4 @@ void	tokenize(char *command, t_node **list);
 int	is_space(char c);
 void	add_back(t_node **list, t_node *node);
 void	print_list(t_node *list);
-t_tree	*pars_command(t_node *list);
+t_tree	*pars_command(t_node **list);

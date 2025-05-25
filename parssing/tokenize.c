@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:52:30 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/05/25 15:58:08 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/05/25 16:04:42 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	check_type_word(t_node *node, t_node *list)
 		node->type = ARG;
 }
 */
+
 t_node	*check_pipe(int *i)
 {
 	t_node *node;
