@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   AST.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/05/25 16:01:51 by mbounoui         ###   ########.fr       */
+/*   Created: 2025/05/25 11:40:58 by mbounoui          #+#    #+#             */
+/*   Updated: 2025/05/25 16:02:15 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	main(int c, char **v)
+t_tree	*pars_command(t_node *list)
 {
-	t_node	*list;
-	t_tree	*tree;
-	(void)c;
-	
-	list = NULL;
-	tree = NULL;
-	tokenize(v[1], &list);
-	tree = pars_command(list);
-	print_list(list);
-	return (0);
+	return (NULL);
+}
+
+t_tree	*pars_pipe()
+{
+	return (NULL);
+}
+
+t_tree	*pars_one_side()
+{
+	return (NULL);
 }

@@ -6,12 +6,13 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:52:30 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/05/24 11:31:08 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/05/25 15:58:08 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/*
 void	check_type_word(t_node *node, t_node *list)
 {
 	if (list)
@@ -30,7 +31,7 @@ void	check_type_word(t_node *node, t_node *list)
 	else if (list->type == COMMAND1 || list->type == COMMAND2)
 		node->type = ARG;
 }
-
+*/
 t_node	*check_pipe(int *i)
 {
 	t_node *node;
@@ -44,7 +45,7 @@ t_node	*check_pipe(int *i)
 	return (node);
 }
 
-t_node	*check_word(char *command, int *i, t_node *list)
+t_node	*check_word(char *command, int *i)
 {
 	t_node	*node;
 	int	start;
@@ -61,7 +62,8 @@ t_node	*check_word(char *command, int *i, t_node *list)
 	node->content = word;
 	node->next = NULL;
 	node->prev = NULL;
-	check_type_word(node, list);
+	node->type = WORD;
+//	check_type_word(node, list);
 	return (node);
 }
 
@@ -136,6 +138,6 @@ void	tokenize(char *command, t_node **list)
 		else if (command[i] == '&')
 			add_back(list, check_end_operator(&i));
 		else 
-			add_back(list, check_word(command, &i, *list));
+			add_back(list, check_word(command, &i));
 	}
 }

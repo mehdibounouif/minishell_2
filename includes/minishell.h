@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/05/24 11:32:06 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/05/25 16:01:49 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,15 @@
 #include "../libft/libft.h"
 
 # define PIPE 1
-# define REDIRECTION_OUT 2
-# define REDIRECTION_IN 3
-# define REDIRECTION_APPEND 4
-# define REDIRECTION_ERR 5
-# define RUN_BACKGROUND 6
-# define HEREDOC 7
-# define COMMAND1 8
-# define COMMAND2 9
-# define ARG 10
-# define OUTFILE 11
-# define INFILE 12
-# define ERRFILE 13
+# define WORD 2
+# define REDIRECTION_OUT 3
+# define REDIRECTION_IN 4
+# define REDIRECTION_APPEND 5
+# define REDIRECTION_ERR 6
+# define RUN_BACKGROUND 7
+# define HEREDOC 8
+
+typedef	struct	s_command t_commaned;
 
 typedef	struct s_node
 {
@@ -36,7 +33,35 @@ typedef	struct s_node
 	struct	s_node *prev;
 }	t_node;
 
+typedef	struct	s_pipe
+{
+	t_commaned *left;
+	t_commaned *right;
+}	t_pipe;
+
+typedef	struct	s_command
+{
+	char	*command;
+	char	**args;
+}	t_commaned;
+
+typedef	struct	t_redirection
+{
+	t_pipe	*prev;
+	char	*file;
+	int	redirection_type;
+}	t_redirection;
+
+typedef	struct	s_tree
+{
+	int	type;
+	t_commaned *command;
+	t_pipe	*pipe;
+	t_redirection *redirect;
+} t_tree;
+
 void	tokenize(char *command, t_node **list);
 int	is_space(char c);
 void	add_back(t_node **list, t_node *node);
 void	print_list(t_node *list);
+t_tree	*pars_command(t_node *list);

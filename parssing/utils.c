@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:01:06 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/05/24 11:24:51 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/05/25 10:23:05 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,8 @@ void	print_list(t_node *list)
 		switch (list->type) {
 		case PIPE:
 				printf("Type pipe (|)\n"); break;
-		case COMMAND1:
-				printf("Type first command\n"); break;
-		case COMMAND2:
-				printf("Type secound command\n"); break;
-		case ARG:
-				printf("Type argument\n"); break;
-		case INFILE:
-				printf("Type input file\n"); break;
-		case OUTFILE:
-				printf("Type output file\n"); break;
-		case ERRFILE:
-				printf("Type error file\n"); break;
+		case WORD:
+				printf("Type WORD\n"); break;
 		case REDIRECTION_OUT:
 				printf("Type redirection output (>)\n"); break;
 		case HEREDOC:
@@ -70,13 +60,6 @@ void	print_list(t_node *list)
 				printf("Type run in background (&)\n"); break;
 		}
 		printf("\n");
-//		if (list->prev == NULL || list->prev->type == PIPE)
-//			printf("This is a command!\n\n");
-//		else if (list->prev->type == REDIRECTION_APPEND || 
-//				list->prev->type == REDIRECTION_ERR || 
-//				list->prev->type == REDIRECTION_IN ||
-//				list->prev->type == REDIRECTION_OUT)
-//				printf("This is file!\n\n");
 		list = list->next;
 	}
 }
