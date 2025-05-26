@@ -8,6 +8,7 @@ SRCS_DIR = ./parssing
 SRCS_FILES = main.c\
 			 utils.c\
 			 tokenize.c\
+			 AST.c\
 
 SRCS = $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
