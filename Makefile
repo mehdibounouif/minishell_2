@@ -9,6 +9,7 @@ SRCS_FILES = main.c\
 			 utils.c\
 			 tokenize.c\
 			 AST.c\
+			 free.c\
 
 SRCS = $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
@@ -21,7 +22,7 @@ $(LIBFT_LIB):
 
 $(NAME): $(OBJS) $(LIBFT_LIB)
 	@echo "🎉 Vincular archivos de objeto para crear el ejecutable: $(NAME) 🚀"
-	@$(CC) $(FLAGS) $(OBJS) $(LIBFT_LIB) -o $(NAME)
+	@$(CC) $(FLAGS) -lreadline $(OBJS) $(LIBFT_LIB) -o $(NAME)
 	@echo "✅ ¡Compilación exitosa! Ejecutable creado.: $(NAME)"
 
 %.o: %.c

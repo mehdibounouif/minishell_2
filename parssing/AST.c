@@ -6,11 +6,12 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 11:40:58 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/05/27 09:48:03 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/05/28 11:17:17 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <readline/readline.h>
 #include <unistd.h>
 
 t_tree	*parss_redirection(t_tree *node, t_node **list)
@@ -23,10 +24,10 @@ t_tree	*parss_redirection(t_tree *node, t_node **list)
 			(*list)->type == REDIRECTION_ERR ||
 			(*list)->type == REDIRECTION_APPEND))
 	{
-		redirect_node = malloc(sizeof(t_redirection));
+		redirect_node = malloc(sizeof(t_tree));
 		if (!redirect_node)
 			return (NULL);
-		redirect_node = malloc(sizeof(t_redirection));
+		redirect_node->redirect = malloc(sizeof(t_redirection));
 		if (!redirect_node->redirect)
 			return (NULL);
 		redirect_node->type = REDIRECT_NODE;
@@ -96,10 +97,53 @@ t_tree	*pars_pipe(t_node **list)
 	return left;
 }
 
+t_tree	*pars_and(t_node **list)
+{
+	t_tree *left = pars_pipe(list);
+
+	while ((*list) && (*list)->type == AND)
+	{
+		*list = (*list)->next;
+		t_tree	*right = pars_pipe(list);
+		t_tree	*and_cmd = malloc(sizeof(t_tree));
+		if (!and_cmd)
+			return (NULL);
+		and_cmd->andd = malloc(sizeof(t_and));
+		if (!and_cmd->andd)
+			return (NULL);
+		and_cmd->type = AND_NODE;
+		and_cmd->andd->left = left;
+		and_cmd->andd->right = right;
+		left = and_cmd;
+	}
+	return (left);
+}
+
+t_tree	*pars_or(t_node **list)
+{
+	t_tree	*left = pars_and(list);
+	while ((*list) && (*list)->type == OR)
+	{
+		*list = (*list)->next;
+		t_tree	*right = pars_and(list);
+		t_tree	*or_cmd = malloc(sizeof(t_tree));
+		if (!or_cmd)
+			return (NULL);
+		or_cmd->orr = malloc(sizeof(t_or));
+		if (!or_cmd->orr)
+			return (NULL);
+		or_cmd->type = OR_NODE;
+		or_cmd->orr->left = left;
+		or_cmd->orr->right = right;
+		left = or_cmd;
+	}
+	return (left);
+}
+
 t_tree	*pars_command(t_node **list)
 {
-	t_tree	*node =  pars_pipe(list);
-	while (*list && (*list)->type == RUN_BACKGROUND)
-		*list = (*list)->next;
+	t_tree	*node =  pars_or(list);
+	//while (*list && (*list)->type == RUN_BACKGROUND)
+	//	*list = (*list)->next;
 	return (node);
 }

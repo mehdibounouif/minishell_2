@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:01:06 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/05/25 10:23:05 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/05/28 10:22:20 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ void	print_list(t_node *list)
 				printf("Type redirection error (2)\n"); break;
 		case REDIRECTION_APPEND:
 				printf("Type redirection append (>>)\n"); break;
-		case RUN_BACKGROUND:
-				printf("Type run in background (&)\n"); break;
+		case AND:
+				printf("Type end Operator (&)\n"); break;
 		}
 		printf("\n");
 		list = list->next;

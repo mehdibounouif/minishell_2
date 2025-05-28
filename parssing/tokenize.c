@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:52:30 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/05/25 16:04:42 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/05/28 11:21:27 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,11 +115,24 @@ t_node	*check_end_operator(int *i)
 	t_node *node;
 
 	node = malloc(sizeof(t_node));
-	node->content = ft_strdup("&");
-	node->type = RUN_BACKGROUND;
+	node->content = ft_strdup("&&");
+	node->type = AND;
 	node->next = NULL;
 	node->prev = NULL;
-	(*i)++;
+	(*i) += 2;
+	return (node);
+}
+
+t_node	*check_or_operator(int *i)
+{
+	t_node *node;
+
+	node = malloc(sizeof(t_node));
+	node->content = ft_strdup("||");
+	node->type = OR;
+	node->next = NULL;
+	node->prev = NULL;
+	(*i) += 2;
 	return (node);
 }
 
@@ -132,11 +145,13 @@ void	tokenize(char *command, t_node **list)
 	{
 		while(is_space(command[i]))
 			i++;
-		if (command[i] == '|')
+		if (command[i] == '|' && command[i+1] == '|')
+			add_back(list, check_or_operator(&i));
+		else if (command[i] == '|')
 			add_back(list, check_pipe(&i));
 		else if (command[i] == '<' || command[i] == '>' || command[i] == '2')
 			add_back(list, check_redirection(command, &i));
-		else if (command[i] == '&')
+		else if (command[i] == '&' && command[i+1] == '&')
 			add_back(list, check_end_operator(&i));
 		else 
 			add_back(list, check_word(command, &i));
