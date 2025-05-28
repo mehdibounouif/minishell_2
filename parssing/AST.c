@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 11:40:58 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/05/28 11:17:17 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/05/28 12:07:23 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,28 +97,41 @@ t_tree	*pars_pipe(t_node **list)
 	return left;
 }
 
-t_tree	*pars_and(t_node **list)
+t_tree	*pars_oparetor(t_node **list)
 {
 	t_tree *left = pars_pipe(list);
 
-	while ((*list) && (*list)->type == AND)
+	while ((*list) && ((*list)->type == AND || (*list)->type == OR))
 	{
-		*list = (*list)->next;
 		t_tree	*right = pars_pipe(list);
-		t_tree	*and_cmd = malloc(sizeof(t_tree));
-		if (!and_cmd)
+		t_tree	*op_cmd = malloc(sizeof(t_tree));
+		if (!op_cmd)
 			return (NULL);
-		and_cmd->andd = malloc(sizeof(t_and));
-		if (!and_cmd->andd)
-			return (NULL);
-		and_cmd->type = AND_NODE;
-		and_cmd->andd->left = left;
-		and_cmd->andd->right = right;
-		left = and_cmd;
+		if ((*list)->type == AND)
+		{
+			*list = (*list)->next;
+			op_cmd->andd = malloc(sizeof(t_and));
+			if (!op_cmd->andd)
+				return (NULL);
+			op_cmd->type = AND_NODE;
+			op_cmd->andd->left = left;
+			op_cmd->andd->right = right;
+		}
+		else if ((*list)->type == OR) 
+		{
+			*list = (*list)->next;
+			op_cmd->orr = malloc(sizeof(t_or));
+			if (!op_cmd->orr)
+				return (NULL);
+			op_cmd->type = OR_NODE;
+			op_cmd->orr->left = left;
+			op_cmd->orr->right = right;
+		}
+		left = op_cmd;
 	}
 	return (left);
 }
-
+/*
 t_tree	*pars_or(t_node **list)
 {
 	t_tree	*left = pars_and(list);
@@ -139,10 +152,11 @@ t_tree	*pars_or(t_node **list)
 	}
 	return (left);
 }
+*/
 
 t_tree	*pars_command(t_node **list)
 {
-	t_tree	*node =  pars_or(list);
+	t_tree	*node =  pars_oparetor(list);
 	//while (*list && (*list)->type == RUN_BACKGROUND)
 	//	*list = (*list)->next;
 	return (node);
