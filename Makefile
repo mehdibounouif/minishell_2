@@ -1,7 +1,7 @@
 NAME = minishell
 RM = rm -f
 CC = cc
-FLAGS = -Wall -Wextra -Werror -g
+FLAGS = -g
 LIBFT_DIR = ./libft
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 SRCS_DIR = ./parssing

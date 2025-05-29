@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/05/28 11:39:27 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/05/29 08:37:52 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,12 @@ struct	s_pipe
 
 struct	s_and
 {
-	int	type;
 	t_tree *left;
 	t_tree *right;
 };
 
 struct	s_or
 {
-	int	type;
 	t_tree *left;
 	t_tree *right;
 };

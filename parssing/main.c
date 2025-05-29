@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/05/28 11:17:36 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/05/29 11:41:49 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,19 +100,20 @@ int	main(int c, char **v)
 	(void)c;
 	(void)v;
 	
-	list = NULL;
-	tree = NULL;
 	int	i = 0;
 	while (i < 5)
 	{
+		list = NULL;
+		tree = NULL;
 		cmd = readline("> ");
 		add_history(cmd);
 		tokenize(cmd, &list);
 		tmp = list;
 		tree = pars_command(&tmp);
 		print_tree(tree);
-//		ft_free(&list, &tree);
+		ft_free(&list, &tree);
 		free(cmd);
+		cmd	= NULL;
 		i++;
 	}
 	return (0);

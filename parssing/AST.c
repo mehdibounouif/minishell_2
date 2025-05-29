@@ -6,12 +6,13 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 11:40:58 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/05/29 08:13:39 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/05/29 11:50:06 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <readline/readline.h>
+#include <stdio.h>
 #include <unistd.h>
 
 t_tree	*parss_redirection(t_tree *node, t_node **list)
@@ -26,7 +27,7 @@ t_tree	*parss_redirection(t_tree *node, t_node **list)
 	{
 		redirect_node = malloc(sizeof(t_tree));
 		if (!redirect_node)
-			return (NULL);
+			return (NULL);// free
 		redirect_node->redirect = malloc(sizeof(t_redirection));
 		if (!redirect_node->redirect)
 			return (NULL);
@@ -48,10 +49,19 @@ t_tree	*pars_one_side(t_node **list)
 	int	i;
 	char	*cmd;
 	char	**args;
+	t_node	*tmp;
+
+//	tmp = *list;
+//	int len = 0;
+//	while (tmp->type == WORD)
+//	{
+//		len++;
+//		tmp = tmp->next;
+//	}
 
 	i = 0;
 	cmd = (*list)->content;
-	args = malloc(sizeof(char *) * 100);
+	args = malloc(sizeof(char *) * 10);
 	args[i++] = cmd;
 	*list = (*list)->next;
 	while ((*list) && (*list)->type == WORD)
@@ -97,7 +107,7 @@ t_tree	*pars_pipe(t_node **list)
 	return left;
 }
 
-t_tree	*pars_and(t_node **list)
+t_tree	*pars_operator(t_node **list)
 {
 	t_tree *left = pars_pipe(list);
 	int	i;
@@ -132,7 +142,7 @@ t_tree	*pars_and(t_node **list)
 	}
 	return (left);
 }
-
+/*
 t_tree	*pars_or(t_node **list)
 {
 	t_tree	*left = pars_and(list);
@@ -153,7 +163,7 @@ t_tree	*pars_or(t_node **list)
 	}
 	return (left);
 }
-/*
+
 t_tree	*parss_op(t_node **list)
 {
 	if ((*list)->type == )
@@ -162,7 +172,7 @@ t_tree	*parss_op(t_node **list)
 
 t_tree	*pars_command(t_node **list)
 {
-	t_tree	*node =  pars_and(list);
+	t_tree	*node =  pars_operator(list);
 	//while (*list && (*list)->type == RUN_BACKGROUND)
 	//	*list = (*list)->next;
 	return (node);
