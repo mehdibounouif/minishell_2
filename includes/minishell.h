@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/05/29 08:37:52 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/05/30 09:44:07 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ struct	s_tree
 	t_redirection *redirect;
 };
 
+void print_tree_unicode(t_tree *tree, const char *prefix, int is_last);
 void	tokenize(char *command, t_node **list);
 int	is_space(char c);
 void	add_back(t_node **list, t_node *node);

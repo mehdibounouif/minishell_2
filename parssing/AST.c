@@ -6,13 +6,12 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 11:40:58 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/05/29 11:50:06 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/05/30 09:42:21 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <readline/readline.h>
-#include <stdio.h>
 #include <unistd.h>
 
 t_tree	*parss_redirection(t_tree *node, t_node **list)
@@ -49,7 +48,7 @@ t_tree	*pars_one_side(t_node **list)
 	int	i;
 	char	*cmd;
 	char	**args;
-	t_node	*tmp;
+//	t_node	*tmp;
 
 //	tmp = *list;
 //	int len = 0;

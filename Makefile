@@ -1,7 +1,7 @@
 NAME = minishell
 RM = rm -f
 CC = cc
-FLAGS = -g
+FLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 LIBFT_DIR = ./libft
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 SRCS_DIR = ./parssing
@@ -9,7 +9,8 @@ SRCS_FILES = main.c\
 			 utils.c\
 			 tokenize.c\
 			 AST.c\
-			 free.c\
+			 print_ast.c\
+			 #free.c\
 
 SRCS = $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
