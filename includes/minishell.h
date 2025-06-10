@@ -10,29 +10,34 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
-#include <readline/history.h>
-#include <readline/readline.h>
-#include <stdio.h>
-#include <stdlib.h>
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-#define PIPE 1
-#define WORD 2
-#define REDIRECTION_OUT 3
-#define REDIRECTION_IN 4
-#define REDIRECTION_APPEND 5
-#define REDIRECTION_ERR 6
-#define AND 7
-#define OR 8
-#define HEREDOC 9
+# include "../libft/libft.h"
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <string.h>
+
+# define PIPE 1
+# define WORD 2
+# define REDIRECTION_OUT 3
+# define REDIRECTION_IN 4
+# define REDIRECTION_APPEND 5
+# define REDIRECTION_ERR 6
+# define AND 7
+# define OR 8
+# define HEREDOC 9
 
 // TYPES OF NODES
 
-#define COMMAND_NODE 1
-#define PIPE_NODE 2
-#define REDIRECT_NODE 3
-#define OR_NODE 4
-#define AND_NODE 5
+# define COMMAND_NODE 1
+# define PIPE_NODE 2
+# define REDIRECT_NODE 3
+# define OR_NODE 4
+# define AND_NODE 5
 
 typedef struct s_command t_command;
 typedef struct s_redirection t_redirection;
@@ -41,6 +46,13 @@ typedef struct s_node t_node;
 typedef struct s_pipe t_pipe;
 typedef struct s_and t_and;
 typedef struct s_or t_or;
+
+typedef struct s_env
+{
+    char    *key;
+    char    *value;
+    struct s_env *next;
+} t_env;
 
 struct s_node {
   int type;
@@ -85,6 +97,18 @@ struct s_tree {
   t_redirection *redirect;
 };
 
+
+// built-in functions 
+// Function declarations
+int     cd_command(t_env *env, char **args);
+char    *get_env_value(t_env *env, char *key);
+int     update_env_var(t_env *env, char *var);
+t_env *init_env(char **envp);
+void free_env(t_env *env);
+void add_env_var(t_env **env,  char *key, char *value);
+// Command execution
+void execute_command(t_env *env, const char *input);
+
 void print_tree_unicode(t_tree *tree, const char *prefix, int is_last);
 void tokenize(char *command, t_node **list);
 int is_space(char c);
@@ -94,3 +118,5 @@ t_tree *pars_command(t_node **list);
 void ft_free(t_node **list, t_tree **tree);
 int check_quotes(char *cmd, int i);
 char *remove_quotes(char *cmd);
+
+#endif

@@ -1,11 +1,11 @@
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
 static int	update_oldpwd(t_env *env)
 {
 	char	*oldpwd;
 	char	*current_dir;
 
-	current_dir = getcwd(NULL, 0);
+	current_dir = getcwd(NULL, 0); // get current working directory (cwd)
 	if (!current_dir)
 		return (1);
 	oldpwd = ft_strjoin("OLDPWD=", current_dir);
