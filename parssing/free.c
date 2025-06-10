@@ -14,49 +14,62 @@
 
 void	free_str(char **list)
 {
-	char *tmp;
+  int i;
+
+  if (!list || !*list)
+    return ;
+  i = 0;
 	while (*list)
 	{
-		tmp = *list;
-		list++;
-		free(tmp);
+    free(list[i]);
+    i++;
 	}
+	free(list);
 }
 
 void	free_list(t_node **list)
 {
 	t_node *tmp;
 
+  if (!list || !*list)
+    return ;
 	tmp = *list;
 	while (*list)
 	{
 		*list = (*list)->next;
-		free(tmp->content);
-		free(tmp);
+    if (tmp->content)
+    {
+		  free(tmp->content);
+		  free(tmp);
+      tmp = NULL;
+    }
 		tmp = *list;
 	}
-	free(*list);
+	free(list);
 }
 
 void	free_tree(t_tree **tree)
 {
+  if (!tree || !*tree)
+    return ;
 	if ((*tree)->type == COMMAND_NODE)
 	{
-	//	free((*tree)->command->command);
+		//free((*tree)->command->command);
 		free_str((*tree)->command->args);
+    (*tree)->command->command = NULL;
 		free((*tree)->command);
-	//	free((*tree)->command);
-		//free((*tree));
 	}
 	else if ((*tree)->type == PIPE_NODE)
 	{
 		free_tree(&(*tree)->pipe->left);
 		free_tree(&(*tree)->pipe->right);
-//		(*tree)->pipe = NULL;
-		//free((*tree)->pipe);
+		free((*tree)->pipe);
+		(*tree)->pipe = NULL;
 	}
 	else if ((*tree)->type == REDIRECT_NODE)
 	{
+    free((*tree)->redirect->file);
+    free((*tree)->redirect->redirect);
 		free_tree(&(*tree)->redirect->prev);
 		free((*tree)->redirect);
 	}
@@ -64,21 +77,22 @@ void	free_tree(t_tree **tree)
 	{
 		free_tree(&(*tree)->orr->left);
 		free_tree(&(*tree)->orr->right);
-	//	(*tree)->orr = NULL;
-		//free((*tree)->orr);
+		free((*tree)->orr);
+		(*tree)->orr = NULL;
 	}
 	else if ((*tree)->type == AND_NODE)
 	{
 		free_tree(&(*tree)->andd->left);
 		free_tree(&(*tree)->andd->right);
-//		(*tree)->andd = NULL;
-	//	free((*tree)->andd);
+		free((*tree)->andd);
+		(*tree)->andd = NULL;
 	}
 	free(*tree);
+  *tree = NULL;
 }
 
 void	ft_free(t_node **list, t_tree **tree)
 {
-	//free_tree(tree);
+	free_tree(tree);
 	free_list(list);
 }

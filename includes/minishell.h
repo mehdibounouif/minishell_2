@@ -34,7 +34,7 @@
 #define OR_NODE 4
 #define AND_NODE 5
 
-typedef struct s_command t_commaned;
+typedef struct s_command t_command;
 typedef struct s_redirection t_redirection;
 typedef struct s_tree t_tree;
 typedef struct s_node t_node;
@@ -78,7 +78,7 @@ struct s_redirection {
 
 struct s_tree {
   int type;
-  t_commaned *command;
+  t_command *command;
   t_pipe *pipe;
   t_or *orr;
   t_and *andd;

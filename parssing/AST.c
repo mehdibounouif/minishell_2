@@ -73,7 +73,7 @@ t_tree	*pars_one_side(t_node **list)
 	node = malloc(sizeof(t_tree));
 	if (!node)
 		return (NULL);
-	node->command = malloc(sizeof(t_commaned));
+	node->command = malloc(sizeof(t_command));
 	if (!node->command)
 		return (NULL);
 	node->command->command = cmd;

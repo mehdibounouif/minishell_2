@@ -50,7 +50,7 @@ int	main(int c, char **v)
 		tree = pars_command(&tmp);
 		print_tree_unicode(tree, "", 1);
 		//print_tree(tree)OR;
-//		ft_free(&list, &tree);
+		ft_free(&list, &tree);
 		free(cmd);
 		cmd	= NULL;
 		i++;
