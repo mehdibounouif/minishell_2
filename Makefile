@@ -1,7 +1,7 @@
 NAME = minishell
 RM = rm -f
 CC = cc
-FLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+FLAGS = -Wall -Wextra -Werror -g
 LIBFT_DIR = ./libft
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 SRCS_DIR = ./parssing
@@ -10,7 +10,7 @@ SRCS_FILES = main.c\
 			 tokenize.c\
 			 AST.c\
 			 print_ast.c\
-			 #free.c\
+			 check_quotes.c\
 
 SRCS = $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
@@ -23,7 +23,7 @@ $(LIBFT_LIB):
 
 $(NAME): $(OBJS) $(LIBFT_LIB)
 	@echo "🎉 Vincular archivos de objeto para crear el ejecutable: $(NAME) 🚀"
-	@$(CC) $(FLAGS) -lreadline $(OBJS) $(LIBFT_LIB) -o $(NAME)
+	@$(CC) $(FLAGS) $(OBJS) $(LIBFT_LIB) -lreadline -o $(NAME)
 	@echo "✅ ¡Compilación exitosa! Ejecutable creado.: $(NAME)"
 
 %.o: %.c

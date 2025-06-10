@@ -18,6 +18,7 @@ int	main(int c, char **v)
 	t_node	*list;
 	t_node	*tmp;
 	char	*cmd;
+	char	*clear_cmd;
 	t_tree	*tree;
 	(void)c;
 	(void)v;
@@ -29,7 +30,22 @@ int	main(int c, char **v)
 		tree = NULL;
 		cmd = readline("> ");
 		add_history(cmd);
-		tokenize(cmd, &list);
+    int j = check_quotes(cmd, 100000);
+    if (j == 1)
+    {
+      printf("double qoutes not closed!\n");
+		  free(cmd);
+      break;
+    }
+    if (j == 2)
+    {
+      printf("single qoutes not closed!\n");
+		  free(cmd);
+      break;
+    }
+    printf("j == %d\n", j);
+    clear_cmd = remove_quotes(cmd);
+		tokenize(clear_cmd, &list);
 		tmp = list;
 		tree = pars_command(&tmp);
 		print_tree_unicode(tree, "", 1);
