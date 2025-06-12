@@ -117,5 +117,7 @@ void free_list(t_node **list);
 void ft_free(t_node **list, t_tree **tree);
 int check_quotes(char *cmd, size_t i);
 char *remove_quotes(char *cmd);
+int is_separator(char c);
+int is_real_separator(char *cmd, int i);
 
 #endif

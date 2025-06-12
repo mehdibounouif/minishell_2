@@ -161,12 +161,12 @@ void	tokenize(char *command, t_node **list)
 			i++;
 		if (command[i] == '|' && command[i+1] == '|')
       node = check_or_operator(&i);
-		else if (command[i] == '|')
-      node = check_pipe(&i);
-		else if (command[i] == '<' || command[i] == '>' || command[i] == '2')
-      node = check_redirection(command, &i);
 		else if (command[i] == '&' && command[i+1] == '&')
       node = check_end_operator(&i);
+		else if (command[i] == '|' && is_real_separator(command, i))
+      node = check_pipe(&i);
+		else if ((command[i] == '<' || command[i] == '>' || command[i] == '2') && is_real_separator(command, i))
+      node = check_redirection(command, &i);
 		else 
       node = check_word(command, &i);
     if (!node)

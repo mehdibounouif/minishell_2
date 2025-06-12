@@ -19,6 +19,23 @@ int	is_space(char c)
 	return (0);
 }
 
+int is_separator(char c)
+{
+  if (c == '|' || c == '>' || c == '<' || c == ';')
+     return (1);
+  return (0);
+}
+
+int is_real_separator(char *cmd, int i)
+{
+  if (i > 0 && cmd[i - 1] == '\\' &&  is_separator(cmd[i]))
+    return (0);
+  else if (is_separator(cmd[i]) && check_quotes(cmd, i) == 0)
+    return (1);
+  else
+    return (0);
+}
+
 void	add_back(t_node **list, t_node *node)
 {
 	t_node	*tmp;
