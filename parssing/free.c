@@ -19,7 +19,7 @@ void	free_str(char **list)
   if (!list || !*list)
     return ;
   i = 0;
-	while (*list)
+	while (i < 5)
 	{
     free(list[i]);
     i++;
@@ -38,14 +38,11 @@ void	free_list(t_node **list)
 	{
 		*list = (*list)->next;
     if (tmp->content)
-    {
 		  free(tmp->content);
-		  free(tmp);
-      tmp = NULL;
-    }
+		free(tmp);
 		tmp = *list;
 	}
-	free(list);
+  *list = NULL;
 }
 
 void	free_tree(t_tree **tree)
@@ -54,9 +51,7 @@ void	free_tree(t_tree **tree)
     return ;
 	if ((*tree)->type == COMMAND_NODE)
 	{
-		//free((*tree)->command->command);
-		free_str((*tree)->command->args);
-    (*tree)->command->command = NULL;
+		free((*tree)->command->args);
 		free((*tree)->command);
 	}
 	else if ((*tree)->type == PIPE_NODE)
@@ -93,6 +88,6 @@ void	free_tree(t_tree **tree)
 
 void	ft_free(t_node **list, t_tree **tree)
 {
-	free_tree(tree);
 	free_list(list);
+	free_tree(tree);
 }

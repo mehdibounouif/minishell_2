@@ -30,7 +30,7 @@ int	main(int c, char **v)
 		tree = NULL;
 		cmd = readline("> ");
 		add_history(cmd);
-    int j = check_quotes(cmd, 100000);
+    int j = check_quotes(cmd, ft_strlen(cmd));
     if (j == 1)
     {
       printf("double qoutes not closed!\n");
@@ -49,9 +49,9 @@ int	main(int c, char **v)
 		tmp = list;
 		tree = pars_command(&tmp);
 		print_tree_unicode(tree, "", 1);
-		//print_tree(tree)OR;
 		ft_free(&list, &tree);
 		free(cmd);
+    free(clear_cmd);
 		cmd	= NULL;
 		i++;
 	}

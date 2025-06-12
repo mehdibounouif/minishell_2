@@ -38,6 +38,8 @@ t_node	*check_pipe(int *i)
 	t_node *node;
 
 	node = malloc(sizeof(t_node));
+  if (!node)
+      return NULL;
 	node->content = ft_strdup("|");
 	node->type = PIPE;
 	node->next = NULL;
@@ -54,11 +56,15 @@ t_node	*check_word(char *command, int *i)
 	start = *i;
 
 	node = malloc(sizeof(t_node));
+  if (!node)
+      return NULL;
 	while (command[*i] && !is_space(command[*i])
 			&& command[*i] != '>' && command[*i] != '<'
 			&& command[*i] != '&' && command[*i] != '|')
 		(*i)++;
 	word = malloc(sizeof(int) * (*i - start));
+  if (!word)
+      return NULL;
 	ft_strlcpy(word, command+start, (*i - start) + 1);
 	node->content = word;
 	node->next = NULL;
@@ -73,6 +79,8 @@ t_node	*check_redirection(char *command, int *i)
 	t_node *node;
 
 	node = malloc(sizeof(t_node));
+  if (!node)
+      return NULL;
 	if (command[*i] == '>' && command[*i+1] == '>')
 	{
 		node->content = ft_strdup(">>");
@@ -115,6 +123,8 @@ t_node	*check_end_operator(int *i)
 	t_node *node;
 
 	node = malloc(sizeof(t_node));
+  if (!node)
+      return NULL;
 	node->content = ft_strdup("&&");
 	node->type = AND;
 	node->next = NULL;
@@ -128,6 +138,8 @@ t_node	*check_or_operator(int *i)
 	t_node *node;
 
 	node = malloc(sizeof(t_node));
+  if (!node)
+      return NULL;
 	node->content = ft_strdup("||");
 	node->type = OR;
 	node->next = NULL;
@@ -139,21 +151,29 @@ t_node	*check_or_operator(int *i)
 void	tokenize(char *command, t_node **list)
 {
 	int	i;
+  t_node  *node;
 
 	i = 0;
+  node =  NULL;
 	while (command[i] != '\0')
 	{
 		while(is_space(command[i]))
 			i++;
 		if (command[i] == '|' && command[i+1] == '|')
-			add_back(list, check_or_operator(&i));
+      node = check_or_operator(&i);
 		else if (command[i] == '|')
-			add_back(list, check_pipe(&i));
+      node = check_pipe(&i);
 		else if (command[i] == '<' || command[i] == '>' || command[i] == '2')
-			add_back(list, check_redirection(command, &i));
+      node = check_redirection(command, &i);
 		else if (command[i] == '&' && command[i+1] == '&')
-			add_back(list, check_end_operator(&i));
+      node = check_end_operator(&i);
 		else 
-			add_back(list, check_word(command, &i));
+      node = check_word(command, &i);
+    if (!node)
+    {
+      free_list(list);
+      exit(1);
+    }
+		add_back(list, node);
 	}
 }

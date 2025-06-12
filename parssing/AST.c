@@ -60,7 +60,7 @@ t_tree	*pars_one_side(t_node **list)
 
 	i = 0;
 	cmd = (*list)->content;
-	args = malloc(sizeof(char *) * 10);
+	args = malloc(sizeof(char *) * 3);
 	args[i++] = cmd;
 	*list = (*list)->next;
 	while ((*list) && (*list)->type == WORD)
