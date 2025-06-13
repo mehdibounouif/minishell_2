@@ -63,8 +63,6 @@ void	free_tree(t_tree **tree)
 	}
 	else if ((*tree)->type == REDIRECT_NODE)
 	{
-    free((*tree)->redirect->file);
-    free((*tree)->redirect->redirect);
 		free_tree(&(*tree)->redirect->prev);
 		free((*tree)->redirect);
 	}

@@ -32,7 +32,7 @@ void	check_type_word(t_node *node, t_node *list)
 		node->type = ARG;
 }
 */
-t_node	*check_fack_pipe(int *i)
+t_node	*check_fake_pipe(int *i)
 {
 	t_node *node;
 
@@ -47,7 +47,7 @@ t_node	*check_fack_pipe(int *i)
 	return (node);
 }
 
-t_node	*check_real_pipe(int *i)
+t_node	*check_pipe(int *i, int flag)
 {
 	t_node *node;
 
@@ -55,7 +55,10 @@ t_node	*check_real_pipe(int *i)
   if (!node)
       return NULL;
 	node->content = ft_strdup("|");
-	node->type = PIPE;
+  if (flag)
+	  node->type = PIPE;
+  else
+	  node->type = WORD; 
 	node->next = NULL;
 	node->prev = NULL;
 	(*i)++;
@@ -88,7 +91,7 @@ t_node	*check_word(char *command, int *i)
 	return (node);
 }
 
-t_node	*check_redirection(char *command, int *i)
+t_node	*check_redirection(char *command, int *i, int flag)
 {
 	t_node *node;
 
@@ -98,19 +101,22 @@ t_node	*check_redirection(char *command, int *i)
 	if (command[*i] == '>' && command[*i+1] == '>')
 	{
 		node->content = ft_strdup(">>");
-		node->type = REDIRECTION_APPEND;
+    if (flag)
+		  node->type = REDIRECTION_APPEND;
 		*i += 2;
 	}
 	else if (command[*i] == '<' && command[*i+1] == '<')
 	{
 		node->content = ft_strdup("<<");
-		node->type = HEREDOC;
+    if (flag)
+		  node->type = HEREDOC;
 		*i += 2;
 	}
 	else if (command[*i] == '2' && command[*i+1] == '>')
 	{
 		node->content = ft_strdup("2>");
-		node->type = REDIRECTION_ERR;
+    if (flag)
+		  node->type = REDIRECTION_ERR;
 		*i += 2;
 	}
 	else
@@ -118,15 +124,19 @@ t_node	*check_redirection(char *command, int *i)
 		if (command[*i] == '>')
 		{
 			node->content = ft_strdup(">");
-			node->type = REDIRECTION_OUT;
+      if (flag)
+		  	node->type = REDIRECTION_OUT;
 		}
 		else
 		{
 			node->content = ft_strdup("<");
+      if (flag)
+			  node->type = REDIRECTION_IN;
 		}
-			node->type = REDIRECTION_IN;
 		(*i)++;
 	}
+  if (!flag)
+    node->type = WORD;
 	node->next = NULL;
 	node->prev = NULL;
 	return (node);
@@ -180,11 +190,13 @@ void	tokenize(char *command, t_node **list)
 		else if (command[i] == '&' && command[i+1] == '&')
       node = check_end_operator(&i);
 		else if (command[i] == '|' && is_real_separator(command, i))
-      node = check_real_pipe(&i);
+      node = check_pipe(&i, 1);
 		else if (command[i] == '|' && !is_real_separator(command, i))
-      node = check_fack_pipe(&i);
+      node = check_pipe(&i, 0);
 		else if ((command[i] == '<' || command[i] == '>' || command[i] == '2') && is_real_separator(command, i))
-      node = check_redirection(command, &i);
+      node = check_redirection(command, &i, 1);
+		else if ((command[i] == '<' || command[i] == '>' || command[i] == '2') && !is_real_separator(command, i))
+      node = check_redirection(command, &i, 0);
 		else 
       node = check_word(command, &i);
     if (!node)
