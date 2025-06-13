@@ -48,10 +48,12 @@ t_tree	*pars_one_side(t_node **list)
 	int	i;
 	char	*cmd;
 	char	**args;
+  int len;
 
 	i = 0;
+  len = count_args(*list);
 	cmd = (*list)->content;
-	args = malloc(sizeof(char *) * 3);
+	args = malloc(sizeof(char *) * len + 1);
 	args[i++] = cmd;
 	*list = (*list)->next;
 	while ((*list) && (*list)->type == WORD)

@@ -33,11 +33,11 @@
 
 // TYPES OF NODES
 
-#define COMMAND_NODE 1
-#define PIPE_NODE 2
-#define REDIRECT_NODE 3
-#define OR_NODE 4
-#define AND_NODE 5
+#define COMMAND_NODE 10
+#define PIPE_NODE 11
+#define REDIRECT_NODE 12
+#define OR_NODE 13
+#define AND_NODE 14
 
 typedef struct s_command t_command;
 typedef struct s_redirection t_redirection;
@@ -119,5 +119,6 @@ int check_quotes(char *cmd, size_t i);
 char *remove_quotes(char *cmd);
 int is_separator(char c);
 int is_real_separator(char *cmd, int i);
+int count_args(t_node *list);
 
 #endif

@@ -36,6 +36,19 @@ int is_real_separator(char *cmd, int i)
     return (0);
 }
 
+int count_args(t_node *list)
+{
+  int i;
+
+  i = 0;
+  while (list && list->type == WORD)
+  {
+    i++;
+    list = list->next;
+  }
+  return (i);
+}
+
 void	add_back(t_node **list, t_node *node)
 {
 	t_node	*tmp;

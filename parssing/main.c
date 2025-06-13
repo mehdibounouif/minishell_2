@@ -18,7 +18,7 @@ int	main(int c, char **v)
 	t_node	*list;
 	t_node	*tmp;
 	char	*cmd;
-	char	*clear_cmd;
+//	char	*clear_cmd;
 	t_tree	*tree;
 	(void)c;
 	(void)v;
@@ -44,14 +44,14 @@ int	main(int c, char **v)
       break;
     }
     printf("j == %d\n", j);
-    clear_cmd = remove_quotes(cmd);
-		tokenize(clear_cmd, &list);
+    //clear_cmd = remove_quotes(cmd);
+		tokenize(cmd, &list);
 		tmp = list;
 		tree = pars_command(&tmp);
 		print_tree_unicode(tree, "", 1);
 		ft_free(&list, &tree);
 		free(cmd);
-    free(clear_cmd);
+    //free(clear_cmd);
 		cmd	= NULL;
 		i++;
 	}

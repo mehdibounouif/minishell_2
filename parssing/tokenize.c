@@ -32,8 +32,22 @@ void	check_type_word(t_node *node, t_node *list)
 		node->type = ARG;
 }
 */
+t_node	*check_fack_pipe(int *i)
+{
+	t_node *node;
 
-t_node	*check_pipe(int *i)
+	node = malloc(sizeof(t_node));
+  if (!node)
+      return NULL;
+	node->content = ft_strdup("|");
+	node->type = WORD;
+	node->next = NULL;
+	node->prev = NULL;
+	(*i)+=2;
+	return (node);
+}
+
+t_node	*check_real_pipe(int *i)
 {
 	t_node *node;
 
@@ -159,12 +173,16 @@ void	tokenize(char *command, t_node **list)
 	{
 		while(is_space(command[i]))
 			i++;
+		if (command[i] == '\'' || command[i] == '\"')
+      i++;
 		if (command[i] == '|' && command[i+1] == '|')
       node = check_or_operator(&i);
 		else if (command[i] == '&' && command[i+1] == '&')
       node = check_end_operator(&i);
 		else if (command[i] == '|' && is_real_separator(command, i))
-      node = check_pipe(&i);
+      node = check_real_pipe(&i);
+		else if (command[i] == '|' && !is_real_separator(command, i))
+      node = check_fack_pipe(&i);
 		else if ((command[i] == '<' || command[i] == '>' || command[i] == '2') && is_real_separator(command, i))
       node = check_redirection(command, &i);
 		else 
