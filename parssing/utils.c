@@ -76,31 +76,3 @@ int check_sides(t_node *list)
     return (1);
   return (0);
 }
-
-void	print_list(t_node *list)
-{
-	while (list)
-	{
-		printf(" %s => ", list->content);
-		switch (list->type) {
-		case PIPE:
-				printf("Type pipe (|)\n"); break;
-		case WORD:
-				printf("Type WORD\n"); break;
-		case REDIRECTION_OUT:
-				printf("Type redirection output (>)\n"); break;
-		case HEREDOC:
-				printf("Type heredoc (<<)\n"); break;
-		case REDIRECTION_IN:
-				printf("Type redirection input (<)\n"); break;
-		case REDIRECTION_ERR:
-				printf("Type redirection error (2)\n"); break;
-		case REDIRECTION_APPEND:
-				printf("Type redirection append (>>)\n"); break;
-		case AND:
-				printf("Type end Operator (&)\n"); break;
-		}
-		printf("\n");
-		list = list->next;
-	}
-}

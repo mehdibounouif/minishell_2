@@ -122,5 +122,6 @@ int is_separator(char c);
 int is_real_separator(char *cmd, int i);
 int count_args(t_node *list);
 int check_sides(t_node *list);
+t_tree *parssing(char *cmd, t_node *list);
 
 #endif

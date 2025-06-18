@@ -12,6 +12,7 @@ SRCS_FILES = main.c\
 			 print_ast.c\
 			 check_quotes.c\
 			 free.c\
+			 check_command.c\
 
 SRCS = $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
