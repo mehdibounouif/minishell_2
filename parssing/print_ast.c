@@ -47,7 +47,7 @@ void print_tree_unicode(t_tree *tree, const char *prefix, int is_last) {
         case COMMAND_NODE:
             printf(COLOR_CMD "COMMAND: %s [" COLOR_RESET, tree->command->command);
             for (int i = 0; tree->command->args[i]; i++) {
-                printf("%s ", tree->command->args[i]);
+                printf("%s,", tree->command->args[i]);
             }
             printf(COLOR_CMD "]\n" COLOR_RESET);
             break;

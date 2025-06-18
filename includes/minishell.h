@@ -55,6 +55,7 @@ typedef struct s_env {
 
 struct s_node {
   int type;
+  int metacharacter;
   char *content;
   struct s_node *next;
   struct s_node *prev;
@@ -120,5 +121,6 @@ char *remove_quotes(char *cmd);
 int is_separator(char c);
 int is_real_separator(char *cmd, int i);
 int count_args(t_node *list);
+int check_sides(t_node *list);
 
 #endif

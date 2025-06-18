@@ -66,6 +66,17 @@ void	add_back(t_node **list, t_node *node)
 	}
 }
 
+int check_sides(t_node *list)
+{
+  if (list->type == PIPE || list->content[0] == '#')
+    return (1);
+  while(list->next)
+    list = list->next;
+  if (list->type == PIPE)
+    return (1);
+  return (0);
+}
+
 void	print_list(t_node *list)
 {
 	while (list)

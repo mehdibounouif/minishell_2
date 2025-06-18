@@ -30,6 +30,7 @@ int	main(int c, char **v)
 		tree = NULL;
 		cmd = readline("> ");
 		add_history(cmd);
+    // PARSSING
     int j = check_quotes(cmd, ft_strlen(cmd));
     if (j == 1)
     {
@@ -43,9 +44,15 @@ int	main(int c, char **v)
 		  free(cmd);
       break;
     }
-    printf("j == %d\n", j);
     //clear_cmd = remove_quotes(cmd);
 		tokenize(cmd, &list);
+    if (check_sides(list))
+    {
+      printf("-minishell: syntax error near unexpected token !\n");
+		  free(cmd);
+		  ft_free(&list, NULL);
+      break;
+    }
 		tmp = list;
 		tree = pars_command(&tmp);
 		print_tree_unicode(tree, "", 1);

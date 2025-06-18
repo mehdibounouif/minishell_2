@@ -12,26 +12,7 @@
 
 #include "../includes/minishell.h"
 
-/*
-void	check_type_word(t_node *node, t_node *list)
-{
-	if (list)
-		while (list->next)
-			list = list->next;
-	if (!list)
-		node->type = COMMAND1;
-	else if (list->type == PIPE)
-		node->type = COMMAND2;
-	else if (list->type == REDIRECTION_OUT || list->type == REDIRECTION_APPEND)
-		node->type = OUTFILE;
-	else if (list->type == REDIRECTION_IN)
-		node->type = INFILE;
-	else if (list->type == REDIRECTION_ERR)
-		node->type = ERRFILE;
-	else if (list->type == COMMAND1 || list->type == COMMAND2)
-		node->type = ARG;
-}
-*/
+
 t_node	*check_fake_pipe(int *i)
 {
 	t_node *node;
@@ -74,11 +55,20 @@ t_node	*check_word(char *command, int *i)
 
 	node = malloc(sizeof(t_node));
   if (!node)
-      return NULL;
-	while (command[*i] && !is_space(command[*i])
-			&& command[*i] != '>' && command[*i] != '<'
-			&& command[*i] != '&' && command[*i] != '|')
-		(*i)++;
+     return NULL;
+  if (command[*i] == '\"' || command[*i] == '\'')
+    (*i)++;
+  if (!check_quotes(command, *i+1))
+	  while (command[*i] && !is_space(command[*i])
+			  && command[*i] != '>' && command[*i] != '<'
+		  	&& command[*i] != '&' && command[*i] != '|')
+		  (*i)++;
+  else
+  {
+    while (command[*i] && check_quotes(command, *i+1) != 0)
+      (*i)++;
+    (*i)++;
+  }
 	word = malloc(sizeof(int) * (*i - start));
   if (!word)
       return NULL;
@@ -87,7 +77,6 @@ t_node	*check_word(char *command, int *i)
 	node->next = NULL;
 	node->prev = NULL;
 	node->type = WORD;
-//	check_type_word(node, list);
 	return (node);
 }
 
@@ -183,22 +172,31 @@ void	tokenize(char *command, t_node **list)
 	{
 		while(is_space(command[i]))
 			i++;
-		if (command[i] == '\'' || command[i] == '\"')
+    if (command[i] && command[i] == '#' && !check_quotes(command, i))
+    {
+      if (i == 0)
+        exit(1);
+      else 
+        break;
+    }
+		if (command[i] && command[i] == '\\')
       i++;
-		if (command[i] == '|' && command[i+1] == '|')
+    else if (command[i] && (command[i] == '|' && command[i+1] == '|'))
       node = check_or_operator(&i);
-		else if (command[i] == '&' && command[i+1] == '&')
+		else if (command[i] && (command[i] == '&' && command[i+1] == '&'))
       node = check_end_operator(&i);
-		else if (command[i] == '|' && is_real_separator(command, i))
+		else if (command[i] && (command[i] == '|' && is_real_separator(command, i)))
       node = check_pipe(&i, 1);
-		else if (command[i] == '|' && !is_real_separator(command, i))
+		else if (command[i] && (command[i] == '|' && !is_real_separator(command, i)))
       node = check_pipe(&i, 0);
-		else if ((command[i] == '<' || command[i] == '>' || command[i] == '2') && is_real_separator(command, i))
+		else if ((command[i] && (command[i] == '<' || command[i] == '>' || command[i] == '2') && is_real_separator(command, i)))
       node = check_redirection(command, &i, 1);
-		else if ((command[i] == '<' || command[i] == '>' || command[i] == '2') && !is_real_separator(command, i))
+		else if ((command[i] && (command[i] == '<' || command[i] == '>' || command[i] == '2') && !is_real_separator(command, i)))
       node = check_redirection(command, &i, 0);
-		else 
-      node = check_word(command, &i);
+		else if (command[i] && (command[i] == '-' || ft_isalpha(command[i]) || command[i] == '\"' || command[i] == '\''))
+        node = check_word(command, &i);
+    else
+      break;
     if (!node)
     {
       free_list(list);
