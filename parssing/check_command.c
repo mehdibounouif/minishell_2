@@ -1,28 +1,35 @@
 #include "../includes/minishell.h"
 
+void  print_env(t_env *env)
+{
+  while (env && env->next)
+  {
+    printf("key = %s\n", env->key);
+    printf("value = %s\n", env->value);
+    env = env->next;
+  }
+}
+
 void  get_env(t_mini *minishell, char **env)
 {
   int i;
   char  **key_value;
-  t_env *env_list;
+  t_env *env_node;
 
-  if (!(env_list = malloc(sizeof(t_env))))
-  {
-    printf("env malloc failed!\n");
-    return ;
-  }
-  key_value = ft_split(env[0], '=');
-  env_list->key = ft_strdup(key_value[0]);
-  env_list->value = ft_strdup(key_value[1]);
-  free(key_value);
-  minishell->env = env_list;
-  i = 1;
+  i = 0;
   while (env[i])
   {
+    if (!(env_node = malloc(sizeof(t_env))))
+    {
+      printf("env malloc failed!\n");
+      return ;
+    }
     key_value = ft_split(env[i], '=');
-    env_list->key = ft_strdup(key_value[0]);
-    env_list->value = ft_strdup(key_value[1]);
-    free(key_value);
+    env_node->key = ft_strdup(key_value[0]);
+    env_node->value = ft_strdup(key_value[1]);
+    env_node->next = NULL;
+		add_back2(&minishell->env, env_node);
+    free(key_value); 
     i++;
   }
 }
@@ -44,6 +51,7 @@ int readline_and_parssing(t_mini *minishell, char **env)
     return(0);
   }
   get_env(minishell, env);
+  print_env(minishell->env);
   free(cmd);
   return (1);
 }

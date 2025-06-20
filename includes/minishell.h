@@ -119,6 +119,7 @@ void print_tree_unicode(t_tree *tree, const char *prefix, int is_last);
 void tokenize(char *command, t_node **list);
 int is_space(char c);
 void add_back(t_node **list, t_node *node);
+void add_back2(t_env **list, t_env *node);
 void print_list(t_node *list);
 t_tree *pars_command(t_node **list);
 void free_str(char **list);

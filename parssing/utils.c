@@ -49,6 +49,23 @@ int count_args(t_node *list)
   return (i);
 }
 
+void	add_back2(t_env **list, t_env *node)
+{
+	t_env	*tmp;
+	if (!list || !node)
+		return ;
+	if (!*list)
+		*list = node;
+	else 
+	{
+		tmp = *list;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = node;
+		//node->prev = tmp;
+	}
+}
+
 void	add_back(t_node **list, t_node *node)
 {
 	t_node	*tmp;
