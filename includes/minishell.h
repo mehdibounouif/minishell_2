@@ -46,16 +46,17 @@ typedef struct s_node t_node;
 typedef struct s_pipe t_pipe;
 typedef struct s_and t_and;
 typedef struct s_or t_or;
+typedef struct s_env t_env;
+typedef struct s_mini t_mini;
 
-typedef struct s_env {
+struct s_env {
   char *key;
   char *value;
   struct s_env *next;
-} t_env;
+};
 
 struct s_node {
   int type;
-  int metacharacter;
   char *content;
   struct s_node *next;
   struct s_node *prev;
@@ -97,6 +98,12 @@ struct s_tree {
   t_redirection *redirect;
 };
 
+struct s_mini {
+  t_tree *tree;
+  t_env *env;
+  t_node *list;
+};
+
 // built-in functions
 // Function declarations
 int cd_command(t_env *env, char **args);
@@ -114,14 +121,16 @@ int is_space(char c);
 void add_back(t_node **list, t_node *node);
 void print_list(t_node *list);
 t_tree *pars_command(t_node **list);
+void free_str(char **list);
 void free_list(t_node **list);
-void ft_free(t_node **list, t_tree **tree);
+void ft_free(t_mini *minishell);
 int check_quotes(char *cmd, size_t i);
 char *remove_quotes(char *cmd);
 int is_separator(char c);
 int is_real_separator(char *cmd, int i);
 int count_args(t_node *list);
 int check_sides(t_node *list);
-t_tree *parssing(char *cmd, t_node *list);
+t_tree *parssing_line(char *cmd, t_mini *minishell);
+int readline_and_parssing(t_mini *minishell, char **env);
 
 #endif

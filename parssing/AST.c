@@ -52,6 +52,7 @@ t_tree	*pars_one_side(t_node **list)
 
 	i = 0;
   len = count_args(*list);
+  //printf();
 	cmd = (*list)->content;
 	args = malloc(sizeof(char *) * len + 1);
 	args[i++] = cmd;

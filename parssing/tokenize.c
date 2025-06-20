@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-
+/*
 t_node	*check_fake_pipe(int *i)
 {
 	t_node *node;
@@ -27,7 +27,7 @@ t_node	*check_fake_pipe(int *i)
 	(*i)+=2;
 	return (node);
 }
-
+*/
 t_node	*check_pipe(int *i, int flag)
 {
 	t_node *node;

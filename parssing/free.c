@@ -84,8 +84,8 @@ void	free_tree(t_tree **tree)
   *tree = NULL;
 }
 
-void	ft_free(t_node **list, t_tree **tree)
+void	ft_free(t_mini *minishell)
 {
-	free_list(list);
-	free_tree(tree);
+	free_list(&minishell->list);
+	free_tree(&minishell->tree);
 }

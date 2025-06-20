@@ -12,41 +12,25 @@
 
 #include "../includes/minishell.h"
 
-int	main(int c, char **v)
+int	main(int c, char **v, char **env)
 {
-	t_node	*list;
-	t_node	*tmp;
-	char	*cmd;
-	t_tree	*tree;
+  t_mini  *minishell;
 	(void)c;
 	(void)v;
 	
 	int	i = 0;
+  if (!(minishell = ft_calloc(1, sizeof(t_mini))))
+    return 0;
 	while (i < 5)
 	{
-		list = NULL;
-		tree = NULL;
-		tmp = list;
-
-    // READ COMMAND
-		cmd = readline("> ");
-		add_history(cmd);
-
     // PARSSING
-		tree = parssing(cmd, tmp);
-    if (!tree)
-    {
-      printf("Parssing failed!\n");
-		  free(cmd);
-      break;
-    }
-
+    if (!readline_and_parssing(minishell, env))
+      return 0;
     // PRINT TREE
-		print_tree_unicode(tree, "", 1);
-
+		print_tree_unicode(minishell->tree, "", 1);
     // FREE
-		ft_free(&list, &tree);
-		free(cmd);
+		ft_free(minishell);
+		//free(cmd);
 		i++;
 	}
 	return (0);
