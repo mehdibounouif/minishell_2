@@ -131,21 +131,24 @@ t_node	*check_redirection(char *command, int *i, int flag)
 	return (node);
 }
 
-t_node	*check_end_operator(int *i)
+t_node	*check_end(int *i, int flag)
 {
 	t_node *node;
 
 	node = malloc(sizeof(t_node));
-  if (!node)
-      return NULL;
-	node->content = ft_strdup("&&");
-	node->type = AND;
+  	if (!node)
+      		return NULL;
+	node->content = ft_strdup(";");
+	if (flag)
+		node->type = END;
+	else
+		node->type = WORD;
 	node->next = NULL;
 	node->prev = NULL;
-	(*i) += 2;
+	(*i)++;
 	return (node);
 }
-
+/*
 t_node	*check_or_operator(int *i)
 {
 	t_node *node;
@@ -160,8 +163,9 @@ t_node	*check_or_operator(int *i)
 	(*i) += 2;
 	return (node);
 }
+*/
 
-void	tokenize(char *command, t_node **list)
+int	tokenize(char *command, t_node **list)
 {
 	int	i;
   t_node  *node;
@@ -175,16 +179,16 @@ void	tokenize(char *command, t_node **list)
     if (command[i] && command[i] == '#' && !check_quotes(command, i))
     {
       if (i == 0)
-        exit(1);
+        return (0);
       else 
         break;
     }
 		if (command[i] && command[i] == '\\')
       i++;
-    else if (command[i] && (command[i] == '|' && command[i+1] == '|'))
-      node = check_or_operator(&i);
-		else if (command[i] && (command[i] == '&' && command[i+1] == '&'))
-      node = check_end_operator(&i);
+		else if (command[i] && (command[i] == ';' && is_real_separator(command, i)))
+      node = check_end(&i, 1);
+		else if (command[i] && (command[i] == ';' && !is_real_separator(command, i)))
+      node = check_end(&i, 0);
 		else if (command[i] && (command[i] == '|' && is_real_separator(command, i)))
       node = check_pipe(&i, 1);
 		else if (command[i] && (command[i] == '|' && !is_real_separator(command, i)))
@@ -200,8 +204,9 @@ void	tokenize(char *command, t_node **list)
     if (!node)
     {
       free_list(list);
-      exit(1);
+      return (0);
     }
 		add_back(list, node);
 	}
+	return (1);
 }

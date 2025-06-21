@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <readline/readline.h>
-#include <unistd.h>
 
 t_tree	*parss_redirection(t_tree *node, t_node **list)
 {
@@ -48,11 +46,10 @@ t_tree	*pars_one_side(t_node **list)
 	int	i;
 	char	*cmd;
 	char	**args;
-  int len;
+  	int len;
 
 	i = 0;
-  len = count_args(*list);
-  //printf();
+	len = count_args(*list);
 	cmd = (*list)->content;
 	args = malloc(sizeof(char *) * len + 1);
 	args[i++] = cmd;
@@ -81,7 +78,9 @@ t_tree	*pars_one_side(t_node **list)
 
 t_tree	*pars_pipe(t_node **list)
 {
-	t_tree *left = pars_one_side(list);
+	t_tree *left;
+
+       	left = pars_one_side(list);
 	while (*list && (*list)->type == PIPE)
 	{
 		*list = (*list)->next;
@@ -99,6 +98,31 @@ t_tree	*pars_pipe(t_node **list)
 	}
 	return left;
 }
+
+t_tree	*pars_end(t_node **list)
+{
+	t_tree	*left;
+
+	left = pars_pipe(list);
+	while (*list && (*list)->type == END)
+	{
+		*list = (*list)->next;
+		t_tree	*right = pars_pipe(list);
+		t_tree	*end_cmd = malloc(sizeof(t_tree));
+		if (!end_cmd)
+			return (NULL);
+		end_cmd->end = malloc(sizeof(t_end));
+		if (!end_cmd->end)
+			return (NULL);
+		end_cmd->end->right = right;
+		end_cmd->end->left = left;
+		end_cmd->type = END_NODE;
+		left = end_cmd;
+	}
+	return (left);
+}
+
+/*
 
 t_tree	*pars_operator(t_node **list)
 {
@@ -135,7 +159,7 @@ t_tree	*pars_operator(t_node **list)
 	}
 	return (left);
 }
-/*
+
 t_tree	*pars_or(t_node **list)
 {
 	t_tree	*left = pars_and(list);
@@ -165,8 +189,12 @@ t_tree	*parss_op(t_node **list)
 
 t_tree	*pars_command(t_node **list)
 {
-	t_tree	*node =  pars_operator(list);
+	t_tree	*tree;
+	
+	tree =  pars_end(list);
+	if (!tree)
+		return (NULL);
 	//while (*list && (*list)->type == RUN_BACKGROUND)
 	//	*list = (*list)->next;
-	return (node);
+	return (tree);
 }

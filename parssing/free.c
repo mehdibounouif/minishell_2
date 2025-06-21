@@ -61,24 +61,17 @@ void	free_tree(t_tree **tree)
 		free((*tree)->pipe);
 		(*tree)->pipe = NULL;
 	}
+	else if ((*tree)->type == END_NODE)
+	{
+		free_tree(&(*tree)->end->left);
+		free_tree(&(*tree)->end->right);
+		free((*tree)->end);
+		(*tree)->end = NULL;
+	}
 	else if ((*tree)->type == REDIRECT_NODE)
 	{
 		free_tree(&(*tree)->redirect->prev);
 		free((*tree)->redirect);
-	}
-	else if ((*tree)->type == OR_NODE)
-	{
-		free_tree(&(*tree)->orr->left);
-		free_tree(&(*tree)->orr->right);
-		free((*tree)->orr);
-		(*tree)->orr = NULL;
-	}
-	else if ((*tree)->type == AND_NODE)
-	{
-		free_tree(&(*tree)->andd->left);
-		free_tree(&(*tree)->andd->right);
-		free((*tree)->andd);
-		(*tree)->andd = NULL;
 	}
 	free(*tree);
   *tree = NULL;

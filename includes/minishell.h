@@ -27,7 +27,7 @@
 #define REDIRECTION_IN 4
 #define REDIRECTION_APPEND 5
 #define REDIRECTION_ERR 6
-#define AND 7
+#define END 7
 #define OR 8
 #define HEREDOC 9
 
@@ -36,16 +36,14 @@
 #define COMMAND_NODE 10
 #define PIPE_NODE 11
 #define REDIRECT_NODE 12
-#define OR_NODE 13
-#define AND_NODE 14
+#define END_NODE 13
 
 typedef struct s_command t_command;
 typedef struct s_redirection t_redirection;
 typedef struct s_tree t_tree;
 typedef struct s_node t_node;
 typedef struct s_pipe t_pipe;
-typedef struct s_and t_and;
-typedef struct s_or t_or;
+typedef struct s_end t_end;
 typedef struct s_env t_env;
 typedef struct s_mini t_mini;
 
@@ -62,17 +60,12 @@ struct s_node {
   struct s_node *prev;
 };
 
+struct s_end {
+  t_tree *left;
+  t_tree *right;
+};
+
 struct s_pipe {
-  t_tree *left;
-  t_tree *right;
-};
-
-struct s_and {
-  t_tree *left;
-  t_tree *right;
-};
-
-struct s_or {
   t_tree *left;
   t_tree *right;
 };
@@ -93,8 +86,7 @@ struct s_tree {
   int type;
   t_command *command;
   t_pipe *pipe;
-  t_or *orr;
-  t_and *andd;
+  t_end *end;
   t_redirection *redirect;
 };
 
@@ -115,8 +107,9 @@ void add_env_var(t_env **env, char *key, char *value);
 // Command execution
 void execute_command(t_env *env, const char *input);
 
+void print_env(t_env *env);
 void print_tree_unicode(t_tree *tree, const char *prefix, int is_last);
-void tokenize(char *command, t_node **list);
+int tokenize(char *command, t_node **list);
 int is_space(char c);
 void add_back(t_node **list, t_node *node);
 void add_back2(t_env **list, t_env *node);

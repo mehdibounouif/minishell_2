@@ -1,13 +1,18 @@
 #include "../includes/minishell.h"
 
-void  print_env(t_env *env)
+int	check_syntax(t_node *list)
 {
-  while (env && env->next)
-  {
-    printf("key = %s\n", env->key);
-    printf("value = %s\n", env->value);
-    env = env->next;
-  }
+	while (list && list->next)
+	{
+		// CHECK (| |)
+		if (list->type == PIPE && list->next->type == PIPE)
+		{
+			printf("pipe error\n");
+			return (0);
+		}
+		list = list->next;
+	}
+	return (1);
 }
 
 void  get_env(t_mini *minishell, char **env)
@@ -37,41 +42,61 @@ void  get_env(t_mini *minishell, char **env)
 int readline_and_parssing(t_mini *minishell, char **env)
 {
 	char	*cmd;
-  (void)env;
-
-  // READ COMMAND
+	(void)env;
+	
+	// READ COMMAND
 	cmd = readline("> ");
 	add_history(cmd);
-  // PARSSING
-	minishell->tree = parssing_line(cmd, minishell);
-  if (!minishell->tree)
-  {
-    printf("Parssing failed!\n");
+	// CHECK QOUTES
+	if (check_quotes(cmd, ft_strlen(cmd)))
+	{
 		free(cmd);
-    return(0);
-  }
-  get_env(minishell, env);
-  print_env(minishell->env);
-  free(cmd);
-  return (1);
+		printf("qoutes not closed!\n");
+		return (0);
+	}
+	// TOKENIZE
+  	tokenize(cmd, &minishell->list);
+	if (!minishell->list)
+	{
+		free(cmd);
+		return (0);
+	}
+	// CHECK SYNTAX
+	if (!check_syntax(minishell->list))
+	{
+		ft_free(minishell);
+		free(cmd);
+		return (0);
+	}
+	// DESING TREE
+	minishell->tree = pars_command(&minishell->list);
+	if (!minishell->tree)
+	{
+		free(cmd);
+		return(0);
+	}
+	// GET ENV
+	get_env(minishell, env);
+	//  print_env(minishell->env);
+	free(cmd);
+	return (1);
 }
 
 t_tree *parssing_line(char *cmd, t_mini *minishell)
 {
-  t_tree  *tree;
+	t_tree  *tree;
 
-  if (check_quotes(cmd, ft_strlen(cmd)))
-  {
-      printf("qoutes not closed!\n");
-      return (NULL);
-  }
-  tokenize(cmd, &minishell->list);
-  if (check_sides(minishell->list))
-  {
-    printf("-minishell: syntax error near unexpected token !\n");
-	  ft_free(minishell);
-    return (NULL);
-  }
+	if (check_quotes(cmd, ft_strlen(cmd)))
+	{
+		printf("qoutes not closed!\n");
+		return (NULL);
+	}
+	if (check_sides(minishell->list))
+	{
+		printf("-minishell: syntax error near unexpected token !\n");
+		ft_free(minishell);
+		return (NULL);
+	}
 	tree = pars_command(&minishell->list);
-  return (tree);
+	return (tree);
 }

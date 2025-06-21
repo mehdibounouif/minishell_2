@@ -61,29 +61,20 @@ void print_tree_unicode(t_tree *tree, const char *prefix, int is_last) {
             break;
         }
 
+        case END_NODE: {
+            printf(COLOR_PIPE "END\n" COLOR_RESET);
+            char *new_prefix = build_prefix(prefix, is_last);
+            print_tree_unicode(tree->end->left, new_prefix, 0);
+            print_tree_unicode(tree->end->right, new_prefix, 1);
+            free(new_prefix);
+            break;
+        }
+
         case REDIRECT_NODE: {
             printf(COLOR_RED "REDIRECT: %s -> %s\n" COLOR_RESET,
                    tree->redirect->redirect, tree->redirect->file);
             char *new_prefix = build_prefix(prefix, is_last);
             print_tree_unicode(tree->redirect->prev, new_prefix, 1);
-            free(new_prefix);
-            break;
-        }
-
-        case OR_NODE: {
-            printf(COLOR_OR "OR\n" COLOR_RESET);
-            char *new_prefix = build_prefix(prefix, is_last);
-            print_tree_unicode(tree->orr->left, new_prefix, 0);
-            print_tree_unicode(tree->orr->right, new_prefix, 1);
-            free(new_prefix);
-            break;
-        }
-
-        case AND_NODE: {
-            printf(COLOR_AND "AND\n" COLOR_RESET);
-            char *new_prefix = build_prefix(prefix, is_last);
-            print_tree_unicode(tree->andd->left, new_prefix, 0);
-            print_tree_unicode(tree->andd->right, new_prefix, 1);
             free(new_prefix);
             break;
         }

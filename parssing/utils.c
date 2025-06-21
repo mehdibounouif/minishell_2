@@ -19,6 +19,16 @@ int	is_space(char c)
 	return (0);
 }
 
+void  print_env(t_env *env)
+{
+  while (env && env->next)
+  {
+    printf("key = %s\n", env->key);
+    printf("value = %s\n", env->value);
+    env = env->next;
+  }
+}
+
 int is_separator(char c)
 {
   if (c == '|' || c == '>' || c == '<' || c == ';')
