@@ -19,16 +19,6 @@ int	is_space(char c)
 	return (0);
 }
 
-void  print_env(t_env *env)
-{
-  while (env && env->next)
-  {
-    printf("key = %s\n", env->key);
-    printf("value = %s\n", env->value);
-    env = env->next;
-  }
-}
-
 int is_separator(char c)
 {
   if (c == '|' || c == '>' || c == '<' || c == ';')
@@ -72,7 +62,6 @@ void	add_back2(t_env **list, t_env *node)
 		while (tmp->next)
 			tmp = tmp->next;
 		tmp->next = node;
-		//node->prev = tmp;
 	}
 }
 
@@ -91,15 +80,4 @@ void	add_back(t_node **list, t_node *node)
 		tmp->next = node;
 		node->prev = tmp;
 	}
-}
-
-int check_sides(t_node *list)
-{
-  if (list->type == PIPE || list->content[0] == '#')
-    return (1);
-  while(list->next)
-    list = list->next;
-  if (list->type == PIPE)
-    return (1);
-  return (0);
 }

@@ -1,20 +1,26 @@
 #include "../includes/minishell.h"
-
+/*
 int	check_syntax(t_node *list)
 {
 	while (list && list->next)
 	{
-		// CHECK (| |)
+		// CHECK ( | before | )
 		if (list->type == PIPE && list->next->type == PIPE)
 		{
-			printf("pipe error\n");
+			printf("bash: syntax error near unexpected token %s\n", list->next->content);
+			return (0);
+		}
+		// CHECK ( ; before ; or |)
+		if (list->type == END && (list->next->type == PIPE || list->next->type == END))
+		{
+			printf("bash: syntax error near unexpected token %s\n", list->next->content);
 			return (0);
 		}
 		list = list->next;
 	}
 	return (1);
 }
-
+*/
 void  get_env(t_mini *minishell, char **env)
 {
   int i;
@@ -51,7 +57,7 @@ int readline_and_parssing(t_mini *minishell, char **env)
 	if (check_quotes(cmd, ft_strlen(cmd)))
 	{
 		free(cmd);
-		printf("qoutes not closed!\n");
+		printf("Qoutes not closed!\n");
 		return (0);
 	}
 	// TOKENIZE

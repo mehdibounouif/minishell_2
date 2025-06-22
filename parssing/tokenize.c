@@ -91,7 +91,7 @@ t_node	*check_redirection(char *command, int *i, int flag)
 	{
 		node->content = ft_strdup(">>");
     if (flag)
-		  node->type = REDIRECTION_APPEND;
+		  node->type = R_APPEND;
 		*i += 2;
 	}
 	else if (command[*i] == '<' && command[*i+1] == '<')
@@ -105,7 +105,7 @@ t_node	*check_redirection(char *command, int *i, int flag)
 	{
 		node->content = ft_strdup("2>");
     if (flag)
-		  node->type = REDIRECTION_ERR;
+		  node->type = R_ERR;
 		*i += 2;
 	}
 	else
@@ -114,13 +114,13 @@ t_node	*check_redirection(char *command, int *i, int flag)
 		{
 			node->content = ft_strdup(">");
       if (flag)
-		  	node->type = REDIRECTION_OUT;
+		  	node->type = R_OUT;
 		}
 		else
 		{
 			node->content = ft_strdup("<");
       if (flag)
-			  node->type = REDIRECTION_IN;
+			  node->type = R_IN;
 		}
 		(*i)++;
 	}

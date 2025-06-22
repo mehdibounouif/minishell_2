@@ -12,15 +12,22 @@
 
 #include "../includes/minishell.h"
 
+int	is_redirection(t_node *node)
+{
+	if (node && (node->type == R_OUT ||
+			node->type == R_IN ||
+			node->type == R_ERR ||
+			node->type == R_APPEND))
+		return (1);
+	return (0);
+}
+
 t_tree	*parss_redirection(t_tree *node, t_node **list)
 {
 	t_tree	*redirect_node;
 
 	redirect_node = NULL;
-	if ((*list) && ((*list)->type == REDIRECTION_OUT ||
-			(*list)->type == REDIRECTION_IN ||
-			(*list)->type == REDIRECTION_ERR ||
-			(*list)->type == REDIRECTION_APPEND))
+	if (is_redirection(*list))
 	{
 		redirect_node = malloc(sizeof(t_tree));
 		if (!redirect_node)
@@ -31,6 +38,11 @@ t_tree	*parss_redirection(t_tree *node, t_node **list)
 		redirect_node->type = REDIRECT_NODE;
 		redirect_node->redirect->redirect = (*list)->content;
 		*list = (*list)->next;
+		while ((*list)->type == WORD && is_redirection((*list)->next))
+		{
+			*list = (*list)->next;
+			*list = (*list)->next;
+		}
 		redirect_node->redirect->file = (*list)->content;
 		redirect_node->redirect->redirection_type = (*list)->type;
 		redirect_node->redirect->prev = node;

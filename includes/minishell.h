@@ -23,10 +23,10 @@
 
 #define PIPE 1
 #define WORD 2
-#define REDIRECTION_OUT 3
-#define REDIRECTION_IN 4
-#define REDIRECTION_APPEND 5
-#define REDIRECTION_ERR 6
+#define R_OUT 3
+#define R_IN 4
+#define R_APPEND 5
+#define R_ERR 6
 #define END 7
 #define OR 8
 #define HEREDOC 9
@@ -60,12 +60,12 @@ struct s_node {
   struct s_node *prev;
 };
 
-struct s_end {
+struct s_pipe {
   t_tree *left;
   t_tree *right;
 };
 
-struct s_pipe {
+struct s_end {
   t_tree *left;
   t_tree *right;
 };
@@ -86,7 +86,7 @@ struct s_tree {
   int type;
   t_command *command;
   t_pipe *pipe;
-  t_end *end;
+  t_pipe *end;
   t_redirection *redirect;
 };
 
@@ -126,5 +126,7 @@ int count_args(t_node *list);
 int check_sides(t_node *list);
 t_tree *parssing_line(char *cmd, t_mini *minishell);
 int readline_and_parssing(t_mini *minishell, char **env);
+int	check_syntax(t_node *list);
+
 
 #endif

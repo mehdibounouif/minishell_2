@@ -19,11 +19,6 @@
 #define COLOR_AND     "\033[1;36m"
 #define COLOR_OR      "\033[1;35m"
 
-// Assume node types are defined like this:
-//typedef enum { COMMAND_NODE, PIPE_NODE, REDIRECT_NODE, OR_NODE, AND_NODE } NodeType;
-
-
-// Helper function to safely build the prefix string
 char *build_prefix(const char *prefix, int is_last) {
     const char *suffix = is_last ? "    " : "│   ";
     size_t len = strlen(prefix) + strlen(suffix) + 1;
@@ -37,7 +32,6 @@ char *build_prefix(const char *prefix, int is_last) {
     return result;
 }
 
-// Your updated print_tree_unicode function
 void print_tree_unicode(t_tree *tree, const char *prefix, int is_last) {
     if (!tree) return;
 
@@ -81,3 +75,12 @@ void print_tree_unicode(t_tree *tree, const char *prefix, int is_last) {
     }
 }
 
+void  print_env(t_env *env)
+{
+	while (env && env->next)
+	{
+		printf("key = %s\n", env->key);
+		printf("value = %s\n", env->value);
+		env = env->next;
+	}
+}

@@ -13,6 +13,7 @@ SRCS_FILES = main.c\
 			 check_quotes.c\
 			 free.c\
 			 check_command.c\
+			 check_syntax.c\
 
 SRCS = $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
