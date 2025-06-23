@@ -25,7 +25,7 @@ int	main(int c, char **v, char **env)
 		// PARSSING
 		if (!readline_and_parssing(minishell, env))
 			continue;
-		execute_full_command(minishell->tree);
+		execute_full_command(minishell->tree, env);
     		// PRINT TREE
 		//print_tree_unicode(minishell->tree, "", 1);
     		// FREE

@@ -132,6 +132,8 @@ int	check_syntax(t_node *list);
 int	is_redirection(t_node *node);
 
 // EXECUTE 
-int execute_full_command(t_tree *node);
-int execute_command_node(t_tree *node);
+int execute_full_command(t_tree *node, char **env);
+int execute_command_node(t_tree *node, char **env);
+char	*ft_getenv(char *key, char **env);
+char	*find_path(t_tree *node, char **env);
 #endif
