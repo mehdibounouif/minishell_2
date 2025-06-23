@@ -4,29 +4,35 @@ CC = cc
 FLAGS = -Wall -Wextra -Werror -g
 LIBFT_DIR = ./libft
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
-SRCS_DIR = ./parssing
-SRCS_FILES = main.c\
-			 utils.c\
-			 tokenize.c\
-			 AST.c\
-			 print_ast.c\
-			 check_quotes.c\
-			 free.c\
-			 check_command.c\
-			 check_syntax.c\
+SRCS_DIR1 = ./parssing
+SRCS_DIR2 = ./execution
+SRCS_FILES1 = main.c\
+	     utils.c\
+	     tokenize.c\
+	     AST.c\
+	     print_ast.c\
+	     check_quotes.c\
+	     free.c\
+	     check_command.c\
+	     check_syntax.c\
 
-SRCS = $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
+SRCS_FILES2 = execute_simple_command.c\
+	      execution.c\
 
-OBJS = $(SRCS:.c=.o)
+SRCS1 = $(addprefix $(SRCS_DIR1)/, $(SRCS_FILES1))
+SRCS2 = $(addprefix $(SRCS_DIR2)/, $(SRCS_FILES2))
+
+PARSS_OBJS = $(SRCS1:.c=.o)
+EXEC_OBJS = $(SRCS2:.c=.o)
 
 all: $(NAME)
 
 $(LIBFT_LIB):
 	@$(MAKE) -C $(LIBFT_DIR)
 
-$(NAME): $(OBJS) $(LIBFT_LIB)
+$(NAME): $(PARSS_OBJS) $(EXEC_OBJS) $(LIBFT_LIB)
 	@echo "🎉 Vincular archivos de objeto para crear el ejecutable: $(NAME) 🚀"
-	@$(CC) $(FLAGS) $(OBJS) $(LIBFT_LIB) -lreadline -o $(NAME)
+	@$(CC) $(FLAGS) $(PARSS_OBJS) $(EXEC_OBJS) $(LIBFT_LIB) -lreadline -o $(NAME)
 	@echo "✅ ¡Compilación exitosa! Ejecutable creado.: $(NAME)"
 
 %.o: %.c
@@ -37,7 +43,8 @@ $(NAME): $(OBJS) $(LIBFT_LIB)
 clean:
 	@echo "🧹 Limpieza de archivos de objetos ..."
 	@$(MAKE) clean -C $(LIBFT_DIR)
-	@$(RM) $(OBJS)
+	@$(RM) $(PARSS_OBJS)
+	@$(RM) $(EXEC_OBJS)
 	@echo "✅ Limpieza completa."
 
 fclean: clean
@@ -45,7 +52,6 @@ fclean: clean
 	@$(MAKE) fclean -C $(LIBFT_DIR)
 	@$(RM) $(NAME)
 	@echo "✅ Limpieza completa."
-
 
 re: fclean all
 

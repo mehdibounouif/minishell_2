@@ -12,16 +12,6 @@
 
 #include "../includes/minishell.h"
 
-int	is_redirection(t_node *node)
-{
-	if (node && (node->type == R_OUT ||
-			node->type == R_IN ||
-			node->type == R_ERR ||
-			node->type == R_APPEND))
-		return (1);
-	return (0);
-}
-
 t_tree	*parss_redirection(t_tree *node, t_node **list)
 {
 	t_tree	*redirect_node;
@@ -118,18 +108,35 @@ t_tree	*pars_end(t_node **list)
 	left = pars_pipe(list);
 	while (*list && (*list)->type == END)
 	{
-		*list = (*list)->next;
-		t_tree	*right = pars_pipe(list);
-		t_tree	*end_cmd = malloc(sizeof(t_tree));
-		if (!end_cmd)
-			return (NULL);
-		end_cmd->end = malloc(sizeof(t_end));
-		if (!end_cmd->end)
-			return (NULL);
-		end_cmd->end->right = right;
-		end_cmd->end->left = left;
-		end_cmd->type = END_NODE;
-		left = end_cmd;
+		if ((*list)->next && (*list)->type == END)
+		{
+			*list = (*list)->next;
+			t_tree	*right = pars_pipe(list);
+			t_tree	*end_cmd = malloc(sizeof(t_tree));
+			if (!end_cmd)
+				return (NULL);
+			end_cmd->end = malloc(sizeof(t_end));
+			if (!end_cmd->end)
+				return (NULL);
+			end_cmd->end->right = right;
+			end_cmd->end->left = left;
+			end_cmd->type = END_NODE;
+			left = end_cmd;
+		}
+		else if (!(*list)->next && (*list)->type == END)
+		{
+			t_tree	*end_cmd = malloc(sizeof(t_tree));
+			if (!end_cmd)
+				return (NULL);
+			end_cmd->end = malloc(sizeof(t_end));
+			if (!end_cmd->end)
+				return (NULL);
+			end_cmd->end->left = left;
+			end_cmd->end->right = NULL;
+			end_cmd->type = END_NODE;
+			left = end_cmd;
+			break;
+		}
 	}
 	return (left);
 }

@@ -20,6 +20,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #define PIPE 1
 #define WORD 2
@@ -127,6 +129,9 @@ int check_sides(t_node *list);
 t_tree *parssing_line(char *cmd, t_mini *minishell);
 int readline_and_parssing(t_mini *minishell, char **env);
 int	check_syntax(t_node *list);
+int	is_redirection(t_node *node);
 
-
+// EXECUTE 
+int execute_full_command(t_tree *node);
+int execute_command_node(t_tree *node);
 #endif

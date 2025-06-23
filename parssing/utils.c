@@ -12,6 +12,16 @@
 
 #include "../includes/minishell.h"
 
+int	is_redirection(t_node *node)
+{
+	if (node && (node->type == R_OUT ||
+			node->type == R_IN ||
+			node->type == R_ERR ||
+			node->type == R_APPEND))
+		return (1);
+	return (0);
+}
+
 int	is_space(char c)
 {
 	if ((c >= 9 && c <= 13) || c == 32)

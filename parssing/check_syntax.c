@@ -13,35 +13,32 @@ int check_sides(t_node *list)
 
 int     check_syntax(t_node *list)
 {
+	// CHECK SIDES | IN START | IN END
+	if (check_sides(list))
+	{
+		printf("bash: syntax error near unexpected token |\n");
+		return (0);
+	}
         while (list)
         {
                 // CHECK ( | before | OR IN END OR AT START)
-                if ((list->type == PIPE && (list->next->type == PIPE || list->next->type == END))
-				|| (list->prev == NULL && list->type == PIPE)
-				|| (list->next == NULL && list->type == PIPE))
+                if ((list->type == PIPE && (list->next->type == PIPE || list->next->type == END)))
                 {
                         printf("bash: syntax error near unexpected token %s\n", list->next->content);
                         return (0);
                 }
                 // CHECK ( ; before ; or |)
-                if (list->type == END && (list->next->type == PIPE || list->next->type == END))
+                if (list->type == END && list->next && (list->next->type == PIPE || list->next->type == END))
                 {
                         printf("bash: syntax error near unexpected token %s\n", list->next->content);
                         return (0);
                 }
-		// CHECK IF (> OR < OR >> OR >2) BEFORE (> OR < OR >> OR >2)
-		if ((list->type == R_IN || list->type == R_OUT
-				|| list->type == R_APPEND
-				|| list->type == R_ERR) 
-				&& list->type
-			       	&&(list->next->type == R_IN
-					|| list->next->type == R_OUT
-					|| list->next->type == R_APPEND
-					|| list->next->type == R_ERR
-					|| list->next->type == PIPE
-					|| list->next->type == END))
+		if (is_redirection(list) && (!list->next || list->next->type != WORD))
 		{
-			printf("-minishell: syntax error near unexpected token %s\n", list->next->content);
+			if (list->next)
+				printf("bash: syntax error near unexpected token %s\n", list->next->content);
+			else
+				printf("bash: syntax error near unexpected token %s\n", list->content);
 			return (0);
 		}
                 list = list->next;

@@ -61,7 +61,7 @@ t_node	*check_word(char *command, int *i)
   if (!check_quotes(command, *i+1))
 	  while (command[*i] && !is_space(command[*i])
 			  && command[*i] != '>' && command[*i] != '<'
-		  	&& command[*i] != '&' && command[*i] != '|')
+		  	&& command[*i] != '&' && command[*i] != '|' && command[*i] != ';')
 		  (*i)++;
   else
   {
@@ -197,7 +197,7 @@ int	tokenize(char *command, t_node **list)
       node = check_redirection(command, &i, 1);
 		else if ((command[i] && (command[i] == '<' || command[i] == '>' || command[i] == '2') && !is_real_separator(command, i)))
       node = check_redirection(command, &i, 0);
-		else if (command[i] && (command[i] == '-' || ft_isalpha(command[i]) || command[i] == '\"' || command[i] == '\''))
+		else if (command[i] && ((command[i] >= 33 && command[i] <= 126) || command[i] == '\"' || command[i] == '\''))
         node = check_word(command, &i);
     else
       break;
