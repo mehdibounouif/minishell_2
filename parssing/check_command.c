@@ -78,8 +78,16 @@ int readline_and_parssing(t_mini *minishell, char **env)
 		printf("Qoutes not closed!\n");
 		return (0);
 	}
+	// GET ENV
+	get_env(minishell, env);
+	//  print_env(minishell->env);
+
+	//  REPLECE VARIABLE WITH VALUE
+	cmd = replace_key_with_value(cmd, env);
+	//printf("Command after expanding = %s\n", cmd);
 	len = len_to_pipe(cmd);
 	cmd = remove_quotes2(cmd, len);
+
 	// TOKENIZE
   	tokenize(cmd, &minishell->list);
 	if (!minishell->list)
@@ -101,9 +109,6 @@ int readline_and_parssing(t_mini *minishell, char **env)
 		free(cmd);
 		return(0);
 	}
-	// GET ENV
-	get_env(minishell, env);
-	//  print_env(minishell->env);
 	free(cmd);
 	return (1);
 }

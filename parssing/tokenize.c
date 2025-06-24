@@ -185,7 +185,7 @@ int	tokenize(char *command, t_node **list)
     }
 		if (command[i] && command[i] == '\\')
       i++;
-		else if (command[i] && (command[i] == ';' && is_real_separator(command, i)))
+		if (command[i] && (command[i] == ';' && is_real_separator(command, i)))
       node = check_end(&i, 1);
 		else if (command[i] && (command[i] == ';' && !is_real_separator(command, i)))
       node = check_end(&i, 0);

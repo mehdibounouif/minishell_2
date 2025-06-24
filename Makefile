@@ -15,6 +15,7 @@ SRCS_FILES1 = main.c\
 	     free.c\
 	     check_command.c\
 	     check_syntax.c\
+	     expansions.c\
 
 SRCS_FILES2 = execute_simple_command.c\
 	      execution.c\
