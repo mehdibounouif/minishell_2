@@ -45,10 +45,28 @@ void  get_env(t_mini *minishell, char **env)
   }
 }
 
+size_t	len_to_pipe(char *cmd)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	len = 0;
+	while (cmd[i])
+	{
+		if (cmd[i] == '|' && !check_quotes(cmd, i))
+			break;
+		i++;
+		len++;
+	}
+	return (len);
+}
+
 int readline_and_parssing(t_mini *minishell, char **env)
 {
 	char	*cmd;
 	(void)env;
+	size_t	len;
 	
 	// READ COMMAND
 	cmd = readline("> ");
@@ -60,6 +78,8 @@ int readline_and_parssing(t_mini *minishell, char **env)
 		printf("Qoutes not closed!\n");
 		return (0);
 	}
+	len = len_to_pipe(cmd);
+	cmd = remove_quotes2(cmd, len);
 	// TOKENIZE
   	tokenize(cmd, &minishell->list);
 	if (!minishell->list)

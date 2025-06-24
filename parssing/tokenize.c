@@ -33,13 +33,13 @@ t_node	*check_pipe(int *i, int flag)
 	t_node *node;
 
 	node = malloc(sizeof(t_node));
-  if (!node)
-      return NULL;
+	if (!node)
+		return NULL;
 	node->content = ft_strdup("|");
-  if (flag)
-	  node->type = PIPE;
-  else
-	  node->type = WORD; 
+	if (flag)
+		node->type = PIPE;
+	else
+		node->type = WORD; 
 	node->next = NULL;
 	node->prev = NULL;
 	(*i)++;
@@ -54,24 +54,24 @@ t_node	*check_word(char *command, int *i)
 	start = *i;
 
 	node = malloc(sizeof(t_node));
-  if (!node)
-     return NULL;
-  if (command[*i] == '\"' || command[*i] == '\'')
-    (*i)++;
-  if (!check_quotes(command, *i+1))
-	  while (command[*i] && !is_space(command[*i])
+	if (!node)
+  		return NULL;
+	if (command[*i] == '\"' || command[*i] == '\'')
+		(*i)++;
+	if (!check_quotes(command, *i+1))
+		while (command[*i] && !is_space(command[*i])
 			  && command[*i] != '>' && command[*i] != '<'
 		  	&& command[*i] != '&' && command[*i] != '|' && command[*i] != ';')
 		  (*i)++;
-  else
-  {
-    while (command[*i] && check_quotes(command, *i+1) != 0)
-      (*i)++;
-    (*i)++;
-  }
+  	else
+ 	{
+  		while (command[*i] && check_quotes(command, *i+1) != 0)
+   			(*i)++;
+  		(*i)++;
+ 	}
 	word = malloc(sizeof(int) * (*i - start));
-  if (!word)
-      return NULL;
+ 	if (!word)
+    		return NULL;
 	ft_strlcpy(word, command+start, (*i - start) + 1);
 	node->content = word;
 	node->next = NULL;

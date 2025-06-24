@@ -27,9 +27,9 @@ int check_quotes(char *cmd, size_t i)
   return (flag);
 }
 
-char  *remove_quotes(char *cmd)
+char	*remove_quotes(char *cmd)
 {
-  int i;
+  size_t i;
   int j;
   char  *clear_cmd;
 
@@ -53,4 +53,27 @@ char  *remove_quotes(char *cmd)
   }
   clear_cmd[j] = '\0';
   return (clear_cmd);
+}
+
+
+char    *remove_quotes2(char *cmd, size_t l)
+{
+	size_t i;
+	int j;
+	char  *clear_cmd;
+
+	clear_cmd = malloc(ft_strlen(cmd) + 1);
+	i = 0;
+	j = 0;
+	while (cmd[i] && i != l)
+	{
+		if (cmd[i] == '\'' || cmd[i] == '\"')
+			i++;
+		else
+			clear_cmd[j++] = cmd[i++];
+	}
+	while (cmd[i])
+		clear_cmd[j++] = cmd[i++];
+	clear_cmd[j] = '\0';
+	return (clear_cmd);
 }
