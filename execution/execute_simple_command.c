@@ -8,7 +8,7 @@ int execute_command_node(t_tree *node, char **env)
     {
 	char *path = find_path(node, env);
         execve(path, node->command->args, env);
-        perror("execvp");
+        perror("execve");
         exit(1);
     }
     else

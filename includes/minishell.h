@@ -117,6 +117,7 @@ void add_back(t_node **list, t_node *node);
 void add_back2(t_env **list, t_env *node);
 void print_list(t_node *list);
 t_tree *pars_command(t_node **list);
+void	free_tree(t_tree **tree);
 void free_str(char **list);
 void free_list(t_node **list);
 void ft_free(t_mini *minishell);
