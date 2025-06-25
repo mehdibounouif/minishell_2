@@ -20,6 +20,7 @@ int	main(int c, char **v, char **env)
 	
 	if (!(minishell = ft_calloc(1, sizeof(t_mini))))
 		return 0;
+	minishell->ret = 0;
 	while (1)
 	{
 		// PARSSING

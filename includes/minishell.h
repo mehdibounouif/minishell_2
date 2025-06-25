@@ -96,6 +96,7 @@ struct s_mini {
   t_tree *tree;
   t_env *env;
   t_node *list;
+  int	ret;
 };
 
 // built-in functions
@@ -131,13 +132,15 @@ int count_args(t_node *list);
 int check_sides(t_node *list);
 t_tree *parssing_line(char *cmd, t_mini *minishell);
 int readline_and_parssing(t_mini *minishell, char **env);
-int	check_syntax(t_node *list);
+int     check_syntax(t_mini *mini, t_node *list);
 int	is_redirection(t_node *node);
 
 // EXPANSION
 int	is_dollar(char *cmd, int i);
-char	*get_env_key(char *cmd, int i);
-char    *replace_key_with_value(char *cmd, char **env);
+char	*get_env_key(char *cmd, int i, int flag);
+char	*replace_key_with_value(char *cmd, char **env, int ret);
+char    *get_special_value(char *key, int ret);
+int	get_special_len(char *cmd, int i);
 
 // EXECUTE 
 int execute_full_command(t_tree *node, char **env);

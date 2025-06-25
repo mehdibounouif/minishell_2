@@ -1,48 +1,27 @@
 #include "../includes/minishell.h"
-/*
-int	check_syntax(t_node *list)
-{
-	while (list && list->next)
-	{
-		// CHECK ( | before | )
-		if (list->type == PIPE && list->next->type == PIPE)
-		{
-			printf("bash: syntax error near unexpected token %s\n", list->next->content);
-			return (0);
-		}
-		// CHECK ( ; before ; or |)
-		if (list->type == END && (list->next->type == PIPE || list->next->type == END))
-		{
-			printf("bash: syntax error near unexpected token %s\n", list->next->content);
-			return (0);
-		}
-		list = list->next;
-	}
-	return (1);
-}
-*/
+
 void  get_env(t_mini *minishell, char **env)
 {
-  int i;
-  char  **key_value;
-  t_env *env_node;
+	int i;
+	char  **key_value;
+	t_env *env_node;
 
-  i = 0;
-  while (env[i])
-  {
-    if (!(env_node = malloc(sizeof(t_env))))
-    {
-      printf("env malloc failed!\n");
-      return ;
-    }
-    key_value = ft_split(env[i], '=');
-    env_node->key = ft_strdup(key_value[0]);
-    env_node->value = ft_strdup(key_value[1]);
-    env_node->next = NULL;
+	i = 0;
+	while (env[i])
+	{ 
+		if (!(env_node = malloc(sizeof(t_env)))) 
+		{ 
+			printf("env malloc failed!\n"); 
+			return ; 
+		}
+		key_value = ft_split(env[i], '=');
+		env_node->key = ft_strdup(key_value[0]);
+		env_node->value = ft_strdup(key_value[1]);
+		env_node->next = NULL;
 		add_back2(&minishell->env, env_node);
-    free(key_value); 
-    i++;
-  }
+		free(key_value);
+		i++;
+	}
 }
 
 size_t	len_to_pipe(char *cmd)
@@ -83,7 +62,12 @@ int readline_and_parssing(t_mini *minishell, char **env)
 	//  print_env(minishell->env);
 
 	//  REPLECE VARIABLE WITH VALUE
-	cmd = replace_key_with_value(cmd, env);
+	cmd = replace_key_with_value(cmd, env, minishell->ret);
+	if (!cmd)
+	{
+		ft_putendl_fd("33ddsd: value too great for base (error token is \"33ddsd\")", 2);
+		return (0);
+	}
 	//printf("Command after expanding = %s\n", cmd);
 	len = len_to_pipe(cmd);
 	cmd = remove_quotes2(cmd, len);
@@ -96,7 +80,7 @@ int readline_and_parssing(t_mini *minishell, char **env)
 		return (0);
 	}
 	// CHECK SYNTAX
-	if (!check_syntax(minishell->list))
+	if (!check_syntax(minishell, minishell->list))
 	{
 		ft_free(minishell);
 		free(cmd);
@@ -111,23 +95,4 @@ int readline_and_parssing(t_mini *minishell, char **env)
 	}
 	free(cmd);
 	return (1);
-}
-
-t_tree *parssing_line(char *cmd, t_mini *minishell)
-{
-	t_tree  *tree;
-
-	if (check_quotes(cmd, ft_strlen(cmd)))
-	{
-		printf("qoutes not closed!\n");
-		return (NULL);
-	}
-	if (check_sides(minishell->list))
-	{
-		printf("-minishell: syntax error near unexpected token !\n");
-		ft_free(minishell);
-		return (NULL);
-	}
-	tree = pars_command(&minishell->list);
-	return (tree);
 }

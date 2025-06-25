@@ -11,36 +11,34 @@ int check_sides(t_node *list)
 	return (0);
 }
 
-int     check_syntax(t_node *list)
+int     check_syntax(t_mini *mini, t_node *list)
 {
-	// CHECK SIDES | IN START | IN END
 	if (check_sides(list))
 	{
-		printf("bash: syntax error near unexpected token |\n");
+                ft_putendl_fd("bash: syntax error near unexpected token |", 2);
 		return (0);
+		mini->ret = 258;
 	}
         while (list)
         {
-                // CHECK ( | before | OR IN END OR AT START)
-                if ((list->type == PIPE && (list->next->type == PIPE || list->next->type == END)))
+                if ((list->type == PIPE && (list->next->type == PIPE || list->next->type == END))
+				|| (list->type == END && list->next
+					&& (list->next->type == PIPE || list->next->type == END))
+				|| (is_redirection(list) && (!list->next || list->next->type != WORD)))
                 {
-                        printf("bash: syntax error near unexpected token %s\n", list->next->content);
-                        return (0);
-                }
-                // CHECK ( ; before ; or |)
-                if (list->type == END && list->next && (list->next->type == PIPE || list->next->type == END))
-                {
-                        printf("bash: syntax error near unexpected token %s\n", list->next->content);
-                        return (0);
-                }
-		if (is_redirection(list) && (!list->next || list->next->type != WORD))
-		{
 			if (list->next)
-				printf("bash: syntax error near unexpected token %s\n", list->next->content);
+			{
+                        	ft_putstr_fd("bash: syntax error near unexpected token ", 2);
+				ft_putendl_fd(list->next->content, 2);
+			}
 			else
-				printf("bash: syntax error near unexpected token %s\n", list->content);
-			return (0);
-		}
+			{
+                        	ft_putstr_fd("bash: syntax error near unexpected token ", 2);
+				ft_putendl_fd(list->content, 2);
+			}
+			mini->ret = 258;
+                        return (0);
+                }
                 list = list->next;
         }
         return (1);

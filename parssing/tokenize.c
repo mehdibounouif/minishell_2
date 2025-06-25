@@ -195,7 +195,7 @@ int	tokenize(char *command, t_node **list)
       node = check_pipe(&i, 0);
 		else if ((command[i] && (command[i] == '<' || command[i] == '>' || command[i] == '2') && is_real_separator(command, i)))
       node = check_redirection(command, &i, 1);
-		else if ((command[i] && (command[i] == '<' || command[i] == '>' || command[i] == '2') && !is_real_separator(command, i)))
+		else if ((command[i] && (command[i] == '<' || command[i] == '>') && !is_real_separator(command, i)))
       node = check_redirection(command, &i, 0);
 		else if (command[i] && ((command[i] >= 33 && command[i] <= 126) || command[i] == '\"' || command[i] == '\''))
         node = check_word(command, &i);
