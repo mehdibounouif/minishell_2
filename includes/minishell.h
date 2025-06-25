@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/06/25 13:20:23 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/06/25 15:42:06 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int cd_command(t_env *env, char **args);
 char *get_env_value(t_env *env, char *key);
 int update_env_var(t_env *env, char *var);
 t_env *init_env(char **envp);
+void set_env_var(t_env **env, char *key, char *value);
 void free_env(t_env *env);
 void add_env_var(t_env **env, char *key, char *value);
 // Command execution

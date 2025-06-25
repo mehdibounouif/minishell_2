@@ -40,6 +40,26 @@ static void print_env_export(t_env *env)
     }
 }
 
+void	ft_lstadd_node(t_env **lst, t_env *node)
+{
+	t_env	*temp;
+
+	if (lst)
+	{
+		if (*lst)
+		{
+			temp = *lst;
+			while (temp->next != NULL)
+				temp = temp->next;
+			temp->next = node;
+		}
+		else
+			*lst = node;
+	}
+}
+
+
+
 int export_command(t_env *env, char **args)
 {
     int i;
@@ -47,7 +67,7 @@ int export_command(t_env *env, char **args)
     char *value;
     char *equal_sign;
 
-    if (!args[1])
+    if (!args[1]) //no arg with export 
     {
         print_env_export(env);
         return (EXIT_SUCCESS);
@@ -55,7 +75,7 @@ int export_command(t_env *env, char **args)
     i = 1;
     while (args[i])
     {
-        if (!is_valid_identifier(args[i]))
+        if (!is_valid_identifier(args[i])) // check 
         {
             ft_putstr_fd("minishell: export: `", 2);
             ft_putstr_fd(args[i], 2);
@@ -67,14 +87,17 @@ int export_command(t_env *env, char **args)
         if (equal_sign)
         {
             key = ft_substr(args[i], 0, equal_sign - args[i]);
+            // printf("%s\n", key);
             value = ft_strdup(equal_sign + 1);
+            // printf("%s\n", value);
             if (!key || !value)
             {
                 free(key);
                 free(value);
                 return (EXIT_FAILURE);
             }
-            update_env_var(env, key);
+            set_env_var(&env, key,value);
+            print_env_export(env);
             free(key);
             free(value);
         }

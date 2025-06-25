@@ -1,5 +1,7 @@
 #include "built-in.h"
 #include "../includes/minishell.h"
+#include "../libft/libft.h"
+
 // #include <stdio.h>
 // #include <stdlib.h>
 // #include <string.h>
@@ -48,6 +50,27 @@ char *get_env_value(t_env *env, char *key)
         current = current->next;
     }
     return (NULL);
+}
+
+// set new var at the env 
+void set_env_var(t_env **env, char *key, char *value)
+{
+    t_env *current = *env;
+
+    while (current)
+    {
+        if (strcmp(current->key, key) == 0)
+        {
+            free(current->value);
+            current->value = ft_strdup(value);
+            return;
+        }
+        current = current->next;
+    }
+
+    // add new variable || not found 
+    t_env *new = create_env_var(key,value);
+   ft_lstadd_node(env,new);
 }
 
 // Helper function to update environment variable
