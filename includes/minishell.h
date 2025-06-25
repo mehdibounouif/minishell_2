@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/05/30 09:44:07 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/06/25 15:42:06 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <signal.h>
 #include <sys/wait.h>
 
 #define PIPE 1
@@ -105,6 +106,7 @@ int cd_command(t_env *env, char **args);
 char *get_env_value(t_env *env, char *key);
 int update_env_var(t_env *env, char *var);
 t_env *init_env(char **envp);
+void set_env_var(t_env **env, char *key, char *value);
 void free_env(t_env *env);
 void add_env_var(t_env **env, char *key, char *value);
 // Command execution
@@ -147,4 +149,12 @@ int execute_full_command(t_tree *node, char **env);
 int execute_command_node(t_tree *node, char **env);
 char	*ft_getenv(char *key, char **env);
 char	*find_path(t_tree *node, char **env);
+
+
+//SIGNALS 
+
+// int   g_ctrl_c; 
+void handle_signal();
+
+
 #endif

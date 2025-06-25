@@ -48,7 +48,13 @@ int readline_and_parssing(t_mini *minishell, char **env)
 	size_t	len;
 	
 	// READ COMMAND
-	cmd = readline("> ");
+	cmd = readline("minishell> ");
+	// handle signal here ctrl + D::
+	if(!cmd)
+	{
+		printf("exit\n"); // free here + !!!
+	 	exit(0);
+	}
 	add_history(cmd);
 	// CHECK QOUTES
 	if (check_quotes(cmd, ft_strlen(cmd)))

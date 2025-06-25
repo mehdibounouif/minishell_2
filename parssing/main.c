@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/05/30 09:42:37 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/06/25 14:37:34 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
 
 int	main(int c, char **v, char **env) 
 {
@@ -23,6 +24,8 @@ int	main(int c, char **v, char **env)
 	minishell->ret = 0;
 	while (1)
 	{
+		//handle signals
+		handle_signal();
 		// PARSSING
 		if (!readline_and_parssing(minishell, env))
 			continue;
