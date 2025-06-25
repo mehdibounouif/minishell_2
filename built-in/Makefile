@@ -1,14 +1,16 @@
 NAME = minishell
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -I../includes
+CFLAGS = -Wall -Wextra -Werror -I../includes -g
 LDFLAGS = -lreadline
 LIBFT_DIR = ../libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 SRCS = test_builtin.c \
-       cd_command.c \
+       	cd_command.c \
 	   	echo_command.c \
-		
+		pwd_command.c \
+		export_command.c \
+		exit_command.c \
 
 OBJS = $(SRCS:.c=.o)
 

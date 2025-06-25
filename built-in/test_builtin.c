@@ -1,11 +1,11 @@
 #include "built-in.h"
 #include "../includes/minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <string.h>
+// #include <unistd.h>
+// #include <readline/readline.h>
+// #include <readline/history.h>
 
 // Simple environment structure for testing
 // typedef struct s_env
@@ -106,6 +106,12 @@ void test_command(t_env *env, char *cmd_name, char **args)
         result = cd_command(env, args);
 	else if(strcmp(cmd_name, "echo") == 0)
 		result = echo_command(env, args);
+	else if(strcmp(cmd_name, "pwd") == 0)
+		result = pwd_command(env, args);
+    else if(strcmp(cmd_name,"export") == 0)
+        result = export_command(env, args);
+    else if(strcmp(cmd_name,"exit") == 0)
+        result = exit_command(env, args);
     else
     {
         printf("Command %s not implemented yet\n", cmd_name);
@@ -120,9 +126,7 @@ int main(void)
 {
     t_env *env = NULL;
     char *args[10];
-    char *line = NULL;
-    size_t len = 0;
-    ssize_t read;
+    char *line;
 
     // Initialize environment variables
     add_env_var(&env, "HOME", getenv("HOME"));
@@ -136,47 +140,45 @@ int main(void)
 
     while (1)
     {
-        printf("minishell> ");
-        read = getline(&line, &len, stdin);
-        
-        if (read == -1)
+        line = readline("minishell> ");
+        if (!line)
         {
             printf("\n");
             break;
         }
-        
-        if (read > 1) // Skip empty lines
-        {
-            // Remove newline
-            line[read - 1] = '\0';
-            
-            // Check for exit command
-            if (strcmp(line, "exit") == 0)
-            {
-                free(line);
-                free_env(env);
-                return (0);
-            }
 
-            // Parse command and arguments
-            char *cmd = strtok(line, " ");
-            if (cmd)
-            {
-                args[0] = cmd;
-                int i = 1;
-                char *arg;
-                while ((arg = strtok(NULL, " ")) != NULL && i < 9)
-                {
-                    args[i++] = arg;
-                }
-                args[i] = NULL;
-                
-                test_command(env, cmd, args);
-            }
+        if (*line) // if line is not empty
+            add_history(line);
+
+        // if (strcmp(line, "exit") == 0)
+        // {
+        //     free(line);
+        //     break;
+        // }
+
+        // Parse command and arguments
+        char *cmd = strtok(line, " ");
+        if (cmd)
+        {
+            args[0] = cmd;
+            int i = 1;
+            char *arg;
+            while ((arg = strtok(NULL, " ")) != NULL && i < 9)
+                args[i++] = arg;
+            args[i] = NULL;
+
+            test_command(env, cmd, args);
         }
+
+        free(line);
     }
 
-    free(line);
     free_env(env);
+<<<<<<< HEAD
+    return 0;
+}
+ 
+=======
     return (0);
 }
+>>>>>>> a115d4a8aba4ef344a754ddcd51f784fd2feaffa
