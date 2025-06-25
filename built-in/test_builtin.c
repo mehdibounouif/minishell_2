@@ -174,11 +174,5 @@ int main(void)
     }
 
     free_env(env);
-<<<<<<< HEAD
     return 0;
 }
- 
-=======
-    return (0);
-}
->>>>>>> a115d4a8aba4ef344a754ddcd51f784fd2feaffa
