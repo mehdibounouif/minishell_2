@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export_command.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/25 16:41:57 by moraouf           #+#    #+#             */
+/*   Updated: 2025/06/26 13:34:48 by moraouf          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 static int is_valid_identifier(char *str)
@@ -7,11 +19,11 @@ static int is_valid_identifier(char *str)
     if (!str || !str[0])
         return (0);
     
-    // First character must be a letter or underscore
+    // First character must be a letter or underscore!!
     if (!ft_isalpha(str[0]) && str[0] != '_')
         return (0);
     
-    // Rest of the characters must be letters, numbers, or underscores
+    // Rest of the characters must be letters, numbers, or underscores!!-
     i = 1;
     while (str[i] && str[i] != '=')
     {
@@ -40,24 +52,6 @@ static void print_env_export(t_env *env)
     }
 }
 
-void	ft_lstadd_node(t_env **lst, t_env *node)
-{
-	t_env	*temp;
-
-	if (lst)
-	{
-		if (*lst)
-		{
-			temp = *lst;
-			while (temp->next != NULL)
-				temp = temp->next;
-			temp->next = node;
-		}
-		else
-			*lst = node;
-	}
-}
-
 
 
 int export_command(t_env *env, char **args)
@@ -69,8 +63,9 @@ int export_command(t_env *env, char **args)
 
     if (!args[1]) //no arg with export 
     {
-        print_env_export(env);
-        return (EXIT_SUCCESS);
+        sorted_env(env);
+       print_env_export(env);
+       return (EXIT_SUCCESS);
     }
     i = 1;
     while (args[i])
@@ -97,7 +92,7 @@ int export_command(t_env *env, char **args)
                 return (EXIT_FAILURE);
             }
             set_env_var(&env, key,value);
-            print_env_export(env);
+            // print_env_export(env);
             free(key);
             free(value);
         }

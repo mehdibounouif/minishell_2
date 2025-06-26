@@ -10,7 +10,9 @@ SRCS = test_builtin.c \
 	   	echo_command.c \
 		pwd_command.c \
 		export_command.c \
+		export_utils.c	\
 		exit_command.c \
+		unset_command.c
 
 OBJS = $(SRCS:.c=.o)
 

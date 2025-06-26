@@ -135,6 +135,8 @@ void test_command(t_env *env, char *cmd_name, char **args)
         result = export_command(env, args);
     else if(strcmp(cmd_name,"exit") == 0)
         result = exit_command(env, args);
+    else if(strcmp(cmd_name,"unset") == 0)
+        result = unset_command(env,args);
     else
     {
         printf("Command %s not implemented yet\n", cmd_name);
