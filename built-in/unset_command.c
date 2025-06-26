@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:48 by moraouf           #+#    #+#             */
-/*   Updated: 2025/06/25 17:42:18 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/06/26 14:51:52 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void unset_env_var(t_env **env, char *key)
     while (current)
     {
         // puts(current->key);
-        if (strcmp(current->key, key) == 0)
+        if (current->key && ft_strncmp(current->key, key,ft_strlen(key)) == 0)
         {
             // printf("ana\n");
             if (prev)
@@ -62,13 +62,31 @@ void unset_env_var(t_env **env, char *key)
     }
 }
 
-int unset_command(t_env **env,char **args)
+// static void print_unset(t_env *env)
+// {
+//     t_env *current = env;
+//     while (current)
+//     {
+//         // ft_putstr_fd("declare -x ", 1);
+//         ft_putstr_fd(current->key, 1);
+//         if (current->value)
+//         {
+//             // ft_putstr_fd("=\"", 1);
+//             ft_putstr_fd(current->value, 1);
+//             // ft_putstr_fd("\"", 1);
+//         }
+//         ft_putchar_fd('\n', 1);
+//         current = current->next;
+//     }
+// }
+int unset_command(t_env *env,char **args)
 {
     int i;
 
     if(!args[1])
         return(EXIT_SUCCESS);
     i = 1;
+    
     while(args[i])
     {
         if (!is_valid_identifier(args[i])) // check 
@@ -78,9 +96,11 @@ int unset_command(t_env **env,char **args)
             ft_putstr_fd("': not a valid identifier\n", 2);
             return (EXIT_FAILURE);
         }
-        // printf("im here\n");
-        unset_env_var(env,args[i]);
-        return 1;
+        // printf("\n");
+        // puts((*env)->key);
+        unset_env_var(&env,args[i]);
+        
+        return EXIT_SUCCESS;
     }
     return(EXIT_SUCCESS);
 }

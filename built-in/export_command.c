@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:57 by moraouf           #+#    #+#             */
-/*   Updated: 2025/06/26 13:34:48 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/06/26 14:31:08 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,11 @@ int export_command(t_env *env, char **args)
         }
         i++;
     }
+    if(!equal_sign)
+    {
+        t_env *new = create_env_var(args[1],0);
+        ft_lstadd_node(&env,new);
+    }
+        
     return (EXIT_SUCCESS);
 }

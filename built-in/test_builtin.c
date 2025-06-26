@@ -59,7 +59,7 @@ void set_env_var(t_env **env, char *key, char *value)
 
     while (current)
     {
-        if (strcmp(current->key, key) == 0)
+        if (ft_strncmp(current->key, key, ft_strlen(key)) == 0)
         {
             free(current->value);
             current->value = ft_strdup(value);
@@ -136,7 +136,10 @@ void test_command(t_env *env, char *cmd_name, char **args)
     else if(strcmp(cmd_name,"exit") == 0)
         result = exit_command(env, args);
     else if(strcmp(cmd_name,"unset") == 0)
+    {
+        // print_env(env);
         result = unset_command(env,args);
+    }
     else
     {
         printf("Command %s not implemented yet\n", cmd_name);
