@@ -67,10 +67,9 @@ void set_env_var(t_env **env, char *key, char *value)
         }
         current = current->next;
     }
-
     // add new variable || not found 
     t_env *new = create_env_var(key,value);
-   ft_lstadd_node(env,new);
+    ft_lstadd_node(env,new);
 }
 
 // Helper function to update environment variable

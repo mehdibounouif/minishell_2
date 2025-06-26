@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:57 by moraouf           #+#    #+#             */
-/*   Updated: 2025/06/26 14:31:08 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/06/26 16:54:01 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,10 @@ static int is_valid_identifier(char *str)
     if (!str || !str[0])
         return (0);
     
-    // First character must be a letter or underscore!!
+ 
     if (!ft_isalpha(str[0]) && str[0] != '_')
         return (0);
     
-    // Rest of the characters must be letters, numbers, or underscores!!-
     i = 1;
     while (str[i] && str[i] != '=')
     {
@@ -52,25 +51,24 @@ static void print_env_export(t_env *env)
     }
 }
 
-
-
 int export_command(t_env *env, char **args)
 {
-    int i;
+    int i = 1;
     char *key;
     char *value;
     char *equal_sign;
+    t_env *existing;
 
-    if (!args[1]) //no arg with export 
+    if (!args[1])
     {
         sorted_env(env);
-       print_env_export(env);
-       return (EXIT_SUCCESS);
+        print_env_export(env);
+        return (EXIT_SUCCESS);
     }
-    i = 1;
+
     while (args[i])
     {
-        if (!is_valid_identifier(args[i])) // check 
+        if (!is_valid_identifier(args[i]))
         {
             ft_putstr_fd("minishell: export: `", 2);
             ft_putstr_fd(args[i], 2);
@@ -82,27 +80,35 @@ int export_command(t_env *env, char **args)
         if (equal_sign)
         {
             key = ft_substr(args[i], 0, equal_sign - args[i]);
-            // printf("%s\n", key);
             value = ft_strdup(equal_sign + 1);
-            // printf("%s\n", value);
             if (!key || !value)
+                return (free(key), free(value), EXIT_FAILURE);
+
+            existing = get_env_var(env, key);
+            if (existing)
             {
-                free(key);
-                free(value);
-                return (EXIT_FAILURE);
+                free(existing->value);
+                existing->value = ft_strdup(value);
             }
-            set_env_var(&env, key,value);
-            // print_env_export(env);
+            else
+            {
+                set_env_var(&env, key, value);
+            }
             free(key);
             free(value);
         }
+        else
+        {
+            existing = get_env_var(env, args[i]);
+            if (!existing)
+            {
+                // add at the last hna makynach 
+                t_env *new = create_env_var(args[i], NULL);
+                ft_lstadd_node(&env, new);
+            }
+           
+        }
         i++;
     }
-    if(!equal_sign)
-    {
-        t_env *new = create_env_var(args[1],0);
-        ft_lstadd_node(&env,new);
-    }
-        
     return (EXIT_SUCCESS);
 }

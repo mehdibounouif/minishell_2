@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 13:16:34 by moraouf           #+#    #+#             */
-/*   Updated: 2025/06/26 13:33:51 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/06/26 16:53:18 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ void ft_swap(t_env *a, t_env *b)
     b->value = tmp_value;
 }
 
-
-
 void sorted_env(t_env *env)
 {
     t_env *tmp;
@@ -73,4 +71,15 @@ void sorted_env(t_env *env)
             tmp = tmp->next;
         }   
     }
+}
+
+t_env *get_env_var(t_env *env, const char *key)
+{
+    while (env)
+    {
+        if (ft_strncmp(env->key, key, ft_strlen(key)) == 0)
+            return env;
+        env = env->next;
+    }
+    return NULL;
 }
