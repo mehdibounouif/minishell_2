@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 #define COLOR_RESET   "\033[0m"
 #define COLOR_CMD     "\033[1;32m"

@@ -117,15 +117,27 @@ t_env *get_env_var(t_env *env, const char *key);
 
 // Command execution
 void execute_command(t_env *env, const char *input);
-
 void print_env(t_env *env);
 void print_tree_unicode(t_tree *tree, const char *prefix, int is_last);
+
 int tokenize(char *command, t_node **list);
+t_node  *check_end(int *i, int flag);
+t_node  *check_redirection(char *command, int *i, int flag);
+t_node  *check_word(char *command, int *i);
+t_node  *check_pipe(int *i, int flag);
+
 int is_space(char c);
 void add_back(t_node **list, t_node *node);
 void add_back2(t_env **list, t_env *node);
 void print_list(t_node *list);
+
+// AST TREE
 t_tree *pars_command(t_node **list);
+t_tree  *parss_redirection(t_tree *node, t_node **list);
+t_tree  *pars_one_side(t_node **list);
+t_tree  *pars_pipe(t_node **list);
+t_tree  *pars_end(t_node **list);
+
 void	free_tree(t_tree **tree);
 void free_str(char **list);
 void free_list(t_node **list);
@@ -149,6 +161,10 @@ char	*get_env_key(char *cmd, int i, int flag);
 char	*replace_key_with_value(char *cmd, char **env, int ret);
 char    *get_special_value(char *key, int ret);
 int	get_special_len(char *cmd, int i);
+char    *check_square_bracket_alpha(char *key, int i);
+char    *check_square_bracket_digit(char *key, int i);
+char    *check_square_bracket(char *key);
+char    *check_curly_brace(char *key);
 
 // EXECUTE 
 int execute_full_command(t_tree *node, char **env);

@@ -8,15 +8,19 @@ SRCS_DIR1 = ./parssing
 SRCS_DIR2 = ./execution
 SRCS_FILES1 = main.c\
 	     utils.c\
-	     tokenize.c\
-	     AST.c\
-	     print_ast.c\
+	     token/tokenize.c\
+	     token/tools.c\
+	     ast_tree/tree.c\
+	     ast_tree/print_ast.c\
+	     ast_tree/end_and_pipe.c\
+	     ast_tree/command_and_redirection.c\
 	     check_quotes.c\
 	     free.c\
 	     check_command.c\
 	     check_syntax.c\
-	     expansions.c\
-	     special_dollar.c\
+	     expaned/expansions.c\
+	     expaned/special_dollar.c\
+	     expaned/tools.c\
 
 SRCS_FILES2 = execute_simple_command.c\
 	      execution.c\
