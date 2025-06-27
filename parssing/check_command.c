@@ -44,7 +44,6 @@ size_t	len_to_pipe(char *cmd)
 int readline_and_parssing(t_mini *minishell, char **env)
 {
 	char	*cmd;
-	(void)env;
 	size_t	len;
 	
 	// READ COMMAND
@@ -74,7 +73,6 @@ int readline_and_parssing(t_mini *minishell, char **env)
 		ft_putendl_fd("33ddsd: value too great for base (error token is \"33ddsd\")", 2);
 		return (0);
 	}
-	//printf("Command after expanding = %s\n", cmd);
 	len = len_to_pipe(cmd);
 	cmd = remove_quotes2(cmd, len);
 

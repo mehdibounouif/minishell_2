@@ -13,7 +13,7 @@ int	get_env_len(char *cmd, int i)
 	int	j;
 
 	j = 0;
-	while (cmd[i] && !is_space(cmd[i]) && cmd[i] != '\'' && cmd[i] != '\"')
+	while (cmd[i] && !is_space(cmd[i]) && !is_dollar(cmd, i) && cmd[i] != '\'' && cmd[i] != '\"')
 	{
 		i++;
 		j++;
@@ -29,6 +29,7 @@ char	*get_env_key(char *cmd, int i, int flag)
 
 	i++;
 
+	len = 0;
 	if (flag == 1)
 		len = get_env_len(cmd, i);
 	else if (flag == 2)
@@ -161,14 +162,13 @@ char	*replace_key_with_value(char *cmd, char **env, int ret)
 				key = get_env_key(cmd, i, 2);
 			else
 				key = get_env_key(cmd, i, 3);
-			//printf("key %s\n", key);
 			value = get_special_value(key, ret);
-			//printf("value %s\n", value);
 			while (value[l])
 				expanded_cmd[j++] = value[l++];
 			i += (ft_strlen(key) + 1);
 		}
-		expanded_cmd[j++] = cmd[i++];
+		if (!is_dollar(cmd, i))
+			expanded_cmd[j++] = cmd[i++];
 	}
 	return (expanded_cmd);
 }

@@ -67,7 +67,8 @@ char    *remove_quotes2(char *cmd, size_t l)
 	j = 0;
 	while (cmd[i] && i != l)
 	{
-		if (cmd[i] == '\'' || cmd[i] == '\"')
+    		if ((cmd[i] == '\'' && check_quotes(cmd, i) != 1)
+				|| (cmd[i] == '\"' && check_quotes(cmd, i) != 2))
 			i++;
 		else
 			clear_cmd[j++] = cmd[i++];
