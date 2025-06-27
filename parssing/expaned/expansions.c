@@ -28,30 +28,19 @@ char	*get_env_key(char *cmd, int i, int flag)
 	char	*key;
 
 	i++;
+
 	if (flag == 1)
 		len = get_env_len(cmd, i);
 	else if (flag == 2)
 		len = 1;
-	else if (flag == 3)
+	else
 		len = get_special_len(cmd, i);
 	if (len == -1)
 		return ("failed");
-	if (len == 0)
+	else if (len == 0)
 		return (ft_strdup(""));
-	key = ft_substr(cmd, i, len);
-	/*
-	key = malloc(len + 1);
-	if (!key)
-		return (NULL);
-	key = ft_substr(cmd, i, len)
-	
-	while (len)
-	{
-		key[j++] = cmd[i++];
-		len--;
-	}
-	key[j] = '\0';
-	*/
+	else
+		key = ft_substr(cmd, i, len);
 	return (key);
 }
 
