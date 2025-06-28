@@ -6,6 +6,8 @@ int execute_full_command(t_tree *node, char **env)
         return 1;
 
     if (node->type == COMMAND_NODE)
-	    return execute_command_node(node, env);
+	    execute_command_node(node, env);
+    else if (node->type == PIPE_NODE)
+	    execute_pipe_node(node, env);
     return (1);
 }

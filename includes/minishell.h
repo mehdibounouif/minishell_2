@@ -117,6 +117,7 @@ t_env *get_env_var(t_env *env, const char *key);
 
 // Command execution
 void execute_command(t_env *env, const char *input);
+void	execute_pipe_node(t_tree *tree, char **env);
 void print_env(t_env *env);
 void print_tree_unicode(t_tree *tree, const char *prefix, int is_last);
 

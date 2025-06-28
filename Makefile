@@ -23,8 +23,9 @@ SRCS_FILES1 = main.c\
 	     expaned/tools.c\
 
 SRCS_FILES2 = execute_simple_command.c\
+	      execute_pipe_command.c\
 	      execution.c\
-		  signals.c\
+	      signals.c\
 	      utls.c\
 
 SRCS1 = $(addprefix $(SRCS_DIR1)/, $(SRCS_FILES1))
