@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 11:06:57 by moraouf           #+#    #+#             */
-/*   Updated: 2025/06/25 14:09:45 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/06/29 15:50:33 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void handler_sigint(int sig)
 
 }
 
-void handle_signal()
+void    handle_signal()
 {	
 	rl_catch_signals = 0;
     signal(SIGINT,handler_sigint);
