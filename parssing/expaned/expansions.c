@@ -7,13 +7,13 @@ int	is_dollar(char *cmd, int i)
 		return (1);
 	return (0);
 }
-
+// 64; 33 -> 35; 37 -> 47; 58 -> 63; 123 -> 126; 91 
 int	get_env_len(char *cmd, int i)
 {
 	int	j;
 
 	j = 0;
-	while (cmd[i] && !is_space(cmd[i]) && !is_dollar(cmd, i) && cmd[i] != '\'' && cmd[i] != '\"')
+	while (cmd[i] && ft_isalpha(cmd[i]))
 	{
 		i++;
 		j++;
