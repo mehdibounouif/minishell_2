@@ -53,6 +53,7 @@ int	tokenize(char *command, t_node **list)
       free_list(list);
       return (0);
     }
+	node->content = remove_quotes2(node->content, ft_strlen(node->content));
 		add_back(list, node);
 	}
 	return (1);

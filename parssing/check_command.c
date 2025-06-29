@@ -44,7 +44,7 @@ size_t	len_to_pipe(char *cmd)
 int readline_and_parssing(t_mini *minishell, char **env)
 {
 	char	*cmd;
-	size_t	len;
+//	size_t	len;
 	
 	// READ COMMAND
 	cmd = readline("minishell> ");
@@ -73,8 +73,8 @@ int readline_and_parssing(t_mini *minishell, char **env)
 		ft_putendl_fd("33ddsd: value too great for base (error token is \"33ddsd\")", 2);
 		return (0);
 	}
-	len = len_to_pipe(cmd);
-	cmd = remove_quotes2(cmd, len);
+	//len = len_to_pipe(cmd);
+	//cmd = remove_quotes2(cmd, len);
 
 	// TOKENIZE
   	tokenize(cmd, &minishell->list);
