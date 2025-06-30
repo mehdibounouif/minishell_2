@@ -12,7 +12,8 @@ SRCS = test_builtin.c \
 		export_command.c \
 		export_utils.c	\
 		exit_command.c \
-		unset_command.c
+		unset_command.c \
+		env_command.c
 
 OBJS = $(SRCS:.c=.o)
 

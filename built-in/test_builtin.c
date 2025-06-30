@@ -139,6 +139,8 @@ void test_command(t_env *env, char *cmd_name, char **args)
         // print_env(env);
         result = unset_command(env,args);
     }
+    else if(strcmp(cmd_name,"env") == 0)
+        result = env_command(env, args);
     else
     {
         printf("Command %s not implemented yet\n", cmd_name);
