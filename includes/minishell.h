@@ -103,6 +103,12 @@ struct s_mini {
 // built-in functions
 // Function declarations
 int cd_command(t_env *env, char **args);
+int echo_command(t_env *env, char **args);
+int pwd_command(t_env *env, char **args);
+int export_command(t_env *env, char **args);
+int unset_command(t_env *env, char **args);
+int env_command(t_env *env, char **args);
+int exit_command(t_env *env, char **args);
 char *get_env_value(t_env *env, char *key);
 int update_env_var(t_env *env, char *var);
 t_env *init_env(char **envp);
