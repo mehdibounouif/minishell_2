@@ -26,6 +26,7 @@
 	    
 	    cwd = getcwd(NULL, 0);
 		ft_putstr_fd(cwd,1);
+		ft_putchar_fd('\n', 1);
 		if(!cwd)
 		{
 			ft_putstr_fd("minishell: pwd:\n", 2);

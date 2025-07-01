@@ -47,68 +47,25 @@ static int execute_builtin(t_tree *node, t_env *env)
 	return (1); // Should not reach here
 }
 
-int execute_command_node(t_tree *node, char **env)
+// Use t_env *env for builtins, char **envp for execve
+int execute_command_node(t_tree *node, t_env *env, char **envp)
 {
-	// Check if it's a builtin command first
 	if (is_builtin(node->command->command))
-	{
-		// For builtins, we need to convert char **env to t_env *env
-		// This is a temporary solution - you might want to pass t_env *env directly
-		// from the main function instead of char **env
-		
-		// Create a temporary t_env structure from char **env
-		t_env *env_list = NULL;
-		int i = 0;
-		while (env[i])
-		{
-			char *equal_sign = ft_strchr(env[i], '=');
-			if (equal_sign)
-			{
-				char *key = ft_substr(env[i], 0, equal_sign - env[i]);
-				char *value = ft_strdup(equal_sign + 1);
-				t_env *new_env = create_env_var(key, value);
-				ft_lstadd_node(&env_list, new_env);
-				free(key);
-				free(value);
-			}
-			i++;
-		}
-		
-		int result = execute_builtin(node, env_list);
-		
-		// Free the temporary env list
-		free_env(env_list);
-		
-		return (result);
-	}
-	
-	// If not a builtin, execute as external command
-	pid_t pid = fork();
+		return execute_builtin(node, env);
 
-	if (pid == 0) // child process
+	// External command: fork and execve
+	pid_t pid = fork();
+	if (pid == 0)
 	{
-		char *path = find_path(node, env); // ls 
-		// execute command
-		// replaces the child process with the new
-		// if success does not return anything.
-		execve(path, node->command->args, env);
+		char *path = find_path(node, envp);
+		execve(path, node->command->args, envp);
 		perror("execve");
 		exit(1);
 	}
 	else
 	{
-		// status is variable to store exit info 
-		// like
-		// if child exit normally (exit() or return)
-		// if child killed by a signal
-		// if there is core dump
-		// So the exit code is not the whole integer 
-		// — it's stored in specific bits only 
-		// (usually the lower 8 bits, depending on the system).
 		int status;
 		waitpid(pid, &status, 0);
-		// WEXITSTATUS(status)
-		// extract only the meaningful exit code bits from status
 		return WEXITSTATUS(status);
 	}
 }

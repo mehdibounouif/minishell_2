@@ -63,7 +63,7 @@ int readline_and_parssing(t_mini *minishell, char **env)
 		return (0);
 	}
 	// GET ENV
-	get_env(minishell, env);
+	// get_env(minishell, env);
 	//  print_env(minishell->env);
 
 	//  REPLECE VARIABLE WITH VALUE
