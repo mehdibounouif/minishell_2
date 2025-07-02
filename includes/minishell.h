@@ -120,11 +120,12 @@ void sorted_env(t_env *env);
 void	ft_lstadd_node(t_env **lst, t_env *node);
 t_env *create_env_var(char *key, char *value);
 t_env *get_env_var(t_env *env, const char *key);
+void  get_env(t_mini *minishell, char **env);
 
 
 // Command execution
 void execute_command(t_env *env, const char *input);
-void	execute_pipe_node(t_tree *tree, char **env);
+void	execute_pipe_node(t_tree *tree, t_env *env, char **envp);
 void print_env(t_env *env);
 void print_tree_unicode(t_tree *tree, const char *prefix, int is_last);
 
@@ -178,8 +179,8 @@ char    *check_square_bracket(char *key);
 char    *check_curly_brace(char *key);
 
 // EXECUTE 
-int execute_full_command(t_tree *node, char **env);
-int execute_command_node(t_tree *node, char **env);
+int execute_full_command(t_tree *node, t_env *env, char **envp);
+int execute_command_node(t_tree *node, t_env *env, char **envp);
 char	*ft_getenv(char *key, char **env);
 char	*find_path(t_tree *node, char **env);
 

@@ -23,6 +23,9 @@ int	main(int c, char **v, char **env)
 	if (!(minishell = ft_calloc(1, sizeof(t_mini))))
 		return 0;
 	minishell->ret = 0;
+	// Initialize env only once!
+	get_env(minishell, env);
+
 	while (1)
 	{
 		//handle signals
@@ -30,9 +33,9 @@ int	main(int c, char **v, char **env)
 		// PARSSING
 		if (!readline_and_parssing(minishell, env))
 			continue;
-		exit_code = execute_full_command(minishell->tree, env);
+		exit_code = execute_full_command(minishell->tree, minishell->env, env);
     		// PRINT TREE
-		//print_tree_unicode(minishell->tree, "", 1);
+		// print_tree_unicode(minishell->tree, "", 1);
     		// FREE
 		ft_free(minishell);
 		//free(cmd);

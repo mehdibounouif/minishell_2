@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void	execute_pipe_node(t_tree *tree, char **env)
+void	execute_pipe_node(t_tree *tree, t_env *env, char **envp)
 {
 	int	p[2];
 	pid_t	left;
@@ -14,7 +14,7 @@ void	execute_pipe_node(t_tree *tree, char **env)
 		close(p[0]); // close read side of pipe;
 		dup2(p[1], 1); 
 		close(p[1]);
-		execute_full_command(tree->pipe->left, env);
+		execute_full_command(tree->pipe->left, env, envp);
 		exit(1);
 	}
 	right = fork();
@@ -24,7 +24,7 @@ void	execute_pipe_node(t_tree *tree, char **env)
 		close(p[1]); // close write side of pipe;
 		dup2(p[0], 0); 
 		close(p[0]);
-		execute_full_command(tree->pipe->right, env);
+		execute_full_command(tree->pipe->right, env, envp);
 		exit(1);
 	}
 	close(p[0]);
