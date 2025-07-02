@@ -24,6 +24,7 @@
 #include <signal.h>
 #include <sys/wait.h>
 
+# define EMPTY 0
 #define PIPE 1
 #define WORD 2
 #define R_OUT 3
@@ -127,11 +128,13 @@ void	execute_pipe_node(t_tree *tree, char **env);
 void print_env(t_env *env);
 void print_tree_unicode(t_tree *tree, const char *prefix, int is_last);
 
-int tokenize(char *command, t_node **list);
-t_node  *check_end(int *i, int flag);
-t_node  *check_redirection(char *command, int *i, int flag);
-t_node  *check_word(char *command, int *i);
-t_node  *check_pipe(int *i, int flag);
+// Tokenize
+int tokenize(char *cmd, t_node **list);
+int             check_real_sep(char *line, int i);
+t_node  *get_token(char *line, int *i);
+int             calc_token_byte(char *line, int *i);
+void    token_type(t_node *node, int flag);
+int     ft_strcmp(const char *s1, const char *s2);
 
 int is_space(char c);
 void add_back(t_node **list, t_node *node);
@@ -152,6 +155,7 @@ void ft_free(t_mini *minishell);
 int check_quotes(char *cmd, size_t i);
 char	*remove_quotes(char *cmd);
 char    *remove_quotes2(char *cmd, size_t l);
+char	*remove_quotes3(char *cmd);
 int is_separator(char c);
 int	is_space(char c);
 int is_real_separator(char *cmd, int i);

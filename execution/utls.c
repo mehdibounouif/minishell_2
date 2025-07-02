@@ -14,7 +14,7 @@ char	*ft_getenv(char *key, char **env)
 		if (ft_strncmp(sub, key, j) == 0)
 		{
 			free(sub);
-			return (env[i] + j + 1);
+			return (env[i] + j);
 		}
 		free(sub);
 		i++;

@@ -26,6 +26,7 @@ char	*get_env_key(char *cmd, int i, int flag)
 {
 	int	len;
 	char	*key;
+	char	*key_with_equal;
 
 	i++;
 
@@ -42,7 +43,8 @@ char	*get_env_key(char *cmd, int i, int flag)
 		return (ft_strdup(""));
 	else
 		key = ft_substr(cmd, i, len);
-	return (key);
+	key_with_equal = ft_strjoin(key, "=");
+	return (key_with_equal);
 }
 
 /*
@@ -133,11 +135,13 @@ char	*replace_key_with_value(char *cmd, char **env, int ret)
 	int	i;
 	int	j;
 	int	l;
+	//int	f;
 	(void)ret;
 
 	i = 0;
 	j = 0;
-	full_len = get_full_len(cmd, env, ret);
+	//f = 0;
+	full_len = get_full_len(cmd, env, ret) + 2;
 	if (full_len == -1)
 		return (NULL);
 	expanded_cmd = malloc(full_len + 1);
@@ -148,13 +152,29 @@ char	*replace_key_with_value(char *cmd, char **env, int ret)
 		l = 0;
 		if (is_dollar(cmd, i) && ft_isalpha(cmd[i+1]))
 		{
-			key = get_env_key(cmd, i, 1);
+			key = get_env_key(cmd, i, 1);	
 			value = ft_getenv(key, env);
-			if (!value)
-				value = ft_strdup("");
-			while (value[l])
-				expanded_cmd[j++] = value[l++];
-			i += (ft_strlen(key) + 1);
+			if (value)
+			{
+				/*
+				if (expanded_cmd[j-1] != '\"')
+				{
+					f = 1;
+					expanded_cmd[j] = '\"';
+					j++;
+				}
+				*/
+				while (value[l])
+					expanded_cmd[j++] = value[l++];
+				/*
+				if (f)
+				{
+					expanded_cmd[j] = '\"';
+					j++;
+				}
+				*/
+			}
+			i += (ft_strlen(key));
 		}
 		else if (is_dollar(cmd, i) && !ft_isalpha(cmd[i+1]))
 		{
