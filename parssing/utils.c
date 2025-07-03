@@ -85,7 +85,7 @@ void	add_back(t_node **list, t_node *node)
 	else 
 	{
 		tmp = *list;
-		while (tmp->next)
+		while (tmp && tmp->next)
 			tmp = tmp->next;
 		tmp->next = node;
 		node->prev = tmp;

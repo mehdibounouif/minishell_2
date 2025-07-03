@@ -56,7 +56,7 @@ char	*remove_quotes(char *cmd)
   clear_cmd[j] = '\0';
   return (clear_cmd);
 }
-/*
+
 char	*remove_quotes3(char *cmd)
 {
   size_t i;
@@ -66,10 +66,10 @@ char	*remove_quotes3(char *cmd)
 
   i = 0;
   j = 0;
- // len = ft_strlen(cmd);
+  len = ft_strlen(cmd) - 1;
   while (cmd[i])
   {
-    if ((cmd[i] == '\'' || cmd[i] == '\"') && (i == 0 || i == ((int)len - 1)))
+    if ((cmd[i] == '\'' || cmd[i] == '\"') && (i == 0 || i == len))
       j++;
     i++;
   }
@@ -78,7 +78,7 @@ char	*remove_quotes3(char *cmd)
   j = 0;
   while (cmd[i])
   {
-    if ((cmd[i] == '\'' || cmd[i] == '\"') && (i == 0 || i == ((int)len - 1)))
+    if ((cmd[i] == '\'' || cmd[i] == '\"') && (i == 0 || i == len))
       i++;
     else
       clear_cmd[j++] = cmd[i++];
@@ -86,7 +86,7 @@ char	*remove_quotes3(char *cmd)
   clear_cmd[j] = '\0';
   return (clear_cmd);
 }
-*/
+
 
 char    *remove_quotes2(char *cmd, size_t l)
 {

@@ -83,7 +83,7 @@ int readline_and_parssing(t_mini *minishell, char **env)
 		free(cmd);
 		return (0);
 	}
-	// CHECK SYNTAX
+	// CHECK SYNTAX	
 	if (!check_syntax(minishell, minishell->list))
 	{
 		ft_free(minishell);
@@ -96,7 +96,7 @@ int readline_and_parssing(t_mini *minishell, char **env)
 	{
 		free(cmd);
 		return(0);
-	}
+	}	
 	free(cmd);
 	return (1);
 }

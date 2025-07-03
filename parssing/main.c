@@ -12,7 +12,6 @@
 
 #include "../includes/minishell.h"
 
-
 int	main(int c, char **v, char **env) 
 {
 	t_mini  *minishell;
@@ -23,6 +22,10 @@ int	main(int c, char **v, char **env)
 	if (!(minishell = ft_calloc(1, sizeof(t_mini))))
 		return 0;
 	minishell->ret = 0;
+	minishell->list = NULL;
+	minishell->env = NULL;
+	minishell->tree = NULL;
+
 	// Initialize env only once!
 	get_env(minishell, env);
 
@@ -35,7 +38,7 @@ int	main(int c, char **v, char **env)
 			continue;
 		exit_code = execute_full_command(minishell->tree, minishell->env, env);
     		// PRINT TREE
-		// print_tree_unicode(minishell->tree, "", 1);
+		//print_tree_unicode(minishell->tree, "", 1);
     		// FREE
 		ft_free(minishell);
 		//free(cmd);

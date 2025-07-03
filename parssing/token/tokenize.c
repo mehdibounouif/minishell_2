@@ -14,22 +14,23 @@
 
 int	tokenize(char *cmd, t_node **list)
 {
-	t_node	*next;
+	t_node	*token;
 	int		i;
 	int		flag;
 
-	next = NULL;
+	token = NULL;
 	i = 0;
 	while (cmd[i])
 	{
 		while (is_space(cmd[i]))
 			i++;
 		flag = check_real_sep(cmd, i);
-		next = get_token(cmd, &i);
-		if (!next)
+		token = get_token(cmd, &i);
+		token->next = NULL;	
+		if (!token)
 			return (0);
-		add_back(list, next);
-		token_type(next, flag);
+		add_back(list, token);
+		token_type(token, flag);
 	}
 	return (1);
 }

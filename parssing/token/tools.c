@@ -19,7 +19,7 @@ void	token_type(t_node *node, int flag)
 	if (!node)
 		return ;
 	if (ft_strcmp(node->content, "") == 0)
-		node->type = WORD;
+		node->type = EMPTY;
 	else if (ft_strcmp(node->content, ">") == 0 && flag == 0)
 		node->type = R_OUT;
 	else if (ft_strcmp(node->content, ">>") == 0 && flag == 0)
