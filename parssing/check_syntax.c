@@ -1,5 +1,5 @@
 #include "../includes/minishell.h"
-/*
+
 int check_sides(t_node *list)
 {
 	if (list->type == PIPE || list->content[0] == '#')
@@ -10,10 +10,10 @@ int check_sides(t_node *list)
 		return (1);
 	return (0);
 }
-*/
+
 int     check_syntax(t_mini *mini, t_node *list)
 {
-	if ((list->next == NULL && list->type == PIPE) || (list->prev == NULL && list->type == PIPE))
+	if (check_sides(list))
 	{
                 ft_putendl_fd("bash: syntax error near unexpected token |", 2);
 		mini->ret = 258;
