@@ -14,34 +14,30 @@
 
 int	main(int c, char **v, char **env) 
 {
-	t_mini  *minishell;
-	(void)c;
+	t_mini  minishell;
 	(void)v;
 	int exit_code;
-	
-	if (!(minishell = ft_calloc(1, sizeof(t_mini))))
-		return 0;
-	minishell->ret = 0;
-	minishell->list = NULL;
-	minishell->env = NULL;
-	minishell->tree = NULL;
 
+	if (c != 1)
+	{
+		ft_putendl_fd("This program does not accept arguments", 2);
+		exit(0);
+	}
+	ft_bzero(&minishell, sizeof(t_mini));
 	// Initialize env only once!
-	get_env(minishell, env);
-
+	get_env(&minishell, env);
 	while (1)
 	{
 		//handle signals
 		handle_signal();
 		// PARSSING
-		if (!readline_and_parssing(minishell, env))
+		if (!readline_and_parssing(&minishell, env))
 			continue;
-		exit_code = execute_full_command(minishell->tree, minishell->env, env);
+		exit_code = execute_full_command(minishell.tree, minishell.env, env);
     		// PRINT TREE
 		//print_tree_unicode(minishell->tree, "", 1);
     		// FREE
-		ft_free(minishell);
-		//free(cmd);
+		ft_free(&minishell);
 	}
 	exit(exit_code); // add exit_code ;;;
 }
