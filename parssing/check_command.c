@@ -12,7 +12,7 @@ void  get_env(t_mini *minishell, char **env)
 		if (!(env_node = malloc(sizeof(t_env)))) 
 		{ 
 			printf("env malloc failed!\n"); 
-			return ; 
+			return ;
 		}
 		key_value = ft_split(env[i], '=');
 		env_node->key = ft_strdup(key_value[0]);
@@ -44,9 +44,7 @@ size_t	len_to_pipe(char *cmd)
 int readline_and_parssing(t_mini *minishell, char **env)
 {
 	char	*cmd;
-//	size_t	len;
-	
-	// READ COMMAND
+
 	cmd = readline("minishell> ");
 	// handle signal here ctrl + D::
 	if(!cmd)
@@ -67,7 +65,7 @@ int readline_and_parssing(t_mini *minishell, char **env)
 	//  print_env(minishell->env);
 
 	//  REPLECE VARIABLE WITH VALUE
-	cmd = replace_key_with_value(cmd, env, minishell->ret);
+	cmd = expansion(cmd, env, minishell->env);
 	if (!cmd)
 	{
 		ft_putendl_fd("33ddsd: value too great for base (error token is \"33ddsd\")", 2);

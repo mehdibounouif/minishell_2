@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 09:02:11 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/05/30 09:59:31 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/05 11:55:38 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ void print_tree_unicode(t_tree *tree, const char *prefix, int is_last) {
         case END_NODE: {
             printf(COLOR_PIPE "END\n" COLOR_RESET);
             char *new_prefix = build_prefix(prefix, is_last);
-            print_tree_unicode(tree->end->left, new_prefix, 0);
-            print_tree_unicode(tree->end->right, new_prefix, 1);
             free(new_prefix);
             break;
         }

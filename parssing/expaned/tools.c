@@ -1,5 +1,5 @@
 #include "../../includes/minishell.h"
-
+/*
 int     get_special_len(char *cmd, int i)
 {
         int     j;
@@ -105,3 +105,4 @@ char    *check_curly_brace(char *key)
         }
         return (ft_strdup(""));
 }
+*/

@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/06/26 16:49:59 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/05 21:40:41 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 #include <signal.h>
 #include <sys/wait.h>
 
-# define EMPTY 0
+#define EMPTY 0
 #define PIPE 1
 #define WORD 2
 #define R_OUT 3
@@ -52,9 +52,10 @@ typedef struct s_env t_env;
 typedef struct s_mini t_mini;
 
 struct s_env {
-  char *key;
-  char *value;
-  struct s_env *next;
+	char *fullenv;
+	char *key;
+	char *value;
+	struct s_env *next;
 };
 
 struct s_node {
@@ -65,11 +66,6 @@ struct s_node {
 };
 
 struct s_pipe {
-  t_tree *left;
-  t_tree *right;
-};
-
-struct s_end {
   t_tree *left;
   t_tree *right;
 };
@@ -90,7 +86,6 @@ struct s_tree {
   int type;
   t_command *command;
   t_pipe *pipe;
-  t_pipe *end;
   t_redirection *redirect;
 };
 
@@ -147,7 +142,7 @@ t_tree *pars_command(t_node **list);
 t_tree  *parss_redirection(t_tree *node, t_node **list);
 t_tree  *pars_one_side(t_node **list);
 t_tree  *pars_pipe(t_node **list);
-t_tree  *pars_end(t_node **list);
+//t_tree  *pars_end(t_node **list);
 
 void	free_tree(t_tree **tree);
 void free_str(char **list);
@@ -158,6 +153,7 @@ char	*remove_quotes(char *cmd);
 char    *remove_quotes2(char *cmd, size_t l);
 char	*remove_quotes3(char *cmd);
 int is_separator(char c);
+int	is_empty(char *s);
 int	is_space(char c);
 int is_real_separator(char *cmd, int i);
 int count_args(t_node *list);
@@ -169,20 +165,22 @@ int	is_redirection(t_node *node);
 
 // EXPANSION
 int	is_dollar(char *cmd, int i);
-char	*get_env_key(char *cmd, int i, int flag);
-char	*replace_key_with_value(char *cmd, char **env, int ret);
+char	*get_env_key(char *cmd, int i);
+char	*expansion(char *cmd, char **env, t_env *list);
+/*
 char    *get_special_value(char *key, int ret);
 int	get_special_len(char *cmd, int i);
 char    *check_square_bracket_alpha(char *key, int i);
 char    *check_square_bracket_digit(char *key, int i);
 char    *check_square_bracket(char *key);
 char    *check_curly_brace(char *key);
+*/
 
 // EXECUTE 
 int execute_full_command(t_tree *node, t_env *env, char **envp);
 int execute_command_node(t_tree *node, t_env *env, char **envp);
-char	*ft_getenv(char *key, char **env);
-char	*find_path(t_tree *node, char **env);
+char	*ft_getenv(char *key, char **env, t_env *list);
+char	*find_path(t_tree *node, char **env, t_env *list);
 
 
 //SIGNALS 

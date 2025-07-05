@@ -1,35 +1,37 @@
 #include "../includes/minishell.h"
 
-char	*ft_getenv(char *key, char **env)
+char	*ft_getenv(char *key, char **env, t_env *list)
 {
 	size_t	j;
-	int		i;
-	char	*sub;
+	//int		i;
+	//char	*sub;
+	(void)env;
 
-	i = 0;
+	//i = 0;
 	j = ft_strlen(key);
-	while (env[i])
+	while (list)
 	{
-		sub = ft_substr(env[i], 0, j);
-		if (ft_strncmp(sub, key, j) == 0)
+		// sub = ft_substr(env[i], 0, j);
+		if (ft_strncmp(key, list->key, j) == 0)
 		{
-			free(sub);
-			return (env[i] + j);
+		//	free(sub);
+			return (list->value);
 		}
-		free(sub);
-		i++;
+		// free(sub);
+		list = list->next;
+		//i++;
 	}
 	return (NULL);
 }
 
-char	*find_path(t_tree *node, char **env)
+char	*find_path(t_tree *node, char **env, t_env *list)
 {
 	int		i;
 	char	**all_paths;
 	char	*path_slash;
 	char	*full_path;
 
-	all_paths = ft_split(ft_getenv("PATH", env), ':');
+	all_paths = ft_split(ft_getenv("PATH", env, list), ':');
 	i = 0;
 	while (all_paths[i])
 	{

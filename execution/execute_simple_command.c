@@ -57,7 +57,7 @@ int execute_command_node(t_tree *node, t_env *env, char **envp)
 	pid_t pid = fork();
 	if (pid == 0)
 	{
-		char *path = find_path(node, envp);
+		char *path = find_path(node, envp, env);
 		execve(path, node->command->args, envp);
 		perror("execve");
 		exit(1);

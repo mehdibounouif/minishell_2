@@ -53,6 +53,7 @@ char	*remove_quotes(char *cmd)
     else
       clear_cmd[j++] = cmd[i++];
   }
+	free(cmd);
   clear_cmd[j] = '\0';
   return (clear_cmd);
 }
@@ -83,10 +84,10 @@ char	*remove_quotes3(char *cmd)
     else
       clear_cmd[j++] = cmd[i++];
   }
+	free(cmd);
   clear_cmd[j] = '\0';
   return (clear_cmd);
 }
-
 
 char    *remove_quotes2(char *cmd, size_t l)
 {
@@ -101,7 +102,7 @@ char    *remove_quotes2(char *cmd, size_t l)
 		i++;
 	while (cmd[i] && i != l)
 	{
-    		if ((cmd[i] == '\'' && check_quotes(cmd, i) != 1)
+    	if ((cmd[i] == '\'' && check_quotes(cmd, i) != 1)
 				|| (cmd[i] == '\"' && check_quotes(cmd, i) != 2))
 			i++;
 		else
@@ -109,6 +110,7 @@ char    *remove_quotes2(char *cmd, size_t l)
 	}
 	while (cmd[i])
 		clear_cmd[j++] = cmd[i++];
+	free(cmd);
 	clear_cmd[j] = '\0';
 	return (clear_cmd);
 }

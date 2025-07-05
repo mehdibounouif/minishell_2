@@ -1,8 +1,0 @@
-1 check if two pipe
-2 check if there is a pipe in end or start [ok]
-3 check if line is empty
-4 check if the type of the token is (output / input / append)
-  and the next token's type is (output / input / append / pipe / end)
-  or there is no next.
-5 check if the type of token is (end) and the next token's type is (pipe)
-

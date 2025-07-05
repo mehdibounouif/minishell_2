@@ -63,7 +63,7 @@ int		calc_token_byte(char *line, int *i)
 	return (j - count + 1);
 }
 
-t_node	*get_token(char *line, int *i)
+t_node	*get_token(char *cmd, int *i)
 {
 	t_node	*node;
 	int		j;
@@ -73,27 +73,27 @@ t_node	*get_token(char *line, int *i)
 	c = ' ';
 	if (!(node = malloc(sizeof(t_node))))
 		return (NULL);
-	if (!(node->content = malloc(sizeof(char) * calc_token_byte(line, i))))
+	if (!(node->content = malloc(sizeof(char) * calc_token_byte(cmd, i))))
 		return (NULL);
-	while (line[*i] && (line[*i] != ' ' || c != ' '))
+	while (cmd[*i] && (cmd[*i] != ' ' || c != ' '))
 	{
-		if (c == ' ' && (line[*i] == '\'' || line[*i] == '\"'))
-			c = line[(*i)++];
-		else if (c != ' ' && line[*i] == c)
+		if (c == ' ' && (cmd[*i] == '\'' || cmd[*i] == '\"'))
+			c = cmd[(*i)++];
+		else if (c != ' ' && cmd[*i] == c)
 		{
 			c = ' ';
 			(*i)++;
 		}
-		else if (line[*i] == '\\' && (*i)++)
-			node->content[j++] = line[(*i)++];
+		else if (cmd[*i] == '\\' && (*i)++)
+			node->content[j++] = cmd[(*i)++];
 		else
-			node->content[j++] = line[(*i)++];
+			node->content[j++] = cmd[(*i)++];
 	}
 	node->content[j] = '\0';
 	return (node);
 }
 
-int		check_real_sep(char *line, int i)
+int	check_real_sep(char *line, int i)
 {
 	if (line[i] && line[i + 1] && ft_strncmp(&line[i], "\\;", 2) == 0)
 		return (1);

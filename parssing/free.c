@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 08:03:10 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/05/30 09:43:13 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/05 11:20:10 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,6 @@ void	free_tree(t_tree **tree)
 		free_tree(&(*tree)->pipe->right);
 		free((*tree)->pipe);
 		(*tree)->pipe = NULL;
-	}
-	else if ((*tree)->type == END_NODE)
-	{
-		free_tree(&(*tree)->end->left);
-		free_tree(&(*tree)->end->right);
-		free((*tree)->end);
-		(*tree)->end = NULL;
 	}
 	else if ((*tree)->type == REDIRECT_NODE)
 	{

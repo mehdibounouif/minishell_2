@@ -1,5 +1,5 @@
 #include "../../includes/minishell.h"
-
+/*
 char    *get_special_value(char *key, int ret)
 {
 	(void)ret;
@@ -28,3 +28,4 @@ char    *get_special_value(char *key, int ret)
 	else
 		return (ft_strdup("BA9I MAMHANDLIACH")); 
 }
+*/

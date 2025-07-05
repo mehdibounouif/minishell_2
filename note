@@ -1,0 +1,6 @@
+< makefile ls | cat > out
+A in export
+echo -nnnnnnn
+echo $""
+echo $ ""
+echo $ "   "

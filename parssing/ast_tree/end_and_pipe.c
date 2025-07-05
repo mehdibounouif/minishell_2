@@ -33,6 +33,7 @@ t_tree  *pars_pipe(t_node **list)
         }
         return left;
 }
+/*
 
 t_tree  *pars_end(t_node **list)
 {
@@ -91,3 +92,4 @@ t_tree  *pars_end(t_node **list)
         }
         return (left);
 }
+*/

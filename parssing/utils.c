@@ -6,11 +6,40 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:01:06 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/05/28 10:22:20 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/05 22:09:26 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+/*
+char	*to_space(char *str, int i)
+{
+	char	*word;
+	int	index;
+	int	j;
+	int	len;
+
+	index = i;
+	len = 0;
+	while (!is_space(str[len]))
+		len++;
+	word = malloc(len+1);
+	if (!word)
+		return (NULL);
+	j = 0;
+	while (len--)
+		word[j++] = str[index++];
+	word[j] = '\0';
+	return (word);
+}
+*/
+
+int	is_empty(char *s)
+{
+	if (ft_strlen(s))
+		return (1);
+	return (0);
+}
 
 int	is_redirection(t_node *node)
 {
