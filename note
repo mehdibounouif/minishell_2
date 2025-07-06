@@ -1,5 +1,4 @@
 echo hello >file
-echo hello >| file
 A in export
 
 < makefile ls | cat > out . DONE

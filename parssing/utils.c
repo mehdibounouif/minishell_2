@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:01:06 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/06 11:47:00 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/06 21:30:58 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,18 +57,23 @@ int	is_space(char c)
 	return (0);
 }
 
-int is_separator(char c)
+int is_separator(char *line, int i)
 {
-  if (c == '|' || c == '>' || c == '<' || c == ';')
-     return (1);
-  return (0);
+		if ((line[i] && line[i + 1]
+		&& (!ft_strncmp(&line[i], ">>", 2)
+		|| !ft_strncmp(&line[i], "<<", 2)))
+		|| (line[i] && (!ft_strncmp(&line[i], "|", 1)
+		|| !ft_strncmp(&line[i], ">", 1)
+		|| !ft_strncmp(&line[i], "<", 1))))
+		return (1);
+	return (0);
 }
 
 int is_real_separator(char *cmd, int i)
 {
-  if (i > 0 && cmd[i - 1] == '\\' &&  is_separator(cmd[i]))
+  if (i > 0 && cmd[i - 1] == '\\' &&  is_separator(&cmd[i], i))
     return (0);
-  else if (is_separator(cmd[i]) && check_quotes(cmd, i) == 0)
+  else if (is_separator(&cmd[i], i) && check_quotes(cmd, i) == 0)
     return (1);
   else
     return (0);

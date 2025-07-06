@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/06 11:46:05 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/06 19:01:59 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ int check_quotes(char *cmd, size_t i);
 char	*remove_quotes(char *cmd);
 char    *remove_quotes2(char *cmd, size_t l);
 char	*remove_quotes3(char *cmd);
-int is_separator(char c);
+int is_separator(char *line, int i);
 int	is_empty(char *s);
 int	is_space(char c);
 int is_real_separator(char *cmd, int i);

@@ -34,6 +34,25 @@ void	token_type(t_node *node, int flag)
 		node->type = WORD;
 }
 
+int	len_of_sep(char	*line, int i)
+{
+	int	len;
+
+	len = 0;
+	if (line[i] && line[i + 1] && line[i + 2]
+			&& (!ft_strncmp(&line[i], ">>", 2)
+			|| !ft_strncmp(&line[i], "<<", 2)))
+		len = 2;
+	else if (line[i] && (!ft_strncmp(&line[i], "|", 1)
+		|| (line[i] && !ft_strncmp(&line[i], ">", 1))
+		|| (line[i] && !ft_strncmp(&line[i], "<", 1))
+	))
+		len = 1;
+	return (len);
+}
+
+
+
 int		calc_token_byte(char *line, int *i)
 {
 	int		count;
@@ -45,6 +64,10 @@ int		calc_token_byte(char *line, int *i)
 	c = ' ';
 	while (line[*i + j] && (line[*i + j] != ' ' || c != ' '))
 	{
+		if (is_separator(line, *i))
+		{
+			return (len_of_sep(line, *i));
+		}
 		if (c == ' ' && (line[*i + j] == '\'' || line[*i + j] == '\"'))
 			c = line[*i + j++];
 		else if (c != ' ' && line[*i + j] == c)
@@ -66,6 +89,7 @@ t_node	*get_token(char *cmd, int *i)
 	t_node	*node;
 	int		j;
 	char	c;
+	int	l;
 
 	j = 0;
 	c = ' ';
@@ -75,6 +99,13 @@ t_node	*get_token(char *cmd, int *i)
 		return (NULL);
 	while (cmd[*i] && (cmd[*i] != ' ' || c != ' '))
 	{
+		if (is_separator(cmd, *i))
+		{
+			l = len_of_sep(cmd, *i) + *i;
+			while (*i < l)
+				node->content[j++] = cmd[(*i)++];
+			break;
+		}
 		if (c == ' ' && (cmd[*i] == '\'' || cmd[*i] == '\"'))
 			c = cmd[(*i)++];
 		else if (c != ' ' && cmd[*i] == c)
