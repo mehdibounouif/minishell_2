@@ -30,8 +30,6 @@ void	token_type(t_node *node, int flag)
 		node->type = R_IN;
 	else if (ft_strcmp(node->content, "|") == 0 && flag == 0)
 		node->type = PIPE;
-	else if (ft_strcmp(node->content, ";") == 0 && flag == 0)
-		node->type = END;
 	else
 		node->type = WORD;
 }
@@ -100,6 +98,8 @@ int	check_real_sep(char *line, int i)
 	else if (line[i] && line[i + 1] && ft_strncmp(&line[i], "\\|", 2) == 0)
 		return (1);
 	else if (line[i] && line[i + 1] && ft_strncmp(&line[i], "\\>", 2) == 0)
+		return (1);
+	else if (line[i] && line[i + 1] && ft_strncmp(&line[i], "\\<", 2) == 0)
 		return (1);
 	else if (line[i] && line[i + 1] && line[i + 2] && ft_strncmp(&line[i], "\\>>", 3) == 0)
 		return (1);

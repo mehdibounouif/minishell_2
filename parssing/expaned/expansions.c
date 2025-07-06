@@ -26,12 +26,10 @@ char	*get_env_key(char *cmd, int i)
 {
 	int	len;
 	char	*key;
-//	char	*key_with_equal;
 
 	i++;
 	len = get_env_len(cmd, i);
 	key = ft_substr(cmd, i, len);
-//	key_with_equal = ft_strjoin(key, "=");
 //	free(key);
 	return (key);
 }
@@ -121,10 +119,10 @@ char	*expansion(char *cmd, char **env, t_env *list)
 	while (cmd[i])
 	{
 		l = 0;
-		if (is_dollar(cmd, i) && (ft_isalpha(cmd[i+1]) || cmd[i+1] == '_' || cmd[i+1] == '\'' || cmd[i+1] == '\"'))
+		if (is_dollar(cmd, i) && (ft_isalpha(cmd[i+1]) || cmd[i+1] == '_'))
 				replace_key(cmd, expanded_cmd, &i, &j, env, list);
-		if (!is_dollar(cmd, i))
-			expanded_cmd[j++] = cmd[i++];
+//		if (!is_dollar(cmd, i))
+		expanded_cmd[j++] = cmd[i++];
 	}
 	free(cmd);
 	expanded_cmd[j] = '\0';

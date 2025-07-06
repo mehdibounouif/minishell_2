@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/05 21:40:41 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/06 11:46:05 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,6 @@
 #define R_OUT 3
 #define R_IN 4
 #define R_APPEND 5
-#define R_ERR 6
-#define END 7
-#define OR 8
 #define HEREDOC 9
 
 // TYPES OF NODES
@@ -52,7 +49,6 @@ typedef struct s_env t_env;
 typedef struct s_mini t_mini;
 
 struct s_env {
-	char *fullenv;
 	char *key;
 	char *value;
 	struct s_env *next;

@@ -1,6 +1,9 @@
-< makefile ls | cat > out
+echo hello >file
+echo hello >| file
 A in export
-echo -nnnnnnn
-echo $""
-echo $ ""
-echo $ "   "
+
+< makefile ls | cat > out . DONE
+echo -nnnnnnn . DONE
+echo $"" . DONE
+echo $ "" . DONE
+echo $ "   " . DONE
