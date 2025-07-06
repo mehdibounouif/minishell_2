@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/06 18:19:05 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/06 21:38:41 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ int	main(int c, char **v, char **env)
 		// PARSSING
 		if (!readline_and_parssing(&minishell, env))
 			continue;
-		//exit_code = execute_full_command(minishell.tree, minishell.env, env);
+		exit_code = execute_full_command(minishell.tree, minishell.env, env);
     		// PRINT TREE
-		print_tree_unicode(minishell.tree, "", 1);
+		//print_tree_unicode(minishell.tree, "", 1);
     		// FREE
 		ft_free(&minishell);
 	}
