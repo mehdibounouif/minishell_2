@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:01:06 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/06 21:30:58 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/07 08:29:02 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ int	is_redirection(t_node *node)
 {
 	if (node && (node->type == R_OUT ||
 			node->type == R_IN ||
-			node->type == R_APPEND))
+			node->type == R_APPEND ||
+			node->type == HEREDOC))
 		return (1);
 	return (0);
 }

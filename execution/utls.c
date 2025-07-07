@@ -1,11 +1,10 @@
 #include "../includes/minishell.h"
 
-char	*ft_getenv(char *key, char **env, t_env *list)
+char	*ft_getenv(char *key, t_env *list)
 {
 	size_t	j;
 	//int		i;
 	//char	*sub;
-	(void)env;
 
 	//i = 0;
 	j = ft_strlen(key);
@@ -24,14 +23,14 @@ char	*ft_getenv(char *key, char **env, t_env *list)
 	return (NULL);
 }
 
-char	*find_path(t_tree *node, char **env, t_env *list)
+char	*find_path(t_tree *node, t_env *list)
 {
 	int		i;
 	char	**all_paths;
 	char	*path_slash;
 	char	*full_path;
 
-	all_paths = ft_split(ft_getenv("PATH", env, list), ':');
+	all_paths = ft_split(ft_getenv("PATH", list), ':');
 	i = 0;
 	while (all_paths[i])
 	{

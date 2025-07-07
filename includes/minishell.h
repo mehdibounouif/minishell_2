@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/06 19:01:59 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/07 18:46:40 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <stdio.h>
+#include <stdbool.h>
+#include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -39,6 +41,9 @@
 #define REDIRECT_NODE 12
 #define END_NODE 13
 
+#define HEREDOC_FILE ".heredoc_file_"
+extern int ret;
+
 typedef struct s_command t_command;
 typedef struct s_redirection t_redirection;
 typedef struct s_tree t_tree;
@@ -55,10 +60,11 @@ struct s_env {
 };
 
 struct s_node {
-  int type;
-  char *content;
-  struct s_node *next;
-  struct s_node *prev;
+	int	quoted;
+	int type;
+	char *content;
+	struct s_node *next;
+	struct s_node *prev;
 };
 
 struct s_pipe {
@@ -91,6 +97,7 @@ struct s_mini {
   t_node *list;
   int	ret;
 };
+
 
 // built-in functions
 // Function declarations
@@ -128,17 +135,22 @@ int             calc_token_byte(char *line, int *i);
 void    token_type(t_node *node, int flag);
 int     ft_strcmp(const char *s1, const char *s2);
 
+
 int is_space(char c);
 void add_back(t_node **list, t_node *node);
 void add_back2(t_env **list, t_env *node);
 void print_list(t_node *list);
 
+
 // AST TREE
-t_tree *pars_command(t_node **list);
-t_tree  *parss_redirection(t_tree *node, t_node **list);
-t_tree  *pars_one_side(t_node **list);
-t_tree  *pars_pipe(t_node **list);
-//t_tree  *pars_end(t_node **list);
+t_tree *pars_command(t_node **list, t_env *env);
+t_tree  *parss_redirection(t_tree *node, t_node **list, t_env *env);
+t_tree	*parss_redirection_in_start(t_node **list, t_env *env);
+t_tree	*parss_herdoc(t_tree *node, t_node **list, t_env *env);
+t_tree  *pars_one_side(t_node **list, t_env *env);
+t_tree  *pars_pipe(t_node **list, t_env *env);
+t_tree	*parss_herdoc(t_tree *node, t_node **list, t_env *env);
+
 
 void	free_tree(t_tree **tree);
 void free_str(char **list);
@@ -148,6 +160,7 @@ int check_quotes(char *cmd, size_t i);
 char	*remove_quotes(char *cmd);
 char    *remove_quotes2(char *cmd, size_t l);
 char	*remove_quotes3(char *cmd);
+int	is_quoted(char *cmd, int len);
 int is_separator(char *line, int i);
 int	is_empty(char *s);
 int	is_space(char c);
@@ -155,14 +168,14 @@ int is_real_separator(char *cmd, int i);
 int count_args(t_node *list);
 int check_sides(t_node *list);
 t_tree *parssing_line(char *cmd, t_mini *minishell);
-int readline_and_parssing(t_mini *minishell, char **env);
+int readline_and_parssing(t_mini *minishell);
 int     check_syntax(t_mini *mini, t_node *list);
 int	is_redirection(t_node *node);
 
 // EXPANSION
 int	is_dollar(char *cmd, int i);
 char	*get_env_key(char *cmd, int i);
-char	*expansion(char *cmd, char **env, t_env *list);
+char	*expansion(char *cmd, t_env *list);
 /*
 char    *get_special_value(char *key, int ret);
 int	get_special_len(char *cmd, int i);
@@ -174,9 +187,10 @@ char    *check_curly_brace(char *key);
 
 // EXECUTE 
 int execute_full_command(t_tree *node, t_env *env, char **envp);
-int execute_command_node(t_tree *node, t_env *env, char **envp);
-char	*ft_getenv(char *key, char **env, t_env *list);
-char	*find_path(t_tree *node, char **env, t_env *list);
+void execute_command_node(t_tree *node, t_env *env, char **envp);
+void	execute_redirection_command(t_tree *node, t_env *env, char **envp);
+char	*ft_getenv(char *key, t_env *list);
+char	*find_path(t_tree *node, t_env *list);
 
 
 //SIGNALS 

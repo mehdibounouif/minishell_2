@@ -1,8 +1,3 @@
-echo hello >file
-A in export
-
-< makefile ls | cat > out . DONE
-echo -nnnnnnn . DONE
-echo $"" . DONE
-echo $ "" . DONE
-echo $ "   " . DONE
+echo ">"
+echo $"HOME"
+cat << EOF1 << EOF2

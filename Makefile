@@ -13,8 +13,10 @@ SRCS_FILES1 = main.c\
 	     token/tools.c\
 	     ast_tree/tree.c\
 	     ast_tree/print_ast.c\
-	     ast_tree/end_and_pipe.c\
-	     ast_tree/command_and_redirection.c\
+	     ast_tree/command_with_redirection.c\
+	     ast_tree/command_with_herdoc.c\
+	     ast_tree/command_with_pipe.c\
+		 ast_tree/simple_command.c\
 	     check_quotes.c\
 	     free.c\
 	     check_command.c\
@@ -25,6 +27,7 @@ SRCS_FILES1 = main.c\
 
 SRCS_FILES2 = execute_simple_command.c\
 	      execute_pipe_command.c\
+	      execute_redirection_command.c\
 	      execution.c\
 	      signals.c\
 	      utls.c\

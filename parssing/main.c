@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/06 21:38:41 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/07 18:47:54 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	main(int c, char **v, char **env)
 {
 	t_mini  minishell;
 	(void)v;
-	int exit_code;
 
 	if (c != 1)
 	{
@@ -31,13 +30,13 @@ int	main(int c, char **v, char **env)
 		//handle signals
 		handle_signal();
 		// PARSSING
-		if (!readline_and_parssing(&minishell, env))
+		if (!readline_and_parssing(&minishell))
 			continue;
-		exit_code = execute_full_command(minishell.tree, minishell.env, env);
+		execute_full_command(minishell.tree, minishell.env, env);
     		// PRINT TREE
 		//print_tree_unicode(minishell.tree, "", 1);
     		// FREE
 		ft_free(&minishell);
 	}
-	exit(exit_code); // add exit_code ;;;
+	exit(ret); // add exit_code ;;;
 }

@@ -35,7 +35,7 @@ char	*get_env_key(char *cmd, int i)
 }
 
 
-int	get_full_len(char *cmd, char **env, t_env *list)
+int	get_full_len(char *cmd, t_env *list)
 {
 	int	i;
 	size_t	full_len;
@@ -52,7 +52,7 @@ int	get_full_len(char *cmd, char **env, t_env *list)
 		if (is_dollar(cmd, i) && (ft_isalpha(cmd[i+1]) || cmd[i+1] == '_' || cmd[i+1] == '\'' || cmd[i+1] == '\"'))
 		{
 			key = get_env_key(cmd, i++);
-			value = ft_getenv(key, env, list);
+			value = ft_getenv(key, list);
 			if (!value)
 				value = ft_strdup("");
 			cmd_len -= (ft_strlen(key) + 1);
@@ -64,7 +64,7 @@ int	get_full_len(char *cmd, char **env, t_env *list)
 	return (cmd_len += full_len);
 }
 
-void	replace_key(char *cmd, char *expanded_cmd, int *i, int *j, char **env, t_env *list)
+void	replace_key(char *cmd, char *expanded_cmd, int *i, int *j, t_env *list)
 {
 	char	*value;
 	char	*key;
@@ -74,7 +74,7 @@ void	replace_key(char *cmd, char *expanded_cmd, int *i, int *j, char **env, t_en
 	l = 0;
 	f = 0;
 	key = get_env_key(cmd, *i);
-	value = ft_getenv(key, env, list);
+	value = ft_getenv(key, list);
 	if (cmd[*i-1] == '\"' && l == 0)
 		f = 1;
 	if (value)
@@ -100,17 +100,17 @@ void	replace_key(char *cmd, char *expanded_cmd, int *i, int *j, char **env, t_en
 }
 
 
-char	*expansion(char *cmd, char **env, t_env *list)
+char	*expansion(char *cmd, t_env *list)
 {
 	int	full_len;
 	char	*expanded_cmd;
 	int	i;
 	int	j;
-	int	l;
+//	int	l;
 
 	i = 0;
 	j = 0;
-	full_len = get_full_len(cmd, env, list);
+	full_len = get_full_len(cmd, list);
 	if (full_len == -1)
 		return (NULL);
 	expanded_cmd = malloc(full_len + 1);
@@ -118,9 +118,9 @@ char	*expansion(char *cmd, char **env, t_env *list)
 		return (NULL);
 	while (cmd[i])
 	{
-		l = 0;
+//		l = 0;
 		if (is_dollar(cmd, i) && (ft_isalpha(cmd[i+1]) || cmd[i+1] == '_'))
-				replace_key(cmd, expanded_cmd, &i, &j, env, list);
+				replace_key(cmd, expanded_cmd, &i, &j, list);
 //		if (!is_dollar(cmd, i))
 		expanded_cmd[j++] = cmd[i++];
 	}

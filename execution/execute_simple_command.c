@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_simple_command.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
+/*   Updated: 2025/07/07 18:44:49 by mbounoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 // Function to check if a command is a builtin
@@ -48,16 +60,19 @@ static int execute_builtin(t_tree *node, t_env *env)
 }
 
 // Use t_env *env for builtins, char **envp for execve
-int execute_command_node(t_tree *node, t_env *env, char **envp)
+void	execute_command_node(t_tree *node, t_env *env, char **envp)
 {
 	if (is_builtin(node->command->command))
-		return execute_builtin(node, env);
+	{
+		ret = execute_builtin(node, env);
+		return ;
+	}
 
 	// External command: fork and execve
 	pid_t pid = fork();
 	if (pid == 0)
 	{
-		char *path = find_path(node, envp, env);
+		char *path = find_path(node , env);
 		execve(path, node->command->args, envp);
 		perror("execve");
 		exit(1);
@@ -66,6 +81,6 @@ int execute_command_node(t_tree *node, t_env *env, char **envp)
 	{
 		int status;
 		waitpid(pid, &status, 0);
-		return WEXITSTATUS(status);
+		ret = WEXITSTATUS(status);
 	}
 }

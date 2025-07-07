@@ -24,6 +24,20 @@ void  get_env(t_mini *minishell, char **env)
 	}
 }
 
+void	print_list(t_node *list)
+{
+	while (list)
+	{
+		printf("%s ", list->content);
+		if (list->quoted)
+			printf("is_quoted\n");
+		else
+			printf("\n");
+		list = list->next;
+	}
+	printf("\n");
+}
+
 size_t	len_to_pipe(char *cmd)
 {
 	int	i;
@@ -41,7 +55,7 @@ size_t	len_to_pipe(char *cmd)
 	return (len);
 }
 
-int readline_and_parssing(t_mini *minishell, char **env)
+int readline_and_parssing(t_mini *minishell)
 {
 	char	*cmd;
 
@@ -65,7 +79,7 @@ int readline_and_parssing(t_mini *minishell, char **env)
 	//  print_env(minishell->env);
 
 	//  REPLECE VARIABLE WITH VALUE
-	cmd = expansion(cmd, env, minishell->env);
+	cmd = expansion(cmd, minishell->env);
 	if (!cmd)
 	{
 		ft_putendl_fd("33ddsd: value too great for base (error token is \"33ddsd\")", 2);
@@ -81,6 +95,7 @@ int readline_and_parssing(t_mini *minishell, char **env)
 		free(cmd);
 		return (0);
 	}
+	//print_list(minishell->list);
 	// CHECK SYNTAX	
 	if (!check_syntax(minishell, minishell->list))
 	{
@@ -89,7 +104,7 @@ int readline_and_parssing(t_mini *minishell, char **env)
 		return (0);
 	}
 	// DESING TREE
-	minishell->tree = pars_command(&minishell->list);
+	minishell->tree = pars_command(&minishell->list, minishell->env);
 	if (!minishell->tree)
 	{
 		free(cmd);
