@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/07 18:44:49 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/08 09:31:15 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 {
 	if (is_builtin(node->command->command))
 	{
-		ret = execute_builtin(node, env);
+		execute_builtin(node, env);
 		return ;
 	}
 
@@ -81,6 +81,6 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 	{
 		int status;
 		waitpid(pid, &status, 0);
-		ret = WEXITSTATUS(status);
+//		ret = WEXITSTATUS(status);
 	}
 }

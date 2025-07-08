@@ -1,5 +1,4 @@
 #include "../includes/minishell.h"
-#include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
@@ -30,6 +29,6 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 	else {
 		int	status;
 		waitpid(pid, &status, 0);
-		ret = WEXITSTATUS(status);
+//		ret = WEXITSTATUS(status);
 	}
 }

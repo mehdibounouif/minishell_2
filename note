@@ -1,3 +1,2 @@
-echo ">"
 echo $"HOME"
 cat << EOF1 << EOF2

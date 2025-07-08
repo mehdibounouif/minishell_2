@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_syntax.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/08 11:51:06 by mbounoui          #+#    #+#             */
+/*   Updated: 2025/07/08 11:51:08 by mbounoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 int check_sides(t_node *list)
@@ -6,7 +18,7 @@ int check_sides(t_node *list)
 		return (1);
 	while(list->next)
 		list = list->next;
-	if (list->type == PIPE)
+	if (!list->quoted && list->type == PIPE)
 		return (1);
 	return (0);
 }
@@ -21,8 +33,8 @@ int     check_syntax(t_mini *mini, t_node *list)
 	}
 	while (list)
 	{
-		if ((list->type == PIPE && list->next->type == PIPE)
-			|| (is_redirection(list) && (!list->next || list->next->type != WORD)))
+		if ((!list->quoted && list->type == PIPE && list->next->type == PIPE)
+			|| (is_redirection(list) && !list->quoted && (!list->next || list->next->type != WORD)))
 		{
 			if (list->next)
 			{

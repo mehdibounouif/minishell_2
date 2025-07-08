@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:01:06 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/07 08:29:02 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/08 10:50:55 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int count_args(t_node *list)
   int i;
 
   i = 0;
-  while (list && list->type == WORD)
+  while (list && (list->type == WORD || list->quoted))
   {
     i++;
     list = list->next;

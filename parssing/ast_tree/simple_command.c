@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   simple_command.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/08 11:02:12 by mbounoui          #+#    #+#             */
+/*   Updated: 2025/07/08 11:05:14 by mbounoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 t_tree  *pars_one_side(t_node **list, t_env *env)
@@ -16,7 +28,7 @@ t_tree  *pars_one_side(t_node **list, t_env *env)
 	args = malloc(sizeof(char *) * len + 1);
 	args[i++] = cmd;
 	*list = (*list)->next;
-	while ((*list) && (*list)->type == WORD)
+	while ((*list) && ((*list)->type == WORD || (*list)->quoted))
 	{
 		args[i] = (*list)->content;
 		i++;

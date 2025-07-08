@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 08:45:19 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/07 10:34:48 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/08 10:42:21 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 int	is_quoted(char *cmd, int len)
 {
-	return ((cmd[0] == '\'' && cmd[len] == '\'') || (cmd[0] == '\"' || cmd[len] == '\''));
+	if (!cmd)
+		return (0);
+	return ((cmd[0] == '\'' && cmd[len] == '\'')
+	|| (cmd[0] == '\"' && cmd[len] == '\"'));
 }
 
 int	ft_strcmp(const char *s1, const char *s2)

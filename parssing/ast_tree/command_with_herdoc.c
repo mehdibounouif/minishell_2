@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/07 16:46:18 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/08 11:59:01 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,29 @@ int	is_quoted(char *cmd, int len)
 {
 	return ((cmd[0] == '\'' && cmd[len] == '\'') || (cmd[0] == '\"' || cmd[len] == '\''));
 }
+*/
 
 char	*generate_file_name()
 {
 	char	*nb;
 	static int	i;
 
-	i = 1;
-	nb = ft_itoa(i);
 	i++;
+	nb = ft_itoa(i);
 	return (ft_strjoin(HEREDOC_FILE, nb));
 }
-*/
 
-int	create_heredoc(char	*delimeter, int quoted, t_env *env)
+
+int	create_heredoc(char *file_name, char	*delimeter, int quoted, t_env *env)
 {
 	int	fd;
 	char	*line;
 
-	fd = open(HEREDOC_FILE, O_RDWR | O_CREAT | O_TRUNC);
+	fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC,  0777);
 	if (fd == -1)
 		return (-1);
 	line = readline(">");
-	while (line && ft_strncmp(delimeter, line, ft_strlen(delimeter)))
+	while (line && ft_strcmp(delimeter, line))
 	{
 		if (!quoted)
 		{
@@ -55,7 +55,7 @@ int	create_heredoc(char	*delimeter, int quoted, t_env *env)
 t_tree	*parss_herdoc(t_tree *node, t_node **list, t_env *env)
 {
 	t_tree	*herdoc_node;
-//	char	*file_name;
+	char	*file_name;
 
 	herdoc_node = malloc(sizeof(t_tree));
 	if (!herdoc_node)
@@ -66,9 +66,9 @@ t_tree	*parss_herdoc(t_tree *node, t_node **list, t_env *env)
 		free(herdoc_node);
 		return (NULL);
 	}
-	//file_name = generate_file_name();
 	*list = (*list)->next;
-	if (create_heredoc((*list)->content, (*list)->quoted, env))
+	file_name = generate_file_name();
+	if (create_heredoc(file_name, (*list)->content, (*list)->quoted, env))
 		return (NULL);
 	herdoc_node->redirect->prev = node;
 	return (herdoc_node);
