@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/08 11:59:01 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:27:11 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,9 @@ t_tree	*parss_herdoc(t_tree *node, t_node **list, t_env *env)
 	file_name = generate_file_name();
 	if (create_heredoc(file_name, (*list)->content, (*list)->quoted, env))
 		return (NULL);
+	herdoc_node->type = REDIRECT_NODE;
+	herdoc_node->redirect->redirect = (*list)->prev->content;
+	herdoc_node->redirect->file = file_name;
 	herdoc_node->redirect->prev = node;
 	return (herdoc_node);
 }
