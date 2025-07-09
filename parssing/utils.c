@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:01:06 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/08 10:50:55 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:40:41 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ int is_separator(char *line, int i)
 
 int is_real_separator(char *cmd, int i)
 {
-  if (i > 0 && cmd[i - 1] == '\\' &&  is_separator(&cmd[i], i))
-    return (0);
-  else if (is_separator(&cmd[i], i) && check_quotes(cmd, i) == 0)
+ // if (i > 0 && cmd[i - 1] == '\\' &&  is_separator(&cmd[i], i))
+  //  return (0);
+  if (is_separator(&cmd[i], i) && check_quotes(cmd, i) == 0)
     return (1);
   else
     return (0);

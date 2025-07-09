@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 08:45:19 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/08 10:42:21 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:54:43 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,18 @@
 
 int	is_quoted(char *cmd, int len)
 {
+	int	i;
+
 	if (!cmd)
 		return (0);
-	return ((cmd[0] == '\'' && cmd[len] == '\'')
-	|| (cmd[0] == '\"' && cmd[len] == '\"'));
+	i = 0;
+	while(i < len)
+	{
+		if (cmd[i] == '\'' || cmd[i] == '\"')
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 int	ft_strcmp(const char *s1, const char *s2)
@@ -81,10 +89,8 @@ int		calc_token_byte(char *line, int *i)
 	c = ' ';
 	while (line[*i + j] && (line[*i + j] != ' ' || c != ' '))
 	{
-		/*
 		if (is_separator(line, *i))
 			return (len_of_sep(line, *i));
-			*/
 		if (c == ' ' && (line[*i + j] == '\'' || line[*i + j] == '\"'))
 			c = line[*i + j++];
 		else if (c != ' ' && line[*i + j] == c)
@@ -106,30 +112,33 @@ t_node	*get_token(char *cmd, int *i)
 	t_node	*node;
 	int		j;
 	char	c;
-//	int	l;
+	int	l;
+	int	h;
+	int	is_sep;
 	int	len;
 
 	j = 0;
 	c = ' ';
+	is_sep = 0;
 	if (!(node = malloc(sizeof(t_node))))
 		return (NULL);
 	node->quoted = 0;
 	len = calc_token_byte(cmd, i);
 	if (!(node->content = malloc(sizeof(char) * len)))
 		return (NULL);
+	l = *i;
 	while (cmd[*i] && (cmd[*i] != ' ' || c != ' '))
 	{
-		if (is_quoted(&cmd[*i], len))
+		if (is_quoted(&cmd[l], len - 1))
+		{
 			node->quoted = 1;
-		/*
+			l = len;
+		}	
 		if (is_separator(cmd, *i))
 		{
-			l = len_of_sep(cmd, *i) + *i;
-			while (*i < l)
-				node->content[j++] = cmd[(*i)++];
-			break;
+			h = len_of_sep(cmd, *i) + *i;
+			is_sep = 1;
 		}
-		*/
 		if (c == ' ' && (cmd[*i] == '\'' || cmd[*i] == '\"'))
 			c = cmd[(*i)++];
 		else if (c != ' ' && cmd[*i] == c)
@@ -141,6 +150,8 @@ t_node	*get_token(char *cmd, int *i)
 			node->content[j++] = cmd[(*i)++];
 		else
 			node->content[j++] = cmd[(*i)++];
+		if (is_sep && h == *i)
+			break;
 	}
 	node->content[j] = '\0';
 	return (node);

@@ -6,11 +6,12 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/08 13:27:11 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:06:57 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <fcntl.h>
 /*
 int	is_quoted(char *cmd, int len)
 {
@@ -25,22 +26,30 @@ char	*generate_file_name()
 
 	i++;
 	nb = ft_itoa(i);
-	return (ft_strjoin(HEREDOC_FILE, nb));
+	return (nb);
 }
 
-
-int	create_heredoc(char *file_name, char	*delimeter, int quoted, t_env *env)
+int	create_heredoc(t_tree *herdoc_node, t_node **list, t_env *env)
 {
 	int	fd;
+	static	int	old_fd;
 	char	*line;
+	char	*nb;
+	char	*file_name;
 
+	nb = generate_file_name();
+	if (old_fd)
+		close(old_fd);
+	printf("old fd = %d\n", old_fd);
+	file_name = ft_strjoin(HEREDOC_FILE, nb);
 	fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC,  0777);
 	if (fd == -1)
 		return (-1);
+	old_fd = fd;
 	line = readline(">");
-	while (line && ft_strcmp(delimeter, line))
+	while (line && ft_strcmp((*list)->content, line))
 	{
-		if (!quoted)
+		if (!(*list)->quoted)
 		{
 			line = expansion(line, env);
 		}
@@ -49,13 +58,15 @@ int	create_heredoc(char *file_name, char	*delimeter, int quoted, t_env *env)
 		free(line);
 		line = readline(">");
 	}
+	herdoc_node->redirect->file = file_name;
+	printf("fd = %d\n", fd);
 	return (0);
 }
 
 t_tree	*parss_herdoc(t_tree *node, t_node **list, t_env *env)
+
 {
 	t_tree	*herdoc_node;
-	char	*file_name;
 
 	herdoc_node = malloc(sizeof(t_tree));
 	if (!herdoc_node)
@@ -67,12 +78,10 @@ t_tree	*parss_herdoc(t_tree *node, t_node **list, t_env *env)
 		return (NULL);
 	}
 	*list = (*list)->next;
-	file_name = generate_file_name();
-	if (create_heredoc(file_name, (*list)->content, (*list)->quoted, env))
+	if (create_heredoc(herdoc_node, list, env))
 		return (NULL);
 	herdoc_node->type = REDIRECT_NODE;
 	herdoc_node->redirect->redirect = (*list)->prev->content;
-	herdoc_node->redirect->file = file_name;
 	herdoc_node->redirect->prev = node;
 	return (herdoc_node);
 }

@@ -2,23 +2,13 @@
 
 char	*ft_getenv(char *key, t_env *list)
 {
-	size_t	j;
-	//int		i;
-	//char	*sub;
-
-	//i = 0;
-	j = ft_strlen(key);
 	while (list)
 	{
-		// sub = ft_substr(env[i], 0, j);
-		if (ft_strncmp(key, list->key, j) == 0)
+		if (!ft_strcmp(key, list->key))
 		{
-		//	free(sub);
 			return (list->value);
 		}
-		// free(sub);
 		list = list->next;
-		//i++;
 	}
 	return (NULL);
 }

@@ -71,6 +71,7 @@ clean:
 	@$(RM) $(PARSS_OBJS)
 	@$(RM) $(EXEC_OBJS)
 	@$(RM) $(BUILTIN_OBJS)
+	@$(RM) .h*
 	@echo "✅ Limpieza completa."
 
 fclean: clean
