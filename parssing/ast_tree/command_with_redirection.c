@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:57 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/08 15:59:15 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:09:50 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,14 @@ t_tree	*parss_redirection_in_start(t_node **list, t_env *env)
 t_tree  *parss_redirection(t_tree *node, t_node **list, t_env *env)
 {
 	t_tree  *redirect_node;
+	t_node	*tmp;
 	(void)env;
 
-	while (*list && (*list)->type == HEREDOC)
+	redirect_node = NULL;
+	if ((*list)->type == HEREDOC)
 	{
-		redirect_node = parss_herdoc(node, list, env);
-		*list = (*list)->next;
+		tmp = *list;
+		redirect_node = parss_herdoc(node, tmp, env);
 	}
 	if (redirect_node)
 		return redirect_node;

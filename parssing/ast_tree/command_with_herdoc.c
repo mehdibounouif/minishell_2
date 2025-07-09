@@ -6,12 +6,11 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/09 15:06:57 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:21:13 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <fcntl.h>
 /*
 int	is_quoted(char *cmd, int len)
 {
@@ -29,7 +28,7 @@ char	*generate_file_name()
 	return (nb);
 }
 
-int	create_heredoc(t_tree *herdoc_node, t_node **list, t_env *env)
+int	create_heredoc(t_tree *herdoc_node, t_node *list, t_env *env)
 {
 	int	fd;
 	static	int	old_fd;
@@ -47,9 +46,9 @@ int	create_heredoc(t_tree *herdoc_node, t_node **list, t_env *env)
 		return (-1);
 	old_fd = fd;
 	line = readline(">");
-	while (line && ft_strcmp((*list)->content, line))
+	while (line && ft_strcmp(list->content, line))
 	{
-		if (!(*list)->quoted)
+		if (!list->quoted)
 		{
 			line = expansion(line, env);
 		}
@@ -63,8 +62,7 @@ int	create_heredoc(t_tree *herdoc_node, t_node **list, t_env *env)
 	return (0);
 }
 
-t_tree	*parss_herdoc(t_tree *node, t_node **list, t_env *env)
-
+t_tree	*parss_herdoc(t_tree *node, t_node *list, t_env *env)
 {
 	t_tree	*herdoc_node;
 
@@ -77,11 +75,18 @@ t_tree	*parss_herdoc(t_tree *node, t_node **list, t_env *env)
 		free(herdoc_node);
 		return (NULL);
 	}
-	*list = (*list)->next;
-	if (create_heredoc(herdoc_node, list, env))
-		return (NULL);
+	herdoc_node->redirect->redirect = list->content;
+	while(list)
+	{
+		if (list->type == HEREDOC && list->next)
+		{
+			list = list->next;
+			if (create_heredoc(herdoc_node, list, env))
+				return (NULL);
+		}
+		list = list->next;
+	}
 	herdoc_node->type = REDIRECT_NODE;
-	herdoc_node->redirect->redirect = (*list)->prev->content;
 	herdoc_node->redirect->prev = node;
 	return (herdoc_node);
 }

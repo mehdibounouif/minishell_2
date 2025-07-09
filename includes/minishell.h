@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/07 18:46:40 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:47:36 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,10 +146,10 @@ void print_list(t_node *list);
 t_tree *pars_command(t_node **list, t_env *env);
 t_tree  *parss_redirection(t_tree *node, t_node **list, t_env *env);
 t_tree	*parss_redirection_in_start(t_node **list, t_env *env);
-t_tree	*parss_herdoc(t_tree *node, t_node **list, t_env *env);
+//t_tree	*parss_herdoc(t_tree *node, t_node **list, t_env *env);
 t_tree  *pars_one_side(t_node **list, t_env *env);
 t_tree  *pars_pipe(t_node **list, t_env *env);
-t_tree	*parss_herdoc(t_tree *node, t_node **list, t_env *env);
+t_tree	*parss_herdoc(t_tree *node, t_node *list, t_env *env);
 
 
 void	free_tree(t_tree **tree);

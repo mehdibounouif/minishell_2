@@ -1,1 +1,6 @@
-
+echo $"HOME";
+cat << EOF1 << EOF2;
+cat << a"b"c;
+cat << a'b';
+cat << 'a'b;
+echo $HOME$HOME$HOME; output: echo /home/mbounoui/home/mbounoui/home/mbounoui;
