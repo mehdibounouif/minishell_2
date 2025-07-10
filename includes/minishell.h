@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/10 14:35:28 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/10 17:01:04 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_pipe t_pipe;
 typedef struct s_end t_end;
 typedef struct s_env t_env;
 typedef struct s_mini t_mini;
+typedef struct s_herdoc t_herdoc;
 
 struct s_env {
 	char *key;
@@ -77,18 +78,24 @@ struct s_command {
   char **args;
 };
 
+struct	s_herdoc {
+	char	*herdoc;
+	char	*delimeter;
+	struct s_herdoc *next;
+};
+
 struct s_redirection {
 	t_tree *prev;
 	char *in_file;
 	char *out_file;
-	char *her_file;
 	char *in_redirect;
 	char *out_redirect;
-	char *her_redirect;
 	int	out;
 	int	in;
-	int	herdoc;
-	int redirection_type;
+	int	hdc;
+	int in_type;
+	int out_type;
+	t_herdoc *herdoc;
 };
 
 struct s_tree {
@@ -146,6 +153,7 @@ int     ft_strcmp(const char *s1, const char *s2);
 int is_space(char c);
 void add_back(t_node **list, t_node *node);
 void add_back2(t_env **list, t_env *node);
+void	add_back3(t_herdoc **list, t_herdoc *node);
 void print_list(t_node *list);
 
 
@@ -157,6 +165,7 @@ t_tree	*parss_redirection_in_start(t_node **list, t_env *env);
 t_tree  *pars_one_side(t_node **list, t_env *env);
 t_tree  *pars_pipe(t_node **list, t_env *env);
 t_tree	*parss_herdoc(t_tree *node, t_node *list, t_env *env);
+void	collect_herdoc(t_tree *node, t_node *list);
 
 
 void	free_tree(t_tree **tree);

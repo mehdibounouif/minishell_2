@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/10 14:19:05 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/10 17:08:05 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	create_heredoc(t_tree *herdoc_node, t_node *list, t_env *env)
 	char	*line;
 	char	*nb;
 	char	*file_name;
+	(void)herdoc_node;
 
 	nb = generate_file_name();
 	if (old_fd)
@@ -57,9 +58,30 @@ int	create_heredoc(t_tree *herdoc_node, t_node *list, t_env *env)
 		free(line);
 		line = readline(">");
 	}
-	herdoc_node->redirect->her_file = file_name;
+	//herdoc_node->redirect->her_file = file_name;
 	printf("fd = %d\n", fd);
 	return (0);
+}
+
+void	collect_herdoc(t_tree *node, t_node *list)
+{
+	t_herdoc *h_node;
+
+	h_node = malloc(sizeof(t_herdoc));
+	if (!h_node)
+		return ;
+	while (list && list->type != PIPE)
+	{
+		if (list->type == HEREDOC && list->next)
+		{
+			node->redirect->hdc++;
+			h_node->herdoc = list->content;
+			list = list->next;
+			h_node->delimeter = list->content;
+			add_back3(&node->redirect->herdoc, h_node);
+		}
+		list = list->next;
+	}
 }
 
 t_tree	*parss_herdoc(t_tree *node, t_node *list, t_env *env)
@@ -75,7 +97,7 @@ t_tree	*parss_herdoc(t_tree *node, t_node *list, t_env *env)
 		free(herdoc_node);
 		return (NULL);
 	}
-	herdoc_node->redirect->her_redirect = list->content;
+	//herdoc_node->redirect->her_redirect = list->content;
 	while(list)
 	{
 		if (list->type == HEREDOC && list->next)
