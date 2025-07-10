@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 09:02:11 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/08 13:15:50 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/10 10:36:33 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,11 @@ void print_tree_unicode(t_tree *tree, const char *prefix, int is_last) {
             break;
         }
         case REDIRECT_NODE: {
-            printf(COLOR_RED "REDIRECT: %s -> %s\n" COLOR_RESET,
-                   tree->redirect->redirect, tree->redirect->file);
+            printf(COLOR_RED "REDIRECT: %s -> %s -> %d\n" COLOR_RESET,
+                   tree->redirect->in_redirect, tree->redirect->in_file, tree->redirect->in);
+			printf("%s%s", prefix, is_last ? "└── " : "├── ");
+            printf(COLOR_RED "REDIRECT: %s -> %s -> %d\n" COLOR_RESET,
+                   tree->redirect->out_redirect, tree->redirect->out_file, tree->redirect->out);
             char *new_prefix = build_prefix(prefix, is_last);
             print_tree_unicode(tree->redirect->prev, new_prefix, 1);
             free(new_prefix);

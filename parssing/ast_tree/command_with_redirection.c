@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:57 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/09 16:09:50 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:35:45 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ t_tree	*parss_redirection_in_start(t_node **list, t_env *env)
 		return (NULL);
 	}
 	redirect_node->type = REDIRECT_NODE;
-	redirect_node->redirect->redirect = (*list)->content;
+	redirect_node->redirect->in_redirect = (*list)->content;
 	redirect_node->redirect->redirection_type = (*list)->type;
 	printf("%d\n", (*list)->type);
 	*list = (*list)->next;
-	redirect_node->redirect->file = (*list)->content;
+	redirect_node->redirect->in_file = (*list)->content;
 	*list = (*list)->next;
 	node = pars_one_side(list, env);
 	redirect_node->redirect->prev = node;
@@ -67,18 +67,32 @@ t_tree  *parss_redirection(t_tree *node, t_node **list, t_env *env)
 		return (NULL);
 	}
 	redirect_node->type = REDIRECT_NODE;
-	redirect_node->redirect->redirect = (*list)->content;
-	*list = (*list)->next;
-	while ((*list)->type == WORD && is_redirection((*list)->next))
+	redirect_node->redirect->in = 0;
+	redirect_node->redirect->out = 0;
+	while (*list && (*list)->type != PIPE)
 	{
-		*list = (*list)->next;
+		if ((*list)->type == R_OUT || (*list)->type == R_APPEND)
+		{
+			redirect_node->redirect->out++;
+			redirect_node->redirect->out_redirect = (*list)->content;
+			*list = (*list)->next;
+			redirect_node->redirect->out_file = (*list)->content;
+		}
+		if ((*list)->type == R_IN)
+		{
+			redirect_node->redirect->in++;
+			redirect_node->redirect->in_redirect = (*list)->content;
+			*list = (*list)->next;
+			redirect_node->redirect->in_file = (*list)->content;
+		}
+		if ((*list)->type == HEREDOC)
+		{
+			*list = (*list)->next;
+			*list = (*list)->next;
+		}
 		*list = (*list)->next;
 	}
-	redirect_node->redirect->file = (*list)->content;
-	redirect_node->redirect->redirection_type = (*list)->type;
 	redirect_node->redirect->prev = node;
-	*list = (*list)->next;
-
 	return (redirect_node);
 }
 

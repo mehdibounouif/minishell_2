@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/09 15:47:36 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:35:28 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,17 @@ struct s_command {
 };
 
 struct s_redirection {
-  t_tree *prev;
-  char *file;
-  char *redirect;
-  int redirection_type;
+	t_tree *prev;
+	char *in_file;
+	char *out_file;
+	char *her_file;
+	char *in_redirect;
+	char *out_redirect;
+	char *her_redirect;
+	int	out;
+	int	in;
+	int	herdoc;
+	int redirection_type;
 };
 
 struct s_tree {

@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/09 16:21:13 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/10 14:19:05 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	create_heredoc(t_tree *herdoc_node, t_node *list, t_env *env)
 		free(line);
 		line = readline(">");
 	}
-	herdoc_node->redirect->file = file_name;
+	herdoc_node->redirect->her_file = file_name;
 	printf("fd = %d\n", fd);
 	return (0);
 }
@@ -75,7 +75,7 @@ t_tree	*parss_herdoc(t_tree *node, t_node *list, t_env *env)
 		free(herdoc_node);
 		return (NULL);
 	}
-	herdoc_node->redirect->redirect = list->content;
+	herdoc_node->redirect->her_redirect = list->content;
 	while(list)
 	{
 		if (list->type == HEREDOC && list->next)

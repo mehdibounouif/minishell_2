@@ -1,7 +1,7 @@
 #include "../includes/minishell.h"
 #include <sys/wait.h>
 #include <unistd.h>
-
+/*
 void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 {
 	(void)env;
@@ -32,3 +32,4 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 //		ret = WEXITSTATUS(status);
 	}
 }
+*/
