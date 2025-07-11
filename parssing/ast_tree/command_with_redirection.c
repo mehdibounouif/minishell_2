@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:57 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/10 17:07:05 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/11 10:18:00 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ t_tree  *parss_redirection(t_tree *node, t_node **list, t_env *env)
 	t_node	*tmp;
 	(void)env;
 
-	redirect_node = NULL;
 	//	if ((*list)->type == HEREDOC)
 	//	{
 	//		tmp = *list;
@@ -79,6 +78,7 @@ t_tree  *parss_redirection(t_tree *node, t_node **list, t_env *env)
 	init(redirect_node);
 	tmp = *list;
 	collect_herdoc(redirect_node, tmp);
+	//redirect_node->redirect->herdoc = NULL;
 	while (*list && (*list)->type != PIPE)
 	{
 		if ((*list)->type == HEREDOC)
@@ -86,21 +86,25 @@ t_tree  *parss_redirection(t_tree *node, t_node **list, t_env *env)
 			*list = (*list)->next;
 			*list = (*list)->next;
 		}
-		if ((*list)->type == R_OUT || (*list)->type == R_APPEND)
+		else if (*list && ((*list)->type == R_OUT || (*list)->type == R_APPEND))
 		{
 			redirect_node->redirect->out++;
 			redirect_node->redirect->out_redirect = (*list)->content;
 			*list = (*list)->next;
 			redirect_node->redirect->out_file = (*list)->content;
+			*list = (*list)->next;
 		}
-		if ((*list)->type == R_IN)
+		else if (*list && (*list)->type == R_IN)
 		{
-			redirect_node->redirect->in++;
+			//redirect_node->redirect->in = 1;
 			redirect_node->redirect->in_redirect = (*list)->content;
 			*list = (*list)->next;
-			redirect_node->redirect->in_file = (*list)->content;
+			if (redirect_node->redirect->hdc)
+				redirect_node->redirect->in_file = get_last_herdoc(redirect_node->redirect->herdoc);
+			else
+				redirect_node->redirect->in_file = (*list)->content;
+			*list = (*list)->next;
 		}
-		*list = (*list)->next;
 	}
 	redirect_node->redirect->prev = node;
 	return (redirect_node);

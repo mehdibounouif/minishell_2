@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/10 17:01:04 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/11 09:41:31 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ t_tree  *pars_one_side(t_node **list, t_env *env);
 t_tree  *pars_pipe(t_node **list, t_env *env);
 t_tree	*parss_herdoc(t_tree *node, t_node *list, t_env *env);
 void	collect_herdoc(t_tree *node, t_node *list);
+char	*get_last_herdoc(t_herdoc *list);
 
 
 void	free_tree(t_tree **tree);

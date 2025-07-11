@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/10 17:08:05 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/11 11:55:38 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,23 +63,47 @@ int	create_heredoc(t_tree *herdoc_node, t_node *list, t_env *env)
 	return (0);
 }
 
+char	*get_last_herdoc(t_herdoc *list)
+{
+	while (list->next)
+	{
+		list = list->next;
+	}
+	return (list->delimeter);
+}
+
 void	collect_herdoc(t_tree *node, t_node *list)
 {
 	t_herdoc *h_node;
 
-	h_node = malloc(sizeof(t_herdoc));
-	if (!h_node)
-		return ;
+	node->redirect->herdoc = NULL;
 	while (list && list->type != PIPE)
 	{
 		if (list->type == HEREDOC && list->next)
 		{
-			node->redirect->hdc++;
+			h_node = malloc(sizeof(t_herdoc));
+			if (!h_node)
+				return ;
+			if (node->redirect->in)
+			{
+				node->redirect->hdc = 1;
+				node->redirect->in = 0;
+			}
+			else
+				node->redirect->hdc = 1;
 			h_node->herdoc = list->content;
 			list = list->next;
 			h_node->delimeter = list->content;
+			h_node->next = NULL;
 			add_back3(&node->redirect->herdoc, h_node);
 		}
+		if (list->type == R_IN && node->redirect->hdc)
+		{
+			node->redirect->hdc = 0;
+			node->redirect->in = 1;
+		}
+		else if (list->type == R_IN && !node->redirect->hdc)
+			node->redirect->in = 1;
 		list = list->next;
 	}
 }
