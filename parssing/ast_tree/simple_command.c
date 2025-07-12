@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   simple_command.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/12 09:27:09 by mbounoui          #+#    #+#             */
+/*   Updated: 2025/07/12 09:44:22 by mbounoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 t_tree  *pars_one_side(t_node **list, t_env *env)
@@ -43,5 +55,3 @@ t_tree  *pars_one_side(t_node **list, t_env *env)
 		node = parss_redirection(node, list, env);
 	return (node);
 }
-
-

@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/11 09:41:31 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/12 10:43:19 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,20 +81,21 @@ struct s_command {
 struct	s_herdoc {
 	char	*herdoc;
 	char	*delimeter;
+	int	quoted;
 	struct s_herdoc *next;
 };
 
 struct s_redirection {
 	t_tree *prev;
 	char *in_file;
+	char	**in_files;
 	char *out_file;
 	char *in_redirect;
 	char *out_redirect;
 	int	out;
 	int	in;
 	int	hdc;
-	int in_type;
-	int out_type;
+	int count;
 	t_herdoc *herdoc;
 };
 
@@ -140,6 +141,7 @@ void execute_command(t_env *env, const char *input);
 void	execute_pipe_node(t_tree *tree, t_env *env, char **envp);
 void print_env(t_env *env);
 void print_tree_unicode(t_tree *tree, const char *prefix, int is_last);
+void	open_herdocs(t_tree *tree, t_env *env);
 
 // Tokenize
 int tokenize(char *cmd, t_node **list);

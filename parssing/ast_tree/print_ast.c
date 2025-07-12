@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 09:02:11 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/10 10:36:33 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/11 18:41:35 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,35 @@ void  print_env(t_env *env)
 		printf("value = %s\n", env->value);
 		env = env->next;
 	}
+}
+
+void	print_her(t_herdoc *herdoc)
+{
+    if (!herdoc) return;
+	printf("{");
+	while (herdoc)
+	{
+		printf("%s ", herdoc->herdoc);
+		printf("%s ,", herdoc->delimeter);
+		herdoc = herdoc->next;
+	}
+	printf("} -> ");
+}
+
+void	print_herdoc(t_tree *tree)
+{
+    if (!tree)
+		return;
+
+	switch (tree->type) {
+		case REDIRECT_NODE:
+		print_her(tree->redirect->herdoc);
+		break;
+
+		case PIPE_NODE:
+		print_herdoc(tree->pipe->left);
+		print_herdoc(tree->pipe->right);
+		break;
+	}
+	printf("\n");
 }
