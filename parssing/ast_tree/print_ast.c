@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 09:02:11 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/11 18:41:35 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/12 12:16:03 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,11 @@ void print_tree_unicode(t_tree *tree, const char *prefix, int is_last) {
             break;
         }
         case REDIRECT_NODE: {
-            printf(COLOR_RED "REDIRECT: %s -> %s -> %d\n" COLOR_RESET,
-                   tree->redirect->in_redirect, tree->redirect->in_file, tree->redirect->in);
+            printf(COLOR_RED "REDIRECT: Input file => %s\n" COLOR_RESET,
+                    tree->redirect->in_file);
 			printf("%s%s", prefix, is_last ? "└── " : "├── ");
-            printf(COLOR_RED "REDIRECT: %s -> %s -> %d\n" COLOR_RESET,
-                   tree->redirect->out_redirect, tree->redirect->out_file, tree->redirect->out);
+            printf(COLOR_RED "REDIRECT: Output file => %s\n" COLOR_RESET,
+                   tree->redirect->out_file);
             char *new_prefix = build_prefix(prefix, is_last);
             print_tree_unicode(tree->redirect->prev, new_prefix, 1);
             free(new_prefix);
@@ -78,6 +78,27 @@ void  print_env(t_env *env)
 	}
 }
 
+void	print_data(t_redirection *node)
+{
+	int	i;
+
+	i = 0;
+	printf("Input file = %s\n", node->in_file);
+	printf("Output file = %s\n", node->out_file);
+	printf("Input flag = %d\n", node->in);
+	printf("Herdoc flag = %d\n", node->hdc);
+	printf("Herdoc fd = %d\n", node->fd);
+	printf("\nInput files :\n");
+	while (node->in_files[i])
+	{
+		printf("file %d = %s\n", i+1, node->in_files[i]);
+		i++;
+	}
+	printf("\nHere documents :\n");
+	print_her(node->herdoc);
+	printf("\n======================\n");
+}
+
 void	print_her(t_herdoc *herdoc)
 {
     if (!herdoc) return;
@@ -88,7 +109,7 @@ void	print_her(t_herdoc *herdoc)
 		printf("%s ,", herdoc->delimeter);
 		herdoc = herdoc->next;
 	}
-	printf("} -> ");
+	printf("} ->\n");
 }
 
 void	print_herdoc(t_tree *tree)

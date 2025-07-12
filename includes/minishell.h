@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/12 10:43:19 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/12 12:16:30 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ struct	s_herdoc {
 	char	*herdoc;
 	char	*delimeter;
 	int	quoted;
+	int fd;
 	struct s_herdoc *next;
 };
 
@@ -90,12 +91,13 @@ struct s_redirection {
 	char *in_file;
 	char	**in_files;
 	char *out_file;
-	char *in_redirect;
-	char *out_redirect;
-	int	out;
+//	char *in_redirect;
+//	char *out_redirect;
+//	int	out;
 	int	in;
 	int	hdc;
 	int count;
+	int fd;
 	t_herdoc *herdoc;
 };
 
@@ -142,6 +144,8 @@ void	execute_pipe_node(t_tree *tree, t_env *env, char **envp);
 void print_env(t_env *env);
 void print_tree_unicode(t_tree *tree, const char *prefix, int is_last);
 void	open_herdocs(t_tree *tree, t_env *env);
+void	print_her(t_herdoc *herdoc);
+void	print_data(t_redirection *node);
 
 // Tokenize
 int tokenize(char *cmd, t_node **list);
@@ -169,6 +173,7 @@ t_tree  *pars_pipe(t_node **list, t_env *env);
 t_tree	*parss_herdoc(t_tree *node, t_node *list, t_env *env);
 void	collect_herdoc(t_tree *node, t_node *list);
 char	*get_last_herdoc(t_herdoc *list);
+char	*get_last_file(char **list);
 
 
 void	free_tree(t_tree **tree);
