@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 09:02:11 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/12 12:16:03 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/12 13:26:30 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,3 +129,28 @@ void	print_herdoc(t_tree *tree)
 	}
 	printf("\n");
 }
+
+void	print_redirection_data(t_tree *tree)
+{
+	if (tree->type == REDIRECT_NODE)
+	{
+		print_data(tree->redirect);
+	}
+	else if (tree->type == PIPE_NODE)
+	{
+		print_redirection_data(tree->pipe->left);
+		print_redirection_data(tree->pipe->right);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+

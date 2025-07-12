@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/12 12:16:30 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/12 13:27:05 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ void print_tree_unicode(t_tree *tree, const char *prefix, int is_last);
 void	open_herdocs(t_tree *tree, t_env *env);
 void	print_her(t_herdoc *herdoc);
 void	print_data(t_redirection *node);
+void	print_redirection_data(t_tree *tree);
 
 // Tokenize
 int tokenize(char *cmd, t_node **list);

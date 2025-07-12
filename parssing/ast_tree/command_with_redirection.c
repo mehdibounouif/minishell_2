@@ -6,12 +6,11 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:57 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/12 12:18:50 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/12 14:23:19 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <readline/readline.h>
 
 t_tree	*parss_redirection_in_start(t_node **list, t_env *env)
 {
@@ -45,7 +44,6 @@ void	init(t_tree *node)
 	node->redirect->count = 0;
 	node->redirect->hdc = 0;
 	node->redirect->prev = node;
-
 }
 
 t_tree  *parss_redirection(t_tree *node, t_node **list, t_env *env)
@@ -105,6 +103,6 @@ t_tree  *parss_redirection(t_tree *node, t_node **list, t_env *env)
 	else
 		redirect_node->redirect->in_file = last_herdoc;
 	redirect_node->redirect->prev = node;
-	print_data(redirect_node->redirect);
+	//print_data(redirect_node->redirect);
 	return (redirect_node);
 }
