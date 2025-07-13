@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/12 13:27:05 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/13 11:35:30 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,18 +87,19 @@ struct	s_herdoc {
 };
 
 struct s_redirection {
-	t_tree *prev;
-	char *in_file;
-	char	**in_files;
-	char *out_file;
-//	char *in_redirect;
-//	char *out_redirect;
-//	int	out;
-	int	in;
-	int	hdc;
-	int count;
-	int fd;
-	t_herdoc *herdoc;
+	t_tree *prev; // previous node;
+	char *in_file; // last input file;
+	char	**in_files; // all input files;
+	char *out_file; // last output file;
+	char	**out_files; // all output file;
+	int	*heredoc_fds; // heredoc fds;
+	int	in; // flag to know if the last input file is the stdin or not;
+	int	hdc; // flag to know if the last herdoc file is the stdin or not;
+	int in_count; // number of input files;
+	int out_count; // number of output files;
+	int	out_type; // type of output file (trunk or append);
+	int last_fd; // last heredoc fd;
+	t_herdoc *herdoc; // list of command heredocs;
 };
 
 struct s_tree {

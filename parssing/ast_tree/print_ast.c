@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 09:02:11 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/12 13:26:30 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/13 11:34:06 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,18 @@ void  print_env(t_env *env)
 	}
 }
 
+void	print_her(t_herdoc *herdoc)
+{
+    if (!herdoc) return;
+	printf("{");
+	while (herdoc)
+	{
+		printf("%s ", herdoc->herdoc);
+		printf("%s ,", herdoc->delimeter);
+		herdoc = herdoc->next; }
+	printf("} ->\n");
+}
+
 void	print_data(t_redirection *node)
 {
 	int	i;
@@ -87,29 +99,30 @@ void	print_data(t_redirection *node)
 	printf("Output file = %s\n", node->out_file);
 	printf("Input flag = %d\n", node->in);
 	printf("Herdoc flag = %d\n", node->hdc);
-	printf("Herdoc fd = %d\n", node->fd);
+//	printf("Herdoc fd = %d\n", node->fd);
 	printf("\nInput files :\n");
 	while (node->in_files[i])
 	{
 		printf("file %d = %s\n", i+1, node->in_files[i]);
 		i++;
 	}
-	printf("\nHere documents :\n");
-	print_her(node->herdoc);
-	printf("\n======================\n");
-}
-
-void	print_her(t_herdoc *herdoc)
-{
-    if (!herdoc) return;
-	printf("{");
-	while (herdoc)
+	printf("\nOutput files :\n");
+	i = 0;
+	while (node->out_files[i])
 	{
-		printf("%s ", herdoc->herdoc);
-		printf("%s ,", herdoc->delimeter);
-		herdoc = herdoc->next;
+		printf("file %d = %s\n", i+1, node->out_files[i]);
+		i++;
 	}
-	printf("} ->\n");
+	printf("\nHerdoc fds :\n");
+	i = 0;
+	while (node->heredoc_fds[i])
+	{
+		printf("fd %d = %d\n", i+1, node->heredoc_fds[i]);
+		i++;
+	}
+	printf("\nHere documents :\n");
+//	print_her(node->herdoc);
+	printf("\n======================\n");
 }
 
 void	print_herdoc(t_tree *tree)
