@@ -6,13 +6,13 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 09:27:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/12 09:44:22 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/13 16:45:35 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_tree  *pars_one_side(t_node **list, t_env *env)
+t_tree  *command_without_redirection(t_node **list)
 {
 	t_tree	*node;
 	int	i;
@@ -20,8 +20,6 @@ t_tree  *pars_one_side(t_node **list, t_env *env)
 	char    **args;
 	int len;
 
-	if (is_redirection(*list))
-		return parss_redirection_in_start(list, env);
 	i = 0;
 	len = count_args(*list);
 	cmd = (*list)->content;
@@ -51,7 +49,5 @@ t_tree  *pars_one_side(t_node **list, t_env *env)
 	node->command->command = cmd;
 	node->command->args = args;
 	node->type = COMMAND_NODE;
-	if (is_redirection(*list))
-		node = parss_redirection(node, list, env);
 	return (node);
 }

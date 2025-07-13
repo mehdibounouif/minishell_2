@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:57 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/13 14:44:17 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/13 16:49:18 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ int	allocat_files_array(t_tree *node)
 
 	infile_num = node->redirect->in_count + 1;
 	outfile_num = node->redirect->out_count + 1;
-	printf("infile = %d\n", infile_num);
-	printf("outfile = %d\n", outfile_num);
 	node->redirect->in_files = malloc(sizeof(char *) * infile_num);
 	if (!node->redirect->in_files)
 		return (0);
@@ -88,14 +86,15 @@ int	allocat_files_array(t_tree *node)
 t_tree	*parss_redirection_in_start(t_node **list, t_env *env)
 {
 	t_tree	*redirect_node;
+	t_tree	*prev;
 	t_node *tmp;
-	t_tree	*node;
 	int	i;
 	int	j;
 	(void)env;
 
 	i = 0;
 	j = 0;
+	prev = NULL;
 	redirect_node = malloc(sizeof(t_tree));
 	if (!redirect_node)
 		return (NULL);
@@ -105,14 +104,22 @@ t_tree	*parss_redirection_in_start(t_node **list, t_env *env)
 		free(redirect_node);
 		return (NULL);
 	}
-	init(redirect_node);
-	tmp = *list;
-	collect_herdoc(redirect_node, tmp);
-	*list = (*list)->next;
-//	redirect_node->redirect->in_file = (*list)->content;
-	*list = (*list)->next;
-	node = pars_one_side(list, env);
-	redirect_node->redirect->prev = node;
+	init(redirect_node); tmp = *list; collect_herdoc(redirect_node, tmp);
+	if (!allocat_files_array(redirect_node))
+		return (NULL); // Free here;
+	collect_in_out_files(list, redirect_node, &i, &j);
+	if (*list && (*list)->type != PIPE)
+	{
+		prev = command_without_redirection(list);
+	}
+	if (*list && (*list)->type != PIPE)
+	{
+		collect_in_out_files(list, redirect_node, &i, &j);
+	}
+	redirect_node->redirect->in_files[i] = NULL;
+	redirect_node->redirect->out_files[j] = NULL;
+	assign_last_file(redirect_node);
+	redirect_node->redirect->prev = prev;
 	return (redirect_node);
 }
 
