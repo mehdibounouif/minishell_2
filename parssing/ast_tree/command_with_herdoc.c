@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/13 14:53:14 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/14 10:44:06 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ char	*get_last_file(char **list)
 	}
 	return (list[i]);
 }
+
 void	collect_herdoc(t_tree *node, t_node *list)
 {
 	t_herdoc *h_node;
@@ -136,4 +137,5 @@ void	collect_herdoc(t_tree *node, t_node *list)
 			node->redirect->in = 1;
 		list = list->next;
 	}
+	print_her(node->redirect->herdoc);
 }

@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 16:38:25 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/13 16:46:37 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/14 11:59:47 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_tree  *pars_pipe(t_node **list, t_env *env)
 	while (*list && (*list)->type == PIPE)
 	{
 		*list = (*list)->next;
-		t_tree  *right = command_without_redirection(list);
+		t_tree  *right = parss_one_side(list, env);
 		t_tree  *pipe_cmd = malloc(sizeof(t_tree));
 		if (!pipe_cmd)
 		{

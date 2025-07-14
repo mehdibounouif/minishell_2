@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:57 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/13 16:49:18 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/14 11:41:51 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	init(t_tree *node)
 	node->redirect->out_count = 0;
 	node->redirect->hdc = 0;
 	node->redirect->last_fd = -1;
-	node->redirect->prev = node;
 }
 
 void	collect_in_out_files(t_node **list, t_tree *node, int *i, int *j)
@@ -104,18 +103,16 @@ t_tree	*parss_redirection_in_start(t_node **list, t_env *env)
 		free(redirect_node);
 		return (NULL);
 	}
-	init(redirect_node); tmp = *list; collect_herdoc(redirect_node, tmp);
+	init(redirect_node);
+	tmp = *list;
+	collect_herdoc(redirect_node, tmp);
 	if (!allocat_files_array(redirect_node))
 		return (NULL); // Free here;
 	collect_in_out_files(list, redirect_node, &i, &j);
 	if (*list && (*list)->type != PIPE)
-	{
 		prev = command_without_redirection(list);
-	}
 	if (*list && (*list)->type != PIPE)
-	{
 		collect_in_out_files(list, redirect_node, &i, &j);
-	}
 	redirect_node->redirect->in_files[i] = NULL;
 	redirect_node->redirect->out_files[j] = NULL;
 	assign_last_file(redirect_node);
