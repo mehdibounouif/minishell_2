@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 08:45:19 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/09 11:54:43 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/15 14:57:04 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ t_node	*get_token(char *cmd, int *i)
 			node->quoted = 1;
 			l = len;
 		}	
-		if (is_separator(cmd, *i))
+		if (is_separator(cmd, *i) && !check_quotes(cmd, *i))
 		{
 			h = len_of_sep(cmd, *i) + *i;
 			is_sep = 1;

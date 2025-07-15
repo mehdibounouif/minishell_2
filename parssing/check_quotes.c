@@ -9,14 +9,7 @@ int check_quotes(char *cmd, size_t i)
   flag = 0;
   while (cmd[j] && j != i)
   {
-	  /*
-    if (j > 0 && cmd[j - 1] == '\\')
-    {
-      j++;
-      continue;
-    }
-    */
-    if (flag == 0 && cmd[j] == '\"')
+   if (flag == 0 && cmd[j] == '\"')
       flag = 1;
     else if (flag == 0 && cmd[j] == '\'')
       flag = 2;
