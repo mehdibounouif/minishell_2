@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/14 16:16:53 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/15 12:05:51 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	close_fds(int *list)
 	int	i;
 
 	i = 0;
-	while (list[i])
+	while (list[i] != 0)
 	{
 		close(list[i]);
 		i++;
@@ -52,26 +52,14 @@ void	dup_fds(t_redirection *node, t_env *env, char **envp)
 {
 	(void)env;
 	(void)envp;
-	// 2 check flags of stdin (input file or heredoc)
-	//		if herdoc
-	//			dup2(last_fd, 0);
-	//			close(last_fd);
-	//		else
-	//			fd = open("in_file");
-	//			dup2(fd, 0);
-	//			close(fd);
-	//
-	// 3 check type of stdout (trunk or append)
-	//		if (trunk)
-	//			fd = open("out_file", O_CREAT | O_TRUNK);
-	//		else if (append)
-	//			fd = open("out_file", O_CREAT | O_APPEND);
+
 	int	in_fd;
 	int	out_fd;
-
 	if (node->hdc)
 	{
-		dup2(node->last_fd, 0);
+		if ((in_fd = open(node->hrc_file, O_RDONLY)) == -1)
+			exit(-1);
+		dup2(in_fd, 0);
 		close_fds(node->heredoc_fds);
 	}
 	else if (node->in)
@@ -84,15 +72,19 @@ void	dup_fds(t_redirection *node, t_env *env, char **envp)
 	}
 	if (node->out_type == R_APPEND)
 	{
-		if ((out_fd = open(node->out_file, O_CREAT | O_APPEND, 0777)) == -1)
+		if ((out_fd = open(node->out_file, O_WRONLY | O_CREAT | O_APPEND, 0777)) == -1)
 			exit(-1);
 		dup2(out_fd, 1);
 	}
 	else if (node->out_type == R_OUT)
 	{
-		if ((out_fd = open(node->out_file, O_CREAT | O_TRUNC, 0777)) == -1)
+		if ((out_fd = open(node->out_file,O_WRONLY | O_CREAT | O_TRUNC, 0777)) == -1)
 			exit(-1);
-		dup2(out_fd, 1);
+		if (dup2(out_fd, 1) == -1)
+		{
+			printf("dup2 failed\n");
+			exit(-1);
+		}
 	}
 }
 
@@ -112,10 +104,15 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 	{
 		// duplicate fds
 		dup_fds(node->redirect, env, envp);
-	//	char *path = find_path(node , env);
-	//	execve(path, node->command->args, envp);
-	//	perror("execve");
-	//	exit(1);
+		char *path = find_path(node->redirect->prev , env);
+		if (!path)
+		{
+			printf("there is no path\n");
+			exit(-1);
+		}
+		execve(path, node->redirect->prev->command->args, envp);
+		perror("execve");
+		exit(1);
 		//child	process;
 	}
 	else if (pid > 0)

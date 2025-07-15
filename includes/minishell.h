@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/14 10:19:53 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/15 12:01:20 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ struct s_redirection {
 	char *out_file; // last output file;
 	char	**out_files; // all output file;
 	int	*heredoc_fds; // heredoc fds;
+	char	**heredocs;
+	char *hrc_file; // last output file;
 	int	in; // flag to know if the last input file is the stdin or not;
 	int	hdc; // flag to know if the last herdoc file is the stdin or not;
 	int in_count; // number of input files;
