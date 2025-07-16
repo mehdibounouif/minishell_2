@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:01:06 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/10 17:00:39 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/15 14:54:00 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,6 @@ void	add_back3(t_herdoc **list, t_herdoc *node)
 		tmp->next = node;
 	}
 }
-
-
 
 void	add_back2(t_env **list, t_env *node)
 {

@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/08 09:31:15 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/16 12:07:45 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,20 +67,19 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 		execute_builtin(node, env);
 		return ;
 	}
-
 	// External command: fork and execve
 	pid_t pid = fork();
 	if (pid == 0)
 	{
 		char *path = find_path(node , env);
 		execve(path, node->command->args, envp);
-		perror("execve");
-		exit(1);
+		ft_putstr_fd(node->command->command, 2);
+		ft_putendl_fd(": command not found", 2);
+		node->ret = 127;
 	}
 	else
 	{
-		int status;
-		waitpid(pid, &status, 0);
-//		ret = WEXITSTATUS(status);
+		waitpid(pid, NULL, 0);
+		exit(node->ret);
 	}
 }

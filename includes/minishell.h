@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/14 10:19:53 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/16 14:02:17 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ struct s_env {
 };
 
 struct s_node {
-	int	quoted;
+	int	contain_quoted;
+	int	between_quoted;
 	int type;
 	char *content;
 	struct s_node *next;
@@ -93,6 +94,8 @@ struct s_redirection {
 	char *out_file; // last output file;
 	char	**out_files; // all output file;
 	int	*heredoc_fds; // heredoc fds;
+	char	**heredocs;
+	char *hrc_file; // last output file;
 	int	in; // flag to know if the last input file is the stdin or not;
 	int	hdc; // flag to know if the last herdoc file is the stdin or not;
 	int in_count; // number of input files;
@@ -103,17 +106,17 @@ struct s_redirection {
 };
 
 struct s_tree {
-  int type;
-  t_command *command;
-  t_pipe *pipe;
-  t_redirection *redirect;
+	int type;
+	int ret;
+	t_command *command;
+	t_pipe *pipe;
+	t_redirection *redirect;
 };
 
 struct s_mini {
   t_tree *tree;
   t_env *env;
   t_node *list;
-  int	ret;
 };
 
 
@@ -203,6 +206,8 @@ int	is_redirection(t_node *node);
 int	is_dollar(char *cmd, int i);
 char	*get_env_key(char *cmd, int i);
 char	*expansion(char *cmd, t_env *list);
+int	contain_quoted(char *cmd, int len);
+int	between_quoted(char *cmd, int len);
 /*
 char    *get_special_value(char *key, int ret);
 int	get_special_len(char *cmd, int i);

@@ -6,11 +6,12 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/14 10:44:06 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/15 12:03:30 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <stdlib.h>
 #include <string.h>
 
 char	*generate_file_name()
@@ -21,55 +22,6 @@ char	*generate_file_name()
 	i++;
 	nb = ft_itoa(i);
 	return (ft_strjoin(HEREDOC_FILE, nb));
-}
-
-int	create_heredoc(t_redirection *list, t_env *env, int i)
-{
-	int	fd;
-	char	*line;
-	char	*file_name;
-
-	file_name = generate_file_name();
-	fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC,  0777);
-	if (fd == -1)
-		return (-1);
-	list->heredoc_fds[i] = fd;
-	line = readline(">");
-	while (line && ft_strcmp(list->herdoc->delimeter, line))
-	{
-		if (!list->herdoc->quoted)
-			line = expansion(line, env);
-		write(fd, line, ft_strlen(line));
-		write(fd, "\n", 1);
-		free(line);
-		line = readline(">");
-	}
-	return (0);
-}
-
-void	open_herdocs(t_tree *tree, t_env *env)
-{
-    if (!tree)
-		return;
-	int	i;
-	if (tree->type == REDIRECT_NODE)
-	{
-		i = 0;
-		tree->redirect->heredoc_fds = ft_calloc(20, sizeof(int));
-		if (!tree->redirect->heredoc_fds)
-			return ; // FREE HERE
-		while (tree->redirect->herdoc)
-		{
-			create_heredoc(tree->redirect, env, i);
-			tree->redirect->herdoc = tree->redirect->herdoc->next;
-			i++;
-		}
-	}
-	else if (tree->type == PIPE_NODE)
-	{
-		open_herdocs(tree->pipe->left, env);
-		open_herdocs(tree->pipe->right, env);
-	}
 }
 
 char	*get_last_herdoc(t_herdoc *list)
@@ -94,6 +46,73 @@ char	*get_last_file(char **list)
 		i++;
 	}
 	return (list[i]);
+}
+
+int	get_lastfd(int *list)
+{
+	int	i;
+
+	i = 0;
+	while (list[i] != 0)
+		i++;
+	return (list[i-1]);
+}
+
+int	create_heredoc(t_redirection *list, t_env *env, int i)
+{
+	int	fd;
+	char	*line;
+	char	*file_name;
+
+	file_name = generate_file_name();
+	fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC,  0777);
+	if (fd == -1)
+		return (-1);
+	list->heredoc_fds[i] = fd;
+	list->heredocs[i] = ft_strdup(file_name);
+	line = readline(">");
+	while (line && ft_strcmp(list->herdoc->delimeter, line))
+	{
+		if (!list->herdoc->quoted)
+			line = expansion(line, env);
+		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
+		free(line);
+		line = readline(">");
+	}
+	return (0);
+}
+
+
+
+void	open_herdocs(t_tree *tree, t_env *env)
+{
+    if (!tree)
+		return;
+	int	i;
+	if (tree->type == REDIRECT_NODE)
+	{
+		i = 0;
+		tree->redirect->heredoc_fds = ft_calloc(20, sizeof(int));
+		if (!tree->redirect->heredoc_fds)
+			return ; // FREE HERE
+		tree->redirect->heredocs = malloc(sizeof(char *) * 20);
+		if (!tree->redirect->heredocs)
+			return ; // FREE HERE
+		while (tree->redirect->herdoc)
+		{
+			create_heredoc(tree->redirect, env, i);
+			tree->redirect->herdoc = tree->redirect->herdoc->next;
+			i++;
+		}
+		tree->redirect->last_fd = get_lastfd(tree->redirect->heredoc_fds);
+		tree->redirect->hrc_file = get_last_file(tree->redirect->heredocs);
+	}
+	else if (tree->type == PIPE_NODE)
+	{
+		open_herdocs(tree->pipe->left, env);
+		open_herdocs(tree->pipe->right, env);
+	}
 }
 
 void	collect_herdoc(t_tree *node, t_node *list)

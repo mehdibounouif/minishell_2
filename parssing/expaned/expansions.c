@@ -104,10 +104,11 @@ char	*expansion(char *cmd, t_env *list)
 	char	*expanded_cmd;
 	int	i;
 	int	j;
-//	int	l;
+	int	l;
 
 	i = 0;
 	j = 0;
+	l = 0;
 	full_len = get_full_len(cmd, list);
 	if (full_len == -1)
 		return (NULL);
@@ -116,15 +117,50 @@ char	*expansion(char *cmd, t_env *list)
 		return (NULL);
 	while (cmd[i])
 	{
-//		l = 0;
-		while (is_dollar(cmd, i) && (ft_isalpha(cmd[i+1]) || cmd[i+1] == '_'))
+		if (cmd[i] == '<' && cmd[i+1] == '<')
+		{
+			l = 1;
+			expanded_cmd[j++]  = cmd[i++];
+			expanded_cmd[j++]  = cmd[i++];
+			while (is_space(cmd[i]))
+				expanded_cmd[j++] = cmd[i++];
+			if (cmd[i] == '\'' || cmd[i] != '\"')
+				expanded_cmd[j++] = cmd[i++];
+		}
+		while (l == 0 && is_dollar(cmd, i) && (ft_isalpha(cmd[i+1]) || cmd[i+1] == '_'))
 				replace_key(cmd, expanded_cmd, &i, &j, list);
-		if (!is_dollar(cmd, i))
-			expanded_cmd[j++] = cmd[i++];
-		else
+		if (is_dollar(cmd, i) && !check_quotes(cmd, i) // exmaple $"HOME"
+			&& (cmd[i+1] == '\'' || cmd[i+1] == '\"'))
 			i++;
+		else
+			expanded_cmd[j++] = cmd[i++];
+		l = 0;
 	}
 	free(cmd);
 	expanded_cmd[j] = '\0';
 	return (expanded_cmd);
+}
+/*
+char	*find_mark(t_tree *tree, char *str)
+{
+	int	full_len;
+
+	full_len = get_full_len();
+}
+*/
+void	expand_question_mark(t_tree *tree, t_node **list)
+{
+	t_node *tmp;
+	int	len;
+
+	tmp = *list;
+	while (tmp)
+	{
+		len = ft_strlen(tmp->content);
+		if (between_quoted(tmp->content, len) == 2)
+		{
+//			find_mark(tree, tmp->content);
+		}
+		tmp = tmp->next;
+	}
 }

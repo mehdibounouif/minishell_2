@@ -82,6 +82,6 @@ fclean: clean
 
 re: fclean all
 
-.SECONDARY: $(OBJS)
+.SECONDARY: $(PARS_OBJS) $(EXEC_OBJS) $(BUILTIN_OBJS)
 
 .PHONY: re all clean fclean
