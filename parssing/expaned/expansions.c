@@ -147,7 +147,7 @@ char	*find_mark(t_tree *tree, char *str)
 
 	full_len = get_full_len();
 }
-*/
+
 void	expand_question_mark(t_tree *tree, t_node **list)
 {
 	t_node *tmp;
@@ -162,5 +162,6 @@ void	expand_question_mark(t_tree *tree, t_node **list)
 //			find_mark(tree, tmp->content);
 		}
 		tmp = tmp->next;
-	}
+ 	}
 }
+*/

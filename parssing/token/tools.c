@@ -14,8 +14,7 @@
 
 int	contain_quoted(char *cmd, int len)
 {
-	int	i;
-
+  (void)len;
 	if (!cmd)
 		return (0);
 	if (ft_strchr(cmd, '\'') || ft_strchr(cmd, '\"'))
