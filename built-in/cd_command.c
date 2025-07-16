@@ -76,6 +76,17 @@ static int	change_to_home(t_env *env)
 
 int	cd_command(t_env *env, char **args)
 {
+
+	if(args[2] != NULL)
+	{
+		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+		return (1);
+	}
+	if (!args[0] || (args[0][0] == '-' && !args[0][1]))
+	{
+		ft_putstr_fd("minishell: cd: option not supported\n", 2);
+		return (1);
+	}
 	if (!args[1] || (args[1][0] == '~' && !args[1][1]))
 	{
 		if (change_to_home(env) == 1)
