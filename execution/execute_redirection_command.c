@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/15 12:05:51 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/16 12:07:09 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,20 +107,20 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 		char *path = find_path(node->redirect->prev , env);
 		if (!path)
 		{
-			printf("there is no path\n");
-			exit(-1);
+			ft_putstr_fd(node->redirect->prev->command->command, 2);
+			ft_putendl_fd(": command not found 1", 2);
+			node->ret = 127;
+			exit(127);
 		}
 		execve(path, node->redirect->prev->command->args, envp);
-		perror("execve");
-		exit(1);
-		//child	process;
+		ft_putstr_fd(node->redirect->prev->command->command, 2);
+		ft_putendl_fd(": command not found 2", 2);
+		node->ret = 126;
 	}
 	else if (pid > 0)
 	{
-		int status;
-		waitpid(pid, &status, 0);
-//		ret = WEXITSTATUS(status);
-		//parrent process;
+		waitpid(pid, NULL, 0);
+		exit(node->ret);
 	}
 }
 

@@ -29,7 +29,7 @@ void	print_list(t_node *list)
 	while (list)
 	{
 		printf("%s ", list->content);
-		if (list->quoted)
+		if (list->contain_quoted)
 			printf("is_quoted\n");
 		else
 			printf("\n");

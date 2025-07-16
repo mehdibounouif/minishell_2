@@ -5,3 +5,24 @@ cat << a'b';
 cat << 'a'b;
 echo $HOME$HOME$HOME; output: echo /home/mbounoui/home/mbounoui/home/mbounoui;
 echo "$jfsdkl;lsdkf"
+
+
+exit status:
+
+
+When a command terminates on a fatal signal whose number is N, Bash uses the value
+128+N as the exit status.
+If a command is not found, the child process created to execute it returns a status of
+127. If a command is found but is not executable, the return status is 126.
+If a command fails because of an error during expansion or redirection, the exit status
+is greater than zero.
+
+The exit status of a pipeline is the exit status of the last command in the pipeline, unless
+the pipefail option is enabled (see Section 4.3.1 [The Set Builtin], page 74). If pipefail
+is enabled, the pipeline’s return status is the value of the last (rightmost) command to exit
+with a non-zero status, or zero if all commands exit successfully. If the reserved word ‘!’
+precedes the pipeline, the exit status is the logical negation of the exit status as described
+
+child return:
+command F_OK not found return (127)
+command X_OK not executuble return (126)

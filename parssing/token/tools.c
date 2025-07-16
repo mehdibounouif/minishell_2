@@ -6,26 +6,33 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 08:45:19 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/15 14:57:04 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/16 14:00:56 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	is_quoted(char *cmd, int len)
+int	contain_quoted(char *cmd, int len)
 {
 	int	i;
 
 	if (!cmd)
 		return (0);
-	i = 0;
-	while(i < len)
-	{
-		if (cmd[i] == '\'' || cmd[i] == '\"')
-			return (1);
-		i++;
-	}
+	if (ft_strchr(cmd, '\'') || ft_strchr(cmd, '\"'))
+		return (1);
 	return (0);
+}
+
+int	between_quoted(char *cmd, int len)
+{
+	if (!cmd)
+		return (0);
+	if (cmd[0] == '\'' && cmd[len] == '\'')
+		return (1);
+	else if (cmd[0] == '\"' && cmd[len] == '\"')
+		return (1);
+	else
+		return (0);
 }
 
 int	ft_strcmp(const char *s1, const char *s2)
@@ -122,18 +129,20 @@ t_node	*get_token(char *cmd, int *i)
 	is_sep = 0;
 	if (!(node = malloc(sizeof(t_node))))
 		return (NULL);
-	node->quoted = 0;
+	node->between_quoted = 0;
+	node->contain_quoted = 0;
 	len = calc_token_byte(cmd, i);
 	if (!(node->content = malloc(sizeof(char) * len)))
 		return (NULL);
 	l = *i;
 	while (cmd[*i] && (cmd[*i] != ' ' || c != ' '))
 	{
-		if (is_quoted(&cmd[l], len - 1))
+		node->between_quoted = between_quoted(&cmd[l], len - 1);
+		if (contain_quoted(&cmd[l], len - 1))
 		{
-			node->quoted = 1;
+			node->contain_quoted = 1;
 			l = len;
-		}	
+		}
 		if (is_separator(cmd, *i) && !check_quotes(cmd, *i))
 		{
 			h = len_of_sep(cmd, *i) + *i;

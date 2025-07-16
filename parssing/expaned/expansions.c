@@ -140,3 +140,27 @@ char	*expansion(char *cmd, t_env *list)
 	expanded_cmd[j] = '\0';
 	return (expanded_cmd);
 }
+/*
+char	*find_mark(t_tree *tree, char *str)
+{
+	int	full_len;
+
+	full_len = get_full_len();
+}
+*/
+void	expand_question_mark(t_tree *tree, t_node **list)
+{
+	t_node *tmp;
+	int	len;
+
+	tmp = *list;
+	while (tmp)
+	{
+		len = ft_strlen(tmp->content);
+		if (between_quoted(tmp->content, len) == 2)
+		{
+//			find_mark(tree, tmp->content);
+		}
+		tmp = tmp->next;
+	}
+}
