@@ -26,7 +26,7 @@ t_tree  *command_without_redirection(t_node **list)
 	args = malloc(sizeof(char *) * len + 1);
 	args[i++] = cmd;
 	*list = (*list)->next;
-	while ((*list) && ((*list)->type == WORD || (*list)->quoted))
+	while ((*list) && ((*list)->type == WORD || (*list)->between_quoted))
 	{
 		args[i] = (*list)->content;
 		i++;

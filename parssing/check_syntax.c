@@ -18,23 +18,24 @@ int check_sides(t_node *list)
 		return (1);
 	while(list->next)
 		list = list->next;
-	if (!list->quoted && list->type == PIPE)
+	if (!list->between_quoted && list->type == PIPE)
 		return (1);
 	return (0);
 }
 
 int     check_syntax(t_mini *mini, t_node *list)
 {
+  (void)mini;
 	if (check_sides(list))
 	{
 		ft_putendl_fd("bash: syntax error near unexpected token |", 2);
-		mini->ret = 258;
+//		mini->ret = 258;
 		return (0);
 	}
 	while (list)
 	{
-		if ((!list->quoted && list->type == PIPE && list->next->type == PIPE)
-			|| (is_redirection(list) && !list->quoted && (!list->next || list->next->type != WORD)))
+		if ((!list->between_quoted && list->type == PIPE && list->next->type == PIPE)
+			|| (is_redirection(list) && !list->between_quoted && (!list->next || list->next->type != WORD)))
 		{
 			if (list->next)
 			{
@@ -46,7 +47,7 @@ int     check_syntax(t_mini *mini, t_node *list)
 				ft_putstr_fd("bash: syntax error near unexpected token ", 2);
 				ft_putendl_fd(list->content, 2);
 			}
-			mini->ret = 258;
+//			mini->ret = 258;
 			return (0);
 		}
 		list = list->next;

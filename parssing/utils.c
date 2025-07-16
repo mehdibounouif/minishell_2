@@ -85,7 +85,7 @@ int count_args(t_node *list)
   int i;
 
   i = 0;
-  while (list && (list->type == WORD || list->quoted))
+  while (list && (list->type == WORD || list->between_quoted))
   {
     i++;
     list = list->next;

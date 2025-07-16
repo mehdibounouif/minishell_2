@@ -142,7 +142,7 @@ void	collect_herdoc(t_tree *node, t_node *list)
 			h_node->herdoc = list->content;
 			list = list->next;
 			h_node->delimeter = list->content;
-			if (list->quoted)
+			if (list->contain_quoted)
 				h_node->quoted = 1;
 			h_node->next = NULL;
 			add_back3(&node->redirect->herdoc, h_node);
