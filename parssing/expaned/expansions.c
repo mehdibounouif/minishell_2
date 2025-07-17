@@ -97,6 +97,19 @@ void	replace_key(char *cmd, char *expanded_cmd, int *i, int *j, t_env *list)
 	free(key);
 }
 
+void	expand_exit_status(char *expanded_cmd, int *i, int *j)
+{
+	int	exit_status;
+	char *value;
+	int	l;
+
+	exit_status = global(-1);
+	value = ft_itoa(exit_status);
+	l = 0;
+	while (value[l])
+		expanded_cmd[(*j)++] = value[l++];
+	(*i) += 2;
+}
 
 char	*expansion(char *cmd, t_env *list)
 {
@@ -129,6 +142,8 @@ char	*expansion(char *cmd, t_env *list)
 		}
 		while (l == 0 && is_dollar(cmd, i) && (ft_isalpha(cmd[i+1]) || cmd[i+1] == '_'))
 				replace_key(cmd, expanded_cmd, &i, &j, list);
+		if (is_dollar(cmd, i) && cmd[i+1] == '?')
+			expand_exit_status(expanded_cmd, &i, &j);
 		if (is_dollar(cmd, i) && !check_quotes(cmd, i) // exmaple $"HOME"
 			&& (cmd[i+1] == '\'' || cmd[i+1] == '\"'))
 			i++;
