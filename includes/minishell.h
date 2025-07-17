@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/17 12:09:14 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/17 18:05:50 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,6 +201,7 @@ t_tree *parssing_line(char *cmd, t_mini *minishell);
 int readline_and_parssing(t_mini *minishell);
 int     check_syntax(t_mini *mini, t_node *list);
 int	is_redirection(t_node *node);
+int global(int state);
 
 // EXPANSION
 int	is_dollar(char *cmd, int i);

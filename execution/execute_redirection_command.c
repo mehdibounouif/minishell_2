@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/17 13:55:03 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/17 21:06:56 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,80 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-int	check_if_exist(t_redirection *node)
+int	ft_arraylen(char **arr)
 {
 	int	i;
 
 	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
+}
+
+int	check_if_exist(t_redirection *node)
+{
+	int	i;
+	int	j;
+	char	**folders;
+	int	len;
+
+	i = 0;
+	j = 0;
 	while (node->in_files[i])
 	{
-		if (access(node->in_files[i], F_OK))
+		j = 0;
+		len = ft_strlen(node->in_files[i]);
+		if (ft_substr(node->in_files[i], 0, len))
 		{
-			ft_putstr_fd("minishell : ", 2);
-			ft_putstr_fd(node->in_files[i], 2);
-			ft_putstr_fd(": no such file or directory :", 2);
-			ft_putstr_fd("\n", 2);
-			return 0;
+			folders = ft_split(node->in_files[i], '/');
+			while (folders[j])
+			{
+				if (access(folders[j], F_OK))
+				{
+					ft_putstr_fd("minishell : ", 2);
+					ft_putstr_fd(node->in_files[i], 2);
+					ft_putstr_fd(": no such file or directory", 2);
+					ft_putstr_fd("\n", 2);
+					global(1);
+					return 0;
+				}
+				j++;
+			}
+		}
+		else
+			if (access(node->in_files[i], F_OK))
+			{
+				ft_putstr_fd("minishell : ", 2);
+				ft_putstr_fd(node->in_files[i], 2);
+				ft_putstr_fd(": no such file or directory :", 2);
+				ft_putstr_fd("\n", 2);
+				global(1);
+				return 0;
+			}
+		i++;
+	}
+	i = 0;
+	while (node->out_files[i])
+	{
+		j = 0;
+		len = ft_strlen(node->out_files[i]);
+		if (ft_substr(node->out_files[i], 0, len))
+		{
+			folders = ft_split(node->out_files[i], '/');
+			len = ft_arraylen(folders);
+			while (j < len - 1)
+			{
+				if (access(folders[j], F_OK))
+				{
+					ft_putstr_fd("minishell : ", 2);
+					ft_putstr_fd(node->out_files[i], 2);
+					ft_putstr_fd(": no such file or directory", 2);
+					ft_putstr_fd("\n", 2);
+					global(1);
+					return 0;
+				}
+				j++;
+			}
 		}
 		i++;
 	}
@@ -84,8 +144,6 @@ void	dup_fds(t_redirection *node, t_env *env, char **envp)
 	}
 }
 
-
-
 void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 {
 	(void)env;
@@ -104,16 +162,18 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 		if (!path)
 		{
 			ft_putstr_fd(node->redirect->prev->command->command, 2);
-			ft_putendl_fd(": command not found 1", 2);
-			node->ret = 127;
-			exit(127);
+			ft_putendl_fd(": command not found", 2);
+			global(127);
 		}
 		execve(path, node->redirect->prev->command->args, envp);
 		ft_putstr_fd(node->redirect->prev->command->command, 2);
-		ft_putendl_fd(": command not found 2", 2);
-		node->ret = 126;
+		ft_putendl_fd(": command not found", 2);
+		global(126);
 	}
 	else if (pid > 0)
+	{
 		waitpid(pid, NULL, 0);
+		global(1);
+	}
 }
 

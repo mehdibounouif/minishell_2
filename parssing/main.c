@@ -6,13 +6,19 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/17 14:08:43 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/17 18:59:47 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <stdlib.h>
-#include <sys/wait.h>
+
+int global(int state)
+{
+	static int value;
+	if(state != -1)
+		value = state;
+	return value;
+}
 
 int	main(int c, char **v __attribute__((unused)), char **env)
 {

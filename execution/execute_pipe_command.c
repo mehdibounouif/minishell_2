@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:37 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/17 13:37:22 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/17 21:14:08 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	execute_pipe_node(t_tree *tree, t_env *env, char **envp)
 		dup2(p[1], 1); 
 		close(p[1]);
 		execute_full_command(tree->pipe->left, env, envp);
-		exit(tree->pipe->left->ret);
+		exit(global(-1));
 	}
 	right = fork();
 	if (right == 0)
@@ -37,7 +37,7 @@ void	execute_pipe_node(t_tree *tree, t_env *env, char **envp)
 		dup2(p[0], 0); 
 		close(p[0]);
 		execute_full_command(tree->pipe->right, env, envp);
-		exit(tree->pipe->right->ret);
+		exit(global(-1));
 	}
 	close(p[0]);
 	close(p[1]);

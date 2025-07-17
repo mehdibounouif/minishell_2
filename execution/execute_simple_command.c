@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/17 13:15:08 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/17 21:10:15 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,11 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 		execve(path, node->command->args, envp);
 		ft_putstr_fd(node->command->command, 2);
 		ft_putendl_fd(": command not found", 2);
-		node->ret = 127;
+		global(127);
 	}
 	else
 	{
 		waitpid(pid, NULL, 0);
+		global(0);
 	}
 }
