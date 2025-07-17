@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/16 12:07:45 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/17 13:15:08 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,5 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 	else
 	{
 		waitpid(pid, NULL, 0);
-		exit(node->ret);
 	}
 }

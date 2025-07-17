@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 08:45:19 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/16 14:00:56 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/17 14:06:42 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,16 @@
 
 int	contain_quoted(char *cmd, int len)
 {
-  (void)len;
+	int	i;
 	if (!cmd)
 		return (0);
-	if (ft_strchr(cmd, '\'') || ft_strchr(cmd, '\"'))
-		return (1);
+	i = 0;
+	while (i < len)
+	{
+		if (cmd[i] == '\'' || cmd[i] == '\"')
+			return (1);
+		i++;
+	}
 	return (0);
 }
 
@@ -29,7 +34,7 @@ int	between_quoted(char *cmd, int len)
 	if (cmd[0] == '\'' && cmd[len] == '\'')
 		return (1);
 	else if (cmd[0] == '\"' && cmd[len] == '\"')
-		return (1);
+		return (2);
 	else
 		return (0);
 }
@@ -95,7 +100,7 @@ int		calc_token_byte(char *line, int *i)
 	c = ' ';
 	while (line[*i + j] && (line[*i + j] != ' ' || c != ' '))
 	{
-		if (is_separator(line, *i))
+		if (is_separator(line, *i) && !check_quotes(line, *i))
 			return (len_of_sep(line, *i));
 		if (c == ' ' && (line[*i + j] == '\'' || line[*i + j] == '\"'))
 			c = line[*i + j++];
@@ -113,39 +118,22 @@ int		calc_token_byte(char *line, int *i)
 	return (j - count + 1);
 }
 
-t_node	*get_token(char *cmd, int *i)
+void	dup_token(t_node *node, char *cmd, int *i, int l, int len)
 {
-	t_node	*node;
 	int		j;
 	char	c;
-	int	l;
-	int	h;
-	int	is_sep;
-	int	len;
 
 	j = 0;
 	c = ' ';
-	is_sep = 0;
-	if (!(node = malloc(sizeof(t_node))))
-		return (NULL);
-	node->between_quoted = 0;
-	node->contain_quoted = 0;
-	len = calc_token_byte(cmd, i);
-	if (!(node->content = malloc(sizeof(char) * len)))
-		return (NULL);
-	l = *i;
 	while (cmd[*i] && (cmd[*i] != ' ' || c != ' '))
 	{
-		node->between_quoted = between_quoted(&cmd[l], len - 1);
-		if (contain_quoted(&cmd[l], len - 1))
+		if (is_separator(cmd, *i) && l != *i && !check_quotes(cmd, *i)) // example cat>> file
+			break;
+		if (is_separator(cmd, *i) && !check_quotes(cmd, *i)) // example cat >>file
 		{
-			node->contain_quoted = 1;
-			l = len;
-		}
-		if (is_separator(cmd, *i) && !check_quotes(cmd, *i))
-		{
-			h = len_of_sep(cmd, *i) + *i;
-			is_sep = 1;
+			while ((l + len) > *i)
+				node->content[j++] = cmd[(*i)++];
+			break;
 		}
 		if (c == ' ' && (cmd[*i] == '\'' || cmd[*i] == '\"'))
 			c = cmd[(*i)++];
@@ -154,14 +142,29 @@ t_node	*get_token(char *cmd, int *i)
 			c = ' ';
 			(*i)++;
 		}
-		else if (cmd[*i] == '\\' && (*i)++)
-			node->content[j++] = cmd[(*i)++];
+		else if (cmd[*i] == '\\')
+			node->content[j++] = cmd[++(*i)];
 		else
 			node->content[j++] = cmd[(*i)++];
-		if (is_sep && h == *i)
-			break;
 	}
 	node->content[j] = '\0';
+}
+
+t_node	*get_token(char *cmd, int *i)
+{
+	t_node	*node;
+	int	l;
+	int	len;
+
+	if (!(node = malloc(sizeof(t_node))))
+		return (NULL);
+	len = calc_token_byte(cmd, i);
+	if (!(node->content = malloc(sizeof(char) * len)))
+		return (NULL);
+	l = *i;
+	node->between_quoted = between_quoted(&cmd[l], len);
+	node->contain_quoted = contain_quoted(&cmd[l], len);
+	dup_token(node, cmd, i, l, len);
 	return (node);
 }
 

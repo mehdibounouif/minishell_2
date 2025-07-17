@@ -29,7 +29,9 @@ void	print_list(t_node *list)
 	while (list)
 	{
 		printf("%s ", list->content);
-		if (list->contain_quoted)
+		printf("\nB %d\n", list->between_quoted);
+		printf("C %d\n", list->contain_quoted);
+		if (list->between_quoted)
 			printf("is_quoted\n");
 		else
 			printf("\n");
@@ -96,7 +98,7 @@ int readline_and_parssing(t_mini *minishell)
 		return (0);
 	}
 	//print_list(minishell->list);
-	// CHECK SYNTAX	
+	/// CHECK SYNTAX	
 	if (!check_syntax(minishell, minishell->list))
 	{
 		ft_free(minishell);

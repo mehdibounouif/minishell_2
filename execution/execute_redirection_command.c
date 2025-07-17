@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/16 12:07:09 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/17 13:55:03 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,7 @@ void	dup_fds(t_redirection *node, t_env *env, char **envp)
 	{
 		if ((out_fd = open(node->out_file,O_WRONLY | O_CREAT | O_TRUNC, 0777)) == -1)
 			exit(-1);
-		if (dup2(out_fd, 1) == -1)
-		{
-			printf("dup2 failed\n");
-			exit(-1);
-		}
+		printf("%d", dup2(out_fd, 1));
 	}
 }
 
@@ -118,9 +114,6 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 		node->ret = 126;
 	}
 	else if (pid > 0)
-	{
 		waitpid(pid, NULL, 0);
-		exit(node->ret);
-	}
 }
 
