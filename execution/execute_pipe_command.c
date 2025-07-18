@@ -6,17 +6,19 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:37 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/17 21:14:08 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/18 20:22:25 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <stdlib.h>
 
 void	execute_pipe_node(t_tree *tree, t_env *env, char **envp)
 {
 	int	p[2];
 	pid_t	left;
 	pid_t	right;
+	int	status;
 
 	pipe(p);
 	left = fork();
@@ -42,5 +44,6 @@ void	execute_pipe_node(t_tree *tree, t_env *env, char **envp)
 	close(p[0]);
 	close(p[1]);
 	waitpid(left, NULL, 0);
-	waitpid(right, NULL, 0);
+	waitpid(right, &status, 0);
+	global(WEXITSTATUS(status));
 }

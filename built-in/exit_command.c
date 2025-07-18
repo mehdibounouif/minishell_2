@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:59 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/17 21:25:33 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/17 21:46:51 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int exit_command(t_env *env, char **args)
     if (args[2])
     {
         ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		global(1);
+		exit(1);
     }
 
     status = ft_atoll(args[1], &error);

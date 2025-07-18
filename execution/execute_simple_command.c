@@ -6,11 +6,13 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/17 21:10:15 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/18 22:08:35 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <stdlib.h>
+#include <unistd.h>
 
 // Function to check if a command is a builtin
 static int is_builtin(char *command)
@@ -60,26 +62,73 @@ static int execute_builtin(t_tree *node, t_env *env)
 }
 
 // Use t_env *env for builtins, char **envp for execve
+int	check_cat_files(t_command *node)
+{
+	int	i;
+	
+	i = 1;
+	while (node->args[i] && ft_strchr(node->args[i], '-'))
+		i++;
+	while (node->args[i])
+	{
+		if (access(node->args[i], F_OK))
+		{
+			global(1);
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
 void	execute_command_node(t_tree *node, t_env *env, char **envp)
 {
+	int status;
+
 	if (is_builtin(node->command->command))
 	{
 		execute_builtin(node, env);
 		return ;
 	}
-	// External command: fork and execve
 	pid_t pid = fork();
 	if (pid == 0)
 	{
+		if (node->command->command[0] == '.')
+		{
+			// check executable in directory
+			// with opendir()
+			if (access(node->command->command, F_OK))
+			{
+				ft_putstr_fd(node->command->command, 2);
+				ft_putendl_fd(": command not found", 2);
+				global(127);
+				return ;
+			}	
+			if (access(node->command->command, F_OK))
+			{
+				ft_putstr_fd(node->command->command, 2);
+				ft_putendl_fd(": command not found", 2);
+				global(127);
+				return ;
+			}
+			execve(node->command->command, node->command->args, envp);
+		}
 		char *path = find_path(node , env);
+		if (!path)
+		{
+			ft_putstr_fd(node->command->command, 2);
+			ft_putendl_fd(": command not found", 2);
+			global(127);
+			return ;
+		}
 		execve(path, node->command->args, envp);
 		ft_putstr_fd(node->command->command, 2);
-		ft_putendl_fd(": command not found", 2);
-		global(127);
+		ft_putendl_fd(": Permission denied", 2);
+		global(126);
 	}
 	else
 	{
-		waitpid(pid, NULL, 0);
-		global(0);
+		waitpid(pid, &status, 0);
+		global(WEXITSTATUS(status));
 	}
 }

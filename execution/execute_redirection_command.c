@@ -6,13 +6,14 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/17 21:06:56 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/18 22:06:33 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <fcntl.h>
 #include <readline/history.h>
+#include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
@@ -26,29 +27,30 @@ int	ft_arraylen(char **arr)
 	return (i);
 }
 
-int	check_if_exist(t_redirection *node)
+int	check_in_files(char **files)
 {
 	int	i;
 	int	j;
 	char	**folders;
 	int	len;
 
+	// if is directory do noting
 	i = 0;
 	j = 0;
-	while (node->in_files[i])
+	while (files[i])
 	{
 		j = 0;
-		len = ft_strlen(node->in_files[i]);
-		if (ft_substr(node->in_files[i], 0, len))
+		len = ft_strlen(files[i]);
+		if (ft_strchr(files[i], '/'))
 		{
-			folders = ft_split(node->in_files[i], '/');
+			folders = ft_split(files[i], '/');
 			while (folders[j])
 			{
 				if (access(folders[j], F_OK))
 				{
 					ft_putstr_fd("minishell : ", 2);
-					ft_putstr_fd(node->in_files[i], 2);
-					ft_putstr_fd(": no such file or directory", 2);
+					ft_putstr_fd(files[i], 2);
+					ft_putstr_fd(": No such file or directory", 2);
 					ft_putstr_fd("\n", 2);
 					global(1);
 					return 0;
@@ -57,23 +59,35 @@ int	check_if_exist(t_redirection *node)
 			}
 		}
 		else
-			if (access(node->in_files[i], F_OK))
+			if (access(files[i], F_OK))
 			{
 				ft_putstr_fd("minishell : ", 2);
-				ft_putstr_fd(node->in_files[i], 2);
-				ft_putstr_fd(": no such file or directory :", 2);
+				ft_putstr_fd(files[i], 2);
+				ft_putstr_fd(": No such file or directory :", 2);
 				ft_putstr_fd("\n", 2);
 				global(1);
 				return 0;
 			}
 		i++;
 	}
+	return (1);
+}
+
+int	check_if_exist(t_redirection *node)
+{
+	int	i;
+	int	j;
+	char	**folders;
+	int	len;
+	if (!check_in_files(node->in_files))
+		return (0);
 	i = 0;
 	while (node->out_files[i])
 	{
+		// if directory type message bash: m/: Is a directory;
 		j = 0;
 		len = ft_strlen(node->out_files[i]);
-		if (ft_substr(node->out_files[i], 0, len))
+		if (ft_strchr(node->out_files[i], '/'))
 		{
 			folders = ft_split(node->out_files[i], '/');
 			len = ft_arraylen(folders);
@@ -86,7 +100,7 @@ int	check_if_exist(t_redirection *node)
 					ft_putstr_fd(": no such file or directory", 2);
 					ft_putstr_fd("\n", 2);
 					global(1);
-					return 0;
+					return (0);
 				}
 				j++;
 			}
@@ -149,6 +163,7 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 	(void)env;
 	(void)envp;
 	pid_t pid;
+	int	status;
 
 	// 1 check input file if is exist;
 	if (!check_if_exist(node->redirect))
@@ -172,8 +187,8 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 	}
 	else if (pid > 0)
 	{
-		waitpid(pid, NULL, 0);
-		global(1);
+		waitpid(pid, &status, 0);
+		global(WEXITSTATUS(status));
 	}
 }
 

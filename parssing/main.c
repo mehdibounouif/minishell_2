@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/17 18:59:47 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/18 22:07:32 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 {
 	t_mini  minishell;
 
+	// check stdin stderr stdout with isatty();
 	if (c != 1)
 	{
 		ft_putendl_fd("This program does not accept arguments", 2);
