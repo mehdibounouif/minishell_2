@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/19 10:05:05 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/19 11:17:22 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,83 @@ int	len_slash(char *str, char c, int len)
 	return (len);
 }
 
+void	print_message(char *file, char *message)
+{
+	ft_putstr_fd("minishell : ", 2);
+	ft_putstr_fd(file, 2);
+	ft_putendl_fd(message, 2);
+}
+
+int	check_infile_in_directory(char *files)
+{
+	DIR *dir;
+	char *full_path;
+	int l;
+
+	l = 0;
+	if (ft_strchr(files, '/'))
+	{
+		l = len_slash(files, '/', ft_strlen(files) - 1);
+		full_path = ft_substr(files, 0, l);
+		dir = opendir(full_path);
+		if (!dir)
+		{
+			free(full_path);
+			print_message(files, ": No such file or directory");
+			global(1);
+			return 0;
+		}
+		else
+		{
+			free(full_path);
+			closedir(dir);
+			if (access(files, F_OK))
+			{
+				print_message(files, ": No such file or directory");
+				global(1);
+				return 0;
+			}
+		}
+	}
+	return (1);
+}
+
+int	check_outfile_in_directory(char *files)
+{
+	DIR *dir;
+	char *full_path;
+	int l;
+
+	l = 0;
+	if (ft_strchr(files, '/'))
+	{
+		l = len_slash(files, '/', ft_strlen(files) - 1);
+		full_path = ft_substr(files, 0, l);
+		dir = opendir(full_path);
+		if (!dir)
+		{
+			free(full_path);
+			print_message(files, ": No such file or directory");
+			global(1);
+			return 0;
+		}
+		else
+		{
+			free(full_path);
+			closedir(dir);
+		}
+	}
+	return (1);
+}
 
 int	check_in_files(char **files)
 {
 	DIR *dir;
 	int	i;
-	int	j;
-	int	l;
-	int	len;
-	char *full_path;
 
 	i = 0;
-	j = 0;
-	l = 0;
 	while (files[i])
 	{
-		j = 0;
-		len = ft_strlen(files[i]);
 		// if is directory do noting
 		if ((dir = opendir(files[i])))
 		{
@@ -58,44 +118,15 @@ int	check_in_files(char **files)
 		}
 		// check if the stdin file is inside path of directorys then check if
 		// the directorys is exist
-		if (ft_strchr(files[i], '/'))
+		if (!check_infile_in_directory(files[i]))
+			return (0);
+		//check the stdin file if exist
+		if (access(files[i], F_OK))
 		{
-			l = len_slash(files[i], '/', ft_strlen(files[i]) - 1);
-			full_path = ft_substr(files[i], 0, l);
-			dir = opendir(full_path);
-			if (!dir)
-			{
-				ft_putstr_fd("minishell : ", 2);
-				ft_putstr_fd(files[i], 2);
-				ft_putstr_fd(": No such file or directory", 2);
-				ft_putstr_fd("\n", 2);
-				global(1);
-				return 0;
-			}
-			else
-			{
-				closedir(dir);
-				if (access(files[i], F_OK))
-				{
-					ft_putstr_fd("minishell : ", 2);
-					ft_putstr_fd(files[i], 2);
-					ft_putstr_fd(": No such file or directory", 2);
-					ft_putstr_fd("\n", 2);
-					global(1);
-					return 0;
-				}
-			}
+			print_message(files[i], ": No such file or directory");
+			global(1);
+			return 0;
 		}
-		else
-			if (access(files[i], F_OK))
-			{
-				ft_putstr_fd("minishell : ", 2);
-				ft_putstr_fd(files[i], 2);
-				ft_putstr_fd(": No such file or directory", 2);
-				ft_putstr_fd("\n", 2);
-				global(1);
-				return 0;
-			}
 		i++;
 	}
 	return (1);
@@ -103,50 +134,26 @@ int	check_in_files(char **files)
 
 int	check_if_exist(t_redirection *node)
 {
-	int	i;
-	int	j;
-	int	l;
-	char	*full_path;
 	DIR	*dir;
-	int	len;
+	int i;
+	// check in files 
 	if (!check_in_files(node->in_files))
 		return (0);
 	i = 0;
+	// check out files
 	while (node->out_files[i])
 	{
 		// check if the full path is directory (error)
-		j = 0;
-		len = ft_strlen(node->out_files[i]);
 		if ((dir = opendir(node->out_files[i])))
 		{
 			closedir(dir);
-			ft_putstr_fd("minishell : ", 2);
-			ft_putstr_fd(node->out_files[i], 2);
-			ft_putendl_fd(": Is a directory", 2);
+			print_message(node->out_files[i],": Is a directory");
 			global(1);
 			return 0;
 		}
 		// check if the path has directories then split it and check
 		// the the path without the file name if exist or not
-		if (ft_strchr(node->out_files[i], '/'))
-		{
-			l = len_slash(node->out_files[i], '/', ft_strlen(node->out_files[i]));
-			full_path = ft_substr(node->out_files[i], 0, l);
-			if (!(dir = opendir(full_path)))
-			{
-				free(full_path);
-				ft_putstr_fd("minishell : ", 2);
-				ft_putstr_fd(node->out_files[i], 2);
-				ft_putendl_fd(": No such file or directory", 2);
-				global(1);
-				return 0;
-			}
-			else
-			{
-				free(full_path);
-				closedir(dir);
-			}
-		}
+		check_outfile_in_directory(node->out_files[i]);
 		i++;
 	}
 	return (1);
@@ -210,6 +217,7 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 	// 1 check input file if is exist;
 	if (!check_if_exist(node->redirect))
 		return ;
+	// check executable
 	pid = fork();
 	if (pid == 0)
 	{
