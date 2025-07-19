@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:42:07 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/17 21:39:21 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/19 17:16:07 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,25 +80,24 @@ int	cd_command(t_env *env, char **args)
 	if(args[2] != NULL)
 	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
-		return (1);
+		global (1);
 		
 	}
-	if (!args[0] || (args[0][0] == '-' && !args[0][1]))
+	else if (!args[0] || (args[0][0] == '-' && !args[0][1]))
 	{
 		ft_putstr_fd("minishell: cd: option not supported\n", 2);
-		return (1);
+		global (1);
 	}
-	if (!args[1] || (args[1][0] == '~' && !args[1][1]))
+	else if (!args[1])
 	{
 		if (change_to_home(env) == 1)
 			return (1);
 	}
 	else if (chdir(args[1]) == -1)
 	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		ft_putstr_fd(args[1], 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
-		return (1);
+		perror("minishell: cd");
+		// ft_putstr_fd("minishell: cd: ", 2);
+		global (1);
 	}
 	if (update_oldpwd(env) == 1 || update_pwd(env) == 1)
 		return (1);
