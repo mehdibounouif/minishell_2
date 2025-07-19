@@ -6,11 +6,12 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/18 22:08:35 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/19 19:03:10 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <dirent.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -84,6 +85,7 @@ int	check_cat_files(t_command *node)
 void	execute_command_node(t_tree *node, t_env *env, char **envp)
 {
 	int status;
+	DIR *dir;
 
 	if (is_builtin(node->command->command))
 	{
@@ -96,19 +98,22 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 		if (node->command->command[0] == '.')
 		{
 			// check executable in directory
-			// with opendir()
+			if ((dir = opendir(node->command->command)))
+			{
+				print_message(node->command->command, ": Is a directory");
+				global(126);
+				return ;
+			}
 			if (access(node->command->command, F_OK))
 			{
-				ft_putstr_fd(node->command->command, 2);
-				ft_putendl_fd(": command not found", 2);
+				print_message(node->command->command, ": No such file or directory");
 				global(127);
 				return ;
 			}	
-			if (access(node->command->command, F_OK))
+			if (access(node->command->command, X_OK))
 			{
-				ft_putstr_fd(node->command->command, 2);
-				ft_putendl_fd(": command not found", 2);
-				global(127);
+				print_message(node->command->command, ": Permission denied");
+				global(126);
 				return ;
 			}
 			execve(node->command->command, node->command->args, envp);
@@ -116,14 +121,12 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 		char *path = find_path(node , env);
 		if (!path)
 		{
-			ft_putstr_fd(node->command->command, 2);
-			ft_putendl_fd(": command not found", 2);
+			print_message(node->command->command, ": command not found");
 			global(127);
 			return ;
 		}
 		execve(path, node->command->args, envp);
-		ft_putstr_fd(node->command->command, 2);
-		ft_putendl_fd(": Permission denied", 2);
+		print_message(node->command->command, ": Permission denied");
 		global(126);
 	}
 	else

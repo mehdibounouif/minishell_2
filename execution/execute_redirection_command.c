@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/19 11:17:22 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/19 18:54:55 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,6 @@
 #include <dirent.h>
 #include <stdio.h>
 #include <unistd.h>
-
-int	ft_arraylen(char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i])
-		i++;
-	return (i);
-}
-
-int	len_slash(char *str, char c, int len)
-{
-	while(str[len] != c)
-		len--;
-	return (len);
-}
-
-void	print_message(char *file, char *message)
-{
-	ft_putstr_fd("minishell : ", 2);
-	ft_putstr_fd(file, 2);
-	ft_putendl_fd(message, 2);
-}
 
 int	check_infile_in_directory(char *files)
 {

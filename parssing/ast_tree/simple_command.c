@@ -6,24 +6,18 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 09:27:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/13 16:45:35 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/19 18:43:55 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_tree  *command_without_redirection(t_node **list)
+void	collect_args(char *cmd, t_node **list, char **args)
 {
-	t_tree	*node;
+	t_node	*tmp;
 	int	i;
-	char    *cmd;
-	char    **args;
-	int len;
 
 	i = 0;
-	len = count_args(*list);
-	cmd = (*list)->content;
-	args = malloc(sizeof(char *) * len + 1);
 	args[i++] = cmd;
 	*list = (*list)->next;
 	while ((*list) && ((*list)->type == WORD || (*list)->between_quoted))
@@ -32,15 +26,44 @@ t_tree  *command_without_redirection(t_node **list)
 		i++;
 		*list = (*list)->next;
 	}
+	tmp = *list;
+	while (is_redirection(tmp) && tmp->next)
+	{
+		tmp = tmp->next;
+		tmp = tmp->next;
+	}
+	while (tmp && (tmp->type == WORD || tmp->between_quoted))
+	{
+		args[i] = tmp->content;
+		i++;
+		tmp = tmp->next;
+	}
 	args[i] = 0;
+}
+
+t_tree  *command_without_redirection(t_node **list)
+{
+	t_tree	*node;
+	int	i;
+	char    *cmd;
+	char    **args;
+	int len;
+	int	index;
+
+	i = 0;
+	index = 0;
+	len = count_args(*list) + 1;
+	cmd = (*list)->content;
+	if (!(args = malloc(sizeof(char *) * len)))
+		return (NULL);
+	collect_args(cmd, list, args);
 	node = malloc(sizeof(t_tree));
 	if (!node)
 	{
 		free_str(args);
 		return (NULL);
 	}
-	node->command = malloc(sizeof(t_command));
-	if (!node->command)
+	if (!(node->command = malloc(sizeof(t_command))))
 	{
 		free_str(args);
 		free(node);

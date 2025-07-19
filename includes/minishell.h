@@ -6,7 +6,11 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/07/19 16:38:01 by moraouf          ###   ########.fr       */
+=======
+/*   Updated: 2025/07/19 18:54:43 by mbounoui         ###   ########.fr       */
+>>>>>>> 983d250 (handel redirection before args like "echo < file hello")
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,6 +230,9 @@ void execute_command_node(t_tree *node, t_env *env, char **envp);
 void	execute_redirection_command(t_tree *node, t_env *env, char **envp);
 char	*ft_getenv(char *key, t_env *list);
 char	*find_path(t_tree *node, t_env *list);
+void	print_message(char *file, char *message);
+int	ft_arraylen(char **arr);
+int	len_slash(char *str, char c, int len);
 
 
 //SIGNALS 

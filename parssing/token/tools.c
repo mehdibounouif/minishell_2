@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 08:45:19 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/17 14:06:42 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/19 17:51:25 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ t_node	*get_token(char *cmd, int *i)
 	if (!(node = malloc(sizeof(t_node))))
 		return (NULL);
 	len = calc_token_byte(cmd, i);
-	if (!(node->content = malloc(sizeof(char) * len)))
+	if (!(node->content = malloc(sizeof(char) * len + 1)))
 		return (NULL);
 	l = *i;
 	node->between_quoted = between_quoted(&cmd[l], len);

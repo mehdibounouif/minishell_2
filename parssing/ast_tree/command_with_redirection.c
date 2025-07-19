@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:57 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/14 11:41:51 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/19 18:41:57 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ t_tree	*parss_redirection_in_start(t_node **list, t_env *env)
 	return (redirect_node);
 }
 
-
 t_tree  *parss_redirection(t_tree *node, t_node **list, t_env *env)
 {
 	t_tree  *redirect_node;
@@ -150,6 +149,8 @@ t_tree  *parss_redirection(t_tree *node, t_node **list, t_env *env)
 	if (!allocat_files_array(redirect_node))
 		return (NULL); // FREE HERE;
 	collect_in_out_files(list, redirect_node, &i, &j);
+	while(*list && (*list)->type != PIPE)
+		*list = (*list)->next;
 	redirect_node->redirect->in_files[i] = NULL;
 	redirect_node->redirect->out_files[j] = NULL;
 	assign_last_file(redirect_node);

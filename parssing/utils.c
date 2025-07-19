@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:01:06 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/15 14:54:00 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/19 17:05:48 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,25 @@ int is_real_separator(char *cmd, int i)
 
 int count_args(t_node *list)
 {
-  int i;
+	int i;
 
-  i = 0;
-  while (list && (list->type == WORD || list->between_quoted))
-  {
-    i++;
-    list = list->next;
-  }
-  return (i);
+	i = 0;
+	while (list && (list->type == WORD || list->between_quoted))
+	{
+		i++;
+		list = list->next;
+	}
+	while (is_redirection(list) && list->next)
+	{
+		list = list->next;
+		list = list->next;
+	}
+	while (list && (list->type == WORD || list->between_quoted))
+	{
+		i++;
+		list = list->next;
+	}
+	return (i);
 }
 
 void	add_back3(t_herdoc **list, t_herdoc *node)
