@@ -6,13 +6,14 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/19 09:18:11 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/19 10:05:05 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <dirent.h>
 #include <stdio.h>
+#include <unistd.h>
 
 int	ft_arraylen(char **arr)
 {
@@ -24,26 +25,57 @@ int	ft_arraylen(char **arr)
 	return (i);
 }
 
+int	len_slash(char *str, char c, int len)
+{
+	while(str[len] != c)
+		len--;
+	return (len);
+}
+
+
 int	check_in_files(char **files)
 {
+	DIR *dir;
 	int	i;
 	int	j;
-	char	**folders;
+	int	l;
 	int	len;
+	char *full_path;
 
-	// if is directory do noting
 	i = 0;
 	j = 0;
+	l = 0;
 	while (files[i])
 	{
 		j = 0;
 		len = ft_strlen(files[i]);
+		// if is directory do noting
+		if ((dir = opendir(files[i])))
+		{
+			closedir(dir);
+			global(1);
+			return (0);
+		}
+		// check if the stdin file is inside path of directorys then check if
+		// the directorys is exist
 		if (ft_strchr(files[i], '/'))
 		{
-			folders = ft_split(files[i], '/');
-			while (folders[j])
+			l = len_slash(files[i], '/', ft_strlen(files[i]) - 1);
+			full_path = ft_substr(files[i], 0, l);
+			dir = opendir(full_path);
+			if (!dir)
 			{
-				if (access(folders[j], F_OK))
+				ft_putstr_fd("minishell : ", 2);
+				ft_putstr_fd(files[i], 2);
+				ft_putstr_fd(": No such file or directory", 2);
+				ft_putstr_fd("\n", 2);
+				global(1);
+				return 0;
+			}
+			else
+			{
+				closedir(dir);
+				if (access(files[i], F_OK))
 				{
 					ft_putstr_fd("minishell : ", 2);
 					ft_putstr_fd(files[i], 2);
@@ -52,7 +84,6 @@ int	check_in_files(char **files)
 					global(1);
 					return 0;
 				}
-				j++;
 			}
 		}
 		else
@@ -60,7 +91,7 @@ int	check_in_files(char **files)
 			{
 				ft_putstr_fd("minishell : ", 2);
 				ft_putstr_fd(files[i], 2);
-				ft_putstr_fd(": No such file or directory :", 2);
+				ft_putstr_fd(": No such file or directory", 2);
 				ft_putstr_fd("\n", 2);
 				global(1);
 				return 0;
@@ -68,13 +99,6 @@ int	check_in_files(char **files)
 		i++;
 	}
 	return (1);
-}
-
-int	len_slash(char *str, char c, int len)
-{
-	while(str[len] != c)
-		len--;
-	return (len);
 }
 
 int	check_if_exist(t_redirection *node)
