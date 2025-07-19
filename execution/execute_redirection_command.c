@@ -6,16 +6,13 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/18 22:06:33 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/19 09:18:11 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <fcntl.h>
-#include <readline/history.h>
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <unistd.h>
+#include <dirent.h>
+#include <stdio.h>
 
 int	ft_arraylen(char **arr)
 {
@@ -73,36 +70,57 @@ int	check_in_files(char **files)
 	return (1);
 }
 
+int	len_slash(char *str, char c, int len)
+{
+	while(str[len] != c)
+		len--;
+	return (len);
+}
+
 int	check_if_exist(t_redirection *node)
 {
 	int	i;
 	int	j;
-	char	**folders;
+	int	l;
+	char	*full_path;
+	DIR	*dir;
 	int	len;
 	if (!check_in_files(node->in_files))
 		return (0);
 	i = 0;
 	while (node->out_files[i])
 	{
-		// if directory type message bash: m/: Is a directory;
+		// check if the full path is directory (error)
 		j = 0;
 		len = ft_strlen(node->out_files[i]);
+		if ((dir = opendir(node->out_files[i])))
+		{
+			closedir(dir);
+			ft_putstr_fd("minishell : ", 2);
+			ft_putstr_fd(node->out_files[i], 2);
+			ft_putendl_fd(": Is a directory", 2);
+			global(1);
+			return 0;
+		}
+		// check if the path has directories then split it and check
+		// the the path without the file name if exist or not
 		if (ft_strchr(node->out_files[i], '/'))
 		{
-			folders = ft_split(node->out_files[i], '/');
-			len = ft_arraylen(folders);
-			while (j < len - 1)
+			l = len_slash(node->out_files[i], '/', ft_strlen(node->out_files[i]));
+			full_path = ft_substr(node->out_files[i], 0, l);
+			if (!(dir = opendir(full_path)))
 			{
-				if (access(folders[j], F_OK))
-				{
-					ft_putstr_fd("minishell : ", 2);
-					ft_putstr_fd(node->out_files[i], 2);
-					ft_putstr_fd(": no such file or directory", 2);
-					ft_putstr_fd("\n", 2);
-					global(1);
-					return (0);
-				}
-				j++;
+				free(full_path);
+				ft_putstr_fd("minishell : ", 2);
+				ft_putstr_fd(node->out_files[i], 2);
+				ft_putendl_fd(": No such file or directory", 2);
+				global(1);
+				return 0;
+			}
+			else
+			{
+				free(full_path);
+				closedir(dir);
 			}
 		}
 		i++;
