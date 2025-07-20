@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 09:02:11 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/14 10:52:13 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/20 08:10:36 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,17 @@
 #define TREE_CHILD    "│   "
 #define TREE_END      "└── "
 #define TREE_SPACE    "    "
+#include <stdio.h>
+
+void print_indent(int level, int is_arg) {
+    // If it's for arguments or something else, use different indenting style
+    for (int i = 0; i < level; i++) {
+        if (is_arg)
+            printf("    "); // more indent for argument nodes
+        else
+            printf(TREE_BRANCH);  // standard indentation (could be adjusted as per needs)
+    }
+}
 
 
 void print_command_node(t_command *cmd, int level) {

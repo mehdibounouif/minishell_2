@@ -6,13 +6,14 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/19 19:03:10 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/20 09:55:12 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <dirent.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 // Function to check if a command is a builtin
@@ -86,6 +87,7 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 {
 	int status;
 	DIR *dir;
+	struct stat	info;
 
 	if (is_builtin(node->command->command))
 	{
@@ -95,6 +97,7 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 	pid_t pid = fork();
 	if (pid == 0)
 	{
+		// check umprintable cammand
 		if (node->command->command[0] == '.')
 		{
 			// check executable in directory
@@ -104,19 +107,31 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 				global(126);
 				return ;
 			}
-			if (access(node->command->command, F_OK))
+			else
 			{
-				print_message(node->command->command, ": No such file or directory");
-				global(127);
-				return ;
-			}	
-			if (access(node->command->command, X_OK))
-			{
-				print_message(node->command->command, ": Permission denied");
-				global(126);
-				return ;
+				// check if exist 
+				if (!stat(node->command->command, &info))
+				{
+					// executable
+					if (info.st_mode & (S_IXGRP | S_IXUSR | S_IXOTH))
+					{
+						execve(node->command->command, node->command->args, envp);
+					}
+					// not executable
+					else
+					{
+						print_message(node->command->command, ": Permission denied");
+						global(126);
+						return ;
+					}
+				}
+				else
+				{
+					print_message(node->command->command, ": No such file or directory");
+					global(127);
+					return ;
+				}
 			}
-			execve(node->command->command, node->command->args, envp);
 		}
 		char *path = find_path(node , env);
 		if (!path)
@@ -126,8 +141,9 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 			return ;
 		}
 		execve(path, node->command->args, envp);
-		print_message(node->command->command, ": Permission denied");
-		global(126);
+		perror("minishell");
+//		print_message(node->command->command, ": Permission denied");
+//		global(126);
 	}
 	else
 	{

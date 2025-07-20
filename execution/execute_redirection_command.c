@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/19 20:42:00 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/20 10:14:11 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,10 +127,22 @@ int	check_if_exist(t_redirection *node)
 			global(1);
 			return 0;
 		}
-		// check if the path has directories then split it and check
-		// the the path without the file name if exist or not
-		if (!check_outfile_in_directory(node->out_files[i]))
-			return (0);
+		else
+		{		
+			// check if the path has directories then split it and check
+			// the the path without the file name if exist or not
+			if (!check_outfile_in_directory(node->out_files[i]))
+				return (0);
+			if (!access(node->out_files[i], F_OK))
+			{
+				if (access(node->out_files[i], W_OK))
+				{
+					print_message(node->out_files[i],": Permission denied");
+					global(1);
+					return 0;
+				}
+			}
+		}
 		i++;
 	}
 	return (1);
@@ -152,7 +164,6 @@ void	dup_fds(t_redirection *node, t_env *env, char **envp)
 {
 	(void)env;
 	(void)envp;
-
 	int	in_fd;
 	int	out_fd;
 	if (node->hdc)

@@ -1,14 +1,5 @@
-echo $"HOME";
-cat << EOF1 << EOF2;
-cat << a"b"c;
-cat << a'b';
-cat << 'a'b;
-echo $HOME$HOME$HOME; output: echo /home/mbounoui/home/mbounoui/home/mbounoui;
-echo "$jfsdkl;lsdkf"
 
-echo hi < ./test_files/infile bye bye
-echo <"./test_files/infile" "bonjour       42"
-
+""
 
 exit status:
 
@@ -29,3 +20,51 @@ precedes the pipeline, the exit status is the logical negation of the exit statu
 child return:
 command F_OK not found return (127)
 command X_OK not executuble return (126)
+
+
+
+struct stat {
+    dev_t     st_dev;     // ID of device containing file
+    ino_t     st_ino;     // inode number
+    mode_t    st_mode;    // file type and mode (permissions)
+    nlink_t   st_nlink;   // number of hard links
+    uid_t     st_uid;     // user ID of owner
+    gid_t     st_gid;     // group ID of owner
+    dev_t     st_rdev;    // device ID (if special file)
+    off_t     st_size;    // total size, in bytes
+    blksize_t st_blksize; // block size for filesystem I/O
+    blkcnt_t  st_blocks;  // number of 512B blocks allocated
+
+    time_t    st_atime;   // time of last access
+    time_t    st_mtime;   // time of last modification
+    time_t    st_ctime;   // time of last status change
+};
+
+lstat() :
+Does not follow the symlink.
+Returns information about the link itself, not the target.
+
+stat() :
+Follows the symlink to the target file.
+Returns information about file.txt, not link.txt.
+
+A symbolic link (symlink) is like a shortcut to another file or directory.
+It is a special file that points to another file or directory.
+When you access the symlink, you're actually accessing the file it points to.
+
+
+ln -s file.txt link.txt
+This creates a symlink called link.txt that points to file.txt.
+
+What is a Bitmask?
+A bitmask is a value (usually an integer) where each bit (0 or 1) has a specific meaning—typically used to store multiple true/false flags in a single variable.
+
+
+
+
+
+
+
+
+
+

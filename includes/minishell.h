@@ -3,17 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/07/19 20:35:09 by mbounoui         ###   ########.fr       */
-=======
-/*   Updated: 2025/07/19 16:38:01 by moraouf          ###   ########.fr       */
->>>>>>> c45abfa0a4ad753bfa8bd41fef3896544cb19b44
-/*   Updated: 2025/07/19 18:54:43 by mbounoui         ###   ########.fr       */
+/*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
+/*   Updated: 2025/07/20 08:10:31 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 #define MINISHELL_H
@@ -153,7 +149,7 @@ void  get_env(t_mini *minishell, char **env);
 ///void execute_command(t_env *env, const char *input);
 void	execute_pipe_node(t_tree *tree, t_env *env, char **envp);
 void print_env(t_env *env);
-void print_ast(t_tree *tree, int level)
+void print_ast(t_tree *tree, int level);
 //void print_tree_unicode(t_tree *tree, const char *prefix, int is_last);
 void	open_herdocs(t_tree *tree, t_env *env);
 void	print_her(t_herdoc *herdoc);
