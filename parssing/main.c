@@ -42,10 +42,12 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 			continue;
 		open_herdocs(minishell.tree, minishell.env);
 		execute_full_command(minishell.tree, minishell.env, env);
+    print_ast(minishell.tree, 0);
 		//printf("exit status = %d\n", minishell.tree->ret);
 		//print_tree_unicode(minishell.tree, "", 1);
     	// FREE
 		ft_free(&minishell);
 	}
 	exit(minishell.tree->ret);
+  return (0);
 }
