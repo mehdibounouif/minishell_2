@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/20 08:10:31 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/20 10:52:15 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ struct s_redirection {
 	int out_count; // number of output files;
 	int	out_type; // type of output file (trunk or append);
 	int last_fd; // last heredoc fd;
+	int	*fds_list;
 	t_herdoc *herdoc; // list of command heredocs;
 };
 
