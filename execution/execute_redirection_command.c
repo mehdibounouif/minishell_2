@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/19 18:54:55 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/19 20:42:00 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,8 @@ int	check_if_exist(t_redirection *node)
 		}
 		// check if the path has directories then split it and check
 		// the the path without the file name if exist or not
-		check_outfile_in_directory(node->out_files[i]);
+		if (!check_outfile_in_directory(node->out_files[i]))
+			return (0);
 		i++;
 	}
 	return (1);

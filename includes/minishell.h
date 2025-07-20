@@ -6,11 +6,8 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/07/19 16:38:01 by moraouf          ###   ########.fr       */
-=======
+/*   Updated: 2025/07/19 20:35:09 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/19 18:54:43 by mbounoui         ###   ########.fr       */
->>>>>>> 983d250 (handel redirection before args like "echo < file hello")
 /*                                                                            */
 /* ************************************************************************** */
 
