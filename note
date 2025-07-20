@@ -57,7 +57,9 @@ ln -s file.txt link.txt
 This creates a symlink called link.txt that points to file.txt.
 
 What is a Bitmask?
-A bitmask is a value (usually an integer) where each bit (0 or 1) has a specific meaning—typically used to store multiple true/false flags in a single variable.
+A bitmask is a value (usually an integer) where each bit(0 or 1) 
+has a specific meaning—typically 
+used to store multiple true/false flags in a single variable.
 
 
 

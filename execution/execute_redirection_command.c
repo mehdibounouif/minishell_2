@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/20 11:14:09 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/20 22:21:10 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int	check_outfile_in_directory(t_redirection *node, int i, int *index)
 					return 0;
 				}
 			}
+			// is not exist
 			else
 			{
 				if ((fd = open(node->out_files[i], O_RDWR | O_CREAT, 0644)) == -1)
@@ -135,17 +136,14 @@ int	check_in_files(char **files)
 	return (1);
 }
 
-int	check_if_exist(t_redirection *node)
+int	check_out_files(t_redirection *node)
 {
 	DIR	*dir;
 	int i;
 	int index;
-	// check in files
-	if (!check_in_files(node->in_files))
-		return (0);
+
 	i = 0;
 	index = 0;
-	// check out files
 	while (node->out_files[i])
 	{
 		// check if the full path is directory (error)
@@ -184,6 +182,17 @@ int	check_if_exist(t_redirection *node)
 		}
 		i++;
 	}
+	return (1);
+}
+
+int	check_if_exist(t_redirection *node)
+{
+	// check in files
+	if (!check_in_files(node->in_files))
+		return (0);
+	// check out files
+	if (!check_out_files(node))
+		return (0);
 	return (1);
 }
 

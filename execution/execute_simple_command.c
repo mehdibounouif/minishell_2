@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/20 09:55:12 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/20 21:48:56 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,21 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 					global(127);
 					return ;
 				}
+			}
+		}
+		if (opendir(node->command->command))
+		{
+			if (ft_strchr(node->command->command, '/'))
+			{
+				print_message(node->command->command, ": Is a directory");
+				global(126);
+				return ;
+			}
+			else
+			{
+				print_message(node->command->command, ": command not found");
+				global(127);
+				return ;
 			}
 		}
 		char *path = find_path(node , env);
