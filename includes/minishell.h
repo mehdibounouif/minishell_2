@@ -6,11 +6,8 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:55:09 by mbounoui          #+#    #+#             */
-<<<<<<< HEAD
 /*   Updated: 2025/07/19 16:38:01 by moraouf          ###   ########.fr       */
-=======
 /*   Updated: 2025/07/19 18:54:43 by mbounoui         ###   ########.fr       */
->>>>>>> 983d250 (handel redirection before args like "echo < file hello")
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +134,7 @@ int env_command(t_env *env, char **args);
 int exit_command(t_env *env, char **args);
 char *get_env_value(t_env *env, char *key);
 int update_env_var(t_env *env, char *var);
-t_env *init_env(char **envp);
+//t_env *init_env(char **envp);
 void set_env_var(t_env **env, char *key, char *value);
 void free_env(t_env *env);
 void add_env_var(t_env **env, char *key, char *value);
@@ -149,10 +146,11 @@ void  get_env(t_mini *minishell, char **env);
 
 
 // Command execution
-void execute_command(t_env *env, const char *input);
+///void execute_command(t_env *env, const char *input);
 void	execute_pipe_node(t_tree *tree, t_env *env, char **envp);
 void print_env(t_env *env);
-void print_tree_unicode(t_tree *tree, const char *prefix, int is_last);
+void print_ast(t_tree *tree, int level)
+//void print_tree_unicode(t_tree *tree, const char *prefix, int is_last);
 void	open_herdocs(t_tree *tree, t_env *env);
 void	print_her(t_herdoc *herdoc);
 void	print_data(t_redirection *node);
@@ -167,7 +165,7 @@ void    token_type(t_node *node, int flag);
 int     ft_strcmp(const char *s1, const char *s2);
 
 
-int is_space(char c);
+//int is_space(char c);
 void add_back(t_node **list, t_node *node);
 void add_back2(t_env **list, t_env *node);
 void	add_back3(t_herdoc **list, t_herdoc *node);
@@ -182,7 +180,7 @@ t_tree	*parss_redirection_in_start(t_node **list, t_env *env);
 //t_tree	*parss_herdoc(t_tree *node, t_node **list, t_env *env);
 t_tree  *command_without_redirection(t_node **list);
 t_tree  *pars_pipe(t_node **list, t_env *env);
-t_tree	*parss_herdoc(t_tree *node, t_node *list, t_env *env);
+//t_tree	*parss_herdoc(t_tree *node, t_node *list, t_env *env);
 void	collect_herdoc(t_tree *node, t_node *list);
 char	*get_last_herdoc(t_herdoc *list);
 char	*get_last_file(char **list);
@@ -196,14 +194,14 @@ int check_quotes(char *cmd, size_t i);
 char	*remove_quotes(char *cmd);
 char    *remove_quotes2(char *cmd, size_t l);
 char	*remove_quotes3(char *cmd);
-int	is_quoted(char *cmd, int len);
+//int	is_quoted(char *cmd, int len);
 int is_separator(char *line, int i);
 int	is_empty(char *s);
 int	is_space(char c);
 int is_real_separator(char *cmd, int i);
 int count_args(t_node *list);
 int check_sides(t_node *list);
-t_tree *parssing_line(char *cmd, t_mini *minishell);
+//t_tree *parssing_line(char *cmd, t_mini *minishell);
 int readline_and_parssing(t_mini *minishell);
 int     check_syntax(t_mini *mini, t_node *list);
 int	is_redirection(t_node *node);
