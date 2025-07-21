@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/20 21:48:56 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/21 20:43:48 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,29 @@ int	check_cat_files(t_command *node)
 	return (1);
 }
 
+void	command_is_directory(char *command)
+{
+	DIR	*dir;
+
+	if ((dir = opendir(command)))
+	{
+		if (ft_strchr(command, '/'))
+		{
+			closedir(dir);
+			print_message(command, ": Is a directory");
+			global(126);
+			exit(126);
+		}
+		else
+		{
+			closedir(dir);
+			print_message(command, ": command not found");
+			global(127);
+			exit(127);
+		}
+	}
+}
+
 void	execute_command_node(t_tree *node, t_env *env, char **envp)
 {
 	int status;
@@ -103,6 +126,7 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 			// check executable in directory
 			if ((dir = opendir(node->command->command)))
 			{
+				closedir(dir);
 				print_message(node->command->command, ": Is a directory");
 				global(126);
 				return ;
@@ -133,20 +157,12 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 				}
 			}
 		}
-		if (opendir(node->command->command))
+		command_is_directory(node->command->command);
+		if (node->command->command[0] == '\0')
 		{
-			if (ft_strchr(node->command->command, '/'))
-			{
-				print_message(node->command->command, ": Is a directory");
-				global(126);
-				return ;
-			}
-			else
-			{
-				print_message(node->command->command, ": command not found");
-				global(127);
-				return ;
-			}
+			print_message(node->command->command, ": command not found");
+			global(127);
+			return ;
 		}
 		char *path = find_path(node , env);
 		if (!path)

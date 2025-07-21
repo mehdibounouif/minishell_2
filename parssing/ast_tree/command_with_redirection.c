@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:57 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/21 11:13:27 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/21 20:37:58 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,7 @@ void	collect_in_out_files(t_node **list, t_tree *node, int *i, int *j)
 	while (*list && (*list)->type != PIPE)
 	{
 		if ((*list)->type == HEREDOC)
-		{
-			*list = (*list)->next;
-			*list = (*list)->next;
-		}
+			skip_redirection(list);
 		else if (*list && ((*list)->type == R_OUT || (*list)->type == R_APPEND))
 		{
 			if ((*list)->type == R_OUT)
@@ -98,7 +95,6 @@ void	collect_in_out_files(t_node **list, t_tree *node, int *i, int *j)
 		}
 		else
 			*list = (*list)->next;
-//		print_list1(node->redirect->files);
 	}
 }
 
@@ -134,6 +130,12 @@ int	allocat_files_array(t_tree *node)
 	return (1);
 }
 
+void	skip_redirection(t_node **list)
+{
+		*list = (*list)->next;
+		*list = (*list)->next;
+}
+
 t_tree	*parss_redirection_in_start(t_node **list, t_env *env)
 {
 	t_tree	*redirect_node;
@@ -161,6 +163,8 @@ t_tree	*parss_redirection_in_start(t_node **list, t_env *env)
 	if (!allocat_files_array(redirect_node))
 		return (NULL); // Free here;
 	collect_in_out_files(list, redirect_node, &i, &j);
+	while (*list && is_redirection(*list))
+		skip_redirection(list);
 	if (*list && (*list)->type != PIPE)
 		prev = command_without_redirection(list);
 	if (*list && (*list)->type != PIPE)

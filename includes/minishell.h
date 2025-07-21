@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/21 10:18:41 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/21 19:10:10 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ void	open_herdocs(t_tree *tree, t_env *env);
 void	print_her(t_herdoc *herdoc);
 void	print_data(t_redirection *node);
 void	print_redirection_data(t_tree *tree);
+void	skip_redirection(t_node **list);
 
 // Tokenize
 int tokenize(char *cmd, t_node **list);

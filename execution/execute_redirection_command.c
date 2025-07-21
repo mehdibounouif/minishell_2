@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/21 11:19:56 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/21 20:29:12 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -276,6 +276,7 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 			ft_putstr_fd(node->redirect->prev->command->command, 2);
 			ft_putendl_fd(": command not found", 2);
 			global(127);
+			exit(127);
 		}
 		execve(path, node->redirect->prev->command->args, envp);
 		ft_putstr_fd(node->redirect->prev->command->command, 2);

@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/21 17:23:25 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/21 20:47:12 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ int global(int state)
 
 void	open_her(t_mini minishell)
 {
-	pid_t pid;
-	pid = fork();
-	if (pid == 0)
+//	pid_t pid;
+//	pid = fork();
+//	if (pid == 0)
 		open_herdocs(minishell.tree, minishell.env);
-	else
-		waitpid(pid, NULL, 0);
+//	else
+//		waitpid(pid, NULL, 0);
 }
 
 int	main(int c, char **v __attribute__((unused)), char **env)
@@ -50,7 +50,7 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 			continue;
 		open_her(minishell);
 		execute_full_command(minishell.tree, minishell.env, env);
-		//print_ast(minishell.tree, 0);
+//		print_ast(minishell.tree, 0);
 		ft_free(&minishell);
 	}
 	exit(minishell.tree->ret);
