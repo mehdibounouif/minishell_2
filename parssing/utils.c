@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:01:06 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/19 17:05:48 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/21 07:55:35 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,20 +85,18 @@ int count_args(t_node *list)
 	int i;
 
 	i = 0;
-	while (list && (list->type == WORD || list->between_quoted))
+	while (list && list->type != PIPE)
 	{
-		i++;
-		list = list->next;
-	}
-	while (is_redirection(list) && list->next)
-	{
-		list = list->next;
-		list = list->next;
-	}
-	while (list && (list->type == WORD || list->between_quoted))
-	{
-		i++;
-		list = list->next;
+		if (list && (list->type == WORD || list->between_quoted))
+		{
+			i++;
+			list = list->next;
+		}
+		else if (list && is_redirection(list) && list->next)
+		{
+			list = list->next;
+			list = list->next;
+		}
 	}
 	return (i);
 }

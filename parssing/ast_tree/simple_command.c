@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 09:27:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/19 18:43:55 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/21 07:55:53 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,19 @@ void	collect_args(char *cmd, t_node **list, char **args)
 		*list = (*list)->next;
 	}
 	tmp = *list;
-	while (is_redirection(tmp) && tmp->next)
+	while (tmp && tmp->type != PIPE)
 	{
-		tmp = tmp->next;
-		tmp = tmp->next;
-	}
-	while (tmp && (tmp->type == WORD || tmp->between_quoted))
-	{
-		args[i] = tmp->content;
-		i++;
-		tmp = tmp->next;
+		if (tmp && is_redirection(tmp) && tmp->next)
+		{
+			tmp = tmp->next;
+			tmp = tmp->next;
+		}
+		else if (tmp && (tmp->type == WORD || tmp->between_quoted))
+		{
+			args[i] = tmp->content;
+			i++;
+			tmp = tmp->next;
+		}
 	}
 	args[i] = 0;
 }

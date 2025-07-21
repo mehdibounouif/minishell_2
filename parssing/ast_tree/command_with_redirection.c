@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:57 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/19 18:41:57 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/21 08:01:04 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	init(t_tree *node)
 
 void	collect_in_out_files(t_node **list, t_tree *node, int *i, int *j)
 {
-	while (*list && is_redirection(*list))
+	while (*list && (*list)->type != PIPE)
 	{
 		if ((*list)->type == HEREDOC)
 		{
@@ -47,6 +47,8 @@ void	collect_in_out_files(t_node **list, t_tree *node, int *i, int *j)
 			node->redirect->in_files[(*i)++] = ft_strdup((*list)->content);
 			*list = (*list)->next;
 		}
+		else
+			*list = (*list)->next;
 	}
 }
 
