@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/21 10:02:35 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/21 11:19:56 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,53 +50,47 @@ int	check_infile_in_directory(char *files)
 	return (1);
 }
 
-int	check_in_files(char **files)
+int	check_in_files(char *file)
 {
 	DIR *dir;
-	int	i;
 
-	i = 0;
-	while (files[i])
+	// if is directory do noting
+	if ((dir = opendir(file)))
 	{
-		// if is directory do noting
-		if ((dir = opendir(files[i])))
-		{
-			closedir(dir);
-			global(1);
-			return (0);
-		}
-		// check if the stdin file is inside path of directorys then check if
-		// the directorys is exist
-		if (!check_infile_in_directory(files[i]))
-			return (0);
-		//check the stdin file if exist
-		if (access(files[i], F_OK))
-		{
-			print_message(files[i], ": No such file or directory");
-			global(1);
-			return 0;
-		}
-		i++;
+		closedir(dir);
+		global(1);
+		return (0);
+	}
+	// check if the stdin file is inside path of directorys then check if
+	// the directorys is exist
+	if (!check_infile_in_directory(file))
+		return (0);
+	//check the stdin file if exist
+	if (access(file, F_OK))
+	{
+		print_message(file, ": No such file or directory");
+		global(1);
+		return 0;
 	}
 	return (1);
 }
 
-int	exist_check_permession_else_create(t_redirection *node, int i, char *full_path, DIR *dir)
+int	exist_check_permession_else_create(t_redirection *node, char *file, char *full_path, DIR *dir)
 {
 	int	fd;
 
-	if (!access(node->out_files[i], F_OK))
+	if (!access(file, F_OK))
 	{
-		if (access(node->out_files[i], W_OK))
+		if (access(file, W_OK))
 		{
-			print_message(node->out_files[i], ": Permission denied");
+			print_message(file, ": Permission denied");
 			global(1);
 			return (0);
 		}
 	}
 	else
 	{
-		if ((fd = open(node->out_files[i], O_RDWR | O_CREAT, 0644)) == -1)
+		if ((fd = open(file, O_RDWR | O_CREAT, 0644)) == -1)
 		{
 			perror("Open");
 			free(full_path);
@@ -110,26 +104,26 @@ int	exist_check_permession_else_create(t_redirection *node, int i, char *full_pa
 	return (1);
 }
 
-int	in_directory(t_redirection *node, int i)
+int	in_directory(t_redirection *node, char *file)
 {
 	DIR *dir;
 	char *full_path;
 	int l;
 
-	l = len_slash(node->out_files[i], '/', ft_strlen(node->out_files[i]) - 1);
-	full_path = ft_substr(node->out_files[i], 0, l);
+	l = len_slash(file, '/', ft_strlen(file) - 1);
+	full_path = ft_substr(file, 0, l);
 	// incorect path
 	if (!(dir = opendir(full_path)))
 	{
 		free(full_path);
-		print_message(node->out_files[i], ": No such file or directory");
+		print_message(file, ": No such file or directory");
 		global(1);
 		return 0;
 	}
 	// correct path
 	else
 	{
-		if (!exist_check_permession_else_create(node, i, full_path, dir))
+		if (!exist_check_permession_else_create(node, file, full_path, dir))
 			return (0);
 		free(full_path);
 		closedir(dir);
@@ -150,20 +144,20 @@ int	is_directory(char *file)
 	return (1);
 }
 
-int	just_file(t_redirection *node, int i)
+int	just_file(t_redirection *node, char *file)
 {
-	if (!access(node->out_files[i], F_OK))
+	if (!access(file, F_OK))
 	{
-		if (access(node->out_files[i], W_OK))
+		if (access(file, W_OK))
 		{
-			print_message(node->out_files[i],": Permission denied");
+			print_message(file,": Permission denied");
 			global(1);
 			return 0;
 		}
 	}
 	else
 	{
-		node->fds_list[node->index] = open(node->out_files[i], O_CREAT);
+		node->fds_list[node->index] = open(file, O_CREAT);
 		if (node->fds_list[node->index] == -1)
 		{
 			perror("Open");
@@ -174,37 +168,36 @@ int	just_file(t_redirection *node, int i)
 	return (1);
 }
 
-int	check_out_files(t_redirection *node)
+int	check_out_files(t_redirection *node, char *file)
 {
-	int i;
-
-	i = 0;
-	node->index = 0;
-	while (node->out_files[i])
+	if (!is_directory(file))
+		return (0);
+	else if (ft_strchr(file, '/'))
 	{
-		if (!is_directory(node->out_files[i]))
+		if (!in_directory(node, file))
 			return (0);
-		else if (ft_strchr(node->out_files[i], '/'))
-		{
-			if (!in_directory(node, i))
-				return (0);
-		}
-		else
-			if (!just_file(node, i))
-				return (0);
-		i++;
 	}
+	else
+		if (!just_file(node, file))
+			return (0);
 	return (1);
 }
 
 int	check_if_exist(t_redirection *node)
 {
-	// check in files
-	if (!check_in_files(node->in_files))
-		return (0);
-	// check out files
-	if (!check_out_files(node))
-		return (0);
+	node->index = 0;
+	while (node->files)
+	{
+		// check in files
+		if (node->files->type == R_IN)
+			if (!check_in_files(node->files->file))
+				return (0);
+		// check out files
+		if (node->files->type == R_OUT)
+			if (!check_out_files(node, node->files->file))
+				return (0);
+		node->files = node->files->next;
+	}
 	return (1);
 }
 
@@ -271,15 +264,11 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 
 	if (!(node->redirect->fds_list = ft_calloc(1024, sizeof(int))))
 		return ;
-	// 1 check input file if is exist;
 	if (!check_if_exist(node->redirect))
 		return ;
-//	print_fd(node->redirect);
-	// check executable
 	pid = fork();
 	if (pid == 0)
 	{
-		// duplicate fds
 		dup_fds(node->redirect, env, envp);
 		char *path = find_path(node->redirect->prev , env);
 		if (!path)

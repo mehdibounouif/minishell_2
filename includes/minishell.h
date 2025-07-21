@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/21 08:58:39 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/21 10:18:41 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_end t_end;
 typedef struct s_env t_env;
 typedef struct s_mini t_mini;
 typedef struct s_herdoc t_herdoc;
+typedef struct s_files t_files;
 
 struct s_env {
 	char *key;
@@ -90,6 +91,13 @@ struct	s_herdoc {
 	struct s_herdoc *next;
 };
 
+struct	s_files
+{
+	int	type;
+	char *file;
+	struct s_files *next;
+};
+
 struct s_redirection {
 	t_tree *prev; // previous node;
 	char *in_file; // last input file;
@@ -105,8 +113,9 @@ struct s_redirection {
 	int out_count; // number of output files;
 	int	out_type; // type of output file (trunk or append);
 	int last_fd; // last heredoc fd;
-	int	*fds_list;
-	int	index;
+	int	*fds_list; // list of output fds
+	int	index; // index output fds list
+	t_files *files;
 	t_herdoc *herdoc; // list of command heredocs;
 };
 
