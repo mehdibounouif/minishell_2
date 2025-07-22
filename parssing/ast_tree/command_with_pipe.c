@@ -6,35 +6,52 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 16:38:25 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/14 11:59:47 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/22 10:19:56 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_tree  *pars_pipe(t_node **list, t_env *env)
+t_tree	*parss_one_side(t_node **list)
+{
+	t_tree	*left;
+
+	if (is_redirection(*list))
+	{
+		left = parss_redirection_in_start(list);
+	}
+	else
+	{
+		left = command_without_redirection(list);
+		if (is_redirection((*list)))
+			left = parss_redirection(left, list);
+	}
+	return left;
+}
+
+t_tree  *pars_pipe(t_node **list)
 {
 	t_tree *left;
 
-	left = parss_one_side(list, env);
+	left = parss_one_side(list);
 	if (!left)
 		return (NULL);
 	while (*list && (*list)->type == PIPE)
 	{
 		*list = (*list)->next;
-		t_tree  *right = parss_one_side(list, env);
+		t_tree  *right = parss_one_side(list);
 		t_tree  *pipe_cmd = malloc(sizeof(t_tree));
 		if (!pipe_cmd)
 		{
-			free_tree(&right);
-			free_tree(&left);
+			free_tree(right);
+			free_tree(left);
 			return (NULL);
 		}
 		pipe_cmd->pipe = malloc(sizeof(t_pipe));
 		if (!pipe_cmd->pipe)
 		{
-			free_tree(&right);
-			free_tree(&left);
+			free_tree(right);
+			free_tree(left);
 			free(pipe_cmd);
 			return (NULL);
 		}

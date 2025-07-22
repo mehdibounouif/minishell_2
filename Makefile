@@ -7,6 +7,7 @@ LIBFT_LIB = $(LIBFT_DIR)/libft.a
 SRCS_DIR1 = ./parssing
 SRCS_DIR2 = ./execution
 SRCS_DIR3 = ./built-in
+SRCS_DIR4 = ./free
 SRCS_FILES1 = main.c\
 	     utils.c\
 	     token/tokenize.c\
@@ -18,7 +19,6 @@ SRCS_FILES1 = main.c\
 	     ast_tree/command_with_pipe.c\
 		 ast_tree/simple_command.c\
 	     check_quotes.c\
-	     free.c\
 	     check_command.c\
 	     check_syntax.c\
 	     expaned/expansions.c\
@@ -42,22 +42,28 @@ SRCS_FILES3 = cd_command.c\
 	      env_command.c\
 	      env_utils.c\
 
+SRCS_FILES4 = free_tree.c\
+			  tools1.c\
+			  tools2.c
+
 SRCS1 = $(addprefix $(SRCS_DIR1)/, $(SRCS_FILES1))
 SRCS2 = $(addprefix $(SRCS_DIR2)/, $(SRCS_FILES2))
 SRCS3 = $(addprefix $(SRCS_DIR3)/, $(SRCS_FILES3))
+SRCS4 = $(addprefix $(SRCS_DIR4)/, $(SRCS_FILES4))
 
 PARSS_OBJS = $(SRCS1:.c=.o)
 EXEC_OBJS = $(SRCS2:.c=.o)
 BUILTIN_OBJS = $(SRCS3:.c=.o)
+FREE_OBJS = $(SRCS4:.c=.o)
 
 all: $(NAME)
 
 $(LIBFT_LIB):
 	@$(MAKE) -C $(LIBFT_DIR)
 
-$(NAME): $(PARSS_OBJS) $(EXEC_OBJS) $(BUILTIN_OBJS) $(LIBFT_LIB)
+$(NAME): $(PARSS_OBJS) $(EXEC_OBJS) $(BUILTIN_OBJS) $(FREE_OBJS) $(LIBFT_LIB)
 	@echo "🎉 Vincular archivos de objeto para crear el ejecutable: $(NAME) 🚀"
-	@$(CC) $(FLAGS) $(PARSS_OBJS) $(EXEC_OBJS) $(BUILTIN_OBJS) $(LIBFT_LIB) -lreadline -o $(NAME)
+	@$(CC) $(FLAGS) $(PARSS_OBJS) $(EXEC_OBJS) $(BUILTIN_OBJS) $(FREE_OBJS) $(LIBFT_LIB) -lreadline -o $(NAME)
 	@echo "✅ ¡Compilación exitosa! Ejecutable creado.: $(NAME)"
 
 %.o: %.c
@@ -71,6 +77,7 @@ clean:
 	@$(RM) $(PARSS_OBJS)
 	@$(RM) $(EXEC_OBJS)
 	@$(RM) $(BUILTIN_OBJS)
+	@$(RM) $(FREE_OBJS)
 	@$(RM) .h*
 	@echo "✅ Limpieza completa."
 
@@ -82,6 +89,6 @@ fclean: clean
 
 re: fclean all
 
-.SECONDARY: $(PARS_OBJS) $(EXEC_OBJS) $(BUILTIN_OBJS)
+.SECONDARY: $(PARS_OBJS) $(EXEC_OBJS) $(BUILTIN_OBJS) $(FREE_OBJS)
 
 .PHONY: re all clean fclean

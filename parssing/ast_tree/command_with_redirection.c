@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:57 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/21 20:37:58 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/22 10:14:29 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	print_list1(t_files *list)
 
 void	collect_in_out_files(t_node **list, t_tree *node, int *i, int *j)
 {
-	node->redirect->files = NULL;
 	while (*list && (*list)->type != PIPE)
 	{
 		if ((*list)->type == HEREDOC)
@@ -95,6 +94,34 @@ void	collect_in_out_files(t_node **list, t_tree *node, int *i, int *j)
 		}
 		else
 			*list = (*list)->next;
+	}
+//	print_list1(node->redirect->files);
+}
+
+void	collect_in_out_files2(t_node **list, t_tree *node, int *i, int *j)
+{
+	while (*list && is_redirection(*list))
+	{
+		if ((*list)->type == HEREDOC)
+			skip_redirection(list);
+		else if (*list && ((*list)->type == R_OUT || (*list)->type == R_APPEND))
+		{
+			if ((*list)->type == R_OUT)
+				node->redirect->out_type = R_OUT;
+			else
+				node->redirect->out_type = R_APPEND;
+			*list = (*list)->next;
+			add_back1(&node->redirect->files, new_node((*list)->content, R_OUT));
+			node->redirect->out_files[(*j)++] = ft_strdup((*list)->content);
+			*list = (*list)->next;
+		}
+		else if (*list && (*list)->type == R_IN)
+		{
+			*list = (*list)->next;
+			node->redirect->in_files[(*i)++] = ft_strdup((*list)->content);
+			add_back1(&node->redirect->files, new_node((*list)->content, R_IN));
+			*list = (*list)->next;
+		}
 	}
 }
 
@@ -136,35 +163,41 @@ void	skip_redirection(t_node **list)
 		*list = (*list)->next;
 }
 
-t_tree	*parss_redirection_in_start(t_node **list, t_env *env)
+int	allocat_node(t_tree **node)
+{
+	*node = malloc(sizeof(t_tree));
+	if (!*node)
+		return (0);
+	(*node)->redirect = malloc(sizeof(t_redirection));
+	if (!(*node)->redirect)
+	{
+		free_tree(*node);
+		free(node);
+		return (0);
+	}
+	return (1);
+}
+
+t_tree	*parss_redirection_in_start(t_node **list)
 {
 	t_tree	*redirect_node;
 	t_tree	*prev;
 	t_node *tmp;
-	int	i;
-	int	j;
-	(void)env;
+	int	(i), (j);
 
 	i = 0;
 	j = 0;
 	prev = NULL;
-	redirect_node = malloc(sizeof(t_tree));
-	if (!redirect_node)
+	redirect_node = NULL;
+	if (!allocat_node(&redirect_node))
 		return (NULL);
-	redirect_node->redirect = malloc(sizeof(t_redirection));
-	if (!redirect_node->redirect)
-	{
-		free(redirect_node);
-		return (NULL);
-	}
 	init(redirect_node);
 	tmp = *list;
 	collect_herdoc(redirect_node, tmp);
 	if (!allocat_files_array(redirect_node))
 		return (NULL); // Free here;
-	collect_in_out_files(list, redirect_node, &i, &j);
-	while (*list && is_redirection(*list))
-		skip_redirection(list);
+	redirect_node->redirect->files = NULL;
+	collect_in_out_files2(list, redirect_node, &i, &j);
 	if (*list && (*list)->type != PIPE)
 		prev = command_without_redirection(list);
 	if (*list && (*list)->type != PIPE)
@@ -176,37 +209,25 @@ t_tree	*parss_redirection_in_start(t_node **list, t_env *env)
 	return (redirect_node);
 }
 
-t_tree  *parss_redirection(t_tree *node, t_node **list, t_env *env)
+t_tree  *parss_redirection(t_tree *node, t_node **list)
 {
 	t_tree  *redirect_node;
 	t_node	*tmp;
 	int	i;
 	int	j;
-	(void)env;
 
 	i = 0;
 	j = 0;
-	redirect_node = malloc(sizeof(t_tree));
-	if (!redirect_node)
-	{
-		free_tree(&node);
+	redirect_node = NULL;
+	if (!allocat_node(&redirect_node))
 		return (NULL);
-	}
-	redirect_node->redirect = malloc(sizeof(t_redirection));
-	if (!redirect_node->redirect)
-	{
-		free_tree(&node);
-		free(redirect_node);
-		return (NULL);
-	}
 	init(redirect_node);
 	tmp = *list;
 	collect_herdoc(redirect_node, tmp);
 	if (!allocat_files_array(redirect_node))
 		return (NULL); // FREE HERE;
+	redirect_node->redirect->files = NULL;
 	collect_in_out_files(list, redirect_node, &i, &j);
-	while(*list && (*list)->type != PIPE)
-		*list = (*list)->next;
 	redirect_node->redirect->in_files[i] = NULL;
 	redirect_node->redirect->out_files[j] = NULL;
 	assign_last_file(redirect_node);

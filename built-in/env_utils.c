@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:59 by moraouf           #+#    #+#             */
-/*   Updated: 2025/06/29 18:10:33 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/22 09:20:22 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,20 +85,6 @@ int update_env_var(t_env *env, char *var)
         current = current->next;
     }
     return (1);
-}
-
-// Helper function to free environment variables
-void free_env(t_env *env)
-{
-    t_env *temp;
-    while (env)
-    {
-        temp = env;
-        env = env->next;
-        free(temp->key);
-        free(temp->value);
-        free(temp);
-    }
 }
 
 // Helper function to print environment variables

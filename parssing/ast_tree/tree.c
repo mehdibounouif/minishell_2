@@ -6,37 +6,20 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 11:40:58 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/13 16:46:05 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/22 09:34:08 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_tree	*parss_one_side(t_node **list, t_env *env)
-{
-	t_tree	*left;
-
-	if (is_redirection(*list))
-	{
-		left = parss_redirection_in_start(list, env);
-	}
-	else
-	{
-		left = command_without_redirection(list);
-		if (is_redirection((*list)))
-			left = parss_redirection(left, list, env);
-	}
-	return left;
-}
-
-t_tree	*pars_command(t_node **list, t_env *env)
+t_tree	*pars_command(t_node **list)
 {
 	t_tree	*tree;
 	
-	tree =  pars_pipe(list, env);
+	tree =  pars_pipe(list);
 	if (!tree)
 	{
-		free_list(list);
+		free_list(*list);
 		return (NULL);
 	}
 	return (tree);

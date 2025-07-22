@@ -106,7 +106,7 @@ int readline_and_parssing(t_mini *minishell)
 		return (0);
 	}
 	// DESING TREE
-	minishell->tree = pars_command(&minishell->list, minishell->env);
+	minishell->tree = pars_command(&minishell->list);
 	if (!minishell->tree)
 	{
 		free(cmd);

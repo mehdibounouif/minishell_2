@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/21 20:29:12 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/22 09:52:33 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,18 +201,6 @@ int	check_if_exist(t_redirection *node)
 	return (1);
 }
 
-void	close_fds(int *list)
-{
-	int	i;
-
-	i = 0;
-	while (list[i] != 0)
-	{
-		close(list[i]);
-		i++;
-	}
-}
-
 void	dup_fds(t_redirection *node, t_env *env, char **envp)
 {
 	(void)env;
@@ -224,7 +212,7 @@ void	dup_fds(t_redirection *node, t_env *env, char **envp)
 		if ((in_fd = open(node->hrc_file, O_RDONLY)) == -1)
 			exit(-1);
 		dup2(in_fd, 0);
-		close_fds(node->heredoc_fds);
+//		close_fds(node->heredoc_fds);
 	}
 	else if (node->in)
 	{
@@ -232,7 +220,7 @@ void	dup_fds(t_redirection *node, t_env *env, char **envp)
 			exit(-1);
 		dup2(in_fd, 0);
 		close(in_fd);
-		close_fds(node->heredoc_fds);
+//		close_fds(node->heredoc_fds);
 	}
 	if (node->out_type == R_APPEND)
 	{

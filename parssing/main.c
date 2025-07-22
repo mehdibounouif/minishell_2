@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/21 20:47:12 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/22 10:24:02 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,10 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 			continue;
 		open_her(minishell);
 		execute_full_command(minishell.tree, minishell.env, env);
-//		print_ast(minishell.tree, 0);
-		ft_free(&minishell);
+	//	print_ast(minishell.tree, 0);
+	//	ft_free(&minishell);
 	}
-	exit(minishell.tree->ret);
+	//free_env(minishell.env);
+	exit(global(-1));
   return (0);
 }
