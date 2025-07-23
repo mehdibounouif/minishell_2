@@ -23,6 +23,7 @@ int	env_command(t_env *env, char **args);
 
 // Exit command (to be implemented)
 int	exit_command(t_env *env, char **args);
+int global(int state);
 
 
 void set_env_var(t_env **env, char *key, char *value);

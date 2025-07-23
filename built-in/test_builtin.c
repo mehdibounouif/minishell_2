@@ -151,6 +151,16 @@ void test_command(t_env *env, char *cmd_name, char **args)
     // print_env(env);
 }
 
+int global(int state)
+{
+	static int value;
+	if(state != -1)
+		value = state;
+	return value;
+}
+
+
+
 int main(void)
 {
     t_env *env = NULL;
