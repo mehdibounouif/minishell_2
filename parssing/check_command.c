@@ -106,6 +106,7 @@ int readline_and_parssing(t_mini *minishell)
 		return (0);
 	}
 	// DESING TREE
+	//t_node *tmp = minishell->list;
 	minishell->tree = pars_command(&minishell->list);
 	if (!minishell->tree)
 	{

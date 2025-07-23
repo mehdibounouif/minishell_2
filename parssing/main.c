@@ -6,13 +6,11 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/22 10:24:02 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/23 11:25:08 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <sys/wait.h>
-#include <unistd.h>
 
 int global(int state)
 {
@@ -50,6 +48,8 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 			continue;
 		open_her(minishell);
 		execute_full_command(minishell.tree, minishell.env, env);
+//		free_list(&minishell.list);
+	//	free_tree(&minishell.tree);
 	//	print_ast(minishell.tree, 0);
 	//	ft_free(&minishell);
 	}

@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/22 10:34:43 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/23 10:19:25 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,13 +191,13 @@ char	*get_last_herdoc(t_herdoc *list);
 char	*get_last_file(char **list);
 
 // free
-void	free_tree(t_tree *tree);
+void	free_tree(t_tree **tree);
 void	free_redirect_node(t_redirection *node);
 void free_env(t_env *env);
 void	free_herdoc(t_herdoc *list);
 void	free_files(t_files *files);
 void free_str(char **list);
-void free_list(t_node *list);
+void free_list(t_node **list);
 void	close_fds(int *list);
 void ft_free(t_mini *minishell);
 

@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:57 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/22 10:14:29 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/23 11:29:44 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ int	allocat_node(t_tree **node)
 	(*node)->redirect = malloc(sizeof(t_redirection));
 	if (!(*node)->redirect)
 	{
-		free_tree(*node);
+		free_tree(node);
 		free(node);
 		return (0);
 	}
