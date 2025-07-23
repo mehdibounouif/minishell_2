@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/20 08:15:18 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/23 21:29:17 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,9 +139,9 @@ void	collect_herdoc(t_tree *node, t_node *list)
 			}
 			else
 				node->redirect->hdc = 1;
-			h_node->herdoc = list->content;
+			h_node->herdoc = ft_strdup(list->content);
 			list = list->next;
-			h_node->delimeter = list->content;
+			h_node->delimeter = ft_strdup(list->content);
 			if (list->contain_quoted)
 				h_node->quoted = 1;
 			h_node->next = NULL;
@@ -156,5 +156,5 @@ void	collect_herdoc(t_tree *node, t_node *list)
 			node->redirect->in = 1;
 		list = list->next;
 	}
-//	print_her(node->redirect->herdoc);
+	print_her(node->redirect->herdoc);
 }

@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:57 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/23 12:12:14 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/23 22:08:51 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_files	*new_node(char *content, int type)
 
 	if (!(node = malloc(sizeof(t_files))))
 		return (NULL);
-	node->file = content;
+	node->file = ft_strdup(content);
 	node->type = type;
 	node->next = NULL;
 	return (node);
