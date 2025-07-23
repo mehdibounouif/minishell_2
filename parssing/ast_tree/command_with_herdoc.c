@@ -139,9 +139,9 @@ void	collect_herdoc(t_tree *node, t_node *list)
 			}
 			else
 				node->redirect->hdc = 1;
-			h_node->herdoc = list->content;
+			h_node->herdoc = ft_strdup(list->content);
 			list = list->next;
-			h_node->delimeter = list->content;
+			h_node->delimeter = ft_strdup(list->content);
 			if (list->contain_quoted)
 				h_node->quoted = 1;
 			h_node->next = NULL;

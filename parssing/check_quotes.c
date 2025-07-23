@@ -21,7 +21,7 @@ int check_quotes(char *cmd, size_t i)
 	}
 	return (flag);
 }
-
+/*
 char	*remove_quotes(char *cmd)
 {
 	size_t i;
@@ -107,3 +107,4 @@ char    *remove_quotes2(char *cmd, size_t l)
 	clear_cmd[j] = '\0';
 	return (clear_cmd);
 }
+*/

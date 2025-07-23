@@ -79,7 +79,7 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 		execute_full_command(minishell.tree, envp, env);
 		sig_ctrl(0); // Back to interactive mode
 	//	print_ast(minishell.tree, 0);
-  	free_tree(&minishell.tree);
+  	//free_tree(&minishell.tree);
 	}
 	free_env(envp);
 	exit(global(-1));
