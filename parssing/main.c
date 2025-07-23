@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/23 20:59:08 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/23 22:35:04 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	open_her(t_mini minishell, t_env *envp)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		open_herdocs(minishell.tree, envp);
-		exit(0);
 	}
 	else if(pid > 0)
 	{
@@ -63,9 +62,7 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 		handle_signal();
 		if (!readline_and_parssing(&minishell, envp))
 			continue;
-		
 		open_her(minishell, envp);
-		
 		sig_ctrl(1); // Set execution mode
 		execute_full_command(minishell.tree, envp, env);
 		sig_ctrl(0); // Back to interactive mode

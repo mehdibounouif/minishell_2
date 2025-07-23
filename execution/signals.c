@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 11:06:57 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/23 10:44:16 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/23 21:37:43 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void ft_return_signal(int status)
 	sig = 0;
 	if(WIFSIGNALED(status))
 	{
-		// printf("%d\n",sig);
+		printf("\n");
 		sig = WTERMSIG(status);
 		sig += 128;
 		// printf("%d\n",sig);

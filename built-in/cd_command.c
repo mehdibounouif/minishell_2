@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:42:07 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/23 14:48:26 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/23 21:33:52 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,39 +75,36 @@ static int	change_to_home(t_env *env)
 	return (0);
 }
 
-char **back_up()
+char	**back_up(void)
 {
-	static char *value;
+	static char	*value;
 
-	return(&value);
+	return (&value);
 }
 
 int	cd_command(t_env *env, char **args)
 {
-
-	if(args[2] != NULL)
+	if (args[2] != NULL)
 	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
-		global (1);
-		
+		global(1);
 	}
 	else if (!args[0] || (args[0][0] == '-' && !args[0][1]))
 	{
 		ft_putstr_fd("minishell: cd: option not supported\n", 2);
-		global (1);
+		global(1);
 	}
 	else if (!args[1])
 	{
 		if (change_to_home(env) == 1)
 			return (1);
 	}
-	if(update_oldpwd(env) == 1)
-		return 1;
+	if (update_oldpwd(env) == 1)
+		return (1);
 	if (chdir(args[1]) == -1)
 	{
 		perror("minishell: cd");
-		// ft_putstr_fd("minishell: cd: ", 2);
-		global (1);
+		global(1);
 	}
 	if (update_pwd(env) == 1)
 		return (1);

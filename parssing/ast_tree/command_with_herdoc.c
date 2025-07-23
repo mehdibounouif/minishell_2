@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_with_herdoc.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/20 08:15:18 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/23 22:01:19 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,23 @@ int	create_heredoc(t_redirection *list, t_env *env, int i)
 	list->heredoc_fds[i] = fd;
 	list->heredocs[i] = ft_strdup(file_name);
 	line = readline(">");
+	if(!line)
+	{
+		printf("bash: warning: here-document at line 1 delimited by end-of-file (wanted %s)\n", list->herdoc->delimeter);
+	}
 	while (line && ft_strcmp(list->herdoc->delimeter, line))
 	{
 		if (!list->herdoc->quoted)
-			line = expansion(line, env);
+		line = expansion(line, env);
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free(line);
 		line = readline(">");
+		if(!line)
+		{
+			perror("minishell :: ");
+			break;
+		}
 	}
 	return (0);
 }
@@ -139,9 +148,9 @@ void	collect_herdoc(t_tree *node, t_node *list)
 			}
 			else
 				node->redirect->hdc = 1;
-			h_node->herdoc = list->content;
+			h_node->herdoc = ft_strdup(list->content);
 			list = list->next;
-			h_node->delimeter = list->content;
+			h_node->delimeter = ft_strdup(list->content);
 			if (list->contain_quoted)
 				h_node->quoted = 1;
 			h_node->next = NULL;

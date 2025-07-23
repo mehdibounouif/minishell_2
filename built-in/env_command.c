@@ -12,23 +12,23 @@
 
 #include "../includes/minishell.h"
 
-int env_command(t_env *env, char **args)
+int	env_command(t_env *env, char **args)
 {
-    t_env *current;
+	t_env *current;
 
-    (void)args; // env command doesn't take arguments
-    
-    current = env;
-    while (current)
-    {
-        if (current->value) // Only print variables that have a value
-        {
-            ft_putstr_fd(current->key, 1);
-            ft_putchar_fd('=', 1);
-            ft_putstr_fd(current->value, 1);
-            ft_putchar_fd('\n', 1);
-        }
-        current = current->next;
-    }
-    return (0);
-} 
+	(void)args; // env command doesn't take arguments
+
+	current = env;
+	while (current)
+	{
+		if (current->value) // Only print variables that have a value
+		{
+			ft_putstr_fd(current->key, 1);
+			ft_putchar_fd('=', 1);
+			ft_putstr_fd(current->value, 1);
+			ft_putchar_fd('\n', 1);
+		}
+		current = current->next;
+	}
+	return (0);
+}
