@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:28:42 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/23 11:16:17 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/23 22:48:02 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,8 @@ void	free_command_node1(t_tree *tree)
 {
 	if (tree)
 	{
-		if (tree->command->args)
-			free_str(tree->command->args);
-		if (tree->command)
-			free(tree->command);
+		free_str(tree->command->args);
+		free(tree->command);
 		free(tree);
 	}
 }

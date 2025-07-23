@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:59 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/17 21:46:51 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/23 23:00:31 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,43 +89,44 @@ static long long ft_atoll(char *str, int *error)
     return (result * sign);
 }
 
-int exit_command(t_env *env, char **args)
+int exit_command(t_tree *tree, t_env *env, char **args)
 {
-    long long status;
-    int error;
+	long long status;
+	int error;
 
-    (void)env;
-    ft_putstr_fd("exit\n", 1);
-    if (!args[1])
-        exit(0);
-    
-    if (!is_numeric(args[1]))
-    {
-        ft_putstr_fd("minishell: exit: ", 2);
-        ft_putstr_fd(args[1], 2);
-        ft_putstr_fd(": numeric argument required\n", 2);
-        exit(2);
-    }
-    
-    if (args[2])
-    {
-        ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+	(void)env;
+	ft_putstr_fd("exit\n", 1);
+	if (!args[1])
+		exit(0);
+
+	if (!is_numeric(args[1]))
+	{
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(args[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+		exit(2);
+	}
+
+	if (args[2])
+	{
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		exit(1);
-    }
+	}
 
-    status = ft_atoll(args[1], &error);
-    if (error)
-    {
-        ft_putstr_fd("minishell: exit: ", 2);
-        ft_putstr_fd(args[1], 2);
-        ft_putstr_fd(": numeric argument required\n", 2);
-        exit(2);
-    }
+	status = ft_atoll(args[1], &error);
+	if (error)
+	{
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(args[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+		exit(2);
+	}
 
-    if (status < 0)
-        status = 256 + (status % 256);
-    else
-        status = status % 256;
-    
-    exit((int)status);
+	if (status < 0)
+		status = 256 + (status % 256);
+	else
+		status = status % 256;
+	free_tree(&tree);
+	free_env(env);
+	exit((int)status);
 }
