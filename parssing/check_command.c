@@ -62,35 +62,24 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 	char	*cmd;
 
 	cmd = readline("minishell> ");
-	// handle signal here ctrl + D::
 	if(!cmd)
 	{
 		printf("exit\n"); // free here + !!!
 	 	exit(0);
 	}
 	add_history(cmd);
-	// CHECK QOUTES
 	if (check_quotes(cmd, ft_strlen(cmd)))
 	{
 		free(cmd);
 		printf("Qoutes not closed!\n");
 		return (0);
 	}
-	// GET ENV
-	// get_env(minishell, env);
-	//  print_env(minishell->env);
-
-	//  REPLECE VARIABLE WITH VALUE
 	cmd = expansion(cmd, env);
 	if (!cmd)
 	{
 		ft_putendl_fd("33ddsd: value too great for base (error token is \"33ddsd\")", 2);
 		return (0);
 	}
-	//len = len_to_pipe(cmd);
-	//cmd = remove_quotes2(cmd, len);
-
-	// TOKENIZE
   	tokenize(cmd, &minishell->list);
 	if (!minishell->list)
 	{
@@ -98,7 +87,7 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 		return (0);
 	}
 	//print_list(minishell->list);
-	/// CHECK SYNTAX	
+	/// CHECK SYNTAX
 	if (!check_syntax(minishell->list))
 	{
 		ft_free(minishell);
