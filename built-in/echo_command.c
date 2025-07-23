@@ -12,49 +12,46 @@
 
 #include "../includes/minishell.h"
 
-int echo_command(t_env *env, char **args)
+int	echo_command(t_env *env, char **args)
 {
-    int i;
-    int j;
+	int	i;
+	int	j;
 	int	len;
-    int newline;
-    
-    (void)env;  // env is not used in echo command
-    i = 1;      // Start from first argument (skip command name)
-    j = 1;      // Start from first argument (skip command name)
-    newline = 1; // Default to printing newline
-    
-    // Check for -n option
-    if (args[1] && !ft_strncmp(args[1], "-n", 2))
-    {
+	int	newline;
+
+	(void)env;   // env is not used in echo command
+	i = 1;       // Start from first argument (skip command name)
+	j = 1;       // Start from first argument (skip command name)
+	newline = 1; // Default to printing newline
+	// Check for -n option
+	if (args[1] && !ft_strncmp(args[1], "-n", 2))
+	{
 		// I HANDEL THIS CASE echo -nnnnnnnnnnnnnnn hello
 		len = ft_strlen(args[1]);
 		while (args[1][j])
 		{
-		if (args[1][j] != 'n')
-				break;
+			if (args[1][j] != 'n')
+				break ;
 			j++;
 		}
 		if (j == len)
 		{
 			newline = 0;
-			i = 2;  // Skip the -n option
+			i = 2; // Skip the -n option
 		}
-    }
-    
-    // Print all arguments with spaces between them
-    while (args[i])
-    {
-        ft_putstr_fd(args[i], 1);
-        if (args[i + 1])
-            ft_putchar_fd(' ', 1);
-        i++;
-    }
-    if (newline)
+	}
+	// Print all arguments with spaces between them
+	while (args[i])
 	{
-        ft_putchar_fd('\n', 1);
+		ft_putstr_fd(args[i], 1);
+		if (args[i + 1])
+			ft_putchar_fd(' ', 1);
+		i++;
+	}
+	if (newline)
+	{
+		ft_putchar_fd('\n', 1);
 	}
 	global(0);
-    return (0);
+	return (0);
 }
-

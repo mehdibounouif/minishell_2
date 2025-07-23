@@ -6,7 +6,8 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/23 22:52:54 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/23 23:07:31 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/23 22:38:36 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +20,6 @@ int global(int state)
 		value = state;
 	return value;
 }
-
 
 void	open_her(t_mini minishell, t_env *envp)
 {
@@ -78,6 +78,7 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 		handle_signal();
 		if (!readline_and_parssing(&minishell, envp))
 			continue;
+		
 		if (check_heredoc(minishell.tree))
 			open_her(minishell, envp);
 		
