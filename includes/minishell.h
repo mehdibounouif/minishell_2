@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/23 21:00:48 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/23 22:17:37 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,9 @@ struct	s_files
 	struct s_files *next;
 };
 
-struct s_redirection {
+struct s_redirection
+{
 	t_tree *prev; // previous node;
-//	int	without_cmd;
 	char *in_file; // last input file;
 	char	**in_files; // all input files;
 	char *out_file; // last output file;
@@ -118,6 +118,7 @@ struct s_redirection {
 	int	index; // index output fds list
 	t_files *files;
 	t_herdoc *herdoc; // list of command heredocs;
+	int	is_her;
 };
 
 struct s_tree {
