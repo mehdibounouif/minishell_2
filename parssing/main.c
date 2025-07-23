@@ -22,7 +22,7 @@ int global(int state)
 }
 
 
-void	open_her(t_mini minishell)
+void	open_her(t_mini minishell, t_env *envp)
 {
 	pid_t pid;
  	int status;
@@ -33,7 +33,7 @@ void	open_her(t_mini minishell)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		open_herdocs(minishell.tree, minishell.env);
+		open_herdocs(minishell.tree, envp);
 		exit(0);
 	}
 	else if(pid > 0)
@@ -72,7 +72,7 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 			continue;
 		
 		// Process heredocs first if needed
-		open_her(minishell);
+		open_her(minishell, envp);
 		
 		// start execution mode before running the command
 		sig_ctrl(1); // Set execution mode

@@ -131,7 +131,6 @@ struct s_tree {
 
 struct s_mini {
   t_tree *tree;
-  t_env *env;
   t_node *list;
 };
 
