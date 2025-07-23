@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_simple_command.c                              :+:      :+:    :+:   */
+/*   tools1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 09:07:52 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/22 10:26:15 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/23 11:03:25 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,25 +22,30 @@ void	free_str(char **list)
 	while (list[i])
 	{
 		free(list[i]);
+		list[i] = NULL;
 		i++;
 	}
 	free(list);
 }
 
-void	free_list(t_node *list)
+void	free_list(t_node **list)
 {
 	t_node *tmp;
 
-	if (!list)
-		return ;
-	tmp = list;
-	while (list)
+	while (*list)
 	{
-		list = list->next;
+		tmp = *list;
+		*list = (*list)->next;
 		if (tmp->content)
+		{
 			free(tmp->content);
-		free(tmp);
-		tmp = list;
+			tmp->content = NULL;
+		}
+		if (tmp)
+		{
+			free(tmp);
+			tmp = NULL;
+		}
 	}
 	list = NULL;
 }

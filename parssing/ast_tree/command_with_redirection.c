@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:57 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/22 10:14:29 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/23 12:12:14 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	init(t_tree *node)
 	node->redirect->out_count = 0;
 	node->redirect->hdc = 0;
 	node->redirect->last_fd = -1;
+//	node->redirect->without_cmd = 0;
 }
 
 t_files	*new_node(char *content, int type)
@@ -171,7 +172,7 @@ int	allocat_node(t_tree **node)
 	(*node)->redirect = malloc(sizeof(t_redirection));
 	if (!(*node)->redirect)
 	{
-		free_tree(*node);
+		free_tree(node);
 		free(node);
 		return (0);
 	}
@@ -200,6 +201,8 @@ t_tree	*parss_redirection_in_start(t_node **list)
 	collect_in_out_files2(list, redirect_node, &i, &j);
 	if (*list && (*list)->type != PIPE)
 		prev = command_without_redirection(list);
+//	if (prev == NULL)
+//		redirect_node->redirect->without_cmd = 1;
 	if (*list && (*list)->type != PIPE)
 		collect_in_out_files(list, redirect_node, &i, &j);
 	redirect_node->redirect->in_files[i] = NULL;

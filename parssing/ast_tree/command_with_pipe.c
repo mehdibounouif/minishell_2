@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 16:38:25 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/22 10:19:56 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/23 11:30:20 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,15 @@ t_tree  *pars_pipe(t_node **list)
 		t_tree  *pipe_cmd = malloc(sizeof(t_tree));
 		if (!pipe_cmd)
 		{
-			free_tree(right);
-			free_tree(left);
+			free_tree(&right);
+			free_tree(&left);
 			return (NULL);
 		}
 		pipe_cmd->pipe = malloc(sizeof(t_pipe));
 		if (!pipe_cmd->pipe)
 		{
-			free_tree(right);
-			free_tree(left);
+			free_tree(&right);
+			free_tree(&left);
 			free(pipe_cmd);
 			return (NULL);
 		}

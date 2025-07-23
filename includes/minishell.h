@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/23 20:42:18 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/23 21:00:48 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ struct	s_files
 
 struct s_redirection {
 	t_tree *prev; // previous node;
+//	int	without_cmd;
 	char *in_file; // last input file;
 	char	**in_files; // all input files;
 	char *out_file; // last output file;
@@ -129,7 +130,6 @@ struct s_tree {
 
 struct s_mini {
   t_tree *tree;
-  t_env *env;
   t_node *list;
 };
 
@@ -153,7 +153,7 @@ void sorted_env(t_env *env);
 void	ft_lstadd_node(t_env **lst, t_env *node);
 t_env *create_env_var(char *key, char *value);
 t_env *get_env_var(t_env *env, const char *key);
-void  get_env(t_mini *minishell, char **env);
+void  get_env(t_env **envp, char **env);
 
 
 // Command execution
@@ -192,13 +192,13 @@ char	*get_last_herdoc(t_herdoc *list);
 char	*get_last_file(char **list);
 
 // free
-void	free_tree(t_tree *tree);
+void	free_tree(t_tree **tree);
 void	free_redirect_node(t_redirection *node);
 void free_env(t_env *env);
 void	free_herdoc(t_herdoc *list);
 void	free_files(t_files *files);
 void free_str(char **list);
-void free_list(t_node *list);
+void free_list(t_node **list);
 void	close_fds(int *list);
 void ft_free(t_mini *minishell);
 
@@ -214,8 +214,8 @@ int	is_space(char c);
 int is_real_separator(char *cmd, int i);
 int count_args(t_node *list);
 int check_sides(t_node *list);
-int readline_and_parssing(t_mini *minishell);
-int     check_syntax(t_mini *mini, t_node *list);
+int readline_and_parssing(t_mini *minishell, t_env *env);
+int     check_syntax(t_node *list);
 int	is_redirection(t_node *node);
 int global(int state);
 

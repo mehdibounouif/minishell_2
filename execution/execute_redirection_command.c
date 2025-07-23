@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/22 09:52:33 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/23 12:12:23 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,6 +254,8 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 		return ;
 	if (!check_if_exist(node->redirect))
 		return ;
+//	if (node->redirect->without_cmd)
+//		return;
 	pid = fork();
 	if (pid == 0)
 	{

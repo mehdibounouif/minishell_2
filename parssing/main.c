@@ -6,13 +6,11 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/23 20:15:29 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/23 20:59:08 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <sys/wait.h>
-#include <unistd.h>
 
 int global(int state)
 {
@@ -23,7 +21,7 @@ int global(int state)
 }
 
 
-void	open_her(t_mini minishell)
+void	open_her(t_mini minishell, t_env *envp)
 {
 	pid_t pid;
  	int status;
@@ -34,54 +32,45 @@ void	open_her(t_mini minishell)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		open_herdocs(minishell.tree, minishell.env);
+		open_herdocs(minishell.tree, envp);
 		exit(0);
 	}
 	else if(pid > 0)
 	{
-		// Parent process - ignore signals while child runs
-		// signal(SIGINT, SIG_IGN);
-		// signal(SIGQUIT, SIG_IGN);
-		
 		waitpid(pid, &status, 0);
-		// printf("%s\n",WIFSIGNALED(status)?"yes":"no");
+		// printf("%s\n", WIFSIGNALED(status) ? "yes" : "no");
 		ft_return_signal(status);
 		sig_ctrl(0);
-		// Don't call handle_signal() here - it will be called in main loop
 	}
-	// global(0); // reset state , interactive mode 
 }
 
 int	main(int c, char **v __attribute__((unused)), char **env)
 {
 	t_mini  minishell;
+  	t_env *envp;
 
 	if (c != 1)
 	{
 		ft_putendl_fd("This program does not accept arguments", 2);
 		exit(0);
 	}
+ 	envp = NULL;
 	ft_bzero(&minishell, sizeof(t_mini));
-	get_env(&minishell, env);
+	get_env(&envp, env);
 	global(0); //Initial state, interactive mode 
 	while (1)
 	{
 		handle_signal();
-		if (!readline_and_parssing(&minishell))
+		if (!readline_and_parssing(&minishell, envp))
 			continue;
 		
-		// Process heredocs first if needed
-		open_her(minishell);
+		open_her(minishell, envp);
 		
-		// start execution mode before running the command
 		sig_ctrl(1); // Set execution mode
-		execute_full_command(minishell.tree, minishell.env, env);
+		execute_full_command(minishell.tree, envp, env);
 		sig_ctrl(0); // Back to interactive mode
-	//	print_ast(minishell.tree, 0);
-	//	ft_free(&minishell);
 	}
-	//free_env(minishell.env);
+	free_env(envp);
 	exit(global(-1));
-  return (0);
+	return (0);
 }
-
