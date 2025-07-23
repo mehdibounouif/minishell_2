@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_simple_command.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/21 20:43:48 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/23 10:26:44 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 	DIR *dir;
 	struct stat	info;
 
+	sig_ctrl(1); // start execution mode
 	if (is_builtin(node->command->command))
 	{
 		execute_builtin(node, env);
@@ -120,6 +121,10 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 	pid_t pid = fork();
 	if (pid == 0)
 	{
+		// Child process - restore default signal handling
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		
 		// check umprintable cammand
 		if (node->command->command[0] == '.')
 		{
@@ -129,7 +134,7 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 				closedir(dir);
 				print_message(node->command->command, ": Is a directory");
 				global(126);
-				return ;
+				exit(126);
 			}
 			else
 			{
@@ -146,14 +151,14 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 					{
 						print_message(node->command->command, ": Permission denied");
 						global(126);
-						return ;
+						exit(126);
 					}
 				}
 				else
 				{
 					print_message(node->command->command, ": No such file or directory");
 					global(127);
-					return ;
+					exit(127);
 				}
 			}
 		}
@@ -162,23 +167,45 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 		{
 			print_message(node->command->command, ": command not found");
 			global(127);
-			return ;
+			exit(127);
 		}
 		char *path = find_path(node , env);
 		if (!path)
 		{
 			print_message(node->command->command, ": command not found");
 			global(127);
-			return ;
+			exit(127);
 		}
 		execve(path, node->command->args, envp);
 		perror("minishell");
-//		print_message(node->command->command, ": Permission denied");
-//		global(126);
+		exit(127);
 	}
-	else
+	else if (pid > 0)
 	{
+		// Parent process - ignore signals while child runs
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+		
 		waitpid(pid, &status, 0);
-		global(WEXITSTATUS(status));
+		
+		// Check if child was terminated by signal
+		if (WIFSIGNALED(status))
+		{
+			int sig = WTERMSIG(status);
+			if (sig == SIGINT)
+			{
+				printf("\n");
+				global(130);
+			}
+			else if (sig == SIGQUIT)
+			{
+				printf("Quit (core dumped)\n");
+				global(131);
+			}
+		}
+		else if (WIFEXITED(status))
+		{
+			global(WEXITSTATUS(status));
+		}
 	}
 }

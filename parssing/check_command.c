@@ -115,3 +115,4 @@ int readline_and_parssing(t_mini *minishell)
 	free(cmd);
 	return (1);
 }
+
