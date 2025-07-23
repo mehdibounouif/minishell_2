@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/23 23:11:49 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/23 23:43:52 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	create_heredoc(t_redirection *list, t_env *env, int i)
 	while (line && ft_strcmp(list->herdoc->delimeter, line))
 	{
 		if (!list->herdoc->quoted)
-		line = expansion(line, env);
+			line = expansion(line, env);
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free(line);

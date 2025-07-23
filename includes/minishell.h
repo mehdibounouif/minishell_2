@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/23 23:09:36 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/23 23:59:33 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,7 +248,7 @@ void	print_message(char *file, char *message);
 // int   g_ctrl_c; 
 void handle_signal();
 int sig_ctrl(int state);
-void ft_return_signal(int status);
+int	ft_return_signal(int status);
 
 
 #endif

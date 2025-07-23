@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 11:06:57 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/23 21:37:43 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/24 00:15:17 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int sig_ctrl(int state)
 	return value;
 }
 
-void ft_return_signal(int status)
+int	ft_return_signal(int status)
 {
 	int sig;
 
@@ -32,15 +32,18 @@ void ft_return_signal(int status)
 		printf("\n");
 		sig = WTERMSIG(status);
 		sig += 128;
-		// printf("%d\n",sig);
+		 printf("%d\n",sig);
 		global(sig);
-		// printf("%d\n",sig);
+		return (1);
+		//printf("%d\n",sig);
 	}
 	else if(WIFEXITED(status))
 	{
 		sig = WTERMSIG(status);
 		global(sig);
+		return (1);
 	}
+	return (0);
 }
 
 void handler_sigint(int sig)

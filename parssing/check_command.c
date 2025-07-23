@@ -102,7 +102,7 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 		free(cmd);
 		return(0);
 	}
-  free_list(&tmp);
+	free_list(&tmp);
 	free(cmd);
 	return (1);
 }
