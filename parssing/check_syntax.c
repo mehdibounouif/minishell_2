@@ -23,9 +23,8 @@ int check_sides(t_node *list)
 	return (0);
 }
 
-int     check_syntax(t_mini *mini, t_node *list)
+int     check_syntax(t_node *list)
 {
-  (void)mini;
 	if (check_sides(list))
 	{
 		ft_putendl_fd("bash: syntax error near unexpected token |", 2);

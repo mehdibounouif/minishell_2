@@ -47,14 +47,10 @@ void	collect_args(char *cmd, t_node **list, char **args)
 t_tree  *command_without_redirection(t_node **list)
 {
 	t_tree	*node;
-	int	i;
 	char    *cmd;
 	char    **args;
 	int len;
-	int	index;
 
-	i = 0;
-	index = 0;
 	len = count_args(*list) + 1;
 	cmd = (*list)->content;
 	if (!(args = malloc(sizeof(char *) * len)))

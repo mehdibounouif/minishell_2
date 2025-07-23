@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void  get_env(t_mini *minishell, char **env)
+void  get_env(t_env **envp, char **env)
 {
 	int i;
 	char  **key_value;
@@ -18,7 +18,7 @@ void  get_env(t_mini *minishell, char **env)
 		env_node->key = ft_strdup(key_value[0]);
 		env_node->value = ft_strdup(key_value[1]);
 		env_node->next = NULL;
-		add_back2(&minishell->env, env_node);
+		add_back2(envp, env_node);
 		free(key_value);
 		i++;
 	}
@@ -57,7 +57,7 @@ size_t	len_to_pipe(char *cmd)
 	return (len);
 }
 
-int readline_and_parssing(t_mini *minishell)
+int readline_and_parssing(t_mini *minishell, t_env *env)
 {
 	char	*cmd;
 
@@ -81,7 +81,7 @@ int readline_and_parssing(t_mini *minishell)
 	//  print_env(minishell->env);
 
 	//  REPLECE VARIABLE WITH VALUE
-	cmd = expansion(cmd, minishell->env);
+	cmd = expansion(cmd, env);
 	if (!cmd)
 	{
 		ft_putendl_fd("33ddsd: value too great for base (error token is \"33ddsd\")", 2);
@@ -99,7 +99,7 @@ int readline_and_parssing(t_mini *minishell)
 	}
 	//print_list(minishell->list);
 	/// CHECK SYNTAX	
-	if (!check_syntax(minishell, minishell->list))
+	if (!check_syntax(minishell->list))
 	{
 		ft_free(minishell);
 		free(cmd);

@@ -54,19 +54,21 @@ void	open_her(t_mini minishell)
 int	main(int c, char **v __attribute__((unused)), char **env)
 {
 	t_mini  minishell;
+  t_env *envp;
 
 	if (c != 1)
 	{
 		ft_putendl_fd("This program does not accept arguments", 2);
 		exit(0);
 	}
+  envp = NULL;
 	ft_bzero(&minishell, sizeof(t_mini));
-	get_env(&minishell, env);
+	get_env(&envp, env);
 	global(0); //Initial state, interactive mode 
 	while (1)
 	{
 		handle_signal();
-		if (!readline_and_parssing(&minishell))
+		if (!readline_and_parssing(&minishell, envp))
 			continue;
 		
 		// Process heredocs first if needed
@@ -74,7 +76,7 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 		
 		// start execution mode before running the command
 		sig_ctrl(1); // Set execution mode
-		execute_full_command(minishell.tree, minishell.env, env);
+		execute_full_command(minishell.tree, envp, env);
 		sig_ctrl(0); // Back to interactive mode
 	//	print_ast(minishell.tree, 0);
 	//	ft_free(&minishell);

@@ -155,7 +155,7 @@ void sorted_env(t_env *env);
 void	ft_lstadd_node(t_env **lst, t_env *node);
 t_env *create_env_var(char *key, char *value);
 t_env *get_env_var(t_env *env, const char *key);
-void  get_env(t_mini *minishell, char **env);
+void  get_env(t_env **envp, char **env);
 
 
 // Command execution
@@ -215,8 +215,8 @@ int	is_space(char c);
 int is_real_separator(char *cmd, int i);
 int count_args(t_node *list);
 int check_sides(t_node *list);
-int readline_and_parssing(t_mini *minishell);
-int     check_syntax(t_mini *mini, t_node *list);
+int readline_and_parssing(t_mini *minishell, t_env *env);
+int     check_syntax(t_node *list);
 int	is_redirection(t_node *node);
 int global(int state);
 
