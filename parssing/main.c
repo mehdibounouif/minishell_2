@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/23 10:45:20 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/23 20:15:29 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	open_her(t_mini minishell)
 		// signal(SIGQUIT, SIG_IGN);
 		
 		waitpid(pid, &status, 0);
-		printf("%s\n",WIFSIGNALED(status)?"yes":"no");
+		// printf("%s\n",WIFSIGNALED(status)?"yes":"no");
 		ft_return_signal(status);
 		sig_ctrl(0);
 		// Don't call handle_signal() here - it will be called in main loop
@@ -84,3 +84,4 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 	exit(global(-1));
   return (0);
 }
+

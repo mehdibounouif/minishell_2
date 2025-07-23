@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:42:07 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/19 17:16:07 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/23 14:48:26 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,9 @@ static int	update_pwd(t_env *env)
 	current_dir = getcwd(NULL, 0); // get current working directory (cwd)
 	if (!current_dir)
 		return (1);
+	*(back_up()) = current_dir;
 	pwd = ft_strjoin("PWD=", current_dir); // join PWD= and current_dir
-	free(current_dir);
+	// free(current_dir);
 	if (!pwd)
 		return (1);
 	if (update_env_var(env, pwd) == 1) // update the PWD environment variable
@@ -74,6 +75,13 @@ static int	change_to_home(t_env *env)
 	return (0);
 }
 
+char **back_up()
+{
+	static char *value;
+
+	return(&value);
+}
+
 int	cd_command(t_env *env, char **args)
 {
 
@@ -93,13 +101,15 @@ int	cd_command(t_env *env, char **args)
 		if (change_to_home(env) == 1)
 			return (1);
 	}
-	else if (chdir(args[1]) == -1)
+	if(update_oldpwd(env) == 1)
+		return 1;
+	if (chdir(args[1]) == -1)
 	{
 		perror("minishell: cd");
 		// ft_putstr_fd("minishell: cd: ", 2);
 		global (1);
 	}
-	if (update_oldpwd(env) == 1 || update_pwd(env) == 1)
+	if (update_pwd(env) == 1)
 		return (1);
 	return (0);
 }

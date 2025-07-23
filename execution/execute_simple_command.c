@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/23 10:26:44 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/23 20:41:22 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int execute_builtin(t_tree *node, t_env *env)
 	else if (ft_strncmp(command, "echo", 5) == 0)
 		return (echo_command(env, node->command->args));
 	else if (ft_strncmp(command, "pwd", 4) == 0)
-		return (pwd_command(env, node->command->args));
+		return (pwd_command());
 	else if (ft_strncmp(command, "export", 7) == 0)
 		return (export_command(env, node->command->args));
 	else if (ft_strncmp(command, "unset", 6) == 0)

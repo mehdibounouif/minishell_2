@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:48 by moraouf           #+#    #+#             */
-/*   Updated: 2025/06/26 14:51:52 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/23 12:08:59 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,8 @@ int unset_command(t_env *env,char **args)
             ft_putstr_fd("': not a valid identifier\n", 2);
             return (EXIT_FAILURE);
         }
-        // printf("\n");
-        // puts((*env)->key);
         unset_env_var(&env,args[i]);
-        
-        return EXIT_SUCCESS;
+        i++;
     }
     return(EXIT_SUCCESS);
 }

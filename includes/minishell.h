@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/23 10:44:29 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/23 20:42:18 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ struct s_mini {
 // Function declarations
 int cd_command(t_env *env, char **args);
 int echo_command(t_env *env, char **args);
-int pwd_command(t_env *env, char **args);
+int pwd_command();
 int export_command(t_env *env, char **args);
 int unset_command(t_env *env, char **args);
 int env_command(t_env *env, char **args);
@@ -162,6 +162,7 @@ void print_env(t_env *env);
 void print_ast(t_tree *tree, int level);
 void	open_herdocs(t_tree *tree, t_env *env);
 void	skip_redirection(t_node **list);
+char **back_up();
 
 // Tokenize
 int tokenize(char *cmd, t_node **list);
