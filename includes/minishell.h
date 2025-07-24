@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/24 09:52:36 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:09:03 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ struct s_redirection
 {
 	t_tree *prev; // previous node;
 	char *in_file; // last input file;
+	int	without_cmd;
 	char	**in_files; // all input files;
 	char *out_file; // last output file;
 	char	**out_files; // all output file;

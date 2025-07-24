@@ -65,8 +65,8 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 	cmd = readline("minishell> ");
 	if(!cmd)
 	{
-		printf("exit\n"); // free here + !!!
-	 	exit(0);
+		free_env(env);
+	 	exit(2);
 	}
 	add_history(cmd);
 	if (check_quotes(cmd, ft_strlen(cmd)))
