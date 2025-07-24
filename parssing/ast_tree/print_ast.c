@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 09:02:11 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/20 08:10:36 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/24 17:10:49 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,9 +252,28 @@ void	print_redirection_data(t_tree *tree)
 		return ;
 }
 
+void	print_list(t_node *list)
+{
+	while (list)
+	{
+		printf("%s ", list->content);
+		printf("\nB %d\n", list->between_quoted);
+		printf("C %d\n", list->contain_quoted);
+		if (list->between_quoted)
+			printf("is_quoted\n");
+		else
+			printf("\n");
+		list = list->next;
+	}
+	printf("\n");
+}
 
-
-
+void	print_f(int *list)
+{
+	int	i = 0;
+	while (i < 10)
+		printf("fd = %d\n", list[i++]);
+}
 
 
 

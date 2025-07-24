@@ -156,8 +156,6 @@ char	*expansion(char *cmd, t_env *list)
 		if (is_dollar(cmd, i) && !check_quotes(cmd, i) // exmaple $"HOME"
 			&& (cmd[i+1] == '\'' || cmd[i+1] == '\"'))
 			i++;
-//		if (quote && (cmd[i] == '\'' || cmd[i] == '\"'))
-//			i++;
 		else
 			expanded_cmd[j++] = cmd[i++];
 		l = 0;
@@ -166,28 +164,3 @@ char	*expansion(char *cmd, t_env *list)
 	expanded_cmd[j] = '\0';
 	return (expanded_cmd);
 }
-/*
-char	*find_mark(t_tree *tree, char *str)
-{
-	int	full_len;
-
-	full_len = get_full_len();
-}
-
-void	expand_question_mark(t_tree *tree, t_node **list)
-{
-	t_node *tmp;
-	int	len;
-
-	tmp = *list;
-	while (tmp)
-	{
-		len = ft_strlen(tmp->content);
-		if (between_quoted(tmp->content, len) == 2)
-		{
-//			find_mark(tree, tmp->content);
-		}
-		tmp = tmp->next;
- 	}
-}
-*/

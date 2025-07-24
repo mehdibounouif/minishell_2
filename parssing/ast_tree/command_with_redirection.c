@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:57 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/24 15:35:57 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/24 17:05:03 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,39 +37,21 @@ t_files	*new_node(char *content, int type)
 	return (node);
 }
 
-void	add_back1(t_files **list, t_files *node)
-{
-	t_files *tmp;
-	if (!list || !node)
-		return ;
-	if (!*list)
-		*list = node;
-	else
-	{
-		tmp = *list;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = node;
-	}
-}
-
-void	print_list1(t_files *list)
-{
-	while (list)
-	{
-		printf("file %s\n", list->file);
-		switch (list->type) {
-			case R_OUT:
-			printf("Type = out file\n");
-			break;
-			case R_IN:
-			printf("Type = input file\n");
-			break;
-		}
-		list = list->next;
-	}
-	printf("\n");
-}
+//void	add_back1(t_files **list, t_files *node)
+//{
+//	t_files *tmp;
+//	if (!list || !node)
+//		return ;
+//	if (!*list)
+//		*list = node;
+//	else
+//	{
+//		tmp = *list;
+//		while (tmp->next)
+//			tmp = tmp->next;
+//		tmp->next = node;
+//	}
+//}
 
 void	collect_in_out_files(t_node **list, t_tree *node, int *i, int *j)
 {

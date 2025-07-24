@@ -6,33 +6,11 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:01:06 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/23 23:05:34 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/24 17:04:44 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-/*
-char	*to_space(char *str, int i)
-{
-	char	*word;
-	int	index;
-	int	j;
-	int	len;
-
-	index = i;
-	len = 0;
-	while (!is_space(str[len]))
-		len++;
-	word = malloc(len+1);
-	if (!word)
-		return (NULL);
-	j = 0;
-	while (len--)
-		word[j++] = str[index++];
-	word[j] = '\0';
-	return (word);
-}
-*/
 
 int	is_empty(char *s)
 {
@@ -125,6 +103,22 @@ void	add_back2(t_env **list, t_env *node)
 	if (!*list)
 		*list = node;
 	else 
+	{
+		tmp = *list;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = node;
+	}
+}
+
+void	add_back1(t_files **list, t_files *node)
+{
+	t_files *tmp;
+	if (!list || !node)
+		return ;
+	if (!*list)
+		*list = node;
+	else
 	{
 		tmp = *list;
 		while (tmp->next)

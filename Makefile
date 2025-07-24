@@ -22,8 +22,6 @@ SRCS_FILES1 = main.c\
 	     check_command.c\
 	     check_syntax.c\
 	     expaned/expansions.c\
-	     expaned/special_dollar.c\
-	     expaned/tools.c\
 
 SRCS_FILES2 = execute_simple_command.c\
 	      execute_pipe_command.c\

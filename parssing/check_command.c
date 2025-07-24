@@ -20,42 +20,8 @@ void  get_env(t_env **envp, char **env)
 		env_node->next = NULL;
 		add_back2(envp, env_node);
 		free_str(key_value);
-//		free(key_value);
 		i++;
 	}
-}
-
-void	print_list(t_node *list)
-{
-	while (list)
-	{
-		printf("%s ", list->content);
-		printf("\nB %d\n", list->between_quoted);
-		printf("C %d\n", list->contain_quoted);
-		if (list->between_quoted)
-			printf("is_quoted\n");
-		else
-			printf("\n");
-		list = list->next;
-	}
-	printf("\n");
-}
-
-size_t	len_to_pipe(char *cmd)
-{
-	int	i;
-	int	len;
-
-	i = 0;
-	len = 0;
-	while (cmd[i])
-	{
-		if (cmd[i] == '|' && !check_quotes(cmd, i))
-			break;
-		i++;
-		len++;
-	}
-	return (len);
 }
 
 int readline_and_parssing(t_mini *minishell, t_env *env)
@@ -87,15 +53,12 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 		free(cmd);
 		return (0);
 	}
-	//print_list(minishell->list);
-	/// CHECK SYNTAX
 	if (!check_syntax(minishell->list))
 	{
 		free_list(&minishell->list);
 		free(cmd);
 		return (0);
 	}
-	// DESING TREE
 	t_node *tmp = minishell->list;
 	minishell->tree = pars_command(&minishell->list);
 	if (!minishell->tree)

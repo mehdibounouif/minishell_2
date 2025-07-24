@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/24 16:28:52 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/24 17:05:40 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:37 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -178,6 +178,7 @@ int     ft_strcmp(const char *s1, const char *s2);
 
 
 //int is_space(char c);
+void	add_back1(t_files **list, t_files *node);
 void add_back(t_node **list, t_node *node);
 void add_back2(t_env **list, t_env *node);
 void	add_back3(t_herdoc **list, t_herdoc *node);
