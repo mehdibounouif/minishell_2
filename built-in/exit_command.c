@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:59 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/24 16:05:22 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/24 17:05:45 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,22 @@ int	exit_command(t_tree *node, t_env *env, char **args)
 	{
 		free_tree(&node);
 		free_env(env);
-		exit(0);
+		exit(global(-1));
+	}
+	if (args[2])
+	{
+		if(!is_numeric(args[1]))
+		{
+			ft_putstr_fd("minishell: exit: ", 2);
+			ft_putstr_fd(args[1], 2);
+			ft_putstr_fd(": numeric argument required\n", 2);
+			free_tree(&node);
+			free_env(env);
+			exit(2);
+		}
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+		global(1);
+		return (1);
 	}
 	if (!is_numeric(args[1]))
 	{
@@ -111,14 +126,6 @@ int	exit_command(t_tree *node, t_env *env, char **args)
 		free_tree(&node);
 		free_env(env);
 		exit(2);
-	}
-	if (args[2])
-	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		free_tree(&node);
-		free_env(env);
-		// exit(1);
-		status = 1;
 	}
 	status = ft_atoll(args[1], &error);
 	if (error)
