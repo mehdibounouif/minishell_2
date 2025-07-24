@@ -91,7 +91,7 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 	/// CHECK SYNTAX
 	if (!check_syntax(minishell->list))
 	{
-		ft_free(minishell);
+		free_list(&minishell->list);
 		free(cmd);
 		return (0);
 	}
