@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:28:42 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/24 10:04:14 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:44:31 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,7 @@ void	free_command_node1(t_tree *tree)
 		free_str(tree->command->args);
 		free(tree->command->command);
 		free(tree->command);
-//		tree->command = NULL;
 		free(tree);
-//		tree = NULL;
 	}
 }
 
@@ -42,11 +40,10 @@ void	free_tree(t_tree **tree)
 	}
 	else if ((*tree)->type == REDIRECT_NODE)
 	{
-		free_tree(&(*tree)->redirect->prev);
+		if ((*tree)->redirect->prev)
+			free_tree(&(*tree)->redirect->prev);
 		free_redirect_node((*tree)->redirect);
 	}
-//	free(*tree);
-//	*tree = NULL; 
 }
 
 void	ft_free(t_mini *minishell)

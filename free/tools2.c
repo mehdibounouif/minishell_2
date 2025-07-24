@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:27:42 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/24 13:05:08 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/24 16:07:34 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/minishell.h"

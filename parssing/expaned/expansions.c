@@ -116,18 +116,24 @@ char	*expansion(char *cmd, t_env *list)
 	int	full_len;
 	char	*expanded_cmd;
 	int	i;
+	int	quote;
 	int	j;
 	int	l;
 
 	i = 0;
 	j = 0;
 	l = 0;
+	quote = 0;
 	full_len = get_full_len(cmd, list);
 	if (full_len == -1)
 		return (NULL);
 	expanded_cmd = malloc(full_len + 1);
 	if (!expanded_cmd)
-		return (NULL);
+	{
+		free_env(list);
+		free(cmd);
+		exit(2);
+	}
 	while (cmd[i])
 	{
 		if (cmd[i] == '<' && cmd[i+1] == '<')
@@ -137,8 +143,11 @@ char	*expansion(char *cmd, t_env *list)
 			expanded_cmd[j++]  = cmd[i++];
 			while (is_space(cmd[i]))
 				expanded_cmd[j++] = cmd[i++];
-			if (cmd[i] == '\'' || cmd[i] != '\"')
-				expanded_cmd[j++] = cmd[i++];
+			while (cmd[i] == '\'' || cmd[i] == '\"')
+			{
+				i++;
+				quote = 1;
+			}
 		}
 		while (l == 0 && is_dollar(cmd, i) && (ft_isalpha(cmd[i+1]) || cmd[i+1] == '_'))
 				replace_key(cmd, expanded_cmd, &i, &j, list);
@@ -147,6 +156,8 @@ char	*expansion(char *cmd, t_env *list)
 		if (is_dollar(cmd, i) && !check_quotes(cmd, i) // exmaple $"HOME"
 			&& (cmd[i+1] == '\'' || cmd[i+1] == '\"'))
 			i++;
+//		if (quote && (cmd[i] == '\'' || cmd[i] == '\"'))
+//			i++;
 		else
 			expanded_cmd[j++] = cmd[i++];
 		l = 0;

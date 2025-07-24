@@ -6,6 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
+/*   Updated: 2025/07/24 16:29:30 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:42 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -135,7 +136,6 @@ void	collect_herdoc(t_tree *node, t_node *list)
 {
 	t_herdoc *h_node;
 
-	node->redirect->herdoc = NULL;
 	while (list && list->type != PIPE)
 	{
 		if (list->type == R_IN)
