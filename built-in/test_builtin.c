@@ -141,13 +141,13 @@ void	test_command(t_env *env, char *cmd_name, char **args)
 	if (strcmp(cmd_name, "cd") == 0)
 		result = cd_command(env, args);
 	else if (strcmp(cmd_name, "echo") == 0)
-		result = echo_command(env, args);
+		result = echo_command( args);
 	else if (strcmp(cmd_name, "pwd") == 0)
 		result = pwd_command(env, args);
 	else if (strcmp(cmd_name, "export") == 0)
 		result = export_command(env, args);
-	else if (strcmp(cmd_name, "exit") == 0)
-		result = exit_command(env, args);
+	// else if (strcmp(cmd_name, "exit") == 0)
+	// 	result = exit_command(tree,env, args);
 	else if (strcmp(cmd_name, "unset") == 0)
 	{
 		// print_env(env);
@@ -176,6 +176,7 @@ int	global(int state)
 int	main(void)
 {
 	t_env	*env;
+	// t_tree	*tree;
 	char	*args[10];
 	char	*line;
 	char	*cmd;
@@ -183,6 +184,7 @@ int	main(void)
 			char *arg;
 
 	env = NULL;
+	// tree = NULL;
 	// Initialize environment variables
 	add_env_var(&env, "HOME", getenv("HOME"));
 	add_env_var(&env, "PWD", getcwd(NULL, 0));

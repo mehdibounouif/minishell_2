@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:59 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/24 10:00:10 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/24 16:05:22 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,8 @@ int	exit_command(t_tree *node, t_env *env, char **args)
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		free_tree(&node);
 		free_env(env);
-		exit(1);
+		// exit(1);
+		status = 1;
 	}
 	status = ft_atoll(args[1], &error);
 	if (error)

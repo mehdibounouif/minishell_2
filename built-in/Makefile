@@ -11,7 +11,6 @@ SRCS = test_builtin.c \
 		pwd_command.c \
 		export_command.c \
 		export_utils.c	\
-		exit_command.c \
 		unset_command.c \
 		env_command.c
 

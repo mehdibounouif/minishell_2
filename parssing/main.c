@@ -6,10 +6,10 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/24 13:18:36 by mbounoui         ###   ########.fr       */
-/*   Updated: 2025/07/23 22:38:36 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/24 15:50:05 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../includes/minishell.h"
 
@@ -31,7 +31,7 @@ void	open_her(int *flag, t_mini minishell, t_env *envp)
 	if(pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
+	//	signal(SIGQUIT, SIG_DFL);
 		open_herdocs(minishell.tree, envp);
 	//	exit(0);
 	}
@@ -87,7 +87,7 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 		execute_full_command(minishell.tree, envp, env);
 		sig_ctrl(0); // Back to interactive mode
 //		free_tree(&minishell.tree);
-	//	print_ast(minishell.tree, 0);
+    //  print_ast(minishell.tree, 0);
 	}
 	exit(global(-1));
 	return (0);
