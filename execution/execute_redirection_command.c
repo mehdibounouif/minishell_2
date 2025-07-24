@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/24 16:02:34 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/24 22:54:49 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,31 +144,22 @@ int	is_directory(char *file)
 	return (1);
 }
 
-int	just_file(t_redirection *node, char *file)
+int	just_file(t_redirection *node, char *file, int type)
 {
-	if (!access(file, F_OK))
-	{
-		if (access(file, W_OK))
-		{
-			print_message(file,": Permission denied");
-			global(1);
-			return 0;
-		}
-	}
+	if (type == R_APPEND)
+		node->fds_list[node->index] = open(file, O_CREAT | O_APPEND, 0777);
 	else
+		node->fds_list[node->index] = open(file, O_CREAT | O_TRUNC, 0777);
+	if (node->fds_list[node->index] == -1)
 	{
-		node->fds_list[node->index] = open(file, O_CREAT);
-		if (node->fds_list[node->index] == -1)
-		{
-			perror("Open");
-			return 0;
-		}
-		node->index++;
+		perror("Open");
+		return 0;
 	}
+	node->index++;
 	return (1);
 }
 
-int	check_out_files(t_redirection *node, char *file)
+int	check_out_files(t_redirection *node, char *file, int type)
 {
 	if (!is_directory(file))
 		return (0);
@@ -178,7 +169,7 @@ int	check_out_files(t_redirection *node, char *file)
 			return (0);
 	}
 	else
-		if (!just_file(node, file))
+		if (!just_file(node, file, type))
 			return (0);
 	return (1);
 }
@@ -194,7 +185,7 @@ int	check_if_exist(t_redirection *node)
 				return (0);
 		// check out files
 		if (node->files->type == R_OUT)
-			if (!check_out_files(node, node->files->file))
+			if (!check_out_files(node, node->files->file, node->files->type))
 				return (0);
 		node->files = node->files->next;
 	}
@@ -236,13 +227,6 @@ void	dup_fds(t_redirection *node, t_env *env, char **envp)
 		dup2(out_fd, 1);
 		close(out_fd);
 	}
-}
-
-void	print_fd(t_redirection *node)
-{
-	int	i = 0;
-	while (node->fds_list[i] != 0)
-		printf("%d\n", node->fds_list[i++]);
 }
 
 void	execute_redirection_command(t_tree *node, t_env *env, char **envp)

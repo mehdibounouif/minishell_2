@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:59 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/24 17:05:45 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/24 21:04:53 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	exit_command(t_tree *node, t_env *env, char **args)
 	{
 		free_tree(&node);
 		free_env(env);
-		exit(global(-1));
+		exit(0);
 	}
 	if (args[2])
 	{

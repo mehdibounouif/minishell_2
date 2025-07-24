@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:42:03 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/24 16:23:23 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/24 22:29:18 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,20 @@ int	echo_command(char **args)
 	i = 1;
 	j = 1;
 	newline = 1;
-	while(args[i] && !ft_strncmp(args[i], "-n", 2))
+	if (args[1] && !ft_strncmp(args[1], "-n", 2))
 	{
-		len = ft_strlen(args[i]);
-		while (args[i][j])
+		len = ft_strlen(args[1]);
+		while (args[1][j])
 		{
 			if (args[1][j] != 'n')
 				break ;
 			j++;
 		}
 		if (j == len)
+		{
 			newline = 0;
-		i++;
+			i = 2;
+		}
 	}
 	while (args[i])
 	{
