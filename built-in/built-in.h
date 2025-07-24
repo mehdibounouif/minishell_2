@@ -7,7 +7,7 @@
 int	cd_command(t_env *env, char **args);
 
 // Echo command (to be implemented)
-int echo_command(t_env *env, char **args);
+int echo_command(char **args);
 
 // PWD command (to be implemented)
 int	pwd_command(t_env *env, char **args);
