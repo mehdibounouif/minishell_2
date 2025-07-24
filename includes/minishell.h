@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/24 12:59:14 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/24 13:25:37 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,8 @@ int pwd_command();
 int export_command(t_env *env, char **args);
 int unset_command(t_env *env, char **args);
 int env_command(t_env *env, char **args);
-int exit_command(t_env *env, char **args);
+//int exit_command(t_env *env, char **args);
+int	exit_command(t_tree *node, t_env *env, char **args);
 char *get_env_value(t_env *env, char *key);
 int update_env_var(t_env *env, char *var);
 //t_env *init_env(char **envp);
@@ -195,6 +196,7 @@ char	*get_last_file(char **list);
 // free
 void	free_tree(t_tree **tree);
 void	free_redirect_node(t_redirection *node);
+void	free_command_node1(t_tree *tree);
 void free_env(t_env *env);
 void	free_herdoc(t_herdoc *list);
 void	free_files(t_files *files);
@@ -247,7 +249,7 @@ void	print_message(char *file, char *message);
 // int   g_ctrl_c; 
 void handle_signal();
 int sig_ctrl(int state);
-void ft_return_signal(int status);
+int	ft_return_signal(int status);
 
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 09:07:52 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/23 11:03:25 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/24 11:58:21 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	free_files(t_files *files)
 		files = files->next;
 		if (tmp->file)
 			free(tmp->file);
-		free(tmp->file);
+		//free(tmp->file);
 	}
 }
 

@@ -19,7 +19,8 @@ void  get_env(t_env **envp, char **env)
 		env_node->value = ft_strdup(key_value[1]);
 		env_node->next = NULL;
 		add_back2(envp, env_node);
-		free(key_value);
+		free_str(key_value);
+//		free(key_value);
 		i++;
 	}
 }
@@ -102,7 +103,7 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 		free(cmd);
 		return(0);
 	}
-  free_list(&tmp);
+	free_list(&tmp);
 	free(cmd);
 	return (1);
 }
