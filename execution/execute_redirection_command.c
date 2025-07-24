@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/23 12:12:23 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:14:31 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,12 +227,14 @@ void	dup_fds(t_redirection *node, t_env *env, char **envp)
 		if ((out_fd = open(node->out_file, O_WRONLY | O_CREAT | O_APPEND, 0777)) == -1)
 			exit(-1);
 		dup2(out_fd, 1);
+		close(out_fd);
 	}
 	else if (node->out_type == R_OUT)
 	{
 		if ((out_fd = open(node->out_file,O_WRONLY | O_CREAT | O_TRUNC, 0777)) == -1)
 			exit(-1);
-		printf("%d", dup2(out_fd, 1));
+		dup2(out_fd, 1);
+		close(out_fd);
 	}
 }
 
@@ -253,7 +255,10 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 	if (!(node->redirect->fds_list = ft_calloc(1024, sizeof(int))))
 		return ;
 	if (!check_if_exist(node->redirect))
+	{
+		free_tree(&node);
 		return ;
+	}
 //	if (node->redirect->without_cmd)
 //		return;
 	pid = fork();
@@ -265,10 +270,12 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 		{
 			ft_putstr_fd(node->redirect->prev->command->command, 2);
 			ft_putendl_fd(": command not found", 2);
+			close_fds(node->redirect->fds_list);
 			global(127);
 			exit(127);
 		}
 		execve(path, node->redirect->prev->command->args, envp);
+		close_fds(node->redirect->fds_list);
 		ft_putstr_fd(node->redirect->prev->command->command, 2);
 		ft_putendl_fd(": command not found", 2);
 		global(126);

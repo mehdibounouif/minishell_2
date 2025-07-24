@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/23 23:10:07 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/24 11:32:37 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,11 @@ static int execute_builtin(t_tree *node, t_env *env)
 	else if (ft_strncmp(command, "env", 4) == 0)
 		return (env_command(env, node->command->args));
 	else if (ft_strncmp(command, "exit", 5) == 0)
-		return (exit_command(env, node->command->args));
+		return (exit_command(node, env, node->command->args));
 	
 	return (1); // Should not reach here
 }
-
+/*
 // Use t_env *env for builtins, char **envp for execve
 int	check_cat_files(t_command *node)
 {
@@ -82,8 +82,9 @@ int	check_cat_files(t_command *node)
 	}
 	return (1);
 }
+*/
 
-void	command_is_directory(char *command)
+void	command_is_directory(t_env *env, char *command)
 {
 	DIR	*dir;
 
@@ -100,6 +101,7 @@ void	command_is_directory(char *command)
 		{
 			closedir(dir);
 			print_message(command, ": command not found");
+			free_env(env);
 			global(127);
 			exit(127);
 		}
@@ -133,6 +135,8 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 			{
 				closedir(dir);
 				print_message(node->command->command, ": Is a directory");
+				free_tree(&node);
+				free_env(env);
 				global(126);
 				exit(126);
 			}
@@ -150,6 +154,8 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 					else
 					{
 						print_message(node->command->command, ": Permission denied");
+						free_tree(&node);
+						free_env(env);
 						global(126);
 						exit(126);
 					}
@@ -157,15 +163,19 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 				else
 				{
 					print_message(node->command->command, ": No such file or directory");
+					free_tree(&node);
+					free_env(env);
 					global(127);
 					exit(127);
 				}
 			}
 		}
-		command_is_directory(node->command->command);
+		command_is_directory(env, node->command->command);
 		if (node->command->command[0] == '\0')
 		{
 			print_message(node->command->command, ": command not found");
+			free_tree(&node);
+			free_env(env);
 			global(127);
 			exit(127);
 		}
@@ -173,10 +183,15 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 		if (!path)
 		{
 			print_message(node->command->command, ": command not found");
+			free_tree(&node);
+			free_env(env);
 			global(127);
 			exit(127);
 		}
 		execve(path, node->command->args, envp);
+		free_tree(&node);
+		free_env(env);
+		free(path);
 		perror("minishell");
 		exit(127);
 	}

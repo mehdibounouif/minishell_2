@@ -22,7 +22,8 @@ int	unset_command(t_env *env, char **args);
 int	env_command(t_env *env, char **args);
 
 // Exit command (to be implemented)
-int	exit_command(t_env *env, char **args);
+//int	exit_command(t_env *env, char **args);
+int	exit_command(t_tree *node, t_env *env, char **args);
 int global(int state);
 
 

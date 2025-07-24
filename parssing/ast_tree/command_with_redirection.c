@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:57 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/23 22:08:51 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/24 11:55:44 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	init(t_tree *node)
 	node->redirect->out_count = 0;
 	node->redirect->hdc = 0;
 	node->redirect->last_fd = -1;
+	node->redirect->files = NULL;
 //	node->redirect->without_cmd = 0;
 }
 
@@ -135,11 +136,11 @@ void	assign_last_file(t_tree *node)
 	last_in_file = get_last_file(node->redirect->in_files);
 	last_out_file = get_last_file(node->redirect->out_files);
 	last_herdoc = get_last_herdoc(node->redirect->herdoc);
-	node->redirect->out_file = last_out_file;
+	node->redirect->out_file = ft_strdup(last_out_file);
 	if (node->redirect->in)
-		node->redirect->in_file = last_in_file;
+		node->redirect->in_file = ft_strdup(last_in_file);
 	else
-		node->redirect->in_file = last_herdoc;
+		node->redirect->in_file = ft_strdup(last_herdoc);
 }
 
 int	allocat_files_array(t_tree *node)

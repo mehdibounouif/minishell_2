@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/23 23:43:52 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:18:23 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,12 @@ int	create_heredoc(t_redirection *list, t_env *env, int i)
 	return (0);
 }
 
-
+void	print_f(int *list)
+{
+	int	i = 0;
+	while (i < 10)
+		printf("fd = %d\n", list[i++]);
+}
 
 void	open_herdocs(t_tree *tree, t_env *env)
 {
@@ -123,6 +128,7 @@ void	open_herdocs(t_tree *tree, t_env *env)
 		open_herdocs(tree->pipe->left, env);
 		open_herdocs(tree->pipe->right, env);
 	}
+	//print_f(tree->redirect->heredoc_fds);
 }
 
 void	collect_herdoc(t_tree *node, t_node *list)

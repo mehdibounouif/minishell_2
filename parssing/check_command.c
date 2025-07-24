@@ -19,7 +19,8 @@ void  get_env(t_env **envp, char **env)
 		env_node->value = ft_strdup(key_value[1]);
 		env_node->next = NULL;
 		add_back2(envp, env_node);
-		free(key_value);
+		free_str(key_value);
+//		free(key_value);
 		i++;
 	}
 }
