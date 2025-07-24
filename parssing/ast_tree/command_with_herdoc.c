@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/24 17:11:31 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/25 00:01:07 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:42 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -105,7 +105,7 @@ void	open_herdocs(t_tree *tree, t_env *env)
 		tree->redirect->heredoc_fds = ft_calloc(20, sizeof(int));
 		if (!tree->redirect->heredoc_fds)
 			return ; // FREE HERE
-		tree->redirect->heredocs = malloc(sizeof(char *) * 20);
+		tree->redirect->heredocs = ft_calloc(20, sizeof(char *));
 		if (!tree->redirect->heredocs)
 			return ; // FREE HERE
 		while (tree->redirect->herdoc)
