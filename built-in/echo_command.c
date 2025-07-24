@@ -6,27 +6,24 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:42:03 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/19 20:18:15 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:05:40 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	echo_command(t_env *env, char **args)
+int	echo_command(char **args)
 {
 	int	i;
 	int	j;
 	int	len;
 	int	newline;
 
-	(void)env;   // env is not used in echo command
-	i = 1;       // Start from first argument (skip command name)
-	j = 1;       // Start from first argument (skip command name)
-	newline = 1; // Default to printing newline
-	// Check for -n option
+	i = 1;
+	j = 1;
+	newline = 1;
 	if (args[1] && !ft_strncmp(args[1], "-n", 2))
 	{
-		// I HANDEL THIS CASE echo -nnnnnnnnnnnnnnn hello
 		len = ft_strlen(args[1]);
 		while (args[1][j])
 		{
@@ -37,10 +34,9 @@ int	echo_command(t_env *env, char **args)
 		if (j == len)
 		{
 			newline = 0;
-			i = 2; // Skip the -n option
+			i = 2;
 		}
 	}
-	// Print all arguments with spaces between them
 	while (args[i])
 	{
 		ft_putstr_fd(args[i], 1);
