@@ -6,7 +6,8 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/24 16:02:25 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/24 16:29:30 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:25:42 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,4 +172,5 @@ void	collect_herdoc(t_tree *node, t_node *list)
 			node->redirect->in = 1;
 		list = list->next;
 	}
+	print_her(node->redirect->herdoc);
 }

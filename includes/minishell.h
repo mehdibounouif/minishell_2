@@ -6,7 +6,8 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/24 15:09:03 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/24 16:28:52 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:25:37 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +140,7 @@ struct s_mini {
 // built-in functions
 // Function declarations
 int cd_command(t_env *env, char **args);
-int echo_command(t_env *env, char **args);
+int echo_command(char **args);
 int pwd_command();
 int export_command(t_env *env, char **args);
 int unset_command(t_env *env, char **args);
