@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/24 23:13:58 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/25 09:33:50 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 		handle_signal();
 		if (!readline_and_parssing(&minishell, envp))
 			continue;
+		//print_ast(minishell.tree, 0);
 		int flag = 0;
 		if (check_heredoc(minishell.tree))
 			open_her(&flag, minishell, envp);
@@ -88,7 +89,7 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 		execute_full_command(minishell.tree, envp, env);
 		sig_ctrl(0); // Back to interactive mode
 //		free_tree(&minishell.tree);
- //     print_ast(minishell.tree, 0);
+    // // print_ast(minishell.tree, 0);
 	}
 	exit(global(-1));
 	return (0);

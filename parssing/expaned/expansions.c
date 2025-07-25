@@ -150,7 +150,7 @@ char	*expansion(char *cmd, t_env *list)
 			}
 		}
 		while (l == 0 && is_dollar(cmd, i) && (ft_isalpha(cmd[i+1]) || cmd[i+1] == '_'))
-				replace_key(cmd, expanded_cmd, &i, &j, list);
+			replace_key(cmd, expanded_cmd, &i, &j, list);
 		if (is_dollar(cmd, i) && cmd[i+1] == '?')
 			expand_exit_status(expanded_cmd, &i, &j);
 		if (is_dollar(cmd, i) && !check_quotes(cmd, i) // exmaple $"HOME"
@@ -158,7 +158,8 @@ char	*expansion(char *cmd, t_env *list)
 			i++;
 		else
 			expanded_cmd[j++] = cmd[i++];
-		l = 0;
+		if (l == 1 && cmd[i] == ' ')
+			l = 0;
 	}
 	free(cmd);
 	expanded_cmd[j] = '\0';
