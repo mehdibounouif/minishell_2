@@ -22,7 +22,7 @@ int global(int state)
 	return value;
 }
 
-void	open_her(int *flag, t_mini minishell, t_env *envp)
+int	open_her(int *flag, t_mini minishell, t_env *envp)
 {
 	pid_t pid;
  	int status;
@@ -33,8 +33,8 @@ void	open_her(int *flag, t_mini minishell, t_env *envp)
 	{
 		signal(SIGINT, SIG_DFL);
 	//	signal(SIGQUIT, SIG_DFL);
-		open_herdocs(minishell.tree, envp);
-	//	exit(0);
+		if (!open_herdocs(minishell.tree, envp))
+      return (0);
 	}
 	else if(pid > 0)
 	{
@@ -43,6 +43,7 @@ void	open_her(int *flag, t_mini minishell, t_env *envp)
 		*flag = ft_return_signal(status);
 		sig_ctrl(0);
 	}
+  return (1);
 }
 
 int	check_heredoc(t_tree *tree)
@@ -83,13 +84,17 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 		//print_ast(minishell.tree, 0);
 		int flag = 0;
 		if (check_heredoc(minishell.tree))
-			open_her(&flag, minishell, envp);
-		if (flag)
-			continue;
+			if (!open_her(&flag, minishell, envp))
+      {
+        free_tree(&minishell.tree);
+        exit(global(-1));
+      }
+  		if (flag)
+			  continue;
 		sig_ctrl(1); // Set execution mode
 		execute_full_command(minishell.tree, envp, env);
 		sig_ctrl(0); // Back to interactive mode
-//		free_tree(&minishell.tree);
+  	free_tree(&minishell.tree);
     // // print_ast(minishell.tree, 0);
 	}
 	exit(global(-1));

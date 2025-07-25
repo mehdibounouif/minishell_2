@@ -1,15 +1,15 @@
-total 156
-drwxr-xr-x 2 mbounoui 2024_rabat   4096 Jul 25 16:43 built-in
-drwxr-xr-x 2 mbounoui 2024_rabat    304 Jul 25 16:43 execution
--rwxr-xr-x 1 mbounoui 2024_rabat      0 Jul 25 16:44 file
-drwxr-xr-x 2 mbounoui 2024_rabat    108 Jul 25 16:43 free
-drwxr-xr-x 2 mbounoui 2024_rabat     25 Jul 25 16:14 includes
-drwxr-xr-x 2 mbounoui 2024_rabat   4096 Jul 25 16:43 libft
--rw-r--r-- 1 mbounoui 2024_rabat   2342 Jul 24 17:08 Makefile
--rwxr-xr-x 1 mbounoui 2024_rabat 120304 Jul 25 16:43 minishell
-drwxr-xr-x 6 mbounoui 2024_rabat    295 Jul 25 15:24 minishell_tester
--rw-r--r-- 1 mbounoui 2024_rabat   2478 Jul 25 09:40 note
-drwxr-xr-x 5 mbounoui 2024_rabat   4096 Jul 25 16:43 parssing
--rw-r--r-- 1 mbounoui 2024_rabat     82 Jul 23 21:09 readline.supp
--rw-r--r-- 1 mbounoui 2024_rabat     14 Jul 23 21:09 README.md
--rw-r--r-- 1 mbounoui 2024_rabat    820 Jul 23 21:09 text.c
+total 256
+-rwxrwxrwx 1 mehdi mehdi   2342 Jul 25 20:48 Makefile
+-rwxrwxrwx 1 mehdi mehdi     14 Jul 25 20:48 README.md
+drwxrwxrwx 1 mehdi mehdi   4096 Jul 25 22:07 built-in
+drwxrwxrwx 1 mehdi mehdi   4096 Jul 25 22:07 execution
+-rwxrwxrwx 1 mehdi mehdi      0 Jul 25 22:07 file
+drwxrwxrwx 1 mehdi mehdi   4096 Jul 25 22:07 free
+drwxrwxrwx 1 mehdi mehdi   4096 Jul 25 20:48 includes
+drwxrwxrwx 1 mehdi mehdi   4096 Jul 25 22:07 libft
+-rwxrwxrwx 1 mehdi mehdi 242672 Jul 25 22:07 minishell
+drwxrwxrwx 1 mehdi mehdi   4096 Jul 25 20:48 minishell_tester
+-rwxrwxrwx 1 mehdi mehdi   2478 Jul 25 20:48 note
+drwxrwxrwx 1 mehdi mehdi   4096 Jul 25 22:07 parssing
+-rwxrwxrwx 1 mehdi mehdi     82 Jul 25 20:48 readline.supp
+-rwxrwxrwx 1 mehdi mehdi    820 Jul 25 20:48 text.c

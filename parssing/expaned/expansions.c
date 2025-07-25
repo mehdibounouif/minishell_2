@@ -127,12 +127,12 @@ char	*expansion(char *cmd, t_env *list)
 {
 	int	full_len;
 	char	*expanded_cmd;
-	int	(i), (quote), (j), (l);
+	int	(i), (j), (l);
 
 	i = 0;
 	j = 0;
 	l = 0;
-	quote = 0;
+	///quote = 0;
 	full_len = get_full_len(cmd, list);
 	if (full_len == -1)
 		return (NULL);
@@ -149,10 +149,7 @@ char	*expansion(char *cmd, t_env *list)
 			while (is_space(cmd[i]))
 				expanded_cmd[j++] = cmd[i++];
 			while (cmd[i] == '\'' || cmd[i] == '\"')
-			{
 				i++;
-				quote = 1;
-			}
 		}
 		while (l == 0 && is_dollar(cmd, i) && (ft_isalpha(cmd[i+1]) || cmd[i+1] == '_'))
 			if (!replace_key(cmd, expanded_cmd, &i, &j, list))
@@ -165,7 +162,7 @@ char	*expansion(char *cmd, t_env *list)
 			i++;
 		else
 			expanded_cmd[j++] = cmd[i++];
-		if (l == 1 && cmd[i] == ' ')
+		if (l == 1 && cmd[i] == ' ') // << $HOME$HOME
 			l = 0;
 	}
 	free(cmd);

@@ -164,7 +164,7 @@ int  get_env(t_env **envp, char **env);
 void	execute_pipe_node(t_tree *tree, t_env *env, char **envp);
 void print_env(t_env *env);
 void print_ast(t_tree *tree, int level);
-void	open_herdocs(t_tree *tree, t_env *env);
+int	open_herdocs(t_tree *tree, t_env *env);
 void	skip_redirection(t_node **list);
 char **back_up();
 

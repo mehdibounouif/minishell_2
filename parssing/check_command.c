@@ -28,12 +28,13 @@ int  get_env(t_env **envp, char **env)
 int readline_and_parssing(t_mini *minishell, t_env *env)
 {
 	char	*cmd;
+  t_node *tmp;
 
 	cmd = readline("minishell> ");
 	if(!cmd)
 	{
 		free_env(env);
-	 	exit(2);
+	 	exit(global(-1));
 	}
 	add_history(cmd);
 	if (check_quotes(cmd, ft_strlen(cmd)))
@@ -42,20 +43,20 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 		printf("Qoutes not closed!\n");
 		return (0);
 	}
-	cmd = expansion(cmd, env); // free env
+	cmd = expansion(cmd, env);
 	if (!cmd)
 	{
 		free_env(env);
 		free(cmd);
 		exit (global(-1));
 	}
-  	tokenize(cmd, &minishell->list);
+  tokenize(cmd, &minishell->list);
 	if (!minishell->list)
 	{
 		free_list(&minishell->list);
 		free_env(env);
 		free(cmd);
-		return (0);
+		exit(global(-1));
 	}
 	if (!check_syntax(minishell->list))
 	{
@@ -63,10 +64,11 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 		free(cmd);
 		return (0);
 	}
-	t_node *tmp = minishell->list;
+	tmp = minishell->list;
 	minishell->tree = pars_command(&minishell->list);
 	if (!minishell->tree)
 	{
+    free_list(&tmp);
 		free(cmd);
 		return(0);
 	}
@@ -74,4 +76,3 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 	free(cmd);
 	return (1);
 }
-

@@ -138,7 +138,7 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 				free_tree(&node);
 				free_env(env);
 				global(126);
-				exit(126);
+				exit(global(-1));
 			}
 			else
 			{
@@ -157,7 +157,7 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 						free_tree(&node);
 						free_env(env);
 						global(126);
-						exit(126);
+						exit(global(-1));
 					}
 				}
 				else
@@ -166,7 +166,7 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 					free_tree(&node);
 					free_env(env);
 					global(127);
-					exit(127);
+					exit(global(-1));
 				}
 			}
 		}
@@ -177,7 +177,7 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 			free_tree(&node);
 			free_env(env);
 			global(127);
-			exit(127);
+			exit(global(-1));
 		}
 		char *path = find_path(node , env);
 		if (!path)
@@ -186,7 +186,7 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 			free_tree(&node);
 			free_env(env);
 			global(127);
-			exit(127);
+			exit(global(-1));
 		}
 		execve(path, node->command->args, envp);
 		free_tree(&node);
