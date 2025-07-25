@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:27:42 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/25 00:25:37 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/25 17:13:04 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/minishell.h"
@@ -27,6 +27,8 @@ void	close_fds(int *list)
 
 void	free_redirect_node(t_redirection *node)
 {
+	if (!node)
+		return ;
 	if (node->in_file)
 		free(node->in_file);
 	if (node->out_file)
@@ -40,6 +42,7 @@ void	free_redirect_node(t_redirection *node)
 		close_fds(node->fds_list);
 	if (node->heredoc_fds)
 		close_fds(node->heredoc_fds);
+	free(node);
 }
 
 void	free_command_node(t_command *node)

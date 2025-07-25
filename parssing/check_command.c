@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void  get_env(t_env **envp, char **env)
+int  get_env(t_env **envp, char **env)
 {
 	int i;
 	char  **key_value;
@@ -12,7 +12,7 @@ void  get_env(t_env **envp, char **env)
 		if (!(env_node = malloc(sizeof(t_env)))) 
 		{ 
 			printf("env malloc failed!\n"); 
-			return ;
+			return (0);
 		}
 		key_value = ft_split(env[i], '=');
 		env_node->key = ft_strdup(key_value[0]);
@@ -22,6 +22,7 @@ void  get_env(t_env **envp, char **env)
 		free_str(key_value);
 		i++;
 	}
+	return (1);
 }
 
 int readline_and_parssing(t_mini *minishell, t_env *env)
@@ -41,15 +42,18 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 		printf("Qoutes not closed!\n");
 		return (0);
 	}
-	cmd = expansion(cmd, env);
+	cmd = expansion(cmd, env); // free env
 	if (!cmd)
 	{
-		ft_putendl_fd("33ddsd: value too great for base (error token is \"33ddsd\")", 2);
-		return (0);
+		free_env(env);
+		free(cmd);
+		exit (global(-1));
 	}
   	tokenize(cmd, &minishell->list);
 	if (!minishell->list)
 	{
+		free_list(&minishell->list);
+		free_env(env);
 		free(cmd);
 		return (0);
 	}

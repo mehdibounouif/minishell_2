@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:52:30 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/21 11:05:25 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/25 16:08:09 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ int	tokenize(char *cmd, t_node **list)
 			break;
 		flag = check_real_sep(cmd, i);
 		token = get_token(cmd, &i);
-		token->next = NULL;
 		if (!token)
 			return (0);
+		token->next = NULL;
 		add_back(list, token);
 		token_type(token, flag);
 	}

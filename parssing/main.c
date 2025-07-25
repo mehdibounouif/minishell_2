@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/25 09:33:50 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/25 15:42:14 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 	}
 	envp = NULL;
 	ft_bzero(&minishell, sizeof(t_mini));
-	get_env(&envp, env);
+	if (!get_env(&envp, env))
+		exit (0);
 	global(0); //Initial state, interactive mode 
 	while (1)
 	{

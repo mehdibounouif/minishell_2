@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 16:38:25 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/23 11:30:20 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/25 16:50:32 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,16 @@ t_tree	*parss_one_side(t_node **list)
 
 	if (is_redirection(*list))
 	{
-		left = parss_redirection_in_start(list);
+		if (!(left = parss_redirection_in_start(list)))
+			return (NULL);
 	}
 	else
 	{
-		left = command_without_redirection(list);
+		if (!(left = command_without_redirection(list)))
+			return (NULL);
 		if (is_redirection((*list)))
-			left = parss_redirection(left, list);
+			if (!(left = parss_redirection(left, list)))
+				return (NULL);
 	}
 	return left;
 }

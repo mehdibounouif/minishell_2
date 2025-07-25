@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/25 00:01:07 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/25 16:15:02 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:42 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -124,7 +124,7 @@ void	open_herdocs(t_tree *tree, t_env *env)
 	}
 }
 
-void	collect_herdoc(t_tree *node, t_node *list)
+int	collect_herdoc(t_tree *node, t_node *list)
 {
 	t_herdoc *h_node;
 
@@ -138,7 +138,7 @@ void	collect_herdoc(t_tree *node, t_node *list)
 		{
 			h_node = malloc(sizeof(t_herdoc));
 			if (!h_node)
-				return ;
+				return 0;
 			h_node->quoted = 0;
 			if (node->redirect->in)
 			{
@@ -164,4 +164,5 @@ void	collect_herdoc(t_tree *node, t_node *list)
 			node->redirect->in = 1;
 		list = list->next;
 	}
+	return (1);
 }
