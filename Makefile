@@ -10,6 +10,7 @@ SRCS_DIR3 = ./built-in
 SRCS_DIR4 = ./free
 SRCS_FILES1 = main.c\
 	     utils.c\
+	     garbage_collector.c\
 	     token/tokenize.c\
 	     token/tools.c\
 	     ast_tree/tree.c\

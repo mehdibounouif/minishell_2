@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/26 19:09:29 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/26 21:53:20 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:37 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -132,9 +132,15 @@ struct s_tree {
 };
 
 struct s_mini {
-  t_tree *tree;
-  t_node *list;
+	t_tree *tree;
+	t_node *list;
 };
+
+typedef struct s_gcollect
+{
+	void				*value;
+	struct s_gcollect	*next;
+}	t_gcollect;
 
 typedef	struct t_share
 {
@@ -265,5 +271,6 @@ void handle_signal();
 int sig_ctrl(int state);
 int	ft_return_signal(int status);
 
-
+// Garbage collotor
+void	*ft_malloc(int type, int size);
 #endif

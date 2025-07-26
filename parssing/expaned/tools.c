@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 14:09:23 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/26 19:09:30 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/26 21:58:25 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ char	*get_env_key(char *cmd, int i)
 	i++;
 	len = get_env_len(cmd, i);
 	key = ft_substr(cmd, i, len);
-	if (!key)
-		return (NULL);
 	return (key);
 }
 
@@ -48,7 +46,7 @@ int	get_full_len(char *cmd, t_env *list)
 {
 	t_share2	*share;
 
-	share = malloc(sizeof(t_share2));
+	share = ft_malloc(sizeof(t_share2), 1);
 	init_share(share, cmd);
 	while (cmd[share->i])
 	{

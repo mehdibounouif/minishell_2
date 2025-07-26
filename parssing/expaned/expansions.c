@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 15:23:34 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/26 18:44:26 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/26 22:01:30 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,7 @@ char	*expansion(char *cmd, t_env *env)
 	int		full_len;
 	t_share	*share;
 
-	share = ft_calloc(1, sizeof(t_share));
-	if (!share)
-		return (NULL);
+	share = ft_malloc(sizeof(t_share), 1);
 	share->i = 0;
 	share->j = 0;
 	share->l = 0;

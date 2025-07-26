@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:28:42 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/24 15:44:31 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/26 21:24:43 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,7 @@ void	free_tree(t_tree **tree)
 	if (!tree)
 		return ;
 	if ((*tree)->type == COMMAND_NODE)
-	{
 		free_command_node1(*tree);
-	}
 	else if ((*tree)->type == PIPE_NODE)
 	{
 		free_tree(&(*tree)->pipe->left);
