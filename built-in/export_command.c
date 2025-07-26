@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:57 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/17 21:32:52 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/25 15:53:35 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int	export_command(t_env *env, char **args)
 			ft_putstr_fd(args[i], 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
 			global(1);
+			return(1);
 		}
 		equal_sign = ft_strchr(args[i], '=');
 		if (equal_sign)

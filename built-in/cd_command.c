@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:42:07 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/23 21:33:52 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/25 16:00:53 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int	cd_command(t_env *env, char **args)
 	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
 		global(1);
+		return(1);
 	}
 	else if (!args[0] || (args[0][0] == '-' && !args[0][1]))
 	{
