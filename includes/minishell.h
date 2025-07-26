@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/25 16:14:25 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/26 14:12:55 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:37 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -231,6 +231,8 @@ char	*get_env_key(char *cmd, int i);
 char	*expansion(char *cmd, t_env *list);
 int	contain_quoted(char *cmd, int len);
 int	between_quoted(char *cmd, int len);
+int	get_full_len(char *cmd, t_env *list);
+int	expand_exit_status(char *expanded_cmd, int *i, int *j);
 
 // EXECUTE 
 int execute_full_command(t_tree *node, t_env *env, char **envp);

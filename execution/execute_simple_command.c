@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/24 13:25:08 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/26 15:21:54 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,58 +62,148 @@ static int execute_builtin(t_tree *node, t_env *env)
 	
 	return (1); // Should not reach here
 }
-/*
-// Use t_env *env for builtins, char **envp for execve
-int	check_cat_files(t_command *node)
+
+void	print_and_exit(char *command, char *message, int code, DIR *dir)
 {
-	int	i;
-	
-	i = 1;
-	while (node->args[i] && ft_strchr(node->args[i], '-'))
-		i++;
-	while (node->args[i])
-	{
-		if (access(node->args[i], F_OK))
-		{
-			global(1);
-			return (0);
-		}
-		i++;
-	}
-	return (1);
+	if (dir)
+		closedir(dir);
+	print_message(command, message);
+	global(code);
 }
-*/
 
 void	command_is_directory(t_env *env, char *command)
 {
 	DIR	*dir;
 
+	dir = opendir(command);
+	if (!dir && command[0] == '/')
+	{
+		print_and_exit(command, ": No such file or directory", 127, dir);
+		exit(127);
+	}
 	if ((dir = opendir(command)))
 	{
 		if (ft_strchr(command, '/'))
 		{
-			closedir(dir);
-			print_message(command, ": Is a directory");
-			global(126);
+			print_and_exit(command, ": Is a directory", 126, dir);
 			exit(126);
 		}
 		else
 		{
-			closedir(dir);
-			print_message(command, ": command not found");
 			free_env(env);
-			global(127);
+			print_and_exit(command, ": command not found", 127, dir);
 			exit(127);
 		}
 	}
 }
 
+void	command_inside_directory(t_tree *node, char **envp, t_env *env)
+{
+	struct stat	info;
+	if (!stat(node->command->command, &info))
+	{
+		if (info.st_mode & (S_IXGRP | S_IXUSR | S_IXOTH)) // executable
+			execve(node->command->command, node->command->args, envp);
+		else // not executable
+		{ 
+			print_and_exit(node->command->command, ": Permission denied", 126, 0);
+			free_tree(&node);
+			free_env(env);
+			exit(126);
+		}
+	}
+	else
+	{
+		print_and_exit(node->command->command, ": No such file or directory", 127, 0);
+		free_tree(&node);
+		free_env(env);
+		exit(127);
+	}
+
+}
+
+void	empty_command(t_tree *node, t_env *env)
+{
+	if (node->command->command[0] == '\0')
+	{
+		print_and_exit(node->command->command, ": command not found", 127, 0);
+		free_tree(&node);
+		free_env(env);
+		exit(127);
+	}
+}
+
+void	find_path_and_exec(t_tree *node, t_env *env ,char **envp)
+{
+	char *path = find_path(node , env);
+	if (!path)
+	{
+		print_and_exit(node->command->command, ": command not found", 127, 0);
+		free_tree(&node);
+		free_env(env);
+		exit(127);
+	}
+	execve(path, node->command->args, envp);
+	free_tree(&node);
+	free_env(env);
+	free(path);
+	perror("minishell");
+	exit(127);
+}
+
+void	child_process(t_tree *node, t_env *env, char **envp)
+{
+	DIR *dir;
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	if (node->command->command[0] == '.')
+	{
+		if ((dir = opendir(node->command->command))) // check executable in directory
+		{
+			print_and_exit(node->command->command, ": Is a directory", 126, dir);
+			free_tree(&node);
+			free_env(env);
+			exit(126);
+		}
+		else // check if exist
+		command_inside_directory(node, envp, env);
+	}
+	command_is_directory(env, node->command->command);
+	empty_command(node, env); // ""
+	find_path_and_exec(node, env ,envp);
+}
+
+void	parent_process(int status, pid_t pid)
+{
+	int sig;
+
+	sig = WTERMSIG(status);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	waitpid(pid, &status, 0);
+	if (WIFSIGNALED(status))
+	{
+		int sig = WTERMSIG(status);
+		if (sig == SIGINT)
+		{
+			printf("\n");
+			global(130);
+		}
+		else if (sig == SIGQUIT)
+		{
+			ft_putendl_fd("Quit (core dumped)", 2);
+			global(131);
+		}
+	}
+	else if (WIFEXITED(status))
+		global(WEXITSTATUS(status));
+}
+
 void	execute_command_node(t_tree *node, t_env *env, char **envp)
 {
 	int status;
-	DIR *dir;
-	struct stat	info;
 
+	status = 0;
 	sig_ctrl(1); // start execution mode
 	if (is_builtin(node->command->command))
 	{
@@ -122,105 +212,7 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 	}
 	pid_t pid = fork();
 	if (pid == 0)
-	{
-		// Child process - restore default signal handling
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-		
-		// check umprintable cammand
-		if (node->command->command[0] == '.')
-		{
-			// check executable in directory
-			if ((dir = opendir(node->command->command)))
-			{
-				closedir(dir);
-				print_message(node->command->command, ": Is a directory");
-				free_tree(&node);
-				free_env(env);
-				global(126);
-				exit(global(-1));
-			}
-			else
-			{
-				// check if exist 
-				if (!stat(node->command->command, &info))
-				{
-					// executable
-					if (info.st_mode & (S_IXGRP | S_IXUSR | S_IXOTH))
-					{
-						execve(node->command->command, node->command->args, envp);
-					}
-					// not executable
-					else
-					{
-						print_message(node->command->command, ": Permission denied");
-						free_tree(&node);
-						free_env(env);
-						global(126);
-						exit(global(-1));
-					}
-				}
-				else
-				{
-					print_message(node->command->command, ": No such file or directory");
-					free_tree(&node);
-					free_env(env);
-					global(127);
-					exit(global(-1));
-				}
-			}
-		}
-		command_is_directory(env, node->command->command);
-		if (node->command->command[0] == '\0')
-		{
-			print_message(node->command->command, ": command not found");
-			free_tree(&node);
-			free_env(env);
-			global(127);
-			exit(global(-1));
-		}
-		char *path = find_path(node , env);
-		if (!path)
-		{
-			print_message(node->command->command, ": command not found");
-			free_tree(&node);
-			free_env(env);
-			global(127);
-			exit(global(-1));
-		}
-		execve(path, node->command->args, envp);
-		free_tree(&node);
-		free_env(env);
-		free(path);
-		perror("minishell");
-		exit(127);
-	}
+		child_process(node, env, envp);
 	else if (pid > 0)
-	{
-		// Parent process - ignore signals while child runs
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-		
-		waitpid(pid, &status, 0);
-		
-		// Check if child was terminated by signal
-		if (WIFSIGNALED(status))
-		{
-			int sig = WTERMSIG(status);
-			if (sig == SIGINT)
-			{
-				printf("\n");
-				global(130);
-			}
-			else if (sig == SIGQUIT)
-			{
-				printf("Quit (core dumped)\n");
-				global(131);
-			}
-		}
-		else if (WIFEXITED(status))
-		{
-			global(WEXITSTATUS(status));
-		}
-	}
+		parent_process(status, pid);
 }
