@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/25 00:01:27 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/25 16:14:25 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:37 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -157,14 +157,14 @@ void sorted_env(t_env *env);
 void	ft_lstadd_node(t_env **lst, t_env *node);
 t_env *create_env_var(char *key, char *value);
 t_env *get_env_var(t_env *env, const char *key);
-void  get_env(t_env **envp, char **env);
+int  get_env(t_env **envp, char **env);
 
 
 // Command execution
 void	execute_pipe_node(t_tree *tree, t_env *env, char **envp);
 void print_env(t_env *env);
 void print_ast(t_tree *tree, int level);
-void	open_herdocs(t_tree *tree, t_env *env);
+int	open_herdocs(t_tree *tree, t_env *env);
 void	skip_redirection(t_node **list);
 char **back_up();
 
@@ -192,7 +192,7 @@ t_tree  *parss_redirection(t_tree *node, t_node **list);
 t_tree	*parss_redirection_in_start(t_node **list);
 t_tree  *command_without_redirection(t_node **list);
 t_tree  *pars_pipe(t_node **list);
-void	collect_herdoc(t_tree *node, t_node *list);
+int	collect_herdoc(t_tree *node, t_node *list);
 char	*get_last_herdoc(t_herdoc *list);
 char	*get_last_file(char **list);
 

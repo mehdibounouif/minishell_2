@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 11:40:58 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/23 11:29:02 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/25 16:51:35 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@ t_tree	*pars_command(t_node **list)
 	
 	tree =  pars_pipe(list);
 	if (!tree)
-	{
-		free_list(list);
 		return (NULL);
-	}
 	return (tree);
 }

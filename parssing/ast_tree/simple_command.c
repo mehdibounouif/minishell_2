@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 09:27:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/21 07:55:53 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/25 16:28:43 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ t_tree  *command_without_redirection(t_node **list)
 	int len;
 
 	len = count_args(*list) + 1;
-	cmd = ft_strdup((*list)->content);
+	if (!(cmd = ft_strdup((*list)->content)))
+		return (NULL);
 	if (!(args = malloc(sizeof(char *) * len)))
 		return (NULL);
 	collect_args(cmd, list, args);

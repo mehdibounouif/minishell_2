@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 09:07:52 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/24 11:58:21 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/25 17:02:22 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	free_list(t_node **list)
 {
 	t_node *tmp;
 
+	if (!list || !list)
+		return;
 	while (*list)
 	{
 		tmp = *list;
@@ -71,6 +73,8 @@ void	free_files(t_files *files)
 {
 	t_files *tmp;
 
+	if (!files)
+		return ;
 	while (files)
 	{
 		tmp = files;

@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/24 22:54:49 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/25 16:33:47 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,7 +243,7 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 		free_tree(&node);
 		return ;
 	}
-	if (!node->redirect->prev)
+	if (node->redirect->without_cmd)
 	{
 		check_if_exist(node->redirect);
 		free_tree(&node);

@@ -28,7 +28,7 @@ int     check_syntax(t_node *list)
 	if (check_sides(list))
 	{
 		ft_putendl_fd("bash: syntax error near unexpected token |", 2);
-//		mini->ret = 258;
+    global(2);
 		return (0);
 	}
 	while (list)
@@ -46,7 +46,7 @@ int     check_syntax(t_node *list)
 				ft_putstr_fd("bash: syntax error near unexpected token ", 2);
 				ft_putendl_fd(list->content, 2);
 			}
-//			mini->ret = 258;
+			global(2);
 			return (0);
 		}
 		list = list->next;

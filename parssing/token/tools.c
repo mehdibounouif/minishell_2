@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 08:45:19 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/19 17:51:25 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/25 16:08:06 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ int	ft_strcmp(const char *s1, const char *s2)
 
 void	token_type(t_node *node, int flag)
 {
-	if (!node)
-		return ;
 	if (ft_strcmp(node->content, "") == 0)
 		node->type = EMPTY;
 	else if (ft_strcmp(node->content, ">") == 0 && flag == 0)
