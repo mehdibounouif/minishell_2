@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 08:45:19 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/25 16:08:06 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/26 21:14:29 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,11 +116,13 @@ int		calc_token_byte(char *line, int *i)
 	return (j - count + 1);
 }
 
-void	dup_token(t_node *node, char *cmd, int *i, int l, int len)
+void	dup_token(t_node *node, char *cmd, int *i, int len)
 {
 	int		j;
 	char	c;
+	int		l;
 
+	l = *i;
 	j = 0;
 	c = ' ';
 	while (cmd[*i] && (cmd[*i] != ' ' || c != ' '))
@@ -151,7 +153,6 @@ void	dup_token(t_node *node, char *cmd, int *i, int l, int len)
 t_node	*get_token(char *cmd, int *i)
 {
 	t_node	*node;
-	int	l;
 	int	len;
 
 	if (!(node = malloc(sizeof(t_node))))
@@ -159,10 +160,9 @@ t_node	*get_token(char *cmd, int *i)
 	len = calc_token_byte(cmd, i);
 	if (!(node->content = malloc(sizeof(char) * len + 1)))
 		return (NULL);
-	l = *i;
-	node->between_quoted = between_quoted(&cmd[l], len);
-	node->contain_quoted = contain_quoted(&cmd[l], len);
-	dup_token(node, cmd, i, l, len);
+	node->between_quoted = between_quoted(&cmd[*i], len);
+	node->contain_quoted = contain_quoted(&cmd[*i], len);
+	dup_token(node, cmd, i, len);
 	return (node);
 }
 
@@ -180,3 +180,4 @@ int	check_real_sep(char *line, int i)
 		return (1);
 	return (0);
 }
+

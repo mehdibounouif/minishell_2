@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:29 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/14 16:10:27 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/26 21:20:47 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,20 @@
 
 int	execute_full_command(t_tree *node, t_env *env, char **envp)
 {
-    if (!node)
-        return 0;
+	if (!node)
+		return 0;
 
-    if (node->type == COMMAND_NODE)
+	if (node->type == COMMAND_NODE)
 	{
-        execute_command_node(node, env, envp);
+		execute_command_node(node, env, envp);
 	}
-    else if (node->type == PIPE_NODE)
+	else if (node->type == PIPE_NODE)
 	{
-        execute_pipe_node(node, env, envp);
+		execute_pipe_node(node, env, envp);
 	}
 	else if (node->type == REDIRECT_NODE)
 	{
 		execute_redirection_command(node, env, envp);
 	}
-    return (1);
+	return (1);
 }

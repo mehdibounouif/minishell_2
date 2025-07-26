@@ -1,38 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize.c                                         :+:      :+:    :+:   */
+/*   tools2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/19 07:52:30 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/26 21:17:51 by mbounoui         ###   ########.fr       */
+/*   Created: 2025/07/26 19:07:26 by mbounoui          #+#    #+#             */
+/*   Updated: 2025/07/26 19:11:10 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	tokenize(char *cmd, t_node **list)
+int	is_dollar(char *cmd, int i)
 {
-	t_node	*token;
-	int		i;
-	int		flag;
+	if (cmd[i] == '$' && cmd[i + 1] && check_quotes(cmd, i) != 2
+		&& cmd[i - 1] != '\\')
+		return (1);
+	return (0);
+}
 
-	token = NULL;
-	i = 0;
-	while (cmd[i])
+int	get_env_len(char *cmd, int i)
+{
+	int	j;
+
+	j = 0;
+	while (cmd[i] && (ft_isalpha(cmd[i]) || cmd[i] == '_'))
 	{
-		while (is_space(cmd[i]))
-			i++;
-		if (!cmd[i])
-			break ;
-		flag = check_real_sep(cmd, i);
-		token = get_token(cmd, &i);
-		if (!token)
-			return (0);
-		token->next = NULL;
-		add_back(list, token);
-		token_type(token, flag);
+		i++;
+		j++;
 	}
-	return (1);
+	return (j);
 }

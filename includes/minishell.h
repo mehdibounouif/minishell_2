@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/26 14:12:55 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/26 19:09:29 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:37 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -136,6 +136,14 @@ struct s_mini {
   t_node *list;
 };
 
+typedef	struct t_share
+{
+	int	i;
+	int	j;
+	int	l;
+	char	*expanded_cmd;
+}	t_share;
+
 
 // built-in functions
 // Function declarations
@@ -233,6 +241,7 @@ int	contain_quoted(char *cmd, int len);
 int	between_quoted(char *cmd, int len);
 int	get_full_len(char *cmd, t_env *list);
 int	expand_exit_status(char *expanded_cmd, int *i, int *j);
+int	get_env_len(char *cmd, int i);
 
 // EXECUTE 
 int execute_full_command(t_tree *node, t_env *env, char **envp);
