@@ -33,6 +33,11 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 	t_node *tmp;
 
 	cmd = readline("minishell> ");
+	if(!cmd)
+	{
+		printf("exit\n");
+		exit(global(-1));
+	}
 	if(cmd[0] == '\0')
 		return (0);
 	add_history(cmd);
@@ -43,20 +48,9 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 		return (0);
 	}
 	cmd = expansion(cmd, env);
-	if (!cmd)
-	{
-		free_env(env);
-		free(cmd);
-		exit (global(-1));
-	}
-  tokenize(cmd, &minishell->list);
-	if (!minishell->list)
-	{
-		free_list(&minishell->list);
-		free_env(env);
-		free(cmd);
-		exit(global(-1));
-	}
+	if(cmd[0] == '\0')
+		return (0);
+	tokenize(cmd, &minishell->list);
 	if (!check_syntax(minishell->list))
 	{
 		free_list(&minishell->list);
