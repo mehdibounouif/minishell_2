@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_redirection_command.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 12:05:35 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 17:23:05 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,10 +247,60 @@ void	child_process_redi(t_tree *node, t_env *env, char **envp)
 
 }
 
+static int is_builtin_command(char *command)
+{
+	if (!command)
+		return (0);
+	
+	if (ft_strncmp(command, "cd", 3) == 0)
+		return (1);
+	else if (ft_strncmp(command, "echo", 5) == 0)
+		return (1);
+	else if (ft_strncmp(command, "pwd", 4) == 0)
+		return (1);
+	else if (ft_strncmp(command, "export", 7) == 0)
+		return (1);
+	else if (ft_strncmp(command, "unset", 6) == 0)
+		return (1);
+	else if (ft_strncmp(command, "env", 4) == 0)
+		return (1);
+	else if (ft_strncmp(command, "exit", 5) == 0)
+		return (1);
+	
+	return (0);
+}
+
+static int execute_builtin_command(char *command, char **args, t_env *env)
+{
+	if (ft_strncmp(command, "cd", 3) == 0)
+		return (cd_command(env, args));
+	else if (ft_strncmp(command, "echo", 5) == 0)
+		return (echo_command(args));
+	else if (ft_strncmp(command, "pwd", 4) == 0)
+		return (pwd_command());
+	else if (ft_strncmp(command, "export", 7) == 0)
+		return (export_command(env, args));
+	else if (ft_strncmp(command, "unset", 6) == 0)
+		return (unset_command(env, args));
+	else if (ft_strncmp(command, "env", 4) == 0)
+		return (env_command(env, args));
+	else if (ft_strncmp(command, "exit", 5) == 0)
+	{
+		// Note: exit in redirection context might need special handling
+		return (exit_command(NULL, env, args));
+	}
+	
+	return (1);
+}
+
 void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 {
 	pid_t pid;
+	int saved_stdin;
+	int saved_stdout;
 	int	status;
+
+	// char *cmd_name = node->redirect->prev->command->command;
 
 	node->redirect->fds_list = ft_calloc(1024, sizeof(int));
 	if (!check_if_exist(node->redirect))
@@ -264,13 +314,37 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 		free_tree(&node);
 		return ;
 	}
-	pid = fork();
-	if (pid == 0)
-		child_process_redi(node, env, envp);
-	else if (pid > 0)
+	char *cmd_name = node->redirect->prev->command->command;
+	
+	if (is_builtin_command(cmd_name))
+	{	
+		saved_stdin = dup(STDIN_FILENO);
+		saved_stdout = dup(STDOUT_FILENO);
+		dup_fds(node->redirect); 
+		int result = execute_builtin_command(cmd_name, node->redirect->prev->command->args, env);
+		dup2(saved_stdin, STDIN_FILENO);
+		dup2(saved_stdout, STDOUT_FILENO);
+		close(saved_stdin);
+		close(saved_stdout);
+		close_fds(node->redirect->fds_list);
+		global(result);
+		close_fds(node->redirect->fds_list);
+		global(result);
+	}
+	else
 	{
-		waitpid(pid, &status, 0);
-		global(WEXITSTATUS(status));
+		pid = fork();
+		if (pid == 0)
+			child_process_redi(node, env, envp);
+		else if (pid > 0)
+		{
+			waitpid(pid, &status, 0);
+			if (WIFEXITED(status))
+				global(WEXITSTATUS(status));
+			else if (WIFSIGNALED(status))
+				global(128 + WTERMSIG(status));
+		}
 	}
 }
+
 
