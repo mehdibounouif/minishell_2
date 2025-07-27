@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 11:16:07 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 17:10:01 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:37 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -190,6 +190,7 @@ t_node  *get_token(char *line, int *i);
 int             calc_token_byte(char *line, int *i);
 void    token_type(t_node *node, int flag);
 int     ft_strcmp(const char *s1, const char *s2);
+char	*ft_prompt(t_env *env);
 
 
 //int is_space(char c);

@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 16:30:34 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 17:18:34 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/26 13:51:28 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -24,13 +24,25 @@ int global(int state)
 }
 
 
-char	*ft_prompt()
+char	*ft_prompt(t_env *env)
 {
-	char *prompt;
-	prompt = getcwd(NULL, 0); // get current working directory (cwd)
-	if (!prompt)
+	char	*prompt;
+	char	*first_part;
+	char	*last_part;
+	char	*path;
+	char	*user;
+	char	*sep;
+
+	path = getcwd(NULL, 0); // get current working directory (cwd)
+	if (!path)
 		return (NULL);
-	printf("%s\n", prompt);
+	user = ft_getenv("USER", env);
+	if (!user)
+		user = ft_strdup("user");
+	sep = ft_strdup(":~");
+	first_part = ft_strjoin(user, sep);
+	last_part = ft_strjoin(first_part, path);
+	prompt = ft_strjoin(last_part, "$ ");
 	return (prompt);
 }
 

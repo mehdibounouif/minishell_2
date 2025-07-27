@@ -3,23 +3,27 @@
 #include <stdlib.h>
 #include <dirent.h>
 
-int main(int c, char **v) {
-    DIR *dir;
-    struct dirent *entry;
-
-    dir = opendir(v[1]);  // Replace with your directory path
-    if (dir == NULL) {
-		write(1, "minishell : ", 20);
-        perror(v[1]);
-        return EXIT_FAILURE;
-    }
-
-    while ((entry = readdir(dir)) != NULL) {
-        printf("%s\n", entry->d_name);  // Print the name of each entry
-    }
-
-    closedir(dir);  // Always close the directory stream
-    return EXIT_SUCCESS;
+int main(int c, char **v)
+{
+	
+printf("\033[1;34mBold Blue Text\033[0m\n");
+printf("\033[4;31mUnderlined Red Text\033[0m\n");
+//	DIR *dir;
+//	struct dirent *entry;
+//
+//	dir = opendir(v[1]);  // Replace with your directory path
+//	if (dir == NULL) {
+//		write(1, "minishell : ", 20);
+//		perror(v[1]);
+//		return EXIT_FAILURE;
+//	}
+//
+//	while ((entry = readdir(dir)) != NULL) {
+//		printf("%s\n", entry->d_name);  // Print the name of each entry
+//	}
+//
+//	closedir(dir);  // Always close the directory stream
+//	return EXIT_SUCCESS;
 }
 
 
