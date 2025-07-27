@@ -50,13 +50,14 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 		free(cmd);
 		exit (global(-1));
 	}
-  tokenize(cmd, &minishell->list);
+  	tokenize(cmd, &minishell->list);
 	if (!minishell->list)
 	{
-		free_list(&minishell->list);
-		free_env(env);
+		// free_list(&minishell->list);
+		// free_env(env);
 		free(cmd);
-		exit(global(-1));
+		return (0);
+		// exit(global(-1))
 	}
 	if (!check_syntax(minishell->list))
 	{

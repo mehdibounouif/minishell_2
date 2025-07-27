@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:42:03 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/25 15:03:40 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/26 16:58:36 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,18 @@
 
 int	echo_command(char **args)
 {
-	int	i;
+	int	i = 1;
+	int	newline = 1;
 	int	j;
-	int	len;
-	int	newline;
 
-	i = 1;
-	j = 1;
-	newline = 1;
 	while (args[i] && !ft_strncmp(args[i], "-n", 2))
 	{
-		len = ft_strlen(args[1]);
-		while (args[i][j])
-		{
-			if (args[i][j] != 'n')
-				break ;
+		j = 2;
+		while (args[i][j] == 'n')
 			j++;
-		}
-		if (j == len)
-			newline = 0;
+		if (args[i][j] != '\0')
+			break;
+		newline = 0;
 		i++;
 	}
 	while (args[i])
@@ -43,10 +36,7 @@ int	echo_command(char **args)
 		i++;
 	}
 	if (newline)
-	{
 		ft_putchar_fd('\n', 1);
-	}
-	global(0);
-	return (0);
+	return (global(0));
 }
 
