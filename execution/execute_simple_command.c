@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/26 15:21:54 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 10:30:47 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,6 @@ void	command_inside_directory(t_tree *node, char **envp, t_env *env)
 		free_env(env);
 		exit(127);
 	}
-
 }
 
 void	empty_command(t_tree *node, t_env *env)

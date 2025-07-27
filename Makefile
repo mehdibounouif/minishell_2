@@ -10,19 +10,20 @@ SRCS_DIR3 = ./built-in
 SRCS_DIR4 = ./free
 SRCS_FILES1 = main.c\
 	     utils.c\
+	     garbage_collector.c\
 	     token/tokenize.c\
 	     token/tools.c\
-	     ast_tree/tree.c\
 	     ast_tree/print_ast.c\
 	     ast_tree/command_with_redirection.c\
 	     ast_tree/command_with_herdoc.c\
-	     ast_tree/command_with_pipe.c\
+	     ast_tree/designing_tree.c\
 		 ast_tree/simple_command.c\
 	     check_quotes.c\
 	     check_command.c\
 	     check_syntax.c\
 	     expaned/expansions.c\
 	     expaned/tools.c\
+	     expaned/tools2.c\
 
 SRCS_FILES2 = execute_simple_command.c\
 	      execute_pipe_command.c\

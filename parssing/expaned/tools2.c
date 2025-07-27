@@ -1,33 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution.c                                        :+:      :+:    :+:   */
+/*   tools2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/07 14:40:29 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/26 21:20:47 by mbounoui         ###   ########.fr       */
+/*   Created: 2025/07/26 19:07:26 by mbounoui          #+#    #+#             */
+/*   Updated: 2025/07/26 19:11:10 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-int	execute_full_command(t_tree *node, t_env *env, char **envp)
+int	is_dollar(char *cmd, int i)
 {
-	if (!node)
-		return 0;
+	if (cmd[i] == '$' && cmd[i + 1] && check_quotes(cmd, i) != 2
+		&& cmd[i - 1] != '\\')
+		return (1);
+	return (0);
+}
 
-	if (node->type == COMMAND_NODE)
+int	get_env_len(char *cmd, int i)
+{
+	int	j;
+
+	j = 0;
+	while (cmd[i] && (ft_isalpha(cmd[i]) || cmd[i] == '_'))
 	{
-		execute_command_node(node, env, envp);
+		i++;
+		j++;
 	}
-	else if (node->type == PIPE_NODE)
-	{
-		execute_pipe_node(node, env, envp);
-	}
-	else if (node->type == REDIRECT_NODE)
-	{
-		execute_redirection_command(node, env, envp);
-	}
-	return (1);
+	return (j);
 }
