@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 21:40:36 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/26 21:50:52 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 09:03:06 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	*ft_malloc(int type, int size)
 	if (!result)
 	{
 		ft_free_garbage(ft_function());
-		exit(1);
+		exit(global(-1));
 	}
 	add_back_gb(head, new_node_gbc(result));
 	return (result);

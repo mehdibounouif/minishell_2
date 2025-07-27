@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/25 16:33:47 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 10:42:17 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,14 @@ int	check_in_files(char *file)
 {
 	DIR *dir;
 
-	// if is directory do noting
 	if ((dir = opendir(file)))
 	{
 		closedir(dir);
 		global(1);
 		return (0);
 	}
-	// check if the stdin file is inside path of directorys then check if
-	// the directorys is exist
 	if (!check_infile_in_directory(file))
 		return (0);
-	//check the stdin file if exist
 	if (access(file, F_OK))
 	{
 		print_message(file, ": No such file or directory");

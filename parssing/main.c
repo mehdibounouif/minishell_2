@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/26 15:25:36 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 10:56:07 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/26 13:51:28 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -86,7 +86,7 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 		int flag = 0;
 		if (check_heredoc(minishell.tree))
 			if (!open_her(&flag, minishell, envp))
-      {
+		{
         free_tree(&minishell.tree);
         exit(global(-1));
       }

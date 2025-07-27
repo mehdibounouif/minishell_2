@@ -6,29 +6,23 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 08:29:56 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 10:27:43 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:42 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../includes/minishell.h"
-#include <stdlib.h>
-#include <string.h>
 
 char	*generate_file_name()
 {
 	char	*nb;
-  char  *name;
+	char  *name;
 	static int	i;
 
 	i++;
 	nb = ft_itoa(i);
-  if (!nb)
-    return (NULL);
-  name = ft_strjoin(HEREDOC_FILE, nb);
-  if (!name)
-    return (NULL);
+	name = ft_strjoin(HEREDOC_FILE, nb);
 	return (name);
 }
 
@@ -66,6 +60,17 @@ int	get_lastfd(int *list)
 	return (list[i-1]);
 }
 
+int	check_line(char *file_name, char *line, int fd)
+{
+	if(!line)
+	{
+		free(file_name);
+		close(fd);
+		return (0);
+	}
+	return (1);
+}
+
 int	create_heredoc(t_redirection *list, t_env *env, int i)
 {
 	int	fd;
@@ -73,53 +78,35 @@ int	create_heredoc(t_redirection *list, t_env *env, int i)
 	char	*file_name;
 
 	file_name = generate_file_name();
-  if (!file_name)
-    return (0);
 	fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC,  0777);
 	if (fd == -1)
-  {
-    free(file_name);
-    printf("open heredoc file failed!\n");
+	{
+		free(file_name);
+		printf("open heredoc file failed!\n");
 		return (0);
-  }
+	}
 	list->heredoc_fds[i] = fd;
 	list->heredocs[i] = ft_strdup(file_name);
 	line = readline(">");
-	if(!line)
-	{
-    free(file_name);
-    close(fd);
-		printf("bash: warning: here-document at line 1 delimited by end-of-file (wanted %s)\n", list->herdoc->delimeter);
-    return (0);
-	}
+	if (!check_line(file_name, line, fd))
+		return (0);
 	while (line && ft_strcmp(list->herdoc->delimeter, line))
 	{
 		if (!list->herdoc->quoted)
-			if (!(line = expansion(line, env)))
-      {
-        free(file_name);
-        close(fd);
-        free(line);
-        return (0);
-      }
+			line = expansion(line, env);
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free(line);
 		line = readline(">");
-		if(!line)
-		{
-      free(file_name);
-      close(fd);
-			printf("bash: warning: here-document at line 1 delimited by end-of-file (wanted %s)\n", list->herdoc->delimeter);
+		if (!check_line(file_name, line, fd))
 			return (0);
-		}
 	}
 	return (1);
 }
 
 int	open_herdocs(t_tree *tree, t_env *env)
 {
-    if (!tree)
+	if (!tree)
 		return (0);
 	int	i;
 	if (tree->type == REDIRECT_NODE)
@@ -130,19 +117,19 @@ int	open_herdocs(t_tree *tree, t_env *env)
 			return (0);
 		tree->redirect->heredocs = ft_calloc(20, sizeof(char *));
 		if (!tree->redirect->heredocs)
-    {
-      free(tree->redirect->heredoc_fds);
+		{
+			free(tree->redirect->heredoc_fds);
 			return (0);
-    }
+		}
 		while (tree->redirect->herdoc)
 		{
 			if (!create_heredoc(tree->redirect, env, i))
-      {
-        free(tree->redirect->heredoc_fds);
-        free(tree->redirect->heredocs);
-        free(tree->redirect);
-        return (0);
-      }
+			{
+				free(tree->redirect->heredoc_fds);
+				free(tree->redirect->heredocs);
+				free(tree->redirect);
+				return (0);
+			}
 			tree->redirect->herdoc = tree->redirect->herdoc->next;
 			i++;
 		}
@@ -154,7 +141,7 @@ int	open_herdocs(t_tree *tree, t_env *env)
 		open_herdocs(tree->pipe->left, env);
 		open_herdocs(tree->pipe->right, env);
 	}
-  return (1);
+	return (1);
 }
 
 void	collect_herdoc(t_tree *node, t_node *list)
