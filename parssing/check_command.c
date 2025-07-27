@@ -31,8 +31,10 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 {
 	char	*cmd;
 	t_node *tmp;
+	char	*prompt;
 
-	cmd = readline("minishell> ");
+	prompt = ft_prompt(env);
+	cmd = readline(prompt);
 	if(!cmd)
 	{
 		printf("exit\n");
