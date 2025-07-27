@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 12:20:22 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 16:30:34 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/26 13:51:28 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -23,12 +23,17 @@ int global(int state)
 	return value;
 }
 
-/*
-char	*prompt()
+
+char	*ft_prompt()
 {
-	
+	char *prompt;
+	prompt = getcwd(NULL, 0); // get current working directory (cwd)
+	if (!prompt)
+		return (NULL);
+	printf("%s\n", prompt);
+	return (prompt);
 }
-*/
+
 
 int	open_her(int *flag, t_mini minishell, t_env *envp)
 {
