@@ -155,11 +155,9 @@ t_node	*get_token(char *cmd, int *i)
 	t_node	*node;
 	int	len;
 
-	if (!(node = malloc(sizeof(t_node))))
-		return (NULL);
+	node = ft_malloc(sizeof(t_node), 1);
 	len = calc_token_byte(cmd, i);
-	if (!(node->content = malloc(sizeof(char) * len + 1)))
-		return (NULL);
+	node->content = ft_malloc(sizeof(char) , len + 1);
 	node->between_quoted = between_quoted(&cmd[*i], len);
 	node->contain_quoted = contain_quoted(&cmd[*i], len);
 	dup_token(node, cmd, i, len);

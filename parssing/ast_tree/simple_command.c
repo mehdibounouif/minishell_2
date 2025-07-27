@@ -54,21 +54,10 @@ t_tree  *command_without_redirection(t_node **list)
 	len = count_args(*list) + 1;
 	if (!(cmd = ft_strdup((*list)->content)))
 		return (NULL);
-	if (!(args = malloc(sizeof(char *) * len)))
-		return (NULL);
+	args = ft_malloc(sizeof(char *) , len);
 	collect_args(cmd, list, args);
-	node = malloc(sizeof(t_tree));
-	if (!node)
-	{
-		free_str(args);
-		return (NULL);
-	}
-	if (!(node->command = malloc(sizeof(t_command))))
-	{
-		free_str(args);
-		free(node);
-		return (NULL);
-	}
+	node = ft_malloc(sizeof(t_tree), 1);
+	node->command = ft_malloc(sizeof(t_command), 1);
 	node->command->command = cmd;
 	node->command->args = args;
 	node->type = COMMAND_NODE;

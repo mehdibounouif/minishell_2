@@ -13,11 +13,10 @@ SRCS_FILES1 = main.c\
 	     garbage_collector.c\
 	     token/tokenize.c\
 	     token/tools.c\
-	     ast_tree/tree.c\
 	     ast_tree/print_ast.c\
 	     ast_tree/command_with_redirection.c\
 	     ast_tree/command_with_herdoc.c\
-	     ast_tree/command_with_pipe.c\
+	     ast_tree/designing_tree.c\
 		 ast_tree/simple_command.c\
 	     check_quotes.c\
 	     check_command.c\

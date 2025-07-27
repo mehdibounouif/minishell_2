@@ -9,11 +9,7 @@ int  get_env(t_env **envp, char **env)
 	i = 0;
 	while (env[i])
 	{ 
-		if (!(env_node = malloc(sizeof(t_env)))) 
-		{ 
-			printf("env malloc failed!\n"); 
-			return (0);
-		}
+		env_node = ft_malloc(sizeof(t_env), 1);
 		key_value = ft_split(env[i], '=');
 		env_node->key = ft_strdup(key_value[0]);
 		env_node->value = ft_strdup(key_value[1]);
@@ -28,14 +24,11 @@ int  get_env(t_env **envp, char **env)
 int readline_and_parssing(t_mini *minishell, t_env *env)
 {
 	char	*cmd;
-  t_node *tmp;
+	t_node *tmp;
 
 	cmd = readline("minishell> ");
-	if(!cmd)
-	{
-		free_env(env);
-	 	exit(global(-1));
-	}
+	if(cmd[0] == '\0')
+		return (0);
 	add_history(cmd);
 	if (check_quotes(cmd, ft_strlen(cmd)))
 	{
@@ -44,20 +37,7 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 		return (0);
 	}
 	cmd = expansion(cmd, env);
-	if (!cmd)
-	{
-		free_env(env);
-		free(cmd);
-		exit (global(-1));
-	}
-  tokenize(cmd, &minishell->list);
-	if (!minishell->list)
-	{
-		free_list(&minishell->list);
-		free_env(env);
-		free(cmd);
-		exit(global(-1));
-	}
+	tokenize(cmd, &minishell->list);
 	if (!check_syntax(minishell->list))
 	{
 		free_list(&minishell->list);
@@ -66,13 +46,7 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 	}
 	tmp = minishell->list;
 	minishell->tree = pars_command(&minishell->list);
-	if (!minishell->tree)
-	{
-    free_list(&tmp);
-		free(cmd);
-		return(0);
-	}
 	free_list(&tmp);
-	free(cmd);
+	//free(cmd);
 	return (1);
 }

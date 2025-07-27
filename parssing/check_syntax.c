@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 11:51:06 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/08 11:51:08 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 08:23:51 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int     check_syntax(t_node *list)
 	if (check_sides(list))
 	{
 		ft_putendl_fd("bash: syntax error near unexpected token |", 2);
-    global(2);
+		global(2);
 		return (0);
 	}
 	while (list)
@@ -42,7 +42,7 @@ int     check_syntax(t_node *list)
 				ft_putendl_fd(list->next->content, 2);
 			}
 			else
-		{
+			{
 				ft_putstr_fd("bash: syntax error near unexpected token ", 2);
 				ft_putendl_fd(list->content, 2);
 			}

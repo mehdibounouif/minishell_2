@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/26 21:53:20 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 08:25:44 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:37 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -183,7 +183,7 @@ void	skip_redirection(t_node **list);
 char **back_up();
 
 // Tokenize
-int tokenize(char *cmd, t_node **list);
+void	tokenize(char *cmd, t_node **list);
 int             check_real_sep(char *line, int i);
 t_node  *get_token(char *line, int *i);
 int             calc_token_byte(char *line, int *i);
@@ -206,7 +206,7 @@ t_tree  *parss_redirection(t_tree *node, t_node **list);
 t_tree	*parss_redirection_in_start(t_node **list);
 t_tree  *command_without_redirection(t_node **list);
 t_tree  *pars_pipe(t_node **list);
-int	collect_herdoc(t_tree *node, t_node *list);
+void	collect_herdoc(t_tree *node, t_node *list);
 char	*get_last_herdoc(t_herdoc *list);
 char	*get_last_file(char **list);
 
@@ -246,7 +246,7 @@ char	*expansion(char *cmd, t_env *list);
 int	contain_quoted(char *cmd, int len);
 int	between_quoted(char *cmd, int len);
 int	get_full_len(char *cmd, t_env *list);
-int	expand_exit_status(char *expanded_cmd, int *i, int *j);
+void	expand_exit_status(char *expanded_cmd, int *i, int *j);
 int	get_env_len(char *cmd, int i);
 
 // EXECUTE 

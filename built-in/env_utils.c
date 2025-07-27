@@ -17,9 +17,7 @@ t_env	*create_env_var(char *key, char *value)
 {
 	t_env	*new;
 
-	new = malloc(sizeof(t_env));
-	if (!new)
-		return (NULL);
+	new = ft_malloc(sizeof(t_env), 1);
 	new->key = ft_strdup(key);
 	new->value = ft_strdup(value);
 	new->next = NULL;

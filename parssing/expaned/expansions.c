@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 15:23:34 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/26 22:01:30 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 08:11:04 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	copy_word(char *value, t_share *share, int f)
 	}
 }
 
-int	replace_key(char *cmd, t_share *share, t_env *list)
+void	replace_key(char *cmd, t_share *share, t_env *list)
 {
 	char	*value;
 	char	*key;
@@ -44,8 +44,6 @@ int	replace_key(char *cmd, t_share *share, t_env *list)
 	l = 0;
 	f = 0;
 	key = get_env_key(cmd, share->i);
-	if (!key)
-		return (0);
 	value = ft_getenv(key, list);
 	if (!value)
 		value = ft_strdup("");
@@ -54,7 +52,6 @@ int	replace_key(char *cmd, t_share *share, t_env *list)
 	copy_word(value, share, f);
 	share->i += (ft_strlen(key) + 1);
 	free(key);
-	return (1);
 }
 
 void	check_herdoc(char *cmd, t_share *share)
@@ -71,18 +68,16 @@ void	check_herdoc(char *cmd, t_share *share)
 	}
 }
 
-int	expand_cmd(char *cmd, t_share *share, t_env *env)
+void	expand_cmd(char *cmd, t_share *share, t_env *env)
 {
 	while (cmd[share->i])
 	{
 		check_herdoc(cmd, share);
 		while (share->l == 0 && is_dollar(cmd, share->i)
 			&& (ft_isalpha(cmd[share->i + 1]) || cmd[share->i + 1] == '_'))
-			if (!replace_key(cmd, share, env))
-				return (0);
+			replace_key(cmd, share, env);
 		if (is_dollar(cmd, share->i) && cmd[share->i + 1] == '?')
-			if (!expand_exit_status(share->expanded_cmd, &share->i, &share->j))
-				return (0);
+			expand_exit_status(share->expanded_cmd, &share->i, &share->j);
 		if (is_dollar(cmd, share->i)
 			&& !check_quotes(cmd, share->i)
 			&& (cmd[share->i + 1] == '\'' || cmd[share->i + 1] == '\"'))
@@ -92,7 +87,6 @@ int	expand_cmd(char *cmd, t_share *share, t_env *env)
 		if (share->l == 1 && cmd[share->i] == ' ')
 			share->l = 0;
 	}
-	return (1);
 }
 
 char	*expansion(char *cmd, t_env *env)
@@ -105,13 +99,8 @@ char	*expansion(char *cmd, t_env *env)
 	share->j = 0;
 	share->l = 0;
 	full_len = get_full_len(cmd, env);
-	if (full_len == -1)
-		return (NULL);
-	share->expanded_cmd = malloc(full_len + 1);
-	if (!share->expanded_cmd)
-		return (NULL);
-	if (!expand_cmd(cmd, share, env))
-		return (NULL);
+	share->expanded_cmd = ft_malloc(full_len , 1);
+	expand_cmd(cmd, share, env);
 	free(cmd);
 	share->expanded_cmd[share->j] = '\0';
 	return (share->expanded_cmd);

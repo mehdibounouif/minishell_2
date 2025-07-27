@@ -6,13 +6,13 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:52:30 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/26 21:17:51 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 08:22:11 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	tokenize(char *cmd, t_node **list)
+void	tokenize(char *cmd, t_node **list)
 {
 	t_node	*token;
 	int		i;
@@ -28,11 +28,8 @@ int	tokenize(char *cmd, t_node **list)
 			break ;
 		flag = check_real_sep(cmd, i);
 		token = get_token(cmd, &i);
-		if (!token)
-			return (0);
 		token->next = NULL;
 		add_back(list, token);
 		token_type(token, flag);
 	}
-	return (1);
 }

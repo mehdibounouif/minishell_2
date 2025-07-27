@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 14:09:23 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/26 21:58:25 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 08:10:33 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ int	get_full_len(char *cmd, t_env *list)
 			&& (ft_isalpha(cmd[share->i + 1]) || cmd[share->i + 1] == '_'))
 		{
 			share->key = get_env_key(cmd, share->i++);
-			if (!share->key)
-				return (-1);
 			share->value = ft_getenv(share->key, list);
 			if (!share->value)
 				share->value = ft_strdup("");
@@ -68,7 +66,7 @@ int	get_full_len(char *cmd, t_env *list)
 	return (share->cmd_len += share->full_len);
 }
 
-int	expand_exit_status(char *expanded_cmd, int *i, int *j)
+void	expand_exit_status(char *expanded_cmd, int *i, int *j)
 {
 	int		exit_status;
 	int		l;
@@ -76,11 +74,8 @@ int	expand_exit_status(char *expanded_cmd, int *i, int *j)
 
 	exit_status = global(-1);
 	value = ft_itoa(exit_status);
-	if (!value)
-		return (0);
 	l = 0;
 	while (value[l])
 		expanded_cmd[(*j)++] = value[l++];
 	(*i) += 2;
-	return (1);
 }
