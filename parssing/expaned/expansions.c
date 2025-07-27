@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 15:23:34 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 08:11:04 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 11:15:51 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	expand_cmd(char *cmd, t_share *share, t_env *env)
 			&& (ft_isalpha(cmd[share->i + 1]) || cmd[share->i + 1] == '_'))
 			replace_key(cmd, share, env);
 		if (is_dollar(cmd, share->i) && cmd[share->i + 1] == '?')
-			expand_exit_status(share->expanded_cmd, &share->i, &share->j);
+			expand_exit_status(share);
 		if (is_dollar(cmd, share->i)
 			&& !check_quotes(cmd, share->i)
 			&& (cmd[share->i + 1] == '\'' || cmd[share->i + 1] == '\"'))

@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 08:25:44 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 11:16:07 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:37 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -142,6 +142,7 @@ typedef struct s_gcollect
 	struct s_gcollect	*next;
 }	t_gcollect;
 
+// expantion struct
 typedef	struct t_share
 {
 	int	i;
@@ -246,7 +247,7 @@ char	*expansion(char *cmd, t_env *list);
 int	contain_quoted(char *cmd, int len);
 int	between_quoted(char *cmd, int len);
 int	get_full_len(char *cmd, t_env *list);
-void	expand_exit_status(char *expanded_cmd, int *i, int *j);
+void	expand_exit_status(t_share *share);
 int	get_env_len(char *cmd, int i);
 
 // EXECUTE 

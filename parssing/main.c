@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 10:56:07 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 12:20:22 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/26 13:51:28 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -22,6 +22,13 @@ int global(int state)
 		value = state;
 	return value;
 }
+
+/*
+char	*prompt()
+{
+	
+}
+*/
 
 int	open_her(int *flag, t_mini minishell, t_env *envp)
 {
@@ -82,21 +89,20 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 		handle_signal();
 		if (!readline_and_parssing(&minishell, envp))
 			continue;
-		//print_ast(minishell.tree, 0);
 		int flag = 0;
 		if (check_heredoc(minishell.tree))
 			if (!open_her(&flag, minishell, envp))
-		{
-        free_tree(&minishell.tree);
-        exit(global(-1));
-      }
-  		if (flag)
-			  continue;
+			{
+				free_tree(&minishell.tree);
+				exit(global(-1));
+			}
+		if (flag)
+			continue;
 		sig_ctrl(1); // Set execution mode
 		execute_full_command(minishell.tree, envp, env);
 		sig_ctrl(0); // Back to interactive mode
-//  	free_tree(&minishell.tree);
-    // // print_ast(minishell.tree, 0);
+		//  	free_tree(&minishell.tree);
+		// // print_ast(minishell.tree, 0);
 	}
 	exit(global(-1));
 	return (0);

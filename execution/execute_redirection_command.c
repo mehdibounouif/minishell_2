@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 10:42:17 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 12:05:35 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,11 @@ int	in_directory(t_redirection *node, char *file)
 	else
 	{
 		if (!exist_check_permession_else_create(node, file, full_path, dir))
+		{
+			free(full_path);
+			closedir(dir);
 			return (0);
+		}
 		free(full_path);
 		closedir(dir);
 	}
@@ -188,18 +192,16 @@ int	check_if_exist(t_redirection *node)
 	return (1);
 }
 
-void	dup_fds(t_redirection *node, t_env *env, char **envp)
+void	dup_fds(t_redirection *node)
 {
-	(void)env;
-	(void)envp;
 	int	in_fd;
 	int	out_fd;
+
 	if (node->hdc)
 	{
 		if ((in_fd = open(node->hrc_file, O_RDONLY)) == -1)
 			exit(-1);
 		dup2(in_fd, 0);
-//		close_fds(node->heredoc_fds);
 	}
 	else if (node->in)
 	{
@@ -207,7 +209,6 @@ void	dup_fds(t_redirection *node, t_env *env, char **envp)
 			exit(-1);
 		dup2(in_fd, 0);
 		close(in_fd);
-//		close_fds(node->heredoc_fds);
 	}
 	if (node->out_type == R_APPEND)
 	{
@@ -225,15 +226,33 @@ void	dup_fds(t_redirection *node, t_env *env, char **envp)
 	}
 }
 
+void	child_process_redi(t_tree *node, t_env *env, char **envp)
+{
+	char *path;
+	dup_fds(node->redirect);
+	path = find_path(node->redirect->prev , env);
+	if (!path)
+	{
+		ft_putstr_fd(node->redirect->prev->command->command, 2);
+		ft_putendl_fd(": command not found", 2);
+		close_fds(node->redirect->fds_list);
+		global(127);
+		exit(127);
+	}
+	execve(path, node->redirect->prev->command->args, envp);
+	close_fds(node->redirect->fds_list);
+	ft_putstr_fd(node->redirect->prev->command->command, 2);
+	ft_putendl_fd(": command not found", 2);
+	global(126);
+
+}
+
 void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 {
-	(void)env;
-	(void)envp;
 	pid_t pid;
 	int	status;
 
-	if (!(node->redirect->fds_list = ft_calloc(1024, sizeof(int))))
-		return ;
+	node->redirect->fds_list = ft_calloc(1024, sizeof(int));
 	if (!check_if_exist(node->redirect))
 	{
 		free_tree(&node);
@@ -247,23 +266,7 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 	}
 	pid = fork();
 	if (pid == 0)
-	{
-		dup_fds(node->redirect, env, envp);
-		char *path = find_path(node->redirect->prev , env);
-		if (!path)
-		{
-			ft_putstr_fd(node->redirect->prev->command->command, 2);
-			ft_putendl_fd(": command not found", 2);
-			close_fds(node->redirect->fds_list);
-			global(127);
-			exit(127);
-		}
-		execve(path, node->redirect->prev->command->args, envp);
-		close_fds(node->redirect->fds_list);
-		ft_putstr_fd(node->redirect->prev->command->command, 2);
-		ft_putendl_fd(": command not found", 2);
-		global(126);
-	}
+		child_process_redi(node, env, envp);
 	else if (pid > 0)
 	{
 		waitpid(pid, &status, 0);

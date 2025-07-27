@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 14:09:23 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 08:10:33 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 11:16:19 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	get_full_len(char *cmd, t_env *list)
 	return (share->cmd_len += share->full_len);
 }
 
-void	expand_exit_status(char *expanded_cmd, int *i, int *j)
+void	expand_exit_status(t_share *share)
 {
 	int		exit_status;
 	int		l;
@@ -76,6 +76,6 @@ void	expand_exit_status(char *expanded_cmd, int *i, int *j)
 	value = ft_itoa(exit_status);
 	l = 0;
 	while (value[l])
-		expanded_cmd[(*j)++] = value[l++];
-	(*i) += 2;
+		share->expanded_cmd[share->j++] = value[l++];
+	(share->i) += 2;
 }
