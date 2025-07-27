@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 08:45:19 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/26 21:14:29 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 21:32:00 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ int		calc_token_byte(char *line, int *i)
 		}
 		else
 			j++;
-		if (line[*i + j - 1] == '\\')
-			count--;
+//		if (line[*i + j - 1] == '\\')
+//			count--;
 	}
 	return (j - count + 1);
 }
@@ -142,8 +142,8 @@ void	dup_token(t_node *node, char *cmd, int *i, int len)
 			c = ' ';
 			(*i)++;
 		}
-		else if (cmd[*i] == '\\')
-			node->content[j++] = cmd[++(*i)];
+//		else if (cmd[*i] == '\\')
+//			node->content[j++] = cmd[++(*i)];
 		else
 			node->content[j++] = cmd[(*i)++];
 	}

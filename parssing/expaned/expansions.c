@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 15:23:34 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 11:15:51 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 22:06:36 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	expand_cmd(char *cmd, t_share *share, t_env *env)
 			share->i++;
 		else
 			share->expanded_cmd[share->j++] = cmd[share->i++];
-		if (share->l == 1 && cmd[share->i] == ' ')
+		if (cmd[share->i] && share->l == 1 && cmd[share->i] == ' ')
 			share->l = 0;
 	}
 }
@@ -99,7 +99,9 @@ char	*expansion(char *cmd, t_env *env)
 	share->j = 0;
 	share->l = 0;
 	full_len = get_full_len(cmd, env);
-	share->expanded_cmd = ft_malloc(full_len , 1);
+	if (full_len == 0)
+		return (ft_strdup(""));
+	share->expanded_cmd = ft_malloc(sizeof(char), full_len +1);
 	expand_cmd(cmd, share, env);
 	free(cmd);
 	share->expanded_cmd[share->j] = '\0';

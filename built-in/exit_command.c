@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:59 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/24 21:04:53 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 22:46:55 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,14 +92,14 @@ static long long	ft_atoll(char *str, int *error)
 
 int	exit_command(t_tree *node, t_env *env, char **args)
 {
+	(void)node;
 	long long	status;
 	int			error;
 
-	(void)env;
 	ft_putstr_fd("exit\n", 1);
 	if (!args[1])
 	{
-		free_tree(&node);
+		ft_free_garbage(ft_function());
 		free_env(env);
 		exit(0);
 	}
@@ -110,7 +110,7 @@ int	exit_command(t_tree *node, t_env *env, char **args)
 			ft_putstr_fd("minishell: exit: ", 2);
 			ft_putstr_fd(args[1], 2);
 			ft_putstr_fd(": numeric argument required\n", 2);
-			free_tree(&node);
+			ft_free_garbage(ft_function());
 			free_env(env);
 			exit(2);
 		}
@@ -123,7 +123,7 @@ int	exit_command(t_tree *node, t_env *env, char **args)
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(args[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
-		free_tree(&node);
+		ft_free_garbage(ft_function());
 		free_env(env);
 		exit(2);
 	}
@@ -133,7 +133,7 @@ int	exit_command(t_tree *node, t_env *env, char **args)
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(args[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
-		free_tree(&node);
+		ft_free_garbage(ft_function());
 		free_env(env);
 		exit(2);
 	}
@@ -142,7 +142,7 @@ int	exit_command(t_tree *node, t_env *env, char **args)
 	else
 		status = status % 256;
 	
-	free_tree(&node);
+	ft_free_garbage(ft_function());
 	free_env(env);
 	exit((int)status);
 }

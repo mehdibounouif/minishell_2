@@ -1,0 +1,15 @@
+total 156
+drwxr-xr-x 2 mbounoui 2024_rabat   4096 Jul 27 22:33 built-in
+drwxr-xr-x 2 mbounoui 2024_rabat    304 Jul 27 22:33 execution
+-rwxr-xr-x 1 mbounoui 2024_rabat      0 Jul 27 22:37 file
+drwxr-xr-x 2 mbounoui 2024_rabat    108 Jul 27 22:33 free
+drwxr-xr-x 2 mbounoui 2024_rabat     25 Jul 27 21:34 includes
+drwxr-xr-x 2 mbounoui 2024_rabat   4096 Jul 27 22:33 libft
+-rw-r--r-- 1 mbounoui 2024_rabat   2390 Jul 27 21:22 Makefile
+-rwxr-xr-x 1 mbounoui 2024_rabat 128792 Jul 27 22:33 minishell
+drwxr-xr-x 6 mbounoui 2024_rabat    295 Jul 27 22:26 minishell_tester
+-rw-r--r-- 1 mbounoui 2024_rabat   2443 Jul 27 21:22 note
+drwxr-xr-x 5 mbounoui 2024_rabat    308 Jul 27 22:33 parssing
+-rw-r--r-- 1 mbounoui 2024_rabat     82 Jul 27 21:22 readline.supp
+-rw-r--r-- 1 mbounoui 2024_rabat     14 Jul 27 21:22 README.md
+-rw-r--r-- 1 mbounoui 2024_rabat    904 Jul 27 21:22 text.c

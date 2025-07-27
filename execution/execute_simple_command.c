@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 10:30:47 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 22:09:19 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,14 @@ void	print_and_exit(char *command, char *message, int code, DIR *dir)
 
 void	command_is_directory(t_env *env, char *command)
 {
+	(void)env;
 	DIR	*dir;
 
 	dir = opendir(command);
 	if (!dir && command[0] == '/')
 	{
 		print_and_exit(command, ": No such file or directory", 127, dir);
+		ft_free_garbage(ft_function());
 		exit(127);
 	}
 	if ((dir = opendir(command)))
@@ -86,11 +88,13 @@ void	command_is_directory(t_env *env, char *command)
 		if (ft_strchr(command, '/'))
 		{
 			print_and_exit(command, ": Is a directory", 126, dir);
+			ft_free_garbage(ft_function());
 			exit(126);
 		}
 		else
 		{
-			free_env(env);
+//			free_env(env);
+			ft_free_garbage(ft_function());
 			print_and_exit(command, ": command not found", 127, dir);
 			exit(127);
 		}
@@ -99,6 +103,7 @@ void	command_is_directory(t_env *env, char *command)
 
 void	command_inside_directory(t_tree *node, char **envp, t_env *env)
 {
+	(void)env;
 	struct stat	info;
 	if (!stat(node->command->command, &info))
 	{
@@ -107,27 +112,31 @@ void	command_inside_directory(t_tree *node, char **envp, t_env *env)
 		else // not executable
 		{ 
 			print_and_exit(node->command->command, ": Permission denied", 126, 0);
-			free_tree(&node);
-			free_env(env);
+//			free_tree(&node);
+//			free_env(env);
+			ft_free_garbage(ft_function());
 			exit(126);
 		}
 	}
 	else
 	{
 		print_and_exit(node->command->command, ": No such file or directory", 127, 0);
-		free_tree(&node);
-		free_env(env);
+//		free_tree(&node);
+//		free_env(env);
+		ft_free_garbage(ft_function());
 		exit(127);
 	}
 }
 
 void	empty_command(t_tree *node, t_env *env)
 {
+	(void)env;
 	if (node->command->command[0] == '\0')
 	{
 		print_and_exit(node->command->command, ": command not found", 127, 0);
-		free_tree(&node);
-		free_env(env);
+//		free_tree(&node);
+//		free_env(env);
+		ft_free_garbage(ft_function());
 		exit(127);
 	}
 }
@@ -138,14 +147,16 @@ void	find_path_and_exec(t_tree *node, t_env *env ,char **envp)
 	if (!path)
 	{
 		print_and_exit(node->command->command, ": command not found", 127, 0);
-		free_tree(&node);
-		free_env(env);
+//		free_tree(&node);
+//		free_env(env);
+		ft_free_garbage(ft_function());
 		exit(127);
 	}
 	execve(path, node->command->args, envp);
-	free_tree(&node);
-	free_env(env);
-	free(path);
+//	free_tree(&node);
+//	free_env(env);
+//	free(path);
+	ft_free_garbage(ft_function());
 	perror("minishell");
 	exit(127);
 }
@@ -160,8 +171,9 @@ void	child_process(t_tree *node, t_env *env, char **envp)
 		if ((dir = opendir(node->command->command))) // check executable in directory
 		{
 			print_and_exit(node->command->command, ": Is a directory", 126, dir);
-			free_tree(&node);
-			free_env(env);
+			//free_tree(&node);
+			//free_env(env);
+			ft_free_garbage(ft_function());
 			exit(126);
 		}
 		else // check if exist

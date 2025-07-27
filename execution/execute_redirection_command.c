@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 17:23:05 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/27 22:26:05 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,27 +200,39 @@ void	dup_fds(t_redirection *node)
 	if (node->hdc)
 	{
 		if ((in_fd = open(node->hrc_file, O_RDONLY)) == -1)
-			exit(-1);
+		{
+			ft_free_garbage(ft_function());
+			exit(1);
+		}
 		dup2(in_fd, 0);
 	}
 	else if (node->in)
 	{
 		if ((in_fd = open(node->in_file, O_RDONLY)) == -1)
-			exit(-1);
+		{
+			ft_free_garbage(ft_function());
+			exit(1);
+		}
 		dup2(in_fd, 0);
 		close(in_fd);
 	}
 	if (node->out_type == R_APPEND)
 	{
 		if ((out_fd = open(node->out_file, O_WRONLY | O_CREAT | O_APPEND, 0777)) == -1)
-			exit(-1);
+		{
+			ft_free_garbage(ft_function());
+			exit(1);
+		}
 		dup2(out_fd, 1);
 		close(out_fd);
 	}
 	else if (node->out_type == R_OUT)
 	{
 		if ((out_fd = open(node->out_file,O_WRONLY | O_CREAT | O_TRUNC, 0777)) == -1)
-			exit(-1);
+		{
+			ft_free_garbage(ft_function());
+			exit(1);
+		}
 		dup2(out_fd, 1);
 		close(out_fd);
 	}
@@ -237,12 +249,14 @@ void	child_process_redi(t_tree *node, t_env *env, char **envp)
 		ft_putendl_fd(": command not found", 2);
 		close_fds(node->redirect->fds_list);
 		global(127);
+		ft_free_garbage(ft_function());
 		exit(127);
 	}
 	execve(path, node->redirect->prev->command->args, envp);
 	close_fds(node->redirect->fds_list);
 	ft_putstr_fd(node->redirect->prev->command->command, 2);
 	ft_putendl_fd(": command not found", 2);
+	ft_free_garbage(ft_function());
 	global(126);
 
 }
@@ -300,24 +314,21 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 	int saved_stdout;
 	int	status;
 
-	// char *cmd_name = node->redirect->prev->command->command;
-
 	node->redirect->fds_list = ft_calloc(1024, sizeof(int));
 	if (!check_if_exist(node->redirect))
 	{
-		free_tree(&node);
+		ft_free_garbage(ft_function());
 		return ;
 	}
 	if (node->redirect->without_cmd)
 	{
 		check_if_exist(node->redirect);
-		free_tree(&node);
 		return ;
 	}
 	char *cmd_name = node->redirect->prev->command->command;
 	
 	if (is_builtin_command(cmd_name))
-	{	
+	{
 		saved_stdin = dup(STDIN_FILENO);
 		saved_stdout = dup(STDOUT_FILENO);
 		dup_fds(node->redirect); 
@@ -330,6 +341,7 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 		global(result);
 		close_fds(node->redirect->fds_list);
 		global(result);
+		ft_free_garbage(ft_function());
 	}
 	else
 	{

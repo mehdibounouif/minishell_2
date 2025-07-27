@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 17:10:01 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 21:34:18 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:37 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -275,4 +275,6 @@ int	ft_return_signal(int status);
 
 // Garbage collotor
 void	*ft_malloc(int type, int size);
+void	ft_free_garbage(t_gcollect **list);
+t_gcollect	**ft_function(void);
 #endif
