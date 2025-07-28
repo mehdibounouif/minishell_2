@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:37 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 22:44:16 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/28 08:56:25 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	execute_pipe_node(t_tree *tree, t_env *env, char **envp)
 		dup2(p[1], 1); 
 		close(p[1]);
 		execute_full_command(tree->pipe->left, env, envp);
-//		ft_free_garbage(ft_function());
-//		free_env(env);
+		ft_free_garbage(ft_function());
+		free_env(env);
 		exit(global(-1));
 	}
 	right = fork();
@@ -41,15 +41,15 @@ void	execute_pipe_node(t_tree *tree, t_env *env, char **envp)
 		dup2(p[0], 0); 
 		close(p[0]);
 		execute_full_command(tree->pipe->right, env, envp);
-//		ft_free_garbage(ft_function());
-//		free_env(env);
+		ft_free_garbage(ft_function());
+		free_env(env);
 		exit(global(-1));
 	}
 	close(p[0]);
 	close(p[1]);
 	waitpid(left, NULL, 0);
 	waitpid(right, &status, 0);
-	ft_free_garbage(ft_function());
-	free_env(env);
+//	ft_free_garbage(ft_function());
+//	free_env(env);
 	global(WEXITSTATUS(status));
 }

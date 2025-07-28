@@ -82,8 +82,9 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 	tokenize(cmd, &minishell->list);
 	if (!check_syntax(minishell->list))
 	{
-		free_list(&minishell->list);
-		free(cmd);
+		ft_free_garbage(ft_function());
+//		free_list(&minishell->list);
+	//	free(cmd);
 		return (0);
 	}
 	tmp = minishell->list;
