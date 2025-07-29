@@ -6,11 +6,12 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 18:50:49 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/06/26 14:33:08 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/27 22:15:51 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "../includes/minishell.h"
 
 char	*ft_strdup(const char *s)
 {
@@ -20,8 +21,8 @@ char	*ft_strdup(const char *s)
 
 	if(!s)
 		return NULL;
-	len = ft_strlen(s);
-	res = (char *)malloc(len * sizeof(char) + 1);
+	len = ft_strlen(s) + 1;
+	res = ft_malloc(sizeof(char) , len);
 	if (!res)
 		return (NULL);
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 17:18:34 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/29 10:54:22 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/26 13:51:28 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -23,43 +23,21 @@ int global(int state)
 	return value;
 }
 
-
-char	*ft_prompt(t_env *env)
-{
-	char	*prompt;
-	char	*first_part;
-	char	*last_part;
-	char	*path;
-	char	*user;
-	char	*sep;
-
-	path = getcwd(NULL, 0); // get current working directory (cwd)
-	if (!path)
-		return (NULL);
-	user = ft_getenv("USER", env);
-	if (!user)
-		user = ft_strdup("user");
-	sep = ft_strdup(":~");
-	first_part = ft_strjoin(user, sep);
-	last_part = ft_strjoin(first_part, path);
-	prompt = ft_strjoin(last_part, "$ ");
-	return (prompt);
-}
-
-
 int	open_her(int *flag, t_mini minishell, t_env *envp)
 {
 	pid_t pid;
- 	int status;
+	int status;
 
 	sig_ctrl(1); //mode execution
 	pid = fork();
 	if(pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
-	//	signal(SIGQUIT, SIG_DFL);
+		//	signal(SIGQUIT, SIG_DFL);
 		if (!open_herdocs(minishell.tree, envp))
-      return (0);
+			return (0);
+		//ft_free_garbage(ft_function());
+		//free_env(envp);
 	}
 	else if(pid > 0)
 	{
@@ -67,8 +45,9 @@ int	open_her(int *flag, t_mini minishell, t_env *envp)
 		// printf("%s\n", WIFSIGNALED(status) ? "yes" : "no");
 		*flag = ft_return_signal(status);
 		sig_ctrl(0);
+		//ft_free_garbage(ft_function());
 	}
-  return (1);
+	return (1);
 }
 
 int	check_heredoc(t_tree *tree)
@@ -116,9 +95,9 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 		if (flag)
 			continue;
 		sig_ctrl(1); // Set execution mode
-		execute_full_command(minishell.tree, envp, env);
+		execute_full_command(minishell.tree, envp, env, 0);
+		//ft_free_garbage(ft_function());
 		sig_ctrl(0); // Back to interactive mode
-		//  	free_tree(&minishell.tree);
 		// // print_ast(minishell.tree, 0);
 	}
 	exit(global(-1));

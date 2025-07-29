@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:57 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/25 15:53:35 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/29 09:59:29 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	export_command(t_env *env, char **args)
 	{
 		sorted_env(env);
 		print_env_export(env);
+//		ft_free_garbage(ft_function());
 		return (EXIT_SUCCESS);
 	}
 	while (args[i])
@@ -74,6 +75,7 @@ int	export_command(t_env *env, char **args)
 			ft_putstr_fd(args[i], 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
 			global(1);
+			ft_free_garbage(ft_function());
 			return(1);
 		}
 		equal_sign = ft_strchr(args[i], '=');
@@ -81,8 +83,11 @@ int	export_command(t_env *env, char **args)
 		{
 			key = ft_substr(args[i], 0, equal_sign - args[i]);
 			value = ft_strdup(equal_sign + 1);
-			if (!key || !value)
-				return (free(key), free(value), EXIT_FAILURE);
+			if (!key)
+			{
+				ft_free_garbage(ft_function());
+				return (EXIT_FAILURE);
+			}
 			existing = get_env_var(env, key);
 			if (existing)
 			{
@@ -94,7 +99,7 @@ int	export_command(t_env *env, char **args)
 				set_env_var(&env, key, value);
 			}
 			free(key);
-			free(value);
+			//free(value);
 		}
 		else
 		{
@@ -108,5 +113,6 @@ int	export_command(t_env *env, char **args)
 		}
 		i++;
 	}
+//	ft_free_garbage(ft_function());
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 17:10:01 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/29 13:57:30 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:37 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -107,7 +107,7 @@ struct s_redirection
 	char	**in_files; // all input files;
 	char *out_file; // last output file;
 	char	**out_files; // all output file;
-	int	*heredoc_fds; // heredoc fds;
+//	int	*heredoc_fds; // heredoc fds;
 	char	**heredocs;
 	char *hrc_file; // last output file;
 	int	in; // flag to know if the last input file is the stdin or not;
@@ -116,8 +116,8 @@ struct s_redirection
 	int out_count; // number of output files;
 	int	out_type; // type of output file (trunk or append);
 	int last_fd; // last heredoc fd;
-	int	*fds_list; // list of output fds
-	int	index; // index output fds list
+//	int	*fds_list; // list of output fds
+//	int	index; // index output fds list
 	t_files *files;
 	t_herdoc *herdoc; // list of command heredocs;
 	int	is_her;
@@ -211,6 +211,7 @@ t_tree  *pars_pipe(t_node **list);
 void	collect_herdoc(t_tree *node, t_node *list);
 char	*get_last_herdoc(t_herdoc *list);
 char	*get_last_file(char **list);
+void	print_f(int *list);
 
 // free
 void	free_tree(t_tree **tree);
@@ -252,7 +253,7 @@ void	expand_exit_status(t_share *share);
 int	get_env_len(char *cmd, int i);
 
 // EXECUTE 
-int execute_full_command(t_tree *node, t_env *env, char **envp);
+void execute_full_command(t_tree *node, t_env *env, char **envp, int pipe_flag);
 void execute_command_node(t_tree *node, t_env *env, char **envp);
 void	execute_redirection_command(t_tree *node, t_env *env, char **envp);
 char	*ft_getenv(char *key, t_env *list);
@@ -275,4 +276,6 @@ int	ft_return_signal(int status);
 
 // Garbage collotor
 void	*ft_malloc(int type, int size);
+void	ft_free_garbage(t_gcollect **list);
+t_gcollect	**ft_function(void);
 #endif

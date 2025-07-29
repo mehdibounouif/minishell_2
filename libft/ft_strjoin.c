@@ -6,12 +6,12 @@
 /*   By: mbounoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 18:55:05 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 10:15:08 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 21:47:13 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "../includes/minishell.h"
+//#include "../includes/minishell.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
@@ -29,7 +29,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
 	totlen = s1_len + s2_len;
-	str = (char *)ft_malloc(sizeof(char) ,totlen + 1);
+	str = malloc(sizeof(char) * totlen + 1);
 	if (!str)
 		return (NULL);
 	ft_memcpy(str, s1, s1_len);

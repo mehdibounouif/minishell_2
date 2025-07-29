@@ -6,11 +6,21 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 14:09:23 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 11:16:19 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/28 15:04:15 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+typedef struct s_share2
+{
+	int		i;
+	size_t	full_len;
+	size_t	cmd_len;
+	char	*value;
+	char	*key;
+
+}	t_share2;
 
 char	*get_env_key(char *cmd, int i)
 {
@@ -22,16 +32,6 @@ char	*get_env_key(char *cmd, int i)
 	key = ft_substr(cmd, i, len);
 	return (key);
 }
-
-typedef struct s_share2
-{
-	int		i;
-	size_t	full_len;
-	size_t	cmd_len;
-	char	*value;
-	char	*key;
-
-}	t_share2;
 
 void	init_share(t_share2 *share, char *cmd)
 {
