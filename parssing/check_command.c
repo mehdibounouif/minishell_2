@@ -21,6 +21,7 @@ char	*ft_strdup2(const char *s)
 	res[i] = '\0';
 	return (res);
 }
+
 int  get_env(t_env **envp, char **env)
 {
 	int i;
@@ -52,13 +53,12 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 {
 	char	*cmd;
 	t_node *tmp;
-//	char	*prompt;
 
-	//prompt = ft_prompt(env);
 	cmd = readline("minishell >");
 	if(!cmd)
 	{
 		printf("exit\n");
+		free_env(env);
 		ft_free_garbage(ft_function());
 		exit(global(-1));
 	}
@@ -83,13 +83,9 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 	if (!check_syntax(minishell->list))
 	{
 		ft_free_garbage(ft_function());
-//		free_list(&minishell->list);
-	//	free(cmd);
 		return (0);
 	}
 	tmp = minishell->list;
 	minishell->tree = pars_command(&minishell->list);
-	//free_list(&tmp);
-	//free(cmd);
 	return (1);
 }

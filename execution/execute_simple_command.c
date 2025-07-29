@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/28 10:35:29 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/29 10:55:52 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	command_inside_directory(t_tree *node, char **envp, t_env *env)
 		if (info.st_mode & (S_IXGRP | S_IXUSR | S_IXOTH)) // executable
 			execve(node->command->command, node->command->args, envp);
 		else // not executable
-		{ 
+		{
 			print_and_exit(node->command->command, ": Permission denied", 126);
 			free_env(env);
 			ft_free_garbage(ft_function());
@@ -181,8 +181,10 @@ void	child_process(t_tree *node, t_env *env, char **envp)
 	find_path_and_exec(node, env ,envp);
 }
 
-void	parent_process(int status, pid_t pid)
+void	parent_process(int status, pid_t pid, t_env *env)
 {
+	(void)env;
+
 	int sig;
 
 	sig = WTERMSIG(status);
@@ -205,6 +207,7 @@ void	parent_process(int status, pid_t pid)
 	}
 	else if (WIFEXITED(status))
 		global(WEXITSTATUS(status));
+	ft_free_garbage(ft_function());
 }
 
 void	execute_command_node(t_tree *node, t_env *env, char **envp)
@@ -222,5 +225,5 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 	if (pid == 0)
 		child_process(node, env, envp);
 	else if (pid > 0)
-		parent_process(status, pid);
+		parent_process(status, pid, env);
 }

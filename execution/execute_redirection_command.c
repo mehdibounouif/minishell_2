@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 22:26:05 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/29 11:08:45 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,6 +249,7 @@ void	child_process_redi(t_tree *node, t_env *env, char **envp)
 		ft_putendl_fd(": command not found", 2);
 		close_fds(node->redirect->fds_list);
 		global(127);
+		free_env(env);
 		ft_free_garbage(ft_function());
 		exit(127);
 	}
@@ -256,6 +257,7 @@ void	child_process_redi(t_tree *node, t_env *env, char **envp)
 	close_fds(node->redirect->fds_list);
 	ft_putstr_fd(node->redirect->prev->command->command, 2);
 	ft_putendl_fd(": command not found", 2);
+	free_env(env);
 	ft_free_garbage(ft_function());
 	global(126);
 
@@ -303,7 +305,6 @@ static int execute_builtin_command(char *command, char **args, t_env *env)
 		// Note: exit in redirection context might need special handling
 		return (exit_command(NULL, env, args));
 	}
-	
 	return (1);
 }
 
@@ -314,7 +315,8 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 	int saved_stdout;
 	int	status;
 
-	node->redirect->fds_list = ft_calloc(1024, sizeof(int));
+	node->redirect->fds_list = ft_malloc(1024, sizeof(int));
+	ft_memset(node->redirect->fds_list, 1024, sizeof(int));
 	if (!check_if_exist(node->redirect))
 	{
 		ft_free_garbage(ft_function());
@@ -355,6 +357,8 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 				global(WEXITSTATUS(status));
 			else if (WIFSIGNALED(status))
 				global(128 + WTERMSIG(status));
+			ft_free_garbage(ft_function());
+//			free_env(env);
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 21:34:18 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/29 11:27:47 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:37 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -211,6 +211,7 @@ t_tree  *pars_pipe(t_node **list);
 void	collect_herdoc(t_tree *node, t_node *list);
 char	*get_last_herdoc(t_herdoc *list);
 char	*get_last_file(char **list);
+void	print_f(int *list);
 
 // free
 void	free_tree(t_tree **tree);
@@ -252,7 +253,7 @@ void	expand_exit_status(t_share *share);
 int	get_env_len(char *cmd, int i);
 
 // EXECUTE 
-int execute_full_command(t_tree *node, t_env *env, char **envp);
+void execute_full_command(t_tree *node, t_env *env, char **envp, int pipe_flag);
 void execute_command_node(t_tree *node, t_env *env, char **envp);
 void	execute_redirection_command(t_tree *node, t_env *env, char **envp);
 char	*ft_getenv(char *key, t_env *list);

@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:57 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 08:45:13 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/28 10:43:58 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	init(t_tree *node)
 {
 	node->type = REDIRECT_NODE;
 	node->redirect->in = 0;
+	node->redirect->out_type = 0;
 	node->redirect->in_count = 0;
 	node->redirect->out_count = 0;
 	node->redirect->hdc = 0;

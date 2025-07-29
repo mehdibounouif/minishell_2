@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:55:26 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/23 20:41:55 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/29 09:01:32 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,20 @@ int	pwd_command(void)
 		{
 			ft_putstr_fd(*(back_up()), 1);
 			ft_putchar_fd('\n', 1);
+			ft_free_garbage(ft_function());
 			return (EXIT_SUCCESS);
 		}
 		else
 		{
 			ft_putstr_fd("minishell: pwd: error retrieving current directory\n",
 					2);
+			ft_free_garbage(ft_function());
 			return (EXIT_FAILURE);
 		}
 	}
 	ft_putstr_fd(cwd, 1);
 	ft_putchar_fd('\n', 1);
 	// free(cwd);
+	ft_free_garbage(ft_function());
 	return (EXIT_SUCCESS);
 }

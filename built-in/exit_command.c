@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:59 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/27 22:46:55 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/29 11:42:48 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,16 +93,13 @@ static long long	ft_atoll(char *str, int *error)
 int	exit_command(t_tree *node, t_env *env, char **args)
 {
 	(void)node;
+	(void)env;
 	long long	status;
 	int			error;
 
 	ft_putstr_fd("exit\n", 1);
 	if (!args[1])
-	{
-		ft_free_garbage(ft_function());
-		free_env(env);
 		exit(0);
-	}
 	if (args[2])
 	{
 		if(!is_numeric(args[1]))
@@ -110,8 +107,6 @@ int	exit_command(t_tree *node, t_env *env, char **args)
 			ft_putstr_fd("minishell: exit: ", 2);
 			ft_putstr_fd(args[1], 2);
 			ft_putstr_fd(": numeric argument required\n", 2);
-			ft_free_garbage(ft_function());
-			free_env(env);
 			exit(2);
 		}
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
@@ -123,8 +118,6 @@ int	exit_command(t_tree *node, t_env *env, char **args)
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(args[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
-		ft_free_garbage(ft_function());
-		free_env(env);
 		exit(2);
 	}
 	status = ft_atoll(args[1], &error);
@@ -133,8 +126,6 @@ int	exit_command(t_tree *node, t_env *env, char **args)
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(args[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
-		ft_free_garbage(ft_function());
-		free_env(env);
 		exit(2);
 	}
 	if (status < 0)
@@ -142,7 +133,5 @@ int	exit_command(t_tree *node, t_env *env, char **args)
 	else
 		status = status % 256;
 	
-	ft_free_garbage(ft_function());
-	free_env(env);
 	exit((int)status);
 }

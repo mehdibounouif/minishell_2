@@ -6,28 +6,26 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:29 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/26 21:20:47 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/29 11:35:40 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	execute_full_command(t_tree *node, t_env *env, char **envp)
+void	execute_full_command(t_tree *node, t_env *env, char **envp, int pipe_flag)
 {
 	if (!node)
-		return 0;
+		return ;
 
 	if (node->type == COMMAND_NODE)
-	{
 		execute_command_node(node, env, envp);
-	}
 	else if (node->type == PIPE_NODE)
-	{
 		execute_pipe_node(node, env, envp);
-	}
 	else if (node->type == REDIRECT_NODE)
-	{
 		execute_redirection_command(node, env, envp);
+	if (pipe_flag)
+	{
+		free_env(env);
+		ft_free_garbage(ft_function());
 	}
-	return (1);
 }
