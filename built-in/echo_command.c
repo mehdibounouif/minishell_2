@@ -14,17 +14,19 @@
 
 int	echo_command(char **args)
 {
-	int	i = 1;
-	int	newline = 1;
+	int	i;
+	int	newline;
 	int	j;
 
+	i = 1;
+	newline = 1;
 	while (args[i] && !ft_strncmp(args[i], "-n", 2))
 	{
 		j = 2;
 		while (args[i][j] == 'n')
 			j++;
 		if (args[i][j] != '\0')
-			break;
+			break ;
 		newline = 0;
 		i++;
 	}
@@ -39,4 +41,3 @@ int	echo_command(char **args)
 		ft_putchar_fd('\n', 1);
 	return (global(0));
 }
-

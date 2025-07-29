@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 10:30:47 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/27 17:31:45 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ static int execute_builtin(t_tree *node, t_env *env)
 		return (env_command(env, node->command->args));
 	else if (ft_strncmp(command, "exit", 5) == 0)
 		return (exit_command(node, env, node->command->args));
-	
 	return (1); // Should not reach here
 }
 
