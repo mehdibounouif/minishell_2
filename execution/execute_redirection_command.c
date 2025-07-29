@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/29 11:08:45 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/29 14:00:31 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int	check_in_files(char *file)
 
 int	exist_check_permession_else_create(t_redirection *node, char *file, char *full_path, DIR *dir)
 {
+	(void)node;
 	int	fd;
 
 	if (!access(file, F_OK))
@@ -93,8 +94,9 @@ int	exist_check_permession_else_create(t_redirection *node, char *file, char *fu
 			closedir(dir);
 			return (0);
 		}
-		node->fds_list[node->index] = fd;
-		node->index++;
+		close(fd);
+//		node->fds_list[node->index] = fd;
+//		node->index++;
 
 	}
 	return (1);
@@ -146,16 +148,21 @@ int	is_directory(char *file)
 
 int	just_file(t_redirection *node, char *file, int type)
 {
+	(void)node;
+	int	fd;
 	if (type == R_APPEND)
-		node->fds_list[node->index] = open(file, O_CREAT | O_APPEND, 0777);
+		fd = open(file, O_CREAT | O_APPEND, 0777);
 	else
-		node->fds_list[node->index] = open(file, O_CREAT | O_TRUNC, 0777);
-	if (node->fds_list[node->index] == -1)
+		fd = open(file, O_CREAT | O_TRUNC, 0777);
+	if (fd == -1)
 	{
 		perror("Open");
 		return 0;
 	}
-	node->index++;
+	close(fd);
+//	node->fds_list[node->index] = open(file, O_CREAT | O_APPEND, 0777);
+
+//	node->index++;
 	return (1);
 }
 
@@ -176,7 +183,7 @@ int	check_out_files(t_redirection *node, char *file, int type)
 
 int	check_if_exist(t_redirection *node)
 {
-	node->index = 0;
+//	node->index = 0;
 	while (node->files)
 	{
 		// check in files
@@ -205,6 +212,7 @@ void	dup_fds(t_redirection *node)
 			exit(1);
 		}
 		dup2(in_fd, 0);
+		close(in_fd);
 	}
 	else if (node->in)
 	{
@@ -247,14 +255,14 @@ void	child_process_redi(t_tree *node, t_env *env, char **envp)
 	{
 		ft_putstr_fd(node->redirect->prev->command->command, 2);
 		ft_putendl_fd(": command not found", 2);
-		close_fds(node->redirect->fds_list);
+//		close_fds(node->redirect->fds_list);
 		global(127);
 		free_env(env);
 		ft_free_garbage(ft_function());
 		exit(127);
 	}
 	execve(path, node->redirect->prev->command->args, envp);
-	close_fds(node->redirect->fds_list);
+//	close_fds(node->redirect->fds_list);
 	ft_putstr_fd(node->redirect->prev->command->command, 2);
 	ft_putendl_fd(": command not found", 2);
 	free_env(env);
@@ -315,8 +323,8 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 	int saved_stdout;
 	int	status;
 
-	node->redirect->fds_list = ft_malloc(1024, sizeof(int));
-	ft_memset(node->redirect->fds_list, 1024, sizeof(int));
+//	node->redirect->fds_list = ft_malloc(1024, sizeof(int));
+//	ft_memset(node->redirect->fds_list, 0, sizeof(int) * 1024);
 	if (!check_if_exist(node->redirect))
 	{
 		ft_free_garbage(ft_function());
@@ -339,9 +347,9 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 		dup2(saved_stdout, STDOUT_FILENO);
 		close(saved_stdin);
 		close(saved_stdout);
-		close_fds(node->redirect->fds_list);
+//		close_fds(node->redirect->fds_list);
 		global(result);
-		close_fds(node->redirect->fds_list);
+//		close_fds(node->redirect->fds_list);
 		global(result);
 		ft_free_garbage(ft_function());
 	}

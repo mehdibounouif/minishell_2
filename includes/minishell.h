@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/29 11:27:47 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/29 13:57:30 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:37 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -107,7 +107,7 @@ struct s_redirection
 	char	**in_files; // all input files;
 	char *out_file; // last output file;
 	char	**out_files; // all output file;
-	int	*heredoc_fds; // heredoc fds;
+//	int	*heredoc_fds; // heredoc fds;
 	char	**heredocs;
 	char *hrc_file; // last output file;
 	int	in; // flag to know if the last input file is the stdin or not;
@@ -116,8 +116,8 @@ struct s_redirection
 	int out_count; // number of output files;
 	int	out_type; // type of output file (trunk or append);
 	int last_fd; // last heredoc fd;
-	int	*fds_list; // list of output fds
-	int	index; // index output fds list
+//	int	*fds_list; // list of output fds
+//	int	index; // index output fds list
 	t_files *files;
 	t_herdoc *herdoc; // list of command heredocs;
 	int	is_her;

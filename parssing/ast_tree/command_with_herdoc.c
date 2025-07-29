@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/29 09:44:01 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/29 13:31:38 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:42 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -86,7 +86,9 @@ int	create_heredoc(t_redirection *list, t_env *env, int i)
 		printf("open heredoc file failed!\n");
 		return (0);
 	}
-	list->heredoc_fds[i] = fd;
+	// stroring last fd in avariable;
+	// and remove list->heredoc_fds;
+//	list->heredoc_fds[i] = fd;
 	list->heredocs[i] = ft_strdup(file_name);
 	free(file_name);
 	close(fd);
@@ -122,15 +124,15 @@ int	open_herdocs(t_tree *tree, t_env *env)
 	if (tree->type == REDIRECT_NODE)
 	{
 		i = 0;
-		tree->redirect->heredoc_fds = ft_malloc(20, sizeof(int));
+//		tree->redirect->heredoc_fds = ft_malloc(20, sizeof(int));
 		tree->redirect->heredocs = ft_malloc(20, sizeof(char *));
-		ft_memset(tree->redirect->heredoc_fds, -1, sizeof(int) * 20);
+//		ft_memset(tree->redirect->heredoc_fds, -1, sizeof(int) * 20);
 		ft_memset(tree->redirect->heredocs, 0, sizeof(char *) * 20);
 		while (tree->redirect->herdoc)
 		{
 			if (!create_heredoc(tree->redirect, env, i))
 			{
-				free(tree->redirect->heredoc_fds);
+//				free(tree->redirect->heredoc_fds);
 				free(tree->redirect->heredocs);
 				free(tree->redirect);
 				return (0);
@@ -138,7 +140,7 @@ int	open_herdocs(t_tree *tree, t_env *env)
 			tree->redirect->herdoc = tree->redirect->herdoc->next;
 			i++;
 		}
-		tree->redirect->last_fd = get_lastfd(tree->redirect->heredoc_fds);
+//		tree->redirect->last_fd = get_lastfd(tree->redirect->heredoc_fds);
 		tree->redirect->hrc_file = get_last_file(tree->redirect->heredocs);
 	}
 	else if (tree->type == PIPE_NODE)
