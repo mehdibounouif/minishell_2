@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/30 13:35:03 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/30 16:42:10 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:37 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -170,12 +170,20 @@ int  get_env(t_env **envp, char **env);
 
 
 // Command execution
+// PIPE
 void	execute_pipe_node(t_tree *tree, t_env *env, char **envp);
 void print_env(t_env *env);
 void print_ast(t_tree *tree, int level);
 int	open_herdocs(t_tree *tree, t_env *env);
 void	skip_redirection(t_node **list);
 char **back_up();
+void	print(char *command, char *message, int code);
+int	execute_builtin(t_tree *node, t_env *env);
+int	is_builtin(char *command);
+int	execute_builtin_command(char *command, char **args, t_env *env);
+void	dup_fds(t_redirection *node);
+void	dup_output(t_redirection *node);
+void	dup_input(t_redirection *node);
 
 // Tokenize
 void	tokenize(char *cmd, t_node **list);
@@ -248,8 +256,27 @@ int	get_env_len(char *cmd, int i);
 
 // EXECUTE 
 void execute_full_command(t_tree *node, t_env *env, char **envp, int pipe_flag);
-void execute_command_node(t_tree *node, t_env *env, char **envp);
+// PIPE
+void	execute_pipe_node(t_tree *tree, t_env *env, char **envp);
+// SIMPLE
+void	execute_command_node(t_tree *node, t_env *env, char **envp);
+void	print(char *command, char *message, int code);
+void	folder(t_env *env, char *command);
+void	command_is_directory(t_env *env, char *command);
+void	command_inside_directory(t_tree *node, char **envp, t_env *env);
+void	empty_command(t_tree *node, t_env *env);
+// REDIRECTION
 void	execute_redirection_command(t_tree *node, t_env *env, char **envp);
+int	check_infile_in_directory(char *files);
+int	check_in_files(char *file);
+int	exist_check_permession_else_create(char *file, char *full_path, DIR *dir);
+int	check_correct_path(char *file, char *full_path);
+int	in_directory(char *file);
+int	is_directory(char *file);
+int	just_file(t_redirection *node, char *file, int type);
+int	check_out_files(t_redirection *node, char *file, int type);
+int	check_if_exist(t_redirection *node);
+
 char	*ft_getenv(char *key, t_env *list);
 char	*find_path(t_tree *node, t_env *list);
 int	ft_arraylen(char **arr);

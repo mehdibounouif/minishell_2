@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 10:06:24 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/26 21:21:23 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/30 15:29:00 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	len_slash(char *str, char c, int len)
 		len--;
 	return (len);
 }
-
 
 void	print_message(char *file, char *message)
 {

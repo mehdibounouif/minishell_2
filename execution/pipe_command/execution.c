@@ -6,11 +6,11 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:29 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/29 11:35:40 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/30 16:18:57 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	execute_full_command(t_tree *node, t_env *env, char **envp, int pipe_flag)
 {

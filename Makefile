@@ -24,10 +24,15 @@ SRCS_FILES1 = main.c\
 	     expaned/tools.c\
 	     expaned/tools2.c\
 
-SRCS_FILES2 = execute_simple_command.c\
-	      execute_pipe_command.c\
-	      execute_redirection_command.c\
-	      execution.c\
+SRCS_FILES2 = pipe_command/execute_pipe_command.c\
+		  pipe_command/execution.c\
+	      redirection_command/execute_redirection_command.c\
+	      redirection_command/tools1.c\
+	      redirection_command/tools2.c\
+		  simple_command/execute_simple_command.c\
+	      simple_command/built-in.c\
+	      simple_command/tools.c\
+	      dup_fds.c\
 	      signals.c\
 	      utls.c\
 

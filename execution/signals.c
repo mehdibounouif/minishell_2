@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 11:06:57 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/24 13:25:17 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/30 16:43:56 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,8 @@ int	ft_return_signal(int status)
 		printf("\n");
 		sig = WTERMSIG(status);
 		sig += 128;
-//		 printf("%d\n",sig);
 		global(sig);
 		return (1);
-		//printf("%d\n",sig);
 	}
 	else if(WIFEXITED(status))
 	{
@@ -46,24 +44,23 @@ int	ft_return_signal(int status)
 	return (0);
 }
 
-void handler_sigint(int sig)
+void	handler_sigint(int sig)
 {
-    (void)sig;
-    
-    if(sig_ctrl(-1) != 1) // interactive mode 
-    {
-        printf("\n");
-        rl_replace_line("", 0);
-        rl_on_new_line();
-        rl_redisplay();
-        global(130);
-    }
-    // In execution mode, do nothing - let child process handle it
+	(void)sig;
+
+	if(sig_ctrl(-1) != 1) // interactive mode 
+	{
+		printf("\n");
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+		global(130);
+	}
+	// In execution mode, do nothing - let child process handle it
 }
 
-void    handle_signal()
-{	
-	// rl_catch_signals = 0;
-    signal(SIGINT,handler_sigint);
-    signal(SIGQUIT,SIG_IGN);
+void	handle_signal()
+{
+	signal(SIGINT,handler_sigint);
+	signal(SIGQUIT,SIG_IGN);
 }

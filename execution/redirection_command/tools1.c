@@ -1,0 +1,128 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tools.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/30 16:19:35 by mbounoui          #+#    #+#             */
+/*   Updated: 2025/07/30 16:20:15 by mbounoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../includes/minishell.h"
+
+
+int	check_infile_in_directory(char *files)
+{
+	DIR *dir;
+	char *full_path;
+	int l;
+
+	l = 0;
+	if (ft_strchr(files, '/'))
+	{
+		l = len_slash(files, '/', ft_strlen(files) - 1);
+		full_path = ft_substr(files, 0, l);
+		if (!(dir = opendir(full_path)))
+		{
+			free(full_path);
+			return (print(files, ": No such file or directory", 1), 0);
+		}
+		else
+		{
+			free(full_path);
+			closedir(dir);
+			if (access(files, F_OK))
+				return (print(files, ": No such file or directory", 1), 0);
+		}
+	}
+	return (1);
+}
+
+int	check_in_files(char *file)
+{
+	DIR *dir;
+
+	if ((dir = opendir(file)))
+	{
+		closedir(dir);
+		global(1);
+		return (0);
+	}
+	if (!check_infile_in_directory(file))
+		return (0);
+	if (access(file, F_OK))
+	{
+		print_message(file, ": No such file or directory");
+		global(1);
+		return 0;
+	}
+	return (1);
+}
+
+int	exist_check_permession_else_create(char *file, char *full_path, DIR *dir)
+{
+	int	fd;
+
+	if (!access(file, F_OK))
+	{
+		if (access(file, W_OK))
+		{
+			print_message(file, ": Permission denied");
+			global(1);
+			return (0);
+		}
+	}
+	else
+	{
+		if ((fd = open(file, O_RDWR | O_CREAT, 0644)) == -1)
+		{
+			perror("Open");
+			free(full_path);
+			closedir(dir);
+			return (0);
+		}
+		close(fd);
+	}
+	return (1);
+}
+
+int	check_correct_path(char *file, char *full_path)
+{
+	DIR	*dir;
+	if (!(dir = opendir(full_path)))
+	{
+		free(full_path);
+		print_message(file, ": No such file or directory");
+		global(1);
+		return 0;
+	}
+	// correct path
+	else
+	{
+		if (!exist_check_permession_else_create(file, full_path, dir))
+		{
+			free(full_path);
+			closedir(dir);
+			return (0);
+		}
+		free(full_path);
+		closedir(dir);
+	}
+	return (1);
+}
+
+int	in_directory(char *file)
+{
+	char *full_path;
+	int l;
+
+	l = len_slash(file, '/', ft_strlen(file) - 1);
+	full_path = ft_substr(file, 0, l);
+	if (!check_correct_path(file, full_path))
+		return (0);
+	return (1);
+}
+
+

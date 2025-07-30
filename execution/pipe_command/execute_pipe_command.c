@@ -6,11 +6,11 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:37 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/30 11:51:45 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/30 16:18:57 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 #include <unistd.h>
 
 int	left(pid_t p[2], t_env *env, t_tree *tree, char **envp)

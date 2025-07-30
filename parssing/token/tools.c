@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 08:45:19 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 21:32:00 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/30 17:07:36 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,15 +166,17 @@ t_node	*get_token(char *cmd, int *i)
 
 int	check_real_sep(char *line, int i)
 {
-	if (line[i] && line[i + 1] && ft_strncmp(&line[i], "\\;", 2) == 0)
+	if (line[i] && line[i + 1] && ft_strncmp(&line[i], "\\|", 2) == 0)
+		return (1);
+	else if (line[i] && line[i + 1] && line[i + 2] && ft_strncmp(&line[i], "\\>>", 3) == 0)
+		return (1);
+	else if (line[i] && line[i + 1] && line[i + 2] && ft_strncmp(&line[i], "\\<<", 3) == 0)
 		return (1);
 	else if (line[i] && line[i + 1] && ft_strncmp(&line[i], "\\|", 2) == 0)
 		return (1);
 	else if (line[i] && line[i + 1] && ft_strncmp(&line[i], "\\>", 2) == 0)
 		return (1);
 	else if (line[i] && line[i + 1] && ft_strncmp(&line[i], "\\<", 2) == 0)
-		return (1);
-	else if (line[i] && line[i + 1] && line[i + 2] && ft_strncmp(&line[i], "\\>>", 3) == 0)
 		return (1);
 	return (0);
 }
