@@ -6,21 +6,16 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:37 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/29 11:17:03 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/30 11:34:22 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <stdlib.h>
+#include <unistd.h>
 
-void	execute_pipe_node(t_tree *tree, t_env *env, char **envp)
+int	left(pid_t p[2], t_env *env, t_tree *tree, char **envp)
 {
-	int	p[2];
 	pid_t	left;
-	pid_t	right;
-	int	status;
-
-	pipe(p);
 	left = fork();
 	if (left == 0)
 	{
@@ -31,6 +26,14 @@ void	execute_pipe_node(t_tree *tree, t_env *env, char **envp)
 		execute_full_command(tree->pipe->left, env, envp, 1);
 		exit(global(-1));
 	}
+	else
+		return (left);
+}
+
+int	right(int *p, t_env *env, t_tree *tree, char **envp)
+{
+	pid_t	right;
+
 	right = fork();
 	if (right == 0)
 	{
@@ -41,10 +44,25 @@ void	execute_pipe_node(t_tree *tree, t_env *env, char **envp)
 		execute_full_command(tree->pipe->right, env, envp, 1);
 		exit(global(-1));
 	}
+	else 
+		return (right);
+}
+
+
+void	execute_pipe_node(t_tree *tree, t_env *env, char **envp)
+{
+	int		p[2];
+	int		status;
+	pid_t l;
+	pid_t r;
+
+	pipe(p);
+	l = left(p, env, tree, envp);
+	r = right(p, env, tree, envp);
 	close(p[0]);
 	close(p[1]);
-	waitpid(left, NULL, 0);
-	waitpid(right, &status, 0);
+	waitpid(l, NULL, 0);
+	waitpid(r, &status, 0);
 	ft_free_garbage(ft_function());
 	global(WEXITSTATUS(status));
 }
