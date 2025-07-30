@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:42:07 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/25 16:00:53 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/27 17:42:30 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	update_oldpwd(t_env *env)
 	char	*oldpwd;
 	char	*current_dir;
 
-	current_dir = getcwd(NULL, 0); // get current working directory (cwd)
+	current_dir = getcwd(NULL, 0);
 	if (!current_dir)
 		return (1);
 	oldpwd = ft_strjoin("OLDPWD=", current_dir);
@@ -38,20 +38,19 @@ static int	update_pwd(t_env *env)
 	char	*pwd;
 	char	*current_dir;
 
-	current_dir = getcwd(NULL, 0); // get current working directory (cwd)
+	current_dir = getcwd(NULL, 0);
 	if (!current_dir)
 		return (1);
 	*(back_up()) = current_dir;
-	pwd = ft_strjoin("PWD=", current_dir); // join PWD= and current_dir
-	// free(current_dir);
+	pwd = ft_strjoin("PWD=", current_dir);
 	if (!pwd)
 		return (1);
-	if (update_env_var(env, pwd) == 1) // update the PWD environment variable
+	if (update_env_var(env, pwd) == 1)
 	{
 		free(pwd);
 		return (1);
 	}
-	free(pwd); // free the pwd variable
+	free(pwd);
 	return (0);
 }
 
@@ -87,8 +86,7 @@ int	cd_command(t_env *env, char **args)
 	if (args[2] != NULL)
 	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
-		global(1);
-		return(1);
+		return (global(1));
 	}
 	else if (!args[0] || (args[0][0] == '-' && !args[0][1]))
 	{
