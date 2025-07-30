@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/30 10:27:32 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/30 11:54:07 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -348,7 +348,6 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 		return ;
 	}
 	char *cmd_name = node->redirect->prev->command->command;
-	
 	if (is_builtin_command(cmd_name))
 	{
 		saved_stdin = dup(STDIN_FILENO);
