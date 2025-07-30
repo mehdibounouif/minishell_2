@@ -54,7 +54,7 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 	char	*cmd;
 	t_node *tmp;
 
-	cmd = readline("minishell >");
+	cmd = readline("minishell>");
 	if(!cmd)
 	{
 		printf("exit\n");
