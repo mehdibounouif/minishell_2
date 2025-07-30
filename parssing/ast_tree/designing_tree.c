@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command_with_pipe.c                                :+:      :+:    :+:   */
+/*   designing_tree.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 16:38:25 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/27 08:48:05 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/30 13:20:45 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,4 @@ t_tree  *pars_pipe(t_node **list)
 		left = pipe_cmd;
 	}
 	return left;
-}
-
-t_tree	*pars_command(t_node **list)
-{
-	t_tree	*tree;
-	
-	tree =  pars_pipe(list);
-	return (tree);
 }

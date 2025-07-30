@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/29 13:57:30 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/30 13:35:03 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:37 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -88,7 +88,7 @@ struct	s_herdoc {
 	char	*herdoc;
 	char	*delimeter;
 	int	quoted;
-	int fd;
+//	int fd;
 	struct s_herdoc *next;
 };
 
@@ -103,11 +103,9 @@ struct s_redirection
 {
 	t_tree *prev; // previous node;
 	char *in_file; // last input file;
-	int	without_cmd;
 	char	**in_files; // all input files;
 	char *out_file; // last output file;
 	char	**out_files; // all output file;
-//	int	*heredoc_fds; // heredoc fds;
 	char	**heredocs;
 	char *hrc_file; // last output file;
 	int	in; // flag to know if the last input file is the stdin or not;
@@ -115,12 +113,8 @@ struct s_redirection
 	int in_count; // number of input files;
 	int out_count; // number of output files;
 	int	out_type; // type of output file (trunk or append);
-	int last_fd; // last heredoc fd;
-//	int	*fds_list; // list of output fds
-//	int	index; // index output fds list
 	t_files *files;
 	t_herdoc *herdoc; // list of command heredocs;
-	int	is_her;
 };
 
 struct s_tree {
@@ -190,7 +184,7 @@ t_node  *get_token(char *line, int *i);
 int             calc_token_byte(char *line, int *i);
 void    token_type(t_node *node, int flag);
 int     ft_strcmp(const char *s1, const char *s2);
-char	*ft_prompt(t_env *env);
+//char	*ft_prompt(t_env *env);
 
 
 //int is_space(char c);
@@ -202,7 +196,7 @@ void print_list(t_node *list);
 
 
 // AST TREE
-t_tree *pars_command(t_node **list);
+//t_tree *pars_command(t_node **list);
 t_tree	*parss_one_side(t_node **list);
 t_tree  *parss_redirection(t_tree *node, t_node **list);
 t_tree	*parss_redirection_in_start(t_node **list);

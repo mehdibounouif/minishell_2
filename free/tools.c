@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 09:07:52 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/25 17:02:22 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/30 11:45:33 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,63 +28,6 @@ void	free_str(char **list)
 	free(list);
 }
 
-void	free_list(t_node **list)
-{
-	t_node *tmp;
-
-	if (!list || !list)
-		return;
-	while (*list)
-	{
-		tmp = *list;
-		*list = (*list)->next;
-		if (tmp->content)
-		{
-			free(tmp->content);
-			tmp->content = NULL;
-		}
-		if (tmp)
-		{
-			free(tmp);
-			tmp = NULL;
-		}
-	}
-	list = NULL;
-}
-
-void	free_herdoc(t_herdoc *list)
-{
-	t_herdoc *tmp;
-
-	while (list)
-	{
-		tmp = list;
-		list = list->next;
-		if (tmp->herdoc)
-			free(tmp->herdoc);
-		if (tmp->delimeter)
-			free(tmp->delimeter);
-		if (tmp)
-			free(tmp);
-	}
-}
-
-void	free_files(t_files *files)
-{
-	t_files *tmp;
-
-	if (!files)
-		return ;
-	while (files)
-	{
-		tmp = files;
-		files = files->next;
-		if (tmp->file)
-			free(tmp->file);
-		//free(tmp->file);
-	}
-}
-
 void free_env(t_env *env)
 {
 	t_env *temp;
@@ -98,4 +41,3 @@ void free_env(t_env *env)
 		free(temp);
 	}
 }
-

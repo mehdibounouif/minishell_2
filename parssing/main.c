@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/30 10:54:37 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/30 13:51:19 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/26 13:51:28 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -23,7 +23,7 @@ int global(int state)
 	return value;
 }
 
-int	open_her(int *flag, t_mini minishell, t_env *envp)
+int	heredoc(int *flag, t_mini minishell, t_env *envp)
 {
 	pid_t pid;
 	int status;
@@ -85,9 +85,9 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 			continue;
 		int flag = 0;
 		if (check_heredoc(minishell.tree))
-			if (!open_her(&flag, minishell, envp))
+			if (!heredoc(&flag, minishell, envp))
 			{
-				free_tree(&minishell.tree);
+				ft_free_garbage(ft_function());
 				exit(global(-1));
 			}
 		if (flag)

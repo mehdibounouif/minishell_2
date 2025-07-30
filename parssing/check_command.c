@@ -86,6 +86,6 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 		return (0);
 	}
 	tmp = minishell->list;
-	minishell->tree = pars_command(&minishell->list);
+	minishell->tree = pars_pipe(&minishell->list);
 	return (1);
 }

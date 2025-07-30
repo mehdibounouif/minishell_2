@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/30 10:27:32 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/30 13:02:06 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -342,7 +342,7 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 		ft_free_garbage(ft_function());
 		return ;
 	}
-	if (node->redirect->without_cmd)
+	if (!node->redirect->prev)
 	{
 		check_if_exist(node->redirect);
 		return ;

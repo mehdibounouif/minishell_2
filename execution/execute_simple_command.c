@@ -6,15 +6,11 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/29 14:19:08 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/30 11:41:22 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <dirent.h>
-#include <stdlib.h>
-#include <sys/stat.h>
-#include <unistd.h>
 
 // Function to check if a command is a builtin
 static int is_builtin(char *command)
@@ -70,7 +66,6 @@ void	print_and_exit(char *command, char *message, int code)
 
 void	command_is_directory(t_env *env, char *command)
 {
-	(void)env;
 	DIR	*dir;
 
 	dir = opendir(command);
@@ -159,6 +154,7 @@ void	find_path_and_exec(t_tree *node, t_env *env ,char **envp)
 void	child_process(t_tree *node, t_env *env, char **envp)
 {
 	DIR *dir;
+
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	if (node->command->command[0] == '.')
@@ -180,10 +176,8 @@ void	child_process(t_tree *node, t_env *env, char **envp)
 	find_path_and_exec(node, env ,envp);
 }
 
-void	parent_process(int status, pid_t pid, t_env *env)
+void	parent_process(int status, pid_t pid)
 {
-	(void)env;
-
 	int sig;
 
 	sig = WTERMSIG(status);
@@ -224,5 +218,5 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 	if (pid == 0)
 		child_process(node, env, envp);
 	else if (pid > 0)
-		parent_process(status, pid, env);
+		parent_process(status, pid);
 }

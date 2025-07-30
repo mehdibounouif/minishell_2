@@ -10,7 +10,6 @@ SRCS_DIR3 = ./built-in
 SRCS_DIR4 = ./free
 SRCS_FILES1 = main.c\
 	     utils.c\
-	     garbage_collector.c\
 	     token/tokenize.c\
 	     token/tools.c\
 	     ast_tree/print_ast.c\
@@ -42,9 +41,8 @@ SRCS_FILES3 = cd_command.c\
 	      env_command.c\
 	      env_utils.c\
 
-SRCS_FILES4 = free_tree.c\
-			  tools1.c\
-			  tools2.c
+SRCS_FILES4 = tools.c\
+			  garbage_collector.c\
 
 SRCS1 = $(addprefix $(SRCS_DIR1)/, $(SRCS_FILES1))
 SRCS2 = $(addprefix $(SRCS_DIR2)/, $(SRCS_FILES2))
