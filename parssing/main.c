@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/29 10:54:22 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/30 10:54:37 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/26 13:51:28 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -36,8 +36,6 @@ int	open_her(int *flag, t_mini minishell, t_env *envp)
 		//	signal(SIGQUIT, SIG_DFL);
 		if (!open_herdocs(minishell.tree, envp))
 			return (0);
-		//ft_free_garbage(ft_function());
-		//free_env(envp);
 	}
 	else if(pid > 0)
 	{
@@ -96,7 +94,6 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 			continue;
 		sig_ctrl(1); // Set execution mode
 		execute_full_command(minishell.tree, envp, env, 0);
-		//ft_free_garbage(ft_function());
 		sig_ctrl(0); // Back to interactive mode
 		// // print_ast(minishell.tree, 0);
 	}

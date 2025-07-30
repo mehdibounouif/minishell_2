@@ -6,24 +6,44 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/29 13:31:38 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/30 10:17:29 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:42 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../includes/minishell.h"
 
-char	*generate_file_name()
+typedef struct	s_share3
 {
-	char	*nb;
-	char  *name;
-	static int	i;
+	int	fd;
+	char	*line;
+	char	*file_name;
+	char	*expand_line;
+}	t_share3;
 
-	i++;
-	nb = ft_itoa(i);
-	name = ft_strjoin(HEREDOC_FILE, nb);
-	return (name);
+static char	*generate_file_name(void)
+{
+	unsigned char	c;
+	char			*buffer;
+
+	int fd, i;
+	buffer = ft_malloc(sizeof(char), 9);
+	fd = open("/dev/urandom", O_RDONLY);
+	if (fd < 0)
+		return (buffer);
+	i = 0;
+	while (i < 8)
+	{
+		if (read(fd, &c, 1) != 1)
+		{
+			close(fd);
+			return (NULL);
+		}
+		buffer[i++] = 'a' + (c % 26);
+	}
+	buffer[i] = '\0';
+	close(fd);
+	return (buffer);
 }
 
 char	*get_last_herdoc(t_herdoc *list)
@@ -36,6 +56,7 @@ char	*get_last_herdoc(t_herdoc *list)
 	}
 	return (list->delimeter);
 }
+
 char	*get_last_file(char **list)
 {
 	if (!(*list) || !list)
@@ -60,12 +81,35 @@ int	get_lastfd(int *list)
 	return (list[i-1]);
 }
 
-int	check_line(char *file_name, char *line, int fd)
+int	check_line(t_share3 *share)
 {
-	if(!line)
+	if(!share->line)
 	{
-		free(file_name);
-		close(fd);
+		free(share->file_name);
+		close(share->fd);
+		return (0);
+	}
+	return (1);
+}
+
+int	read_lines(t_share3 *share, t_redirection *list, t_env *env)
+{
+	while (share->line && ft_strcmp(list->herdoc->delimeter, share->line))
+	{
+		if (!list->herdoc->quoted)
+		{
+			share->expand_line = expansion(share->line, env);
+			write(share->fd, share->expand_line, ft_strlen(share->expand_line));
+			write(share->fd, "\n", 1);
+		}
+		else 
+		{
+			write(share->fd, share->line, ft_strlen(share->line));
+			write(share->fd, "\n", 1);
+			free(share->line);
+		}
+		share->line = readline(">");
+		if (!check_line(share))
 		return (0);
 	}
 	return (1);
@@ -73,46 +117,25 @@ int	check_line(char *file_name, char *line, int fd)
 
 int	create_heredoc(t_redirection *list, t_env *env, int i)
 {
-	int	fd;
-	char	*line;
-	char	*file_name;
-	char	*expand_line;
+	t_share3 *share;
 
-	file_name = generate_file_name();
-	fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC,  0777);
-	if (fd == -1)
+	share = ft_malloc(sizeof(t_share3), 1);
+	share->file_name = generate_file_name();
+	share->fd = open(share->file_name, O_RDWR | O_CREAT | O_TRUNC,  0777);
+	if (share->fd == -1)
 	{
-		free(file_name);
+		free(share->file_name);
 		printf("open heredoc file failed!\n");
 		return (0);
 	}
-	// stroring last fd in avariable;
-	// and remove list->heredoc_fds;
-//	list->heredoc_fds[i] = fd;
-	list->heredocs[i] = ft_strdup(file_name);
-	free(file_name);
-	close(fd);
-	line = readline(">");
-	if (!check_line(file_name, line, fd))
+	list->heredocs[i] = ft_strdup(share->file_name);
+	free(share->file_name);
+	share->line = readline(">");
+	if (!check_line(share))
 		return (0);
-	while (line && ft_strcmp(list->herdoc->delimeter, line))
-	{
-		if (!list->herdoc->quoted)
-		{
-			expand_line = expansion(line, env);
-			write(fd, expand_line, ft_strlen(expand_line));
-			write(fd, "\n", 1);
-		}
-		else 
-		{
-			write(fd, line, ft_strlen(line));
-			write(fd, "\n", 1);
-			free(line);
-		}
-		line = readline(">");
-		if (!check_line(file_name, line, fd))
-			return (0);
-	}
+	if (!read_lines(share, list, env))
+		return (0);
+	close(share->fd);
 	return (1);
 }
 
@@ -124,15 +147,12 @@ int	open_herdocs(t_tree *tree, t_env *env)
 	if (tree->type == REDIRECT_NODE)
 	{
 		i = 0;
-//		tree->redirect->heredoc_fds = ft_malloc(20, sizeof(int));
 		tree->redirect->heredocs = ft_malloc(20, sizeof(char *));
-//		ft_memset(tree->redirect->heredoc_fds, -1, sizeof(int) * 20);
 		ft_memset(tree->redirect->heredocs, 0, sizeof(char *) * 20);
 		while (tree->redirect->herdoc)
 		{
 			if (!create_heredoc(tree->redirect, env, i))
 			{
-//				free(tree->redirect->heredoc_fds);
 				free(tree->redirect->heredocs);
 				free(tree->redirect);
 				return (0);
@@ -140,7 +160,6 @@ int	open_herdocs(t_tree *tree, t_env *env)
 			tree->redirect->herdoc = tree->redirect->herdoc->next;
 			i++;
 		}
-//		tree->redirect->last_fd = get_lastfd(tree->redirect->heredoc_fds);
 		tree->redirect->hrc_file = get_last_file(tree->redirect->heredocs);
 	}
 	else if (tree->type == PIPE_NODE)
