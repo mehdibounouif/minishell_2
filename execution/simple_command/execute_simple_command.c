@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/30 16:42:04 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/07/31 13:34:26 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,27 +32,45 @@ void	find_path_and_exec(t_tree *node, t_env *env ,char **envp)
 
 void	child_process(t_tree *node, t_env *env, char **envp)
 {
-	DIR *dir;
+    struct stat st;
 
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-	if (node->command->command[0] == '.')
-	{
-		if ((dir = opendir(node->command->command))) // check executable in directory
-		{
-			print(node->command->command, ": Is a directory", 126);
-			closedir(dir);
-			//free_tree(&node);
-			free_env(env);
-			ft_free_garbage(ft_function());
-			exit(126);
-		}
-		else // check if exist
-			command_inside_directory(node, envp, env);
-	}
-	command_is_directory(env, node->command->command);
-	empty_command(node, env); // ""
-	find_path_and_exec(node, env ,envp);
+    signal(SIGINT, SIG_DFL);
+    signal(SIGQUIT, SIG_DFL);
+
+    empty_command(node, env); // ""
+
+    // If command is absolute or relative path, try to exec directly
+    if (node->command->command[0] == '/' || node->command->command[0] == '.')
+    {
+        if (stat(node->command->command, &st) == -1)
+        {
+            print(node->command->command, ": No such file or directory", 127);
+            free_env(env);
+            ft_free_garbage(ft_function());
+            exit(127);
+        }
+        if (S_ISDIR(st.st_mode))
+        {
+            print(node->command->command, ": Is a directory", 126);
+            free_env(env);
+            ft_free_garbage(ft_function());
+            exit(126);
+        }
+        if (access(node->command->command, X_OK) == -1)
+        {
+            print(node->command->command, ": Permission denied", 126);
+            free_env(env);
+            ft_free_garbage(ft_function());
+            exit(126);
+        }
+        execve(node->command->command, node->command->args, envp);
+        perror("minishell");
+        free_env(env);
+        ft_free_garbage(ft_function());
+        exit(127);
+    }
+    // Otherwise, search in PATH
+    find_path_and_exec(node, env, envp);
 }
 
 void	parent_process(int status, pid_t pid)
