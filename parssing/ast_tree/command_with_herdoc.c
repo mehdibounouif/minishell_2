@@ -6,10 +6,10 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/30 13:53:15 by mbounoui         ###   ########.fr       */
-/*   Updated: 2025/07/24 13:25:42 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/07/31 10:27:44 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../../includes/minishell.h"
 
@@ -85,8 +85,16 @@ int	check_line(t_share3 *share)
 {
 	if(!share->line)
 	{
-		free(share->file_name);
-		close(share->fd);
+		if(share->file_name)
+		{
+			// free(share->file_name);
+			share->file_name = NULL;
+		}
+		if(share->fd >= 0)
+		{
+			close(share->fd);
+			share->fd = -1;
+		}
 		return (0);
 	}
 	return (1);
@@ -101,16 +109,23 @@ int	read_lines(t_share3 *share, t_redirection *list, t_env *env)
 			share->expand_line = expansion(share->line, env);
 			write(share->fd, share->expand_line, ft_strlen(share->expand_line));
 			write(share->fd, "\n", 1);
+            share->expand_line = NULL;
 		}
 		else 
 		{
 			write(share->fd, share->line, ft_strlen(share->line));
 			write(share->fd, "\n", 1);
-			free(share->line);
 		}
+		// free(share->line);
+		share->line = NULL;
 		share->line = readline(">");
 		if (!check_line(share))
 		return (0);
+	}
+	if(share->line)
+	{
+		// free(share->line);
+		share->line = NULL;
 	}
 	return (1);
 }
@@ -120,17 +135,25 @@ int	create_heredoc(t_redirection *list, t_env *env, int i)
 	t_share3 *share;
 
 	share = ft_malloc(sizeof(t_share3), 1);
+	share->expand_line = NULL;
+	share->line = NULL;
+	share->fd = -1;
 	share->file_name = generate_file_name();
 	share->fd = open(share->file_name, O_RDWR | O_CREAT | O_TRUNC,  0777);
 	if (share->fd == -1)
 	{
-		free(share->file_name);
+		// free(share->file_name);
 		printf("open heredoc file failed!\n");
 		return (0);
 	}
 	list->heredocs[i] = ft_strdup(share->file_name);
-	free(share->file_name);
+	// free(share->file_name);
 	share->line = readline(">");
+	if(!share->line)
+	{
+		printf("bash: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", list->herdoc->delimeter);
+		global(-1);
+	}
 	if (!check_line(share))
 		return (0);
 	if (!read_lines(share, list, env))
