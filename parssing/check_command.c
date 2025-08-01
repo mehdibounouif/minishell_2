@@ -22,6 +22,18 @@ char	*ft_strdup2(const char *s)
 	return (res);
 }
 
+void	expand(t_node **list, t_env *env)
+{
+	t_node *tmp;
+
+	tmp = *list;
+	while (tmp)
+	{
+		tmp->content = expansion(tmp->content, env);
+		tmp = tmp->next;
+	}
+}
+
 int  get_env(t_env **envp, char **env)
 {
 	int i;
@@ -76,13 +88,13 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 		printf("Qoutes not closed!\n");
 		return (0);
 	}
-	cmd = expansion(cmd, env);
-	if(cmd[0] == '\0')
-		return (0);
 	tokenize(cmd, &minishell->list);
+//	print_list(minishell->list);
+	expand(&minishell->list, env);
 	if (!check_syntax(minishell->list))
 	{
-		ft_free_garbage(ft_function());
+		free_list(&minishell->list);
+	//	ft_free_garbage(ft_function());
 		return (0);
 	}
 	tmp = minishell->list;

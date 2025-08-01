@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/30 16:42:10 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/01 22:30:50 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:37 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -187,10 +187,12 @@ void	dup_input(t_redirection *node);
 
 // Tokenize
 void	tokenize(char *cmd, t_node **list);
-int             check_real_sep(char *line, int i);
-t_node  *get_token(char *line, int *i);
-int             calc_token_byte(char *line, int *i);
-void    token_type(t_node *node, int flag);
+size_t	get_token_len(char *cmd);
+t_node	*new_token(char *content);
+size_t	get_separetor(char *cmd);
+size_t	is_sep(char c);
+int	is_qoute(char c);
+size_t	get_close_token(char *cmd, char c);
 int     ft_strcmp(const char *s1, const char *s2);
 //char	*ft_prompt(t_env *env);
 

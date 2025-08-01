@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/31 13:34:26 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/01 15:41:37 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	parent_process(int status, pid_t pid)
 	}
 	else if (WIFEXITED(status))
 		global(WEXITSTATUS(status));
-	ft_free_garbage(ft_function());
+//	ft_free_garbage(ft_function());
 }
 
 void	execute_command_node(t_tree *node, t_env *env, char **envp)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tools1.c                                           :+:      :+:    :+:   */
+/*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 09:07:52 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/30 11:45:33 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/01 22:04:32 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,3 +41,28 @@ void free_env(t_env *env)
 		free(temp);
 	}
 }
+
+void	free_list(t_node **list)
+{
+	t_node *tmp;
+	tmp = *list;
+	while (*list)
+	{
+		(*list) = (*list)->next;
+		free(tmp->content);
+		free(tmp);
+		tmp = (*list);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+

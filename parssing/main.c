@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/30 13:55:14 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/01 21:36:29 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/26 13:51:28 by moraouf          ###   ########.fr       */
 /*   Updated: 2025/07/30 11:31:08 by moraouf          ###   ########.fr       */
 /*                                                                            */
@@ -84,11 +84,12 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 		handle_signal();
 		if (!readline_and_parssing(&minishell, envp))
 			continue;
+		//print_ast(minishell.tree, 0);
 		int flag = 0;
 		if (check_heredoc(minishell.tree))
 			if (!heredoc(&flag, minishell, envp))
 			{
-				ft_free_garbage(ft_function());
+			ft_free_garbage(ft_function());
 				exit(global(-1));
 			}
 		if (flag)
