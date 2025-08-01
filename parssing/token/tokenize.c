@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:52:30 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/01 22:31:09 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/01 22:47:50 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	tokenize(char *cmd, t_node **list)
 {
 	int	i;
 	int	start;
+	int	b_space;
 	size_t	len;
 	char	*content;
 	t_node *token;
@@ -40,18 +41,19 @@ void	tokenize(char *cmd, t_node **list)
 	len = 0;
 	while (cmd[i])
 	{
+		b_space = 0;
 		while (is_space(cmd[i]))
 			i++;
 		if (is_qoute(cmd[i]))
-			len = get_close_token(&cmd[i], cmd[i]);
+			len = get_close_token(&cmd[i], cmd[i], &b_space);
 		else if (is_sep(cmd[i]))
 			len = get_separetor(&cmd[i]);
 		else
-			len = get_token_len(&cmd[i]);
+			len = get_token_len(&cmd[i], &b_space);
 		start = i;
 		i += len;
 		content = ft_substr(cmd, start, len);
-		token = new_token(content);
+		token = new_token(content, b_space);
 		token_type(token);
 		add_back(list, token);
 	}

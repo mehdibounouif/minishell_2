@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/01 22:30:50 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/01 22:48:04 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:37 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -69,6 +69,7 @@ struct s_node {
 	int	contain_quoted;
 	int	between_quoted;
 	int type;
+	int b_space;
 	char *content;
 	struct s_node *next;
 	struct s_node *prev;
@@ -187,12 +188,12 @@ void	dup_input(t_redirection *node);
 
 // Tokenize
 void	tokenize(char *cmd, t_node **list);
-size_t	get_token_len(char *cmd);
-t_node	*new_token(char *content);
+size_t	get_token_len(char *cmd, int *b_space);
+t_node	*new_token(char *content, int b_space);
 size_t	get_separetor(char *cmd);
 size_t	is_sep(char c);
 int	is_qoute(char c);
-size_t	get_close_token(char *cmd, char c);
+size_t	get_close_token(char *cmd, char c, int *b_space);
 int     ft_strcmp(const char *s1, const char *s2);
 //char	*ft_prompt(t_env *env);
 
