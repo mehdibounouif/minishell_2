@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/30 16:31:36 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/01 21:38:58 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/30 11:54:07 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -82,7 +82,7 @@ void	fork_and_exec(t_tree *node, t_env *env, char **envp)
 			global(WEXITSTATUS(status));
 		else if (WIFSIGNALED(status))
 			global(128 + WTERMSIG(status));
-		ft_free_garbage(ft_function());
+//		ft_free_garbage(ft_function());
 	}
 
 }

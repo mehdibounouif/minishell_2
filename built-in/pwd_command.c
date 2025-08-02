@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:55:26 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/31 15:33:08 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/02 22:17:14 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	pwd_command(void)
 	}
 	ft_putstr_fd(cwd, 1);
 	ft_putchar_fd('\n', 1);
+	// free(cwd);
 	ft_free_garbage(ft_function());
-	return (global(0));
+	return (EXIT_SUCCESS);
 }

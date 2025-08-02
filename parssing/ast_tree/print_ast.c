@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 09:02:11 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/29 13:33:12 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/02 14:46:51 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,16 +174,16 @@ void	print_list(t_node *list)
 {
 	while (list)
 	{
-		printf("%s ", list->content);
-		printf("\nB %d\n", list->between_quoted);
-		printf("C %d\n", list->contain_quoted);
-		if (list->between_quoted)
-			printf("is_quoted\n");
-		else
-			printf("\n");
+		printf("%s\n", list->content);
+//		printf("\nB %d\n", list->between_quoted);
+//		printf("C %d\n", list->contain_quoted);
+//		if (list->between_quoted)
+//			printf("is_quoted\n");
+//		else
+//			printf("\n");
 		list = list->next;
 	}
-	printf("\n");
+	//printf("\n");
 }
 
 void	print_f(int *list)

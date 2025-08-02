@@ -12,6 +12,7 @@ SRCS_FILES1 = main.c\
 	     utils.c\
 	     token/tokenize.c\
 	     token/tools.c\
+	     token/join.c\
 	     ast_tree/print_ast.c\
 	     ast_tree/command_with_redirection.c\
 	     ast_tree/command_with_herdoc.c\

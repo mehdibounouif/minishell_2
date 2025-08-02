@@ -2,49 +2,107 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <dirent.h>
+typedef struct s_node {
+	int	contain_quoted;
+	int	between_quoted;
+	int type;
+	int b_space;
+	char *content;
+	struct s_node *next;
+	struct s_node *prev;
+}	t_node;
 
-int main(int c, char **v)
+
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+char *strjoin_and_free(char *s1, char *s2)
 {
-	
-printf("\033[1;34mBold Blue Text\033[0m\n");
-printf("\033[4;31mUnderlined Red Text\033[0m\n");
-//	DIR *dir;
-//	struct dirent *entry;
-//
-//	dir = opendir(v[1]);  // Replace with your directory path
-//	if (dir == NULL) {
-//		write(1, "minishell : ", 20);
-//		perror(v[1]);
-//		return EXIT_FAILURE;
-//	}
-//
-//	while ((entry = readdir(dir)) != NULL) {
-//		printf("%s\n", entry->d_name);  // Print the name of each entry
-//	}
-//
-//	closedir(dir);  // Always close the directory stream
-//	return EXIT_SUCCESS;
+	size_t  len1 = 0;
+	size_t  len2 = 0;
+	if (strlen(s1))
+		len1 = strlen(s1);
+	if (strlen(s2))    
+		len2 = strlen(s2);
+    char *joined = malloc(len1 + len2 + 1);
+    if (!joined)
+        return NULL;
+    if (s1)
+        strcpy(joined, s1);
+    if (s2)
+        strcpy(joined + len1, s2);
+    free(s1);
+    return joined;
 }
 
-
-/*
-int global(int state)
+t_node *create_node(const char *content, int b_space)
 {
-	static int value;
-	if(state != -1)
-		value = state;
-	return value;
+    t_node *new = malloc(sizeof(t_node));
+    if (!new)
+        return NULL;
+    new->content = strdup(content);
+    new->b_space = b_space;
+    new->next = NULL;
+    new->prev = NULL;
+    return new;
 }
 
-t_mini *get_global_pointer(t_mini *pointer)
+void remove_node(t_node **head, t_node *node)
 {
-	static t_mini *returned_ptr;
-	if(pointer != NULL)
-		returned_ptr = pointer;
-	return returned_ptr;
+    if (!node)
+        return;
+    if (node->prev)
+        node->prev->next = node->next;
+    else
+        *head = node->next;
+    if (node->next)
+        node->next->prev = node->prev;
+    free(node->content);
+    free(node);
 }
 
-int value = 0;
-global(0);
-globl(-1);
-*/
+void join_b_space_nodes(t_node **head)
+{
+    t_node *curr = *head;
+    while (curr)
+    {
+        if (curr->b_space == 1)
+        {
+            t_node *start = curr;
+            char *joined = NULL;
+            // Join all consecutive b_space == 1
+            while (curr && curr->b_space == 1)
+            {
+                joined = strjoin_and_free(joined, curr->content);
+                curr = curr->next;
+            }
+            // Create new node with joined content
+            t_node *new_node = create_node(joined, 0);
+            free(joined);
+            if (!new_node)
+                return;
+            // Insert new node before start
+            new_node->prev = start->prev;
+            new_node->next = curr;
+            if (start->prev)
+                start->prev->next = new_node;
+            else
+                *head = new_node;
+            if (curr)
+                curr->prev = new_node;
+            // Remove original nodes
+            t_node *tmp;
+            while (start != curr)
+            {
+                tmp = start->next;
+                remove_node(head, start);
+                start = tmp;
+            }
+        }
+        else
+        {
+            curr = curr->next;
+        }
+    }
+}

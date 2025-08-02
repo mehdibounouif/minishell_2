@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:37 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/30 16:18:57 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/01 22:07:34 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,6 @@ void	execute_pipe_node(t_tree *tree, t_env *env, char **envp)
 	close(p[1]);
 	waitpid(l, NULL, 0);
 	waitpid(r, &status, 0);
-	ft_free_garbage(ft_function());
+//	ft_free_garbage(ft_function());
 	global(WEXITSTATUS(status));
 }
