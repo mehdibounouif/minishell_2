@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 14:09:23 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/28 15:04:15 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/02 23:09:54 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,59 @@ void	init_share(t_share2 *share, char *cmd)
 	share->value = NULL;
 	share->cmd_len = ft_strlen(cmd);
 }
+int	split_len(char *content)
+{
+	int	 len;
+	int	 i;
 
-int	get_full_len(char *cmd, t_env *list)
+	i = 0;
+	len = 0;
+	while (is_space(content[i]))
+		i++;
+	while (content[i])
+	{
+		if (is_space(content[i]))
+		{
+			while (is_space(content[i]))
+				i++;
+			len++;
+		}
+		else
+		{
+			i++;
+			len++;
+		}
+	}
+	return (len);
+}
+
+int	get_full_len(char *cmd, t_env *list, int b_q)
+{
+	t_share2	*share;
+	share = ft_malloc(sizeof(t_share2), 1);
+	init_share(share, cmd);
+	while (cmd[share->i])
+	{
+		if (is_dollar(cmd, share->i)
+			&& (ft_isalpha(cmd[share->i + 1]) || cmd[share->i + 1] == '_'))
+		{
+			share->key = get_env_key(cmd, share->i++);
+			share->value = ft_getenv(share->key, list);
+			if (!share->value)
+				share->value = ft_strdup("");
+			share->cmd_len -= (ft_strlen(share->key) + 1);
+			if (b_q == 2)
+				share->full_len += ft_strlen(share->value);
+			else
+				share->full_len += split_len(share->value);
+			free(share->key);
+		}
+		share->i++;
+	}
+	return (share->cmd_len += share->full_len);
+}
+/*
+int	get_split_len(char *cmd, t_env *list)
 {
 	t_share2	*share;
 
@@ -58,14 +109,14 @@ int	get_full_len(char *cmd, t_env *list)
 			if (!share->value)
 				share->value = ft_strdup("");
 			share->cmd_len -= (ft_strlen(share->key) + 1);
-			share->full_len += ft_strlen(share->value);
+			share->full_len += (split_len(share->value) + 1);
 			free(share->key);
 		}
 		share->i++;
 	}
 	return (share->cmd_len += share->full_len);
 }
-
+*/
 void	expand_exit_status(t_share *share)
 {
 	int		exit_status;

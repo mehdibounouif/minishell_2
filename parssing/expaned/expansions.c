@@ -6,87 +6,78 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 15:23:34 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/02 16:09:07 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/02 23:34:25 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-void	copy_word(char *value, t_share *share, int f)
-{
-	int	l;
-
-	l = 0;
-	while (value[l])
-	{
-		if (value[l] == '\'' && f == 0)
-		{
-			share->expanded_cmd[(share->j)++] = '\"';
-			f = 2;
-		}
-		share->expanded_cmd[(share->j)++] = value[l++];
-		if (value[l] == '\'' && f == 2)
-		{
-			share->expanded_cmd[(share->j)++] = value[l++];
-			share->expanded_cmd[(share->j)++] = '\"';
-			f = 0;
-		}
-	}
-}
 
 void	replace_key(char *cmd, t_share *share, t_env *list)
 {
 	char	*value;
 	char	*key;
 	int		f;
+	int	l;
 
+	l = 0;
 	f = 0;
 	key = get_env_key(cmd, share->i);
 	value = ft_getenv(key, list);
 	if (!value)
 		value = ft_strdup("");
-	if (cmd[share->i - 1])
-		if (cmd[share->i - 1] == '\"' && share->h == 0)
-			f = 1;
-	copy_word(value, share, f);
+	while (value[l])
+		share->expanded_cmd[(share->j)++] = value[l++];
 	share->i += (ft_strlen(key) + 1);
 	free(key);
 }
 
-void	check_herdoc(char *cmd, t_share *share)
+void	split_value(char *cmd, t_share *share, t_env *list)
 {
-	if (cmd[share->i] == '<' && cmd[share->i + 1] == '<')
+	char	*value;
+	char	*key;
+	int		f;
+	int	l;
+
+	l = 0;
+	f = 0;
+	key = get_env_key(cmd, share->i);
+	value = ft_getenv(key, list);
+	if (!value)
+		value = ft_strdup("");
+	while (value[l] && is_space(value[l]))
+		l++;
+	while (value[l])
 	{
-		share->h = 1;
-		share->expanded_cmd[share->j++] = cmd[share->i++];
-		share->expanded_cmd[share->j++] = cmd[share->i++];
-		while (is_space(cmd[share->i]))
-			share->expanded_cmd[share->j++] = cmd[share->i++];
-		while (cmd[share->i] == '\'' || cmd[share->i] == '\"')
-			share->i++;
+		if (is_space(value[l]))
+		{
+			while (is_space(value[l]))
+				l++;
+			if (value[l])
+				share->expanded_cmd[share->j++] = ' ';
+		}
+		else
+			share->expanded_cmd[share->j++] = value[l++];
 	}
+	share->i += (ft_strlen(key) + 1);
+	free(key);
 }
 
 void	expand_cmd(char *cmd, t_share *share, t_env *env, int b_q)
 {
 	while (cmd[share->i])
 	{
-		check_herdoc(cmd, share);
-		if (!cmd[share->i])
-			break;
-		while (share->h == 0 && is_dollar(cmd, share->i) && b_q != 1
+		while (is_dollar(cmd, share->i) && b_q != 1
 			&& (ft_isalpha(cmd[share->i + 1]) || cmd[share->i + 1] == '_'))
-			replace_key(cmd, share, env);
+		{
+			if (b_q == 2)
+				replace_key(cmd, share, env);
+			else
+				split_value(cmd, share, env);
+		}
 		if (is_dollar(cmd, share->i) && cmd[share->i + 1] == '?' && b_q != 1)
 			expand_exit_status(share);
-		if (is_dollar(cmd, share->i)
-			&& !check_quotes(cmd, share->i)
-			&& (cmd[share->i + 1] == '\'' || cmd[share->i + 1] == '\"'))
-			share->i++;
 		else
 			share->expanded_cmd[share->j++] = cmd[share->i++];
-		if (cmd[share->i] && share->h == 1 && cmd[share->i] == ' ')
-			share->h = 0;
 	}
 }
 
@@ -99,7 +90,7 @@ char	*expansion(char *cmd, t_env *env, int b_q)
 	share->i = 0;
 	share->j = 0;
 	share->h = 0;
-	full_len = get_full_len(cmd, env);
+	full_len = get_full_len(cmd, env, b_q);
 	if (full_len == 0)
 		return (ft_strdup(""));
 	share->expanded_cmd = ft_malloc(sizeof(char), full_len +1);

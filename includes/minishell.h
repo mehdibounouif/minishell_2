@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/02 16:07:14 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/02 23:04:57 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:37 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -257,7 +257,9 @@ char	*get_env_key(char *cmd, int i);
 char	*expansion(char *cmd, t_env *list, int between_quoted);
 int	contain_quoted(char *cmd, int len);
 int	between_quoted(char *cmd, int len);
-int	get_full_len(char *cmd, t_env *list);
+int	get_full_len(char *cmd, t_env *list, int b_q);
+int	get_split_len(char *cmd, t_env *list);
+int	split_len(char *content);
 void	expand_exit_status(t_share *share);
 int	get_env_len(char *cmd, int i);
 

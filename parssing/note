@@ -13,6 +13,30 @@ test 2
 export PWD
 echo PWD
 
+test 3
+append in >>
+
+note "replace calloc in malloc"
+
+test 4
+minishell>echo hhhhhhh > out | chmod 000 out | > out
+munmap_chunk(): invalid pointer
+munmap_chunk(): invalid pointer
+
+test 5
+minishell>export a="s -l"
+minishell>l$a
+minishell : ls -l: command not found
+minishell>
+exit
+[3]    356289 segmentation fault (core dumped)  ./minishell
+
+
+minishell>echo hhhh > test.c
+Open: Permission denied
+minishell>echo hhhh < test.c
+okatkhroj
+
 if ((*list)->type == HEREDOC) // HEREDOC is the `<<` token
 {
     char *heredoc_filename;
