@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/01 22:48:04 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/02 16:07:14 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/07/24 13:25:37 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -142,7 +142,7 @@ typedef	struct t_share
 {
 	int	i;
 	int	j;
-	int	l;
+	int	h;
 	char	*expanded_cmd;
 }	t_share;
 
@@ -195,6 +195,10 @@ size_t	is_sep(char c);
 int	is_qoute(char c);
 size_t	get_close_token(char *cmd, char c, int *b_space);
 int     ft_strcmp(const char *s1, const char *s2);
+char *strjoin_and_free(char *s1, char *s2);
+t_node *create_node(const char *content, int b_space);
+void remove_node(t_node **head, t_node **end);
+void join_b_space_nodes(t_node **head);
 //char	*ft_prompt(t_env *env);
 
 
@@ -250,7 +254,7 @@ int global(int state);
 // EXPANSION
 int	is_dollar(char *cmd, int i);
 char	*get_env_key(char *cmd, int i);
-char	*expansion(char *cmd, t_env *list);
+char	*expansion(char *cmd, t_env *list, int between_quoted);
 int	contain_quoted(char *cmd, int len);
 int	between_quoted(char *cmd, int len);
 int	get_full_len(char *cmd, t_env *list);

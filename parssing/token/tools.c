@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 08:45:19 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/01 23:09:09 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/02 16:03:35 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ int	between_quoted(char *cmd, int len)
 {
 	if (!cmd)
 		return (0);
-	if (cmd[0] == '\'' && cmd[len] == '\'')
+	if (cmd[0] == '\'' && cmd[len - 1] == '\'')
 		return (1);
-	else if (cmd[0] == '\"' && cmd[len] == '\"')
+	else if (cmd[0] == '\"' && cmd[len - 1] == '\"')
 		return (2);
 	else
 		return (0);
@@ -99,11 +99,10 @@ size_t	get_token_len(char *cmd, int *b_space)
 	int	len;
 
 	len = 0;
-	while (cmd[len] && !is_qoute(cmd[len]) && !is_space(cmd[len]) && !is_sep(cmd[len]))
-	{
+	while (cmd[len] && !is_qoute(cmd[len])
+		&& !is_space(cmd[len]) && !is_sep(cmd[len]))
 		len++;
-	}
-	if (!is_space(cmd[len]))
+	if (cmd[len] && !is_space(cmd[len]))
 		*b_space = 1;
 	return (len);
 }
@@ -118,5 +117,6 @@ t_node	*new_token(char *content, int b_space)
 	node->next = NULL;
 	node->prev = NULL;
 	node->between_quoted = between_quoted(content, ft_strlen(content));
+	node->between_quoted = 0;
 	return (node);
 }

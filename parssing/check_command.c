@@ -29,8 +29,13 @@ void	expand(t_node **list, t_env *env)
 	tmp = *list;
 	while (tmp)
 	{
-		tmp->content = expansion(tmp->content, env);
-		tmp = tmp->next;
+		if (tmp->prev && tmp->prev->type == HEREDOC)
+			tmp = tmp->next;
+		if (tmp)
+		{
+			tmp->content = expansion(tmp->content, env, tmp->between_quoted);
+			tmp = tmp->next;
+		}
 	}
 }
 
@@ -61,6 +66,18 @@ int  get_env(t_env **envp, char **env)
 	return (1);
 }
 
+void	without_quotes(t_node **list)
+{
+	t_node *tmp;
+
+	tmp = *list;
+	while (tmp)
+	{
+		tmp->content = remove_quotes(tmp->content);
+		tmp = tmp->next;
+	}
+}
+
 int readline_and_parssing(t_mini *minishell, t_env *env)
 {
 	char	*cmd;
@@ -89,8 +106,15 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 		return (0);
 	}
 	tokenize(cmd, &minishell->list);
+//	printf("NORMAL LIST\n");
 //	print_list(minishell->list);
+	without_quotes(&minishell->list);
 	expand(&minishell->list, env);
+//	printf("REMOVE QUOTES LIST\n");
+//	print_list(minishell->list);
+	join_b_space_nodes(&minishell->list);
+//	printf("JOINED LIST\n");
+//	print_list(minishell->list);
 	if (!check_syntax(minishell->list))
 	{
 		free_list(&minishell->list);

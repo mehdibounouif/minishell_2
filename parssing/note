@@ -5,7 +5,13 @@ typedef struct s_redirection {
     struct s_tree *prev;        // the command associated with the redirection
 } t_redirection;
 
+test 1
+export PATH
+ls
 
+test 2
+export PWD
+echo PWD
 
 if ((*list)->type == HEREDOC) // HEREDOC is the `<<` token
 {

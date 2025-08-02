@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/31 10:27:44 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/02 16:03:29 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	read_lines(t_share3 *share, t_redirection *list, t_env *env)
 	{
 		if (!list->herdoc->quoted)
 		{
-			share->expand_line = expansion(share->line, env);
+			share->expand_line = expansion(share->line, env , 0);
 			write(share->fd, share->expand_line, ft_strlen(share->expand_line));
 			write(share->fd, "\n", 1);
             share->expand_line = NULL;
@@ -217,7 +217,7 @@ void	take_heredoc(t_tree *node, t_node *list)
 	h_node->herdoc = ft_strdup(list->content);
 	list = list->next;
 	h_node->delimeter = ft_strdup(list->content);
-	if (list->contain_quoted)
+	if (list->contain_quoted || list->between_quoted)
 		h_node->quoted = 1;
 	h_node->next = NULL;
 	add_back3(&node->redirect->herdoc, h_node);

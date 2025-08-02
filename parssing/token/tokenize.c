@@ -6,11 +6,62 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:52:30 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/01 22:47:50 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/02 11:44:41 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../includes/minishell.h"
+/*
+void	join_list(t_node **list)
+{
+	int	len;
+	char	*join;
+	char	*tmp_str;
+	t_node	*tmp;
+
+	tmp = *list;
+	while (tmp)
+	{
+		join = ft_strdup(tmp->content);
+		tmp_str = ft_strdup("");
+		while (tmp->b_space)
+		{
+			tmp_str = ft_strjoin(tmp_str, join);
+			join = ft_strdup(tmp->next->content);
+			tmp = tmp->next;
+		}
+		tmp = tmp->next;
+	}
+}
+*/
+char  *remove_quotes(char *cmd)
+{
+	char  *clear_cmd;
+	int	(len), (i), (j), (start);
+
+	len = ft_strlen(cmd);
+	i = 0;
+	j = 0;
+	if ((cmd[i] == '\'' && cmd[len - 1] == '\'')
+		|| (cmd[i] == '\"' && cmd[len - 1] == '\"') )
+	{
+		clear_cmd = malloc(len - 1);
+		i = 1;
+	}
+	else 
+	{
+		clear_cmd = malloc(len + 1);
+		i = 0;
+	}
+	start = i;
+	while (cmd[i])
+	{
+		if (i == (len - 1) && start == 1)
+			break;
+		clear_cmd[j++] = cmd[i++];
+	}
+	clear_cmd[j] = '\0';
+	return (clear_cmd);
+}
 
 void	token_type(t_node *node)
 {
