@@ -36,16 +36,16 @@ void	child_process_redi(t_tree *node, t_env *env, char **envp)
 		ft_putendl_fd(": command not found", 2);
 		ulink_files(node->redirect->heredocs);
 		global(127);
-		free_env(env);
-		ft_free_garbage(ft_function());
+	//	free_env(env);
+	//	ft_free_garbage(ft_function());
 		exit(127);
 	}
 	execve(path, node->redirect->prev->command->args, envp);
 	ft_putstr_fd(node->redirect->prev->command->command, 2);
 	ft_putendl_fd(": command not found", 2);
 	ulink_files(node->redirect->heredocs);
-	free_env(env);
-	ft_free_garbage(ft_function());
+//	free_env(env);
+//	ft_free_garbage(ft_function());
 	global(126);
 }
 
@@ -64,7 +64,7 @@ void	built_in(t_tree *node, t_env *env, char *cmd)
 	close(saved_stdout);
 	global(result);
 	global(result);
-	ft_free_garbage(ft_function());
+//	ft_free_garbage(ft_function());
 }
 
 void	fork_and_exec(t_tree *node, t_env *env, char **envp)

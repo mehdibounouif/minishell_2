@@ -14,6 +14,7 @@
 
 void	execute_full_command(t_tree *node, t_env *env, char **envp, int pipe_flag)
 {
+  (void)pipe_flag;
 	if (!node)
 		return ;
 
@@ -23,9 +24,9 @@ void	execute_full_command(t_tree *node, t_env *env, char **envp, int pipe_flag)
 		execute_pipe_node(node, env, envp);
 	else if (node->type == REDIRECT_NODE)
 		execute_redirection_command(node, env, envp);
-	if (pipe_flag)
-	{
-		free_env(env);
-		ft_free_garbage(ft_function());
-	}
+//	if (pipe_flag)
+//	{
+//		free_env(env);
+//		ft_free_garbage(ft_function());
+//	}
 }
