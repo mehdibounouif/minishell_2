@@ -95,6 +95,8 @@ void	tokenize(char *cmd, t_node **list)
 		b_space = 0;
 		while (is_space(cmd[i]))
 			i++;
+    if (!cmd[i])
+      break;
 		if (is_qoute(cmd[i]))
 			len = get_close_token(&cmd[i], cmd[i], &b_space);
 		else if (is_sep(cmd[i]))

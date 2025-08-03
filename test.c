@@ -1,43 +1,16 @@
-#include <stdio.h>
-
-int	is_space(char c)
-{
-	if ((c >= 9 && c <= 13) || c == 32)
-		return (1);
-	return (0);
-}
-
-void	skip_space(char *content, int *i)
-{
-	while (is_space(content[*i]))
-		(*i)++;
-}
-
-int	split_len(char *content)
-{
-	int	 len;
-	int	 i;
-
-	i = 0;
-	len = 0;
-	skip_space(content, &i);
-	while (content[i])
-	{
-		if (is_space(content[i]))
-		{
-			while (is_space(content[i]))
-				i++;
-			len++;
-		}
-		else
-		{
-			i++;
-			len++;
-		}
-	}
-	return (len);
-}
-int	main()
-{
-	printf("len = %d\n", split_len("    mehdi    b   c  d"));
-}
+total 280
+-rwxrwxrwx 1 mehdi mehdi   2580 Aug  3 04:59 Makefile
+-rwxrwxrwx 1 mehdi mehdi     14 Aug  3 04:53 README.md
+drwxrwxrwx 1 mehdi mehdi   4096 Aug  3 05:40 built-in
+drwxrwxrwx 1 mehdi mehdi   4096 Aug  3 05:40 execution
+-rwxrwxrwx 1 mehdi mehdi    765 Aug  3 05:12 file
+drwxrwxrwx 1 mehdi mehdi   4096 Aug  3 05:40 free
+drwxrwxrwx 1 mehdi mehdi   4096 Aug  3 04:53 includes
+drwxrwxrwx 1 mehdi mehdi   4096 Aug  3 05:40 libft
+-rwxrwxrwx 1 mehdi mehdi 272304 Aug  3 05:43 minishell
+drwxrwxrwx 1 mehdi mehdi   4096 Aug  3 04:53 minishell_tester
+-rwxrwxrwx 1 mehdi mehdi   2443 Aug  3 04:53 note
+-r-xr-xr-x 1 mehdi mehdi     12 Aug  3 05:14 out
+drwxrwxrwx 1 mehdi mehdi   4096 Aug  3 05:43 parssing
+-rwxrwxrwx 1 mehdi mehdi     82 Aug  3 04:53 readline.supp
+-rwxrwxrwx 1 mehdi mehdi      0 Aug  3 05:45 test.c

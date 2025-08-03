@@ -75,21 +75,21 @@ void	child_process(t_tree *node, t_env *env, char **envp)
 
 void	parent_process(int status, pid_t pid)
 {
-	int sig;
+	int sige;
 
-	sig = WTERMSIG(status);
+	sige = WTERMSIG(status);
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status))
 	{
-		int sig = WTERMSIG(status);
-		if (sig == SIGINT)
+		int sige = WTERMSIG(status);
+		if (sige == SIGINT)
 		{
 			printf("\n");
 			global(130);
 		}
-		else if (sig == SIGQUIT)
+		else if (sige == SIGQUIT)
 		{
 			ft_putendl_fd("Quit (core dumped)", 2);
 			global(131);

@@ -5,14 +5,6 @@ typedef struct s_redirection {
     struct s_tree *prev;        // the command associated with the redirection
 } t_redirection;
 
-test 1
-export PATH
-ls
-
-test 2
-export PWD
-echo PWD
-
 test 3
 append in >>
 
@@ -30,12 +22,6 @@ minishell : ls -l: command not found
 minishell>
 exit
 [3]    356289 segmentation fault (core dumped)  ./minishell
-
-
-minishell>echo hhhh > test.c
-Open: Permission denied
-minishell>echo hhhh < test.c
-okatkhroj
 
 if ((*list)->type == HEREDOC) // HEREDOC is the `<<` token
 {
