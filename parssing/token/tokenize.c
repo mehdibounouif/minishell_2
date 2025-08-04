@@ -10,29 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "../../includes/minishell.h"
-/*
-void	join_list(t_node **list)
-{
-	int	len;
-	char	*join;
-	char	*tmp_str;
-	t_node	*tmp;
 
-	tmp = *list;
-	while (tmp)
-	{
-		join = ft_strdup(tmp->content);
-		tmp_str = ft_strdup("");
-		while (tmp->b_space)
-		{
-			tmp_str = ft_strjoin(tmp_str, join);
-			join = ft_strdup(tmp->next->content);
-			tmp = tmp->next;
-		}
-		tmp = tmp->next;
-	}
-}
-*/
 char  *remove_quotes(char *cmd)
 {
 	char  *clear_cmd;

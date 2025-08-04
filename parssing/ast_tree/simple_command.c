@@ -20,7 +20,7 @@ void	collect_args(char *cmd, t_node **list, char **args)
 	i = 0;
 	args[i++] = ft_strdup(cmd);
 	*list = (*list)->next;
-	while ((*list) && ((*list)->type == WORD || (*list)->between_quoted))
+	while ((*list) && (*list)->type == WORD)
 	{
 		args[i++] = ft_strdup((*list)->content);
 		*list = (*list)->next;

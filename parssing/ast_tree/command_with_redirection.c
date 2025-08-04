@@ -51,12 +51,9 @@ void	assing_io(t_node **list, t_share4 *share)
 
 	if (*list && ((*list)->type == R_OUT || (*list)->type == R_APPEND))
 	{
-		if ((*list)->type == R_OUT)
-			share->redirect_node->redirect->out_type = R_OUT;
-		else
-			share->redirect_node->redirect->out_type = R_APPEND;
+		share->redirect_node->redirect->out_type = (*list)->type;
 		*list = (*list)->next;
-		file = new_node((*list)->content, R_OUT);
+		file = new_node((*list)->content, (*list)->type);
 		add_back1(&share->redirect_node->redirect->files,file);
 		share->redirect_node->redirect->out_files[share->j++] = ft_strdup((*list)->content);
 		*list = (*list)->next;

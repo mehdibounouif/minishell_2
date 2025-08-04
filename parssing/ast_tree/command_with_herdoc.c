@@ -106,7 +106,7 @@ int	read_lines(t_share3 *share, t_redirection *list, t_env *env)
 	{
 		if (!list->herdoc->quoted)
 		{
-			share->expand_line = expansion(share->line, env , 0);
+			share->expand_line = expansion(share->line, env, 0);
 			write(share->fd, share->expand_line, ft_strlen(share->expand_line));
 			write(share->fd, "\n", 1);
             share->expand_line = NULL;

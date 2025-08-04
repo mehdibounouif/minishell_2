@@ -1,16 +1,99 @@
-total 280
--rwxrwxrwx 1 mehdi mehdi   2580 Aug  3 04:59 Makefile
--rwxrwxrwx 1 mehdi mehdi     14 Aug  3 04:53 README.md
-drwxrwxrwx 1 mehdi mehdi   4096 Aug  3 05:40 built-in
-drwxrwxrwx 1 mehdi mehdi   4096 Aug  3 05:40 execution
--rwxrwxrwx 1 mehdi mehdi    765 Aug  3 05:12 file
-drwxrwxrwx 1 mehdi mehdi   4096 Aug  3 05:40 free
-drwxrwxrwx 1 mehdi mehdi   4096 Aug  3 04:53 includes
-drwxrwxrwx 1 mehdi mehdi   4096 Aug  3 05:40 libft
--rwxrwxrwx 1 mehdi mehdi 272304 Aug  3 05:43 minishell
-drwxrwxrwx 1 mehdi mehdi   4096 Aug  3 04:53 minishell_tester
--rwxrwxrwx 1 mehdi mehdi   2443 Aug  3 04:53 note
--r-xr-xr-x 1 mehdi mehdi     12 Aug  3 05:14 out
-drwxrwxrwx 1 mehdi mehdi   4096 Aug  3 05:43 parssing
--rwxrwxrwx 1 mehdi mehdi     82 Aug  3 04:53 readline.supp
--rwxrwxrwx 1 mehdi mehdi      0 Aug  3 05:45 test.c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct s_node {
+    char            *data;
+    struct s_node   *next;
+    struct s_node   *prev;
+} t_node;
+
+// Create a new node
+t_node *create_node(const char *data)
+{
+    t_node *node = malloc(sizeof(t_node));
+    if (!node)
+        return NULL;
+    node->data = strdup(data); // duplicate string
+    node->next = NULL;
+    node->prev = NULL;
+    return node;
+}
+
+// Print the list
+void print_list(t_node *head)
+{
+    while (head)
+    {
+        printf("[%s]", head->data);
+        if (head->next)
+            printf(" <=> ");
+        head = head->next;
+    }
+    printf("\n");
+}
+
+// Free the list
+void free_list(t_node *head)
+{
+    t_node *tmp;
+    while (head)
+    {
+        tmp = head;
+        head = head->next;
+        free(tmp->data);
+        free(tmp);
+    }
+}
+
+// Insert sublist after a target node in main list
+void insert_sublist_after(t_node *target, t_node *sub_head)
+{
+    if (!target || !sub_head)
+        return;
+
+    t_node *after = target->next;
+
+    target->next = sub_head;
+    sub_head->prev = target;
+
+    sub_tail->next = after;
+    if (after)
+        after->prev = sub_tail;
+}
+
+int main(void)
+{
+    // Main list: A <=> B <=> C
+    t_node *a = create_node("A");
+    t_node *b = create_node("B");
+    t_node *c = create_node("C");
+
+    a->next = b;
+    b->prev = a;
+    b->next = c;
+    c->prev = b;
+
+    printf("Main List:\n");
+    print_list(a);
+
+    // Sublist: X <=> Y
+    t_node *x = create_node("X");
+    t_node *y = create_node("Y");
+    x->next = y;
+    y->prev = x;
+
+    printf("Sublist:\n");
+    print_list(x);
+
+    // Insert sublist after node B
+    insert_sublist_after(b, x);
+
+    printf("List After Inserting Sublist After B:\n");
+    print_list(a);
+
+    // Clean up
+    free_list(a); // includes all nodes now
+    return 0;
+}
+

@@ -65,7 +65,7 @@ int count_args(t_node *list)
 	i = 0;
 	while (list && list->type != PIPE)
 	{
-		if (list && (list->type == WORD || list->between_quoted))
+		if (list && list->type == WORD)
 		{
 			i++;
 			list = list->next;
@@ -77,6 +77,36 @@ int count_args(t_node *list)
 		}
 	}
 	return (i);
+}
+
+t_node *create_node(const char *content, int b_space)
+{
+    t_node *new = malloc(sizeof(t_node));
+    if (!new)
+        return NULL;
+    new->content = ft_strdup(content);
+    new->b_space = b_space;
+	new->between_quoted = 1;
+	new->contain_quoted = 1;
+	new->type = 2;
+    new->next = NULL;
+    new->prev = NULL;
+    return new;
+}
+
+t_node *create_node2(const char *content, int b_space, int type)
+{
+    t_node *new = malloc(sizeof(t_node));
+    if (!new)
+        return NULL;
+    new->content = ft_strdup(content);
+    new->b_space = b_space;
+	new->between_quoted = 1;
+	new->contain_quoted = 1;
+	new->type = type;
+    new->next = NULL;
+    new->prev = NULL;
+    return new;
 }
 
 void	add_back3(t_herdoc **list, t_herdoc *node)

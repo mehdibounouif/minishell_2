@@ -66,7 +66,11 @@ void print_redirect_node(t_redirection *r, int level) {
     }
     if (r->out_file) {
         print_indent(level + 1, 0);
-        printf(COLOR_INFO "OUT: %s\n" COLOR_RESET, r->out_file);
+        if (r->out_type == R_APPEND)
+            printf("APPEND:");
+        else
+          printf("OUT:");
+        printf(COLOR_INFO "%s\n" COLOR_RESET, r->out_file);
     }
 
     if (r->herdoc)

@@ -155,11 +155,9 @@ int pwd_command();
 int export_command(t_env *env, char **args);
 int unset_command(t_env *env, char **args);
 int env_command(t_env *env, char **args);
-//int exit_command(t_env *env, char **args);
 int	exit_command(t_tree *node, t_env *env, char **args);
 char *get_env_value(t_env *env, char *key);
 int update_env_var(t_env *env, char *var);
-//t_env *init_env(char **envp);
 void set_env_var(t_env **env, char *key, char *value);
 void free_env(t_env *env);
 void add_env_var(t_env **env, char *key, char *value);
@@ -197,12 +195,10 @@ size_t	get_close_token(char *cmd, char c, int *b_space);
 int     ft_strcmp(const char *s1, const char *s2);
 char *strjoin_and_free(char *s1, char *s2);
 t_node *create_node(const char *content, int b_space);
+t_node *create_node2(const char *content, int b_space, int type);
 void remove_node(t_node **head, t_node **end);
 void join_b_space_nodes(t_node **head);
-//char	*ft_prompt(t_env *env);
 
-
-//int is_space(char c);
 void	add_back1(t_files **list, t_files *node);
 void add_back(t_node **list, t_node *node);
 void add_back2(t_env **list, t_env *node);
@@ -223,23 +219,13 @@ char	*get_last_file(char **list);
 void	print_f(int *list);
 
 // free
-void	free_tree(t_tree **tree);
-void	free_redirect_node(t_redirection *node);
-void	free_command_node1(t_tree *tree);
 void free_env(t_env *env);
-void	free_herdoc(t_herdoc *list);
-void	free_files(t_files *files);
 void free_str(char **list);
 void free_list(t_node **list);
-void	close_fds(int *list);
-void ft_free(t_mini *minishell);
 
 
 int check_quotes(char *cmd, size_t i);
 char	*remove_quotes(char *cmd);
-char    *remove_quotes2(char *cmd, size_t l);
-char	*remove_quotes3(char *cmd);
-//int	is_quoted(char *cmd, int len);
 int is_separator(char *line, int i);
 int	is_empty(char *s);
 int	is_space(char c);
@@ -252,13 +238,13 @@ int	is_redirection(t_node *node);
 int global(int state);
 
 // EXPANSION
+void  expand(t_node **list, t_env *env);
 int	is_dollar(char *cmd, int i);
 char	*get_env_key(char *cmd, int i);
-char	*expansion(char *cmd, t_env *list, int between_quoted);
+char	*expansion(char *cmd, t_env *list, int b_q);
 int	contain_quoted(char *cmd, int len);
 int	between_quoted(char *cmd, int len);
 int	get_full_len(char *cmd, t_env *list, int b_q);
-int	get_split_len(char *cmd, t_env *list);
 int	split_len(char *content);
 void	expand_exit_status(t_share *share);
 int	get_env_len(char *cmd, int i);

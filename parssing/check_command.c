@@ -22,23 +22,6 @@ char	*ft_strdup2(const char *s)
 	return (res);
 }
 
-void	expand(t_node **list, t_env *env)
-{
-	t_node *tmp;
-
-	tmp = *list;
-	while (tmp)
-	{
-		if (tmp->prev && tmp->prev->type == HEREDOC)
-			tmp = tmp->next;
-		if (tmp)
-		{
-			tmp->content = expansion(tmp->content, env, tmp->between_quoted);
-			tmp = tmp->next;
-		}
-	}
-}
-
 int  get_env(t_env **envp, char **env)
 {
 	int i;
@@ -104,7 +87,7 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 	}
 	tokenize(cmd, &minishell->list);
 	without_quotes(&minishell->list);
-	expand(&minishell->list, env);
+  expand(&minishell->list, env);
 	join_b_space_nodes(&minishell->list);
 	if (!check_syntax(minishell->list))
 	{

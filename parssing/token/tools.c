@@ -102,7 +102,7 @@ size_t	get_token_len(char *cmd, int *b_space)
 	while (cmd[len] && !is_qoute(cmd[len])
 		&& !is_space(cmd[len]) && !is_sep(cmd[len]))
 		len++;
-	if (cmd[len] && !is_space(cmd[len]))
+	if (cmd[len] && !is_space(cmd[len]) && !is_sep(cmd[len]))
 		*b_space = 1;
 	return (len);
 }

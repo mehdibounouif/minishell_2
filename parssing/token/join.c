@@ -31,21 +31,6 @@ char *strjoin_and_free(char *s1, char *s2)
     return joined;
 }
 
-t_node *create_node(const char *content, int b_space)
-{
-    t_node *new = malloc(sizeof(t_node));
-    if (!new)
-        return NULL;
-    new->content = ft_strdup(content);
-    new->b_space = b_space;
-	new->between_quoted = 1;
-	new->contain_quoted = 1;
-	new->type = 2;
-    new->next = NULL;
-    new->prev = NULL;
-    return new;
-}
-
 void remove_node(t_node **head, t_node **end)
 {
 	t_node *tmp;
@@ -61,33 +46,31 @@ void remove_node(t_node **head, t_node **end)
 
 void join_b_space_nodes(t_node **head)
 {
-	t_node *curr = *head;
+  t_node (*new_node),(*tmp),(*start),(*end);
+	char *joined;
 
-	while (curr)
+  tmp = *head;
+	while (tmp)
 	{
-		if (curr->b_space == 1)
+		if (tmp->b_space == 1)
 		{
-			t_node *start = curr;
-			t_node *end = curr;
-
+			start = tmp;
+			end = tmp;
 			while (end && end->b_space == 1)
 				end = end->next;
-
 			if (end)
 				end = end->next;
-
-			t_node *tmp = start;
-			char *joined = NULL;
+			tmp = start;
+			joined = NULL;
 			while (tmp != end)
 			{
-				joined = strjoin_and_free(joined, tmp->content);
+				joined = ft_strjoin(joined, tmp->content);
 				tmp = tmp->next;
 			}
-			t_node *new_node = create_node(joined, 0);
+			new_node = create_node(joined, 0);
 			free(joined);
 			if (!new_node)
 				return;
-
 			new_node->prev = start->prev;
 			new_node->next = end;
 			if (start->prev)
@@ -98,12 +81,9 @@ void join_b_space_nodes(t_node **head)
 				end->prev = new_node;
 
 			remove_node(&start, &end);
-			curr = new_node->next;
+			tmp = new_node->next;
 		}
 		else
-	{
-			curr = curr->next;
-		}
+			tmp = tmp->next;
 	}
-
 }
