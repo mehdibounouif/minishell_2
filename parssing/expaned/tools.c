@@ -65,14 +65,14 @@ int	split_len(char *content)
 	return (len);
 }
 
-int	get_full_len(char *cmd, t_env *list, int b_q)
+int	get_full_len(char *cmd, t_env *list)
 {
 	t_share2	*share;
 	share = ft_malloc(sizeof(t_share2), 1);
 	init_share(share, cmd);
 	while (cmd[share->i])
 	{
-		if (is_dollar(cmd, share->i) && b_q
+		if (is_dollar(cmd, share->i)
 			&& (ft_isalpha(cmd[share->i + 1]) || cmd[share->i + 1] == '_'))
 		{
 			share->key = get_env_key(cmd, share->i++);
@@ -81,11 +81,11 @@ int	get_full_len(char *cmd, t_env *list, int b_q)
 				share->value = ft_strdup("");
 			share->full_len -= (ft_strlen(share->key) + 1);
 			share->full_len += ft_strlen(share->value);
-			free(share->key);
+			//free(share->key);
 		}  
 		share->i++;
 	}
-	return (share->full_len);
+	return (share->full_len + 1);
 }
 
 void	expand_exit_status(t_share *share)

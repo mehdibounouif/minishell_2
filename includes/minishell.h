@@ -249,7 +249,7 @@ char	*get_env_key(char *cmd, int i);
 char	*expansion(char *cmd, t_env *list, int b_q);
 int	contain_quoted(char *cmd, int len);
 int	between_quoted(char *cmd, int len);
-int	get_full_len(char *cmd, t_env *list, int b_q);
+int	get_full_len(char *cmd, t_env *list);
 int	split_len(char *content);
 void	expand_exit_status(t_share *share);
 int	get_env_len(char *cmd, int i);

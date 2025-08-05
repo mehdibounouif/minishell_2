@@ -62,15 +62,15 @@ char	*find_path(t_tree *node, t_env *list)
 	{
 		path_slash = ft_strjoin(all_paths[i], "/");
 		full_path = ft_strjoin(path_slash, node->command->command);
-		free(path_slash);
+		//free(path_slash);
 		if (access(full_path, F_OK | X_OK) == 0)
 		{
-			free_str(all_paths);
+			//free_str(all_paths);
 			return (full_path);
 		}
-		free(full_path);
+		//free(full_path);
 		i++;
 	}
-	free_str(all_paths);
+	//free_str(all_paths);
 	return (NULL);
 }

@@ -79,7 +79,7 @@ void join_b_space_nodes(t_node **head)
 			if (end)
 				end->prev = new_node;
 
-			remove_node(&start, &end);
+			//remove_node(&start, &end);
 			tmp = new_node->next;
 		}
 		else

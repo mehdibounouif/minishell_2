@@ -51,10 +51,10 @@ char	*expansion(char *cmd, t_env *env, int b_q)
 	share->i = 0;
 	share->j = 0;
 	share->h = 0;
-	full_len = get_full_len(cmd, env, b_q);
+	full_len = get_full_len(cmd, env);
 	if (full_len == 0)
 		return (ft_strdup(""));
-	share->expanded_cmd = ft_malloc(sizeof(char), full_len +1);
+	share->expanded_cmd = ft_malloc(sizeof(char), full_len + 1);
 	expand_cmd(cmd, share, env, b_q);
 	share->expanded_cmd[share->j] = '\0';
 	return (share->expanded_cmd);
@@ -92,6 +92,7 @@ t_node *expand_list(t_node *tmp, t_env *env)
     char **list;
 
     head = NULL;
+    content = NULL;
     content = expansion(tmp->content, env, tmp->between_quoted);
     if (tmp->between_quoted)
         return create_node(content, tmp->b_space);
@@ -135,4 +136,3 @@ void expand(t_node **list, t_env *env)
         tmp = next;
     }
 }
-

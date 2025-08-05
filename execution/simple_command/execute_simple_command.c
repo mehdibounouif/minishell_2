@@ -24,7 +24,7 @@ void	find_path_and_exec(t_tree *node, t_env *env ,char **envp)
 	}
 	execve(path, node->command->args, envp);
 	free_env(env);
-	free(path);
+	//free(path);
 	ft_free_garbage(ft_function());
 	perror("minishell");
 	exit(127);
@@ -113,7 +113,7 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp, int *p)
 	if (is_builtin(node->command->command))
 	{
 		execute_builtin(node, env);
-    ft_free_garbage(ft_function());
+    //ft_free_garbage(ft_function());
 		return ;
 	}
 	pid_t pid = fork();
