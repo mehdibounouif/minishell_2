@@ -22,12 +22,12 @@ char  *remove_quotes(char *cmd)
 	if ((cmd[i] == '\'' && cmd[len - 1] == '\'')
 		|| (cmd[i] == '\"' && cmd[len - 1] == '\"') )
 	{
-		clear_cmd = malloc(len - 1);
+		clear_cmd = ft_malloc(sizeof(int), len - 1);
 		i = 1;
 	}
 	else 
 	{
-		clear_cmd = malloc(len + 1);
+		clear_cmd = ft_malloc(sizeof(int), len + 1);
 		i = 0;
 	}
 	start = i;
@@ -88,4 +88,5 @@ void	tokenize(char *cmd, t_node **list)
 		token_type(token);
 		add_back(list, token);
 	}
+  free(cmd);
 }

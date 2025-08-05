@@ -52,8 +52,6 @@ char	*ft_itoa(int n)
 	if (nb < 0)
 		hand_num(&nb, &sign);
 	result = ft_malloc(sizeof(char) , len + 1);
-	if (!result)
-		return (NULL);
 	result[len] = '\0';
 	while (len)
 	{

@@ -21,9 +21,13 @@ int	left(pid_t p[2], t_env *env, t_tree *tree, char **envp)
 	{
 		// first child process;
 		close(p[0]); // close read side of pipe;
-		dup2(p[1], 1); 
+    if (dup2(p[1], 1) == -1)
+    {
+	    perror("dup2 failed");
+	    exit(1);
+    }
 		close(p[1]);
-		execute_full_command(tree->pipe->left, env, envp, 1);
+		execute_full_command(tree->pipe->left, env, envp, 1, p);
 		exit(global(-1));
 	}
 	else
@@ -39,13 +43,15 @@ int	right(int *p, t_env *env, t_tree *tree, char **envp)
 	{
 		// second child process;
 		close(p[1]); // close write side of pipe;
-		dup2(p[0], 0); 
+		dup2(p[0], 0);
 		close(p[0]);
-		execute_full_command(tree->pipe->right, env, envp, 1);
+		execute_full_command(tree->pipe->right, env, envp, 1, p);
 		exit(global(-1));
 	}
-	else 
+	else
+  {
 		return (right);
+  }
 }
 
 
@@ -63,6 +69,5 @@ void	execute_pipe_node(t_tree *tree, t_env *env, char **envp)
 	close(p[1]);
 	waitpid(l, NULL, 0);
 	waitpid(r, &status, 0);
-//	ft_free_garbage(ft_function());
 	global(WEXITSTATUS(status));
 }

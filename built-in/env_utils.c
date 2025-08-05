@@ -17,9 +17,11 @@ t_env	*create_env_var(char *key, char *value)
 {
 	t_env	*new;
 
-	new = ft_malloc(sizeof(t_env), 1);
-	new->key = ft_strdup(key);
-	new->value = ft_strdup(value);
+	new = malloc(sizeof(t_env));
+  if (!new)
+    return (NULL);
+	new->key = ft_strdup1(key);
+	new->value = ft_strdup1(value);
 	new->next = NULL;
 	return (new);
 }
@@ -63,7 +65,7 @@ void	set_env_var(t_env **env, char *key, char *value)
 		if (ft_strncmp(current->key, key, ft_strlen(key)) == 0)
 		{
 			free(current->value);
-			current->value = ft_strdup(value);
+			current->value = ft_strdup1(value);
 			return ;
 		}
 		current = current->next;
@@ -88,7 +90,7 @@ int	update_env_var(t_env *env, char *var)
 		if (ft_strncmp(current->key, key, ft_strlen(key)) == 0)
 		{
 			free(current->value);
-			current->value = ft_strdup(value);
+			current->value = ft_strdup1(value);
 			return (0);
 		}
 		current = current->next;

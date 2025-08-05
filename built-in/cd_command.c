@@ -22,14 +22,8 @@ static int	update_oldpwd(t_env *env)
 		return (1);
 	oldpwd = ft_strjoin("OLDPWD=", current_dir);
 	free(current_dir);
-	if (!oldpwd)
-		return (1);
 	if (update_env_var(env, oldpwd) == 1)
-	{
-		free(oldpwd);
 		return (1);
-	}
-	free(oldpwd);
 	return (0);
 }
 
@@ -43,14 +37,8 @@ static int	update_pwd(t_env *env)
 		return (1);
 	*(back_up()) = current_dir;
 	pwd = ft_strjoin("PWD=", current_dir);
-	if (!pwd)
-		return (1);
 	if (update_env_var(env, pwd) == 1)
-	{
-		free(pwd);
 		return (1);
-	}
-	free(pwd);
 	return (0);
 }
 

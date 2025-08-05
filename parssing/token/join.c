@@ -68,7 +68,6 @@ void join_b_space_nodes(t_node **head)
 				tmp = tmp->next;
 			}
 			new_node = create_node(joined, 0);
-			free(joined);
 			if (!new_node)
 				return;
 			new_node->prev = start->prev;

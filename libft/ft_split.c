@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "../includes/minishell.h"
 
 static int	count_word(char const *s, char c)
 {
@@ -42,28 +43,26 @@ static char	*copy_word(char const *str, char c, int *len)
 	while (str[i] && str[i] != c)
 		i++;
 	*len = i;
-	word = (char *)malloc((i + 1) * sizeof(char));
-	if (!word)
-		return (NULL);
+	word = (char *)ft_malloc((i + 1), sizeof(char));
 	ft_memmove(word, str, i);
 	word[i] = '\0';
 	return (word);
 }
 
-static void	free_split(char **ars)
-{
-	int	i;
+// static void	free_split(char **ars)
+// {
+// 	int	i;
 
-	i = 0;
-	if (!ars)
-		return ;
-	while (ars[i])
-	{
-		free(ars[i]);
-		i++;
-	}
-	free(ars);
-}
+// 	i = 0;
+// 	if (!ars)
+// 		return ;
+// 	while (ars[i])
+// 	{
+// 		free(ars[i]);
+// 		i++;
+// 	}
+// 	free(ars);
+// }
 
 static void	check_and_put(char **ars, char const *s, char c)
 {
@@ -81,11 +80,6 @@ static void	check_and_put(char **ars, char const *s, char c)
 		{
 			len = 0;
 			ars[i] = copy_word(&s[index], c, &len);
-			if (!ars[i])
-			{
-				free_split(ars);
-				return ;
-			}
 			i++;
 			index += len;
 		}
@@ -101,9 +95,7 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	count = count_word(s, c);
-	ar = (char **)malloc((count + 1) * sizeof(char *));
-	if (!ar)
-		return (NULL);
+	ar = (char **)ft_malloc((count + 1) , sizeof(char *));
 	check_and_put(ar, s, c);
 	return (ar);
 }

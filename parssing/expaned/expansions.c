@@ -26,7 +26,6 @@ void	replace_key(char *cmd, t_share *share, t_env *list)
 	while (value[l])
 		share->expanded_cmd[(share->j)++] = value[l++];
 	share->i += (ft_strlen(key) + 1);
-	free(key);
 }
 
 void	expand_cmd(char *cmd, t_share *share, t_env *env, int b_q)
@@ -57,30 +56,27 @@ char	*expansion(char *cmd, t_env *env, int b_q)
 		return (ft_strdup(""));
 	share->expanded_cmd = ft_malloc(sizeof(char), full_len +1);
 	expand_cmd(cmd, share, env, b_q);
-	free(cmd);
 	share->expanded_cmd[share->j] = '\0';
 	return (share->expanded_cmd);
 }
 
 t_node *insert_sublist(t_node *start, t_node *new, t_node *next)
 {
+  t_node *last;
+
     if (!new)
         return start;
-
     if (start)
     {
         start->next = new;
         new->prev = start;
     }
-
-    t_node *last = new;
+    last = new;
     while (last->next)
         last = last->next;
-
     last->next = next;
     if (next)
         next->prev = last;
-
     if (start)
         return start;
     else
@@ -89,23 +85,24 @@ t_node *insert_sublist(t_node *start, t_node *new, t_node *next)
 
 t_node *expand_list(t_node *tmp, t_env *env)
 {
-    t_node *head = NULL;
+    t_node *head;
+    t_node *node;
     int i;
     char *content;
+    char **list;
 
+    head = NULL;
     content = expansion(tmp->content, env, tmp->between_quoted);
     if (tmp->between_quoted)
         return create_node(content, tmp->b_space);
     i = 0;
-    char **list = ft_split(content, ' ');
-    free(content);
+    list = ft_split(content, ' ');
     while (list[i])
     {
-        t_node *node = create_node2(list[i], tmp->b_space, tmp->type);
+        node = create_node2(list[i], tmp->b_space, tmp->type);
         add_back(&head, node);
         i++;
     }
-
     return head;
 }
 

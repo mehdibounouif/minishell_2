@@ -111,7 +111,7 @@ t_node	*new_token(char *content, int b_space)
 {
 	t_node	*node;
 
-	node = malloc(sizeof(t_node));
+	node = ft_malloc(sizeof(t_node), 1);
 	node->content = ft_strdup(content);
 	node->b_space = b_space;
 	node->next = NULL;

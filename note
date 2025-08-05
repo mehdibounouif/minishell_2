@@ -1,5 +1,9 @@
 <Makefile <<a <Makefile <<b <Makefile cat | head -5 <<h | sleep 5 | <<y <Makefile
 
+ft_substr
+ft_strjoin
+ft_strdup
+ft_split
 
 When a command terminates on a fatal signal whose number is N, Bash uses the value
 128+N as the exit status.

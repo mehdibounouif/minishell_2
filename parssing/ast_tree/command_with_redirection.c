@@ -120,6 +120,7 @@ void	allocat_files_array(t_tree *node)
 	node->redirect->in_files = ft_malloc(sizeof(char *) , infile_num);
 	node->redirect->out_files = ft_malloc(sizeof(char *) , outfile_num);
 }
+
 void	skip_redirection(t_node **list)
 {
 		*list = (*list)->next;

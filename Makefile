@@ -10,6 +10,8 @@ SRCS_DIR3 = ./built-in
 SRCS_DIR4 = ./free
 SRCS_FILES1 = main.c\
 	     utils.c\
+			 custom/custom_libft.c\
+			 custom/custom_split.c\
 	     token/tokenize.c\
 	     token/tools.c\
 	     token/join.c\

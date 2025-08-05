@@ -1,27 +1,5 @@
 #include "../includes/minishell.h"
 
-char	*ft_strdup2(const char *s)
-{
-	size_t	i;
-	char	*res;
-	size_t	len;
-
-	if(!s)
-		return NULL;
-	len = ft_strlen(s) + 1;
-	res = malloc(sizeof(char) * len);
-	if (!res)
-		return (NULL);
-	i = 0;
-	while (s[i])
-	{
-		res[i] = s[i];
-		i++;
-	}
-	res[i] = '\0';
-	return (res);
-}
-
 int  get_env(t_env **envp, char **env)
 {
 	int i;
@@ -34,11 +12,11 @@ int  get_env(t_env **envp, char **env)
 	while (env[i])
 	{
 		env_node = malloc(sizeof(t_env));
-		key_value = ft_split(env[i], '=');
-		env_node->key = ft_strdup2(key_value[0]);
+		key_value = ft_split1(env[i], '=');
+		env_node->key = ft_strdup1(key_value[0]);
 		key_len = ft_strlen(env_node->key);
 		env_len = ft_strlen(env[i]);
-		env_node->value = ft_substr(env[i], key_len + 1, (env_len - key_len));
+		env_node->value = ft_substr1(env[i], key_len + 1, (env_len - key_len));
 		env_node->next = NULL;
 		add_back2(envp, env_node);
 		free_str(key_value);
@@ -91,8 +69,7 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 	join_b_space_nodes(&minishell->list);
 	if (!check_syntax(minishell->list))
 	{
-		free_list(&minishell->list);
-	//	ft_free_garbage(ft_function());
+    ft_free_garbage(ft_function());
 		return (0);
 	}
 	minishell->tree = pars_pipe(&minishell->list);

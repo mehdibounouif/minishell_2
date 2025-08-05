@@ -34,8 +34,6 @@ t_tree  *pars_pipe(t_node **list)
 	t_tree *left;
 
 	left = parss_one_side(list);
-	if (!left)
-		return (NULL);
 	while (*list && (*list)->type == PIPE)
 	{
 		*list = (*list)->next;

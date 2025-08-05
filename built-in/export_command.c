@@ -75,7 +75,7 @@ int	export_command(t_env *env, char **args)
 			ft_putstr_fd(args[i], 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
 			global(1);
-			ft_free_garbage(ft_function());
+			//ft_free_garbage(ft_function());
 			return(1);
 		}
 		equal_sign = ft_strchr(args[i], '=');
@@ -85,20 +85,20 @@ int	export_command(t_env *env, char **args)
 			value = ft_strdup(equal_sign + 1);
 			if (!key)
 			{
-				ft_free_garbage(ft_function());
+				//ft_free_garbage(ft_function());
 				return (EXIT_FAILURE);
 			}
 			existing = get_env_var(env, key);
 			if (existing)
 			{
 				free(existing->value);
-				existing->value = ft_strdup(value);
+				existing->value = ft_strdup1(value);
 			}
 			else
 			{
 				set_env_var(&env, key, value);
 			}
-			free(key);
+			//free(key);
 			//free(value);
 		}
 		else

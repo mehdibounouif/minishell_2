@@ -12,21 +12,20 @@
 
 #include "../../includes/minishell.h"
 
-void	execute_full_command(t_tree *node, t_env *env, char **envp, int pipe_flag)
+void	execute_full_command(t_tree *node, t_env *env, char **envp, int pipe_flag, int *p)
 {
-  (void)pipe_flag;
 	if (!node)
 		return ;
 
 	if (node->type == COMMAND_NODE)
-		execute_command_node(node, env, envp);
+		execute_command_node(node, env, envp, p);
 	else if (node->type == PIPE_NODE)
 		execute_pipe_node(node, env, envp);
 	else if (node->type == REDIRECT_NODE)
-		execute_redirection_command(node, env, envp);
-//	if (pipe_flag)
-//	{
-//		free_env(env);
-//		ft_free_garbage(ft_function());
-//	}
+		execute_redirection_command(node, env, envp, p);
+	if (pipe_flag)
+	{
+		free_env(env);
+		ft_free_garbage(ft_function());
+	}
 }

@@ -81,9 +81,7 @@ int count_args(t_node *list)
 
 t_node *create_node(const char *content, int b_space)
 {
-    t_node *new = malloc(sizeof(t_node));
-    if (!new)
-        return NULL;
+    t_node *new = ft_malloc(sizeof(t_node), 1);
     new->content = ft_strdup(content);
     new->b_space = b_space;
 	new->between_quoted = 1;
@@ -96,9 +94,7 @@ t_node *create_node(const char *content, int b_space)
 
 t_node *create_node2(const char *content, int b_space, int type)
 {
-    t_node *new = malloc(sizeof(t_node));
-    if (!new)
-        return NULL;
+    t_node *new = ft_malloc(sizeof(t_node), 1);
     new->content = ft_strdup(content);
     new->b_space = b_space;
 	new->between_quoted = 1;

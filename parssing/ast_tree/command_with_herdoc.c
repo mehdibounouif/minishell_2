@@ -221,7 +221,6 @@ void	take_heredoc(t_tree *node, t_node *list)
 		h_node->quoted = 1;
 	h_node->next = NULL;
 	add_back3(&node->redirect->herdoc, h_node);
-
 }
 
 void	collect_herdoc(t_tree *node, t_node *list)

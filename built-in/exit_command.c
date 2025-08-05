@@ -89,32 +89,34 @@ static long long	ft_atoll(char *str, int *error)
 	return (result * sign);
 }
 
-static void	exit_with_error(char *arg)
+static void	exit_with_error(char *arg, t_env *env)
 {
 	ft_putstr_fd("minishell: exit: ", 2);
 	ft_putstr_fd(arg, 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
+  free_env(env);
+  ft_free_garbage(ft_function());
 	exit(2);
 }
 
-static void	handle_too_many_args(char *arg)
+static void	handle_too_many_args(char *arg, t_env *env)
 {
 	if (!is_numeric(arg))
-		exit_with_error(arg);
+		exit_with_error(arg, env);
 	ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 	global(1);
 }
 
-static int	calculate_exit_status(char *arg)
+static int	calculate_exit_status(char *arg, t_env *env)
 {
 	long long	status;
 	int			error;
 
 	if (!is_numeric(arg))
-		exit_with_error(arg);
+		exit_with_error(arg, env);
 	status = ft_atoll(arg, &error);
 	if (error)
-		exit_with_error(arg);
+		exit_with_error(arg, env);
 	if (status < 0)
 		status = 256 + (status % 256);
 	else
@@ -125,16 +127,21 @@ static int	calculate_exit_status(char *arg)
 int	exit_command(t_tree *node, t_env *env, char **args)
 {
 	(void)node;
-	(void)env;
 
 	ft_putstr_fd("exit\n", 1);
 	if (!args[1])
+  {
+    ft_free_garbage(ft_function());
+    free_env(env);
 		exit(0);
+  }
 	if (args[2])
 	{
-		handle_too_many_args(args[1]);
+		handle_too_many_args(args[1], env);
 		return (1);
 	}
-	exit(calculate_exit_status(args[1]));
+  ft_free_garbage(ft_function());
+  free_env(env);
+	exit(calculate_exit_status(args[1], env));
 }
 

@@ -23,14 +23,12 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	if (!s)
 		return (NULL);
 	if (start >= ft_strlen(s))
-		return ((char *) ft_malloc(1, sizeof(char)));
+		return (ft_malloc(1, sizeof(char)));
 	if (ft_strlen(s) <= start + len)
 		exact_len = ft_strlen(s) - start;
 	else
 		exact_len = len;
-	substr = malloc(sizeof(char) * exact_len + 1);
-	if (!substr)
-		return (NULL);
+	substr = ft_malloc(sizeof(char), exact_len + 1);
 	while (s[start] && i < len)
 		substr[i++] = s[start++];
 	substr[i] = '\0';

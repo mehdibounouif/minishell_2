@@ -25,9 +25,15 @@ void	ulink_files(char **files)
 	}
 }
 
-void	child_process_redi(t_tree *node, t_env *env, char **envp)
+void	child_process_redi(t_tree *node, t_env *env, char **envp, int *p)
 {
 	char *path;
+
+  if (p)
+  {
+    close(p[0]);
+    close(p[1]);
+  }
 	dup_fds(node->redirect);
 	path = find_path(node->redirect->prev , env);
 	if (!path)
@@ -35,6 +41,8 @@ void	child_process_redi(t_tree *node, t_env *env, char **envp)
 		ft_putstr_fd(node->redirect->prev->command->command, 2);
 		ft_putendl_fd(": command not found", 2);
 		ulink_files(node->redirect->heredocs);
+    ft_free_garbage(ft_function());
+    free_env(env);
 		global(127);
 		exit(127);
 	}
@@ -42,6 +50,8 @@ void	child_process_redi(t_tree *node, t_env *env, char **envp)
 	ft_putstr_fd(node->redirect->prev->command->command, 2);
 	ft_putendl_fd(": command not found", 2);
 	ulink_files(node->redirect->heredocs);
+  ft_free_garbage(ft_function());
+  free_env(env);
 	global(126);
 }
 
@@ -52,7 +62,7 @@ void	built_in(t_tree *node, t_env *env, char *cmd)
 
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
-	dup_fds(node->redirect); 
+	dup_fds(node->redirect);
 	int result = execute_builtin_command(cmd, node->redirect->prev->command->args, env);
 	dup2(saved_stdin, STDIN_FILENO);
 	dup2(saved_stdout, STDOUT_FILENO);
@@ -62,14 +72,14 @@ void	built_in(t_tree *node, t_env *env, char *cmd)
 	global(result);
 }
 
-void	fork_and_exec(t_tree *node, t_env *env, char **envp)
+void	fork_and_exec(t_tree *node, t_env *env, char **envp, int *p)
 {
 	pid_t pid;
 	int	status;
 
 	pid = fork();
 	if (pid == 0)
-		child_process_redi(node, env, envp);
+		child_process_redi(node, env, envp, p);
 	else if (pid > 0)
 	{
 		waitpid(pid, &status, 0);
@@ -77,15 +87,13 @@ void	fork_and_exec(t_tree *node, t_env *env, char **envp)
 			global(WEXITSTATUS(status));
 		else if (WIFSIGNALED(status))
 			global(128 + WTERMSIG(status));
-//		ft_free_garbage(ft_function());
 	}
 
 }
 
-void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
+void	execute_redirection_command(t_tree *node, t_env *env, char **envp, int *p)
 {
 	char	*cmd;
-
 	if (!check_if_exist(node->redirect))
 		return (ft_free_garbage(ft_function()));
 	if (!node->redirect->prev)
@@ -95,7 +103,10 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 	}
 	cmd = node->redirect->prev->command->command;
 	if (is_builtin(cmd))
+  {
 		built_in(node, env, cmd);
+    //ft_free_garbage(ft_function());
+  }
 	else
-		fork_and_exec(node, env, envp);
+		fork_and_exec(node, env, envp, p);
 }

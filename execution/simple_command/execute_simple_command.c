@@ -30,10 +30,15 @@ void	find_path_and_exec(t_tree *node, t_env *env ,char **envp)
 	exit(127);
 }
 
-void	child_process(t_tree *node, t_env *env, char **envp)
+void	child_process(t_tree *node, t_env *env, char **envp, int *p)
 {
     struct stat st;
 
+    if (p)
+    {
+      close(p[0]);
+      close(p[1]);
+    }
     signal(SIGINT, SIG_DFL);
     signal(SIGQUIT, SIG_DFL);
 
@@ -97,10 +102,9 @@ void	parent_process(int status, pid_t pid)
 	}
 	else if (WIFEXITED(status))
 		global(WEXITSTATUS(status));
-//	ft_free_garbage(ft_function());
 }
 
-void	execute_command_node(t_tree *node, t_env *env, char **envp)
+void	execute_command_node(t_tree *node, t_env *env, char **envp, int *p)
 {
 	int status;
 
@@ -109,11 +113,12 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
 	if (is_builtin(node->command->command))
 	{
 		execute_builtin(node, env);
+    ft_free_garbage(ft_function());
 		return ;
 	}
 	pid_t pid = fork();
 	if (pid == 0)
-		child_process(node, env, envp);
+		child_process(node, env, envp, p);
 	else if (pid > 0)
 		parent_process(status, pid);
 }
