@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:59 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/30 11:53:54 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/06 14:43:40 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static void	exit_with_error(char *arg, t_env *env)
 	ft_putstr_fd("minishell: exit: ", 2);
 	ft_putstr_fd(arg, 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
-  free_env(env);
+ 	free_env(env);
   ft_free_garbage(ft_function());
 	exit(2);
 }
@@ -130,18 +130,18 @@ int	exit_command(t_tree *node, t_env *env, char **args)
 
 	ft_putstr_fd("exit\n", 1);
 	if (!args[1])
-  {
-    ft_free_garbage(ft_function());
-    free_env(env);
-		exit(0);
-  }
+  	{
+    	ft_free_garbage(ft_function());
+    	free_env(env);
+		  exit(0);
+  	}
 	if (args[2])
 	{
 		handle_too_many_args(args[1], env);
 		return (1);
 	}
-  ft_free_garbage(ft_function());
-  free_env(env);
 	exit(calculate_exit_status(args[1], env));
+	// ft_free_garbage(ft_function());
+	// free_env(env);
 }
 
