@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:57 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/29 09:59:29 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/06 22:03:27 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	export_command(t_env *env, char **args)
 	i = 1;
 	if (!args[1])
 	{
-		sorted_env(env);
+		// sorted_env(env);
 		print_env_export(env);
 //		ft_free_garbage(ft_function());
 		return (EXIT_SUCCESS);
@@ -88,16 +88,13 @@ int	export_command(t_env *env, char **args)
 				//ft_free_garbage(ft_function());
 				return (EXIT_FAILURE);
 			}
-			existing = get_env_var(env, key);
-			if (existing)
-			{
-				free(existing->value);
-				existing->value = ft_strdup1(value);
-			}
-			else
-			{
-				set_env_var(&env, key, value);
-			}
+			// existing = get_env_var(env, key);
+			// if (existing)
+			// {
+			// 	free(existing->value);
+			// 	existing->value = ft_strdup1(value);
+			// }
+			set_env_var(&env, key, value);
 			//free(key);
 			//free(value);
 		}

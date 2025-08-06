@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:59 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/22 09:20:22 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/06 22:09:43 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,18 @@ char	*get_env_value(t_env *env, char *key)
 	}
 	return (NULL);
 }
+int check_size(char *str, char *str1)
+{
+	size_t len;
+	size_t len1;
+
+	len = ft_strlen(str);
+	len1 = ft_strlen(str1);
+
+	if(len > len1)
+		return len;
+	return len1;
+}
 
 // set new var at the env
 void	set_env_var(t_env **env, char *key, char *value)
@@ -62,7 +74,7 @@ void	set_env_var(t_env **env, char *key, char *value)
 	current = *env;
 	while (current)
 	{
-		if (ft_strncmp(current->key, key, ft_strlen(key)) == 0)
+		if (ft_strncmp(current->key, key, check_size(current->key , key)) == 0 )
 		{
 			free(current->value);
 			current->value = ft_strdup1(value);
