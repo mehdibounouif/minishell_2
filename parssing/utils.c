@@ -79,12 +79,12 @@ int count_args(t_node *list)
 	return (i);
 }
 
-t_node *create_node(const char *content, int b_space)
+t_node *create_node(const char *content, int b_space, int b_q)
 {
-    t_node *new = ft_malloc(sizeof(t_node), 1);
-    new->content = ft_strdup(content);
+    t_node *new = malloc(sizeof(t_node));
+    new->content = ft_strdup1(content);
     new->b_space = b_space;
-	new->between_quoted = 1;
+	new->between_quoted = b_q;
 	new->contain_quoted = 1;
 	new->type = 2;
     new->next = NULL;
@@ -92,12 +92,12 @@ t_node *create_node(const char *content, int b_space)
     return new;
 }
 
-t_node *create_node2(const char *content, int b_space, int type)
+t_node *create_node2(const char *content, int b_space, int type, int b_q)
 {
-    t_node *new = ft_malloc(sizeof(t_node), 1);
-    new->content = ft_strdup(content);
+    t_node *new = malloc(sizeof(t_node));
+    new->content = ft_strdup1(content);
     new->b_space = b_space;
-	new->between_quoted = 1;
+	new->between_quoted = b_q;
 	new->contain_quoted = 1;
 	new->type = type;
     new->next = NULL;

@@ -199,10 +199,11 @@ int	is_qoute(char c);
 size_t	get_close_token(char *cmd, char c, int *b_space);
 int     ft_strcmp(const char *s1, const char *s2);
 char *strjoin_and_free(char *s1, char *s2);
-t_node *create_node(const char *content, int b_space);
-t_node *create_node2(const char *content, int b_space, int type);
+t_node *create_node(const char *content, int b_space, int b_q);
+t_node *create_node2(const char *content, int b_space, int type, int b_q);
 void remove_node(t_node **head, t_node **end);
 void join_b_space_nodes(t_node **head);
+void	token_type(t_node *node);
 
 void	add_back1(t_files **list, t_files *node);
 void add_back(t_node **list, t_node *node);

@@ -89,7 +89,7 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 		if (check_heredoc(minishell.tree))
 			if (!heredoc(&flag, minishell, envp))
 			{
-			ft_free_garbage(ft_function());
+			  ft_free_garbage(ft_function());
 				exit(global(-1));
 			}
 		if (flag)
@@ -97,8 +97,8 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 		sig_ctrl(1); // Set execution mode
 		execute_full_command(minishell.tree, envp, env, 0, NULL);
 	  sig_ctrl(0); // Back to interactive mode
-    ft_free_garbage(ft_function());
 	}
+  ft_free_garbage(ft_function());
 	exit(global(-1));
 	return (0);
 }

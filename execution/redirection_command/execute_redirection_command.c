@@ -95,11 +95,11 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp, int *p)
 {
 	char	*cmd;
 	if (!check_if_exist(node->redirect))
-		return (ft_free_garbage(ft_function()));
+		return ;
 	if (!node->redirect->prev)
 	{
 		check_if_exist(node->redirect);
-		return (ft_free_garbage(ft_function()));
+		return ;
 	}
 	cmd = node->redirect->prev->command->command;
 	if (is_builtin(cmd))

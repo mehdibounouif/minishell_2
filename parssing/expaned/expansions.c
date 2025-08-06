@@ -95,12 +95,17 @@ t_node *expand_list(t_node *tmp, t_env *env)
     content = NULL;
     content = expansion(tmp->content, env, tmp->between_quoted);
     if (tmp->between_quoted)
-        return create_node(content, tmp->b_space);
+    {
+        node = create_node(content, tmp->b_space, tmp->between_quoted);
+        //token_type(node);
+        return (node);
+    }
     i = 0;
     list = ft_split(content, ' ');
     while (list[i])
     {
-        node = create_node2(list[i], tmp->b_space, tmp->type);
+        node = create_node2(list[i], tmp->b_space, tmp->type, tmp->between_quoted);
+        //token_type(node);
         add_back(&head, node);
         i++;
     }
@@ -110,7 +115,7 @@ t_node *expand_list(t_node *tmp, t_env *env)
 void expand(t_node **list, t_env *env)
 {
     int flag;
-    t_node (*start), (*next), (*sub_list), (*new_list), (*end), (*tmp);
+    t_node (*start), (*next), (*sub_list), (*new_list), (*end), (*tmp), (*to_free);
 
     tmp = *list;
     flag = 0;
@@ -126,6 +131,8 @@ void expand(t_node **list, t_env *env)
         }
         start = tmp->prev;
         next = tmp->next;
+        to_free = tmp;
+        to_free->next = NULL;
         sub_list = expand_list(tmp, env);
         new_list = insert_sublist(start, sub_list, next);
         if (!start)
@@ -134,5 +141,6 @@ void expand(t_node **list, t_env *env)
         while (end && end->next != next)
             end = end->next;
         tmp = next;
+        free_list(&to_free);
     }
 }
