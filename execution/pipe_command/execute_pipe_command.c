@@ -25,7 +25,7 @@ int	left(pid_t p[2], t_env *env, t_tree *tree, char **envp)
 	    perror("dup2 failed");
 	    exit(1);
     }
-    close(1);
+    //close(1);
 		close(p[1]);
     close(p[0]);
 		execute_full_command(tree->pipe->left, env, envp, 1, p);
@@ -44,7 +44,7 @@ int	right(int *p, t_env *env, t_tree *tree, char **envp)
 	{
 		// second child process; // close write side of pipe;
 		dup2(p[0], 0);
-    close(0);
+    //close(0);
 		close(p[0]);
     close(p[1]);
 		execute_full_command(tree->pipe->right, env, envp, 1, p);

@@ -300,4 +300,5 @@ int	ft_return_signal(int status);
 void	*ft_malloc(int type, int size);
 void	ft_free_garbage(t_gcollect **list);
 t_gcollect	**ft_function(void);
+char *get_next_line(int fd);
 #endif
