@@ -32,7 +32,9 @@ void	without_quotes(t_node **list)
 	tmp = *list;
 	while (tmp)
 	{
+    char *content = tmp->content;
 		tmp->content = remove_quotes(tmp->content);
+    free(content);
 		tmp = tmp->next;
 	}
 }
@@ -41,7 +43,7 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 {
 	char	*cmd;
 
-	cmd = readline("minishell>");
+  cmd = readline("minishell>");
 	if(!cmd)
 	{
 		printf("exit\n");
@@ -52,26 +54,33 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 	if(cmd[0] == '\0')
 	{
 		free(cmd);
-		ft_free_garbage(ft_function());
+		//ft_free_garbage(ft_function());
 		return (0);
 	}
 	add_history(cmd);
 	if (check_quotes(cmd, ft_strlen(cmd)))
 	{
 		free(cmd);
-		ft_free_garbage(ft_function());
+		//ft_free_garbage(ft_function());
 		printf("Qoutes not closed!\n");
 		return (0);
 	}
 	tokenize(cmd, &minishell->list);
+  //print_list(minishell->list);
 	without_quotes(&minishell->list);
+  //print_list(minishell->list);
   expand(&minishell->list, env);
+  //print_list(minishell->list);
 	join_b_space_nodes(&minishell->list);
+  //print_list(minishell->list);
 	if (!check_syntax(minishell->list))
 	{
-    ft_free_garbage(ft_function());
+    free_list(&minishell->list);
+    //ft_free_garbage(ft_function());
 		return (0);
 	}
+  t_node  *tmp = minishell->list;
 	minishell->tree = pars_pipe(&minishell->list);
+  free_list(&tmp);
 	return (1);
 }

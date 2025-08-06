@@ -95,44 +95,138 @@ t_node *expand_list(t_node *tmp, t_env *env)
     content = NULL;
     content = expansion(tmp->content, env, tmp->between_quoted);
     if (tmp->between_quoted)
-        return create_node(content, tmp->b_space);
+    {
+        node = create_node(content, tmp->b_space, tmp->between_quoted);
+        //token_type(node);
+        return (node);
+    }
     i = 0;
     list = ft_split(content, ' ');
     while (list[i])
     {
-        node = create_node2(list[i], tmp->b_space, tmp->type);
+        node = create_node2(list[i], tmp->b_space, tmp->type, tmp->between_quoted);
+        //token_type(node);
         add_back(&head, node);
         i++;
     }
     return head;
 }
 
+void  free_node(t_node *node)
+{
+  if (node)
+  {
+    if (node->content)
+      free(node->content);
+    free(node);
+  }
+}
+
+// void expand(t_node **list, t_env *env)
+// {
+//     int flag;
+//     t_node (*start), (*next), (*sub_list), (*new_list), (*end), (*tmp), (*to_free);
+
+//     tmp = *list;
+//     flag = 0;
+//     while (tmp)
+//     {
+//         if (tmp->type == HEREDOC)
+//           flag = 1;
+//         else if (flag)
+//         {
+//             tmp = tmp->next;
+//             flag = 0;
+//             continue;
+//         }
+//         start = tmp->prev;
+//         next = tmp->next;
+//         to_free = tmp;
+//         sub_list = expand_list(tmp, env);
+//         new_list = insert_sublist(start, sub_list, next);
+//         if (!start)
+//             *list = new_list;
+//         end = new_list;
+//         while (end && end->next != next)
+//             end = end->next;
+//         tmp = next;
+//         free_node(to_free);
+//     }
+// }
+
+// void expand(t_node **list, t_env *env)
+// {
+//     t_node *tmp = *list;
+//     t_node *start, *next, *sub_list, *new_list, *end;
+
+//     while (tmp)
+//     {
+//         if (tmp->type == HEREDOC)
+//         {
+//             tmp = tmp->next;
+//             if (tmp)
+//                 tmp = tmp->next;
+//             continue;
+//         }
+
+//         start = tmp->prev;
+//         next = tmp->next;
+
+//         sub_list = expand_list(tmp, env);
+//         if (!sub_list)
+//         {
+//             tmp = next;
+//             continue;
+//         }
+
+//         new_list = insert_sublist(start, sub_list, next);
+//         if (!start)
+//             *list = new_list;
+
+//         // Move tmp to the end of the newly inserted list
+//         end = new_list;
+//         while (end && end->next != next)
+//             end = end->next;
+
+//         tmp = next;
+//         free_node(tmp->prev);  // assuming the old node is at tmp->prev now
+//     }
+// }
+
+
 void expand(t_node **list, t_env *env)
 {
-    int flag;
-    t_node (*start), (*next), (*sub_list), (*new_list), (*end), (*tmp);
+    t_node *tmp = *list;
+    t_node *start, *next, *sub_list, *new_list, *end, *to_free;
 
-    tmp = *list;
-    flag = 0;
     while (tmp)
     {
         if (tmp->type == HEREDOC)
-          flag = 1;
-        if (flag)
         {
             tmp = tmp->next;
-            flag = 0;
+            if (tmp)
+                tmp = tmp->next;
             continue;
         }
+
         start = tmp->prev;
         next = tmp->next;
+        to_free = tmp;
+
         sub_list = expand_list(tmp, env);
+        if (!sub_list)
+        {
+            tmp = next;
+            continue;
+        }
+
         new_list = insert_sublist(start, sub_list, next);
+
         if (!start)
             *list = new_list;
-        end = new_list;
-        while (end && end->next != next)
-            end = end->next;
+
         tmp = next;
+        free_node(to_free);  // now safe
     }
 }
+

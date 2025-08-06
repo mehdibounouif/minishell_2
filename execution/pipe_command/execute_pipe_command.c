@@ -20,13 +20,14 @@ int	left(pid_t p[2], t_env *env, t_tree *tree, char **envp)
 	if (left == 0)
 	{
 		// first child process;
-		close(p[0]); // close read side of pipe;
     if (dup2(p[1], 1) == -1)
     {
 	    perror("dup2 failed");
 	    exit(1);
     }
+    //close(1);
 		close(p[1]);
+    close(p[0]);
 		execute_full_command(tree->pipe->left, env, envp, 1, p);
 		exit(global(-1));
 	}
@@ -41,10 +42,11 @@ int	right(int *p, t_env *env, t_tree *tree, char **envp)
 	right = fork();
 	if (right == 0)
 	{
-		// second child process;
-		close(p[1]); // close write side of pipe;
+		// second child process; // close write side of pipe;
 		dup2(p[0], 0);
+    //close(0);
 		close(p[0]);
+    close(p[1]);
 		execute_full_command(tree->pipe->right, env, envp, 1, p);
 		exit(global(-1));
 	}

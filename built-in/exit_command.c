@@ -95,7 +95,7 @@ static void	exit_with_error(char *arg, t_env *env)
 	ft_putstr_fd(arg, 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
  	free_env(env);
-  	ft_free_garbage(ft_function());
+  ft_free_garbage(ft_function());
 	exit(2);
 }
 
@@ -133,7 +133,7 @@ int	exit_command(t_tree *node, t_env *env, char **args)
   	{
     	ft_free_garbage(ft_function());
     	free_env(env);
-		exit(0);
+		  exit(0);
   	}
 	if (args[2])
 	{

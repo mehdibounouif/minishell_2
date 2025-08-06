@@ -44,6 +44,22 @@ void remove_node(t_node **head, t_node **end)
 	}
 }
 
+// void remove_node(t_node **start, t_node **end)
+// {
+// 	t_node *tmp;
+// 	t_node *next;
+
+// 	tmp = *start;
+// 	while (tmp && tmp != *end)
+// 	{
+// 		next = tmp->next;
+// 		if (tmp->content)
+// 			free(tmp->content); // free content if dynamically allocated
+// 		free(tmp);
+// 		tmp = next;
+// 	}
+// }
+
 void join_b_space_nodes(t_node **head)
 {
   t_node (*new_node),(*tmp),(*start),(*end);
@@ -67,7 +83,7 @@ void join_b_space_nodes(t_node **head)
 				joined = ft_strjoin(joined, tmp->content);
 				tmp = tmp->next;
 			}
-			new_node = create_node(joined, 0);
+			new_node = create_node(joined, 0, 0);
 			if (!new_node)
 				return;
 			new_node->prev = start->prev;
@@ -79,7 +95,7 @@ void join_b_space_nodes(t_node **head)
 			if (end)
 				end->prev = new_node;
 
-			//remove_node(&start, &end);
+			remove_node(&start, &end);
 			tmp = new_node->next;
 		}
 		else
