@@ -109,7 +109,7 @@ int	read_lines(t_share3 *share, t_redirection *list, t_env *env)
 			share->expand_line = expansion(share->line, env, 0);
 			write(share->fd, share->expand_line, ft_strlen(share->expand_line));
 			write(share->fd, "\n", 1);
-            share->expand_line = NULL;
+      share->expand_line = NULL;
 		}
 		else 
 		{

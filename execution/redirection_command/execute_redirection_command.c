@@ -87,6 +87,7 @@ void	fork_and_exec(t_tree *node, t_env *env, char **envp, int *p)
 			global(WEXITSTATUS(status));
 		else if (WIFSIGNALED(status))
 			global(128 + WTERMSIG(status));
+    ulink_files(node->redirect->heredocs);
 	}
 
 }

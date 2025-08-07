@@ -86,6 +86,7 @@ struct s_command {
 };
 
 struct	s_herdoc {
+  char  *file;
 	char	*herdoc;
 	char	*delimeter;
 	int	quoted;
