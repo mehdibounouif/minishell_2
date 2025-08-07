@@ -66,7 +66,7 @@ int	check_if_exist(t_redirection *node)
 			if (!check_in_files(node->files->file))
 				return (0);
 		// check out files
-		if (node->files->type == R_OUT)
+		if (node->files->type == R_OUT || node->files->type == R_APPEND)
 			if (!check_out_files(node, node->files->file, node->files->type))
 				return (0);
 		node->files = node->files->next;

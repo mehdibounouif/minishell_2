@@ -41,7 +41,7 @@ int	heredoc(int *flag, t_mini minishell, t_env *envp)
 	else if(pid > 0)
 	{
 		waitpid(pid, &status, 0);
-		// printf("%s\n", WIFSIGNALED(status) ? "yes" : "no");
+    /// printf("%s\n", WIFSIGNALED(status) ? "yes" : "no");
 		*flag = ft_return_signal(status);
 		sig_ctrl(0);
 		//ft_free_garbage(ft_function());
@@ -84,7 +84,7 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 		handle_signal();
 		if (!readline_and_parssing(&minishell, envp))
 			continue;
-		// print_ast(minishell.tree, 0);
+		 print_ast(minishell.tree, 0);
 		int flag = 0;
 		if (check_heredoc(minishell.tree))
 			if (!heredoc(&flag, minishell, envp))

@@ -53,7 +53,7 @@ void	assing_io(t_node **list, t_share4 *share)
 	{
 		share->redirect_node->redirect->out_type = (*list)->type;
 		*list = (*list)->next;
-		file = new_node((*list)->content, (*list)->type);
+		file = new_node((*list)->content, (*list)->prev->type);
 		add_back1(&share->redirect_node->redirect->files,file);
 		share->redirect_node->redirect->out_files[share->j++] = ft_strdup((*list)->content);
 		*list = (*list)->next;
