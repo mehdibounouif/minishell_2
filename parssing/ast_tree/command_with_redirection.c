@@ -32,6 +32,7 @@ void	init(t_tree *node)
 	node->redirect->hdc = 0;
 	node->redirect->files = NULL;
 	node->redirect->herdoc = NULL;
+  node->redirect->heredocs = NULL;
 }
 
 t_files	*new_node(char *content, int type)

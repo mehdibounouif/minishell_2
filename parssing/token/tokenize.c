@@ -22,12 +22,12 @@ char  *remove_quotes(char *cmd)
 	if ((cmd[i] == '\'' && cmd[len - 1] == '\'')
 		|| (cmd[i] == '\"' && cmd[len - 1] == '\"') )
 	{
-		clear_cmd = malloc(sizeof(int)* len - 1);
+		clear_cmd = malloc(sizeof(char)* len - 1);
 		i = 1;
 	}
 	else 
 	{
-		clear_cmd = malloc(sizeof(int)* len + 1);
+		clear_cmd = malloc(sizeof(char)* len + 1);
 		i = 0;
 	}
 	start = i;

@@ -35,6 +35,8 @@ void	expand_cmd(char *cmd, t_share *share, t_env *env, int b_q)
 		while (is_dollar(cmd, share->i) && b_q != 1
 			&& (ft_isalpha(cmd[share->i + 1]) || cmd[share->i + 1] == '_'))
 				replace_key(cmd, share, env);
+    if (!cmd[share->i])
+      break;
 		if (is_dollar(cmd, share->i) && cmd[share->i + 1] == '?' && b_q != 1)
 			expand_exit_status(share);
 		else
@@ -197,7 +199,7 @@ void  free_node(t_node *node)
 void expand(t_node **list, t_env *env)
 {
     t_node *tmp = *list;
-    t_node *start, *next, *sub_list, *new_list, *end, *to_free;
+    t_node *start, *next, *sub_list, *new_list, *to_free;
 
     while (tmp)
     {
