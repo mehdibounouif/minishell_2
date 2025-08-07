@@ -92,6 +92,25 @@ void	empty_command(t_tree *node, t_env *env)
 		print(node->command->command, ": command not found", 127);
 		free_env(env);
 		ft_free_garbage(ft_function());
-		exit(127);
+		exit(global(-1));
 	}
+}
+
+void  dote_command(t_tree *node, t_env *env)
+{
+  if (node->command->command[0] == '.' && !node->command->command[1])
+	{
+		print(node->command->command, ": filename argument required", 2);
+    ft_putendl_fd(".: usage: . filename [arguments]", 2);
+    free_env(env);
+		ft_free_garbage(ft_function());
+		exit(global(-1));
+	}
+  else if (node->command->command[0] == '.' && !ft_strchr(node->command->command, '/'))
+  {
+    print(node->command->command, ": command not found", 127);
+		free_env(env);
+		ft_free_garbage(ft_function());
+		exit(global(-1));
+  }
 }

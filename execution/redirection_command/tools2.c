@@ -73,17 +73,4 @@ int	check_if_exist(t_redirection *node)
 	}
 	return (1);
 }
-/*
-void	ulink_files(char **files)
-{
-	int	 i;
-
-	i = 0;
-	while (files[i])
-	{
-		unlink(files[i]);
-		i++;
-	}
-}
-*/
 

@@ -43,6 +43,7 @@ void	child_process(t_tree *node, t_env *env, char **envp, int *p)
     signal(SIGQUIT, SIG_DFL);
 
     empty_command(node, env); // ""
+    dote_command(node, env); // "." or . or ..
 
     // If command is absolute or relative path, try to exec directly
     if (node->command->command[0] == '/' || node->command->command[0] == '.')

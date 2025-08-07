@@ -26,12 +26,10 @@ int	check_infile_in_directory(char *files)
 		full_path = ft_substr(files, 0, l);
 		if (!(dir = opendir(full_path)))
 		{
-			//free(full_path);
 			return (print(files, ": No such file or directory", 1), 0);
 		}
 		else
 		{
-			//free(full_path);
 			closedir(dir);
 			if (access(files, F_OK))
 				return (print(files, ": No such file or directory", 1), 0);
@@ -79,7 +77,6 @@ int	exist_check_permession_else_create(char *file, char *full_path, DIR *dir)
 		if ((fd = open(file, O_RDWR | O_CREAT, 0644)) == -1)
 		{
 			perror("Open");
-			free(full_path);
 			closedir(dir);
 			return (0);
 		}
@@ -93,7 +90,6 @@ int	check_correct_path(char *file, char *full_path)
 	DIR	*dir;
 	if (!(dir = opendir(full_path)))
 	{
-		//free(full_path);
 		print_message(file, ": No such file or directory");
 		global(1);
 		return 0;
@@ -103,11 +99,9 @@ int	check_correct_path(char *file, char *full_path)
 	{
 		if (!exist_check_permession_else_create(file, full_path, dir))
 		{
-			//free(full_path);
 			closedir(dir);
 			return (0);
 		}
-		//free(full_path);
 		closedir(dir);
 	}
 	return (1);
