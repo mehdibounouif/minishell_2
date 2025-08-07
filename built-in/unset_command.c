@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:48 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/30 11:33:46 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/07 10:10:03 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,5 @@ int	unset_command(t_env *env, char **args)
 		unset_env_var(&env, args[i]);
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	return (global(0));
 }
