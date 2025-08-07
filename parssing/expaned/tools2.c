@@ -24,7 +24,7 @@ int	get_env_len(char *cmd, int i)
 	int	j;
 
 	j = 0;
-	while (cmd[i] && (ft_isalpha(cmd[i]) || cmd[i] == '_'))
+	while (cmd[i] && (ft_isalnum(cmd[i]) || cmd[i] == '_'))
 	{
 		i++;
 		j++;

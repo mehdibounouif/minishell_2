@@ -96,7 +96,7 @@ t_node *expand_list(t_node *tmp, t_env *env)
     head = NULL;
     content = NULL;
     content = expansion(tmp->content, env, tmp->between_quoted);
-    if (tmp->between_quoted)
+    if (tmp->between_quoted || content[0] == '\0')
     {
         node = create_node(content, tmp->b_space, tmp->between_quoted);
         //token_type(node);
