@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:42:07 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/27 17:42:30 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/08 22:01:54 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ int	cd_command(t_env *env, char **args)
 	{
 		if (change_to_home(env) == 1)
 			return (1);
+		return(global(0));
+		
 	}
 	if (update_oldpwd(env) == 1)
 		return (1);
