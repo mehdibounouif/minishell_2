@@ -28,13 +28,43 @@ void	ulink_files(char **files)
 void	child_process_redi(t_tree *node, t_env *env, char **envp, int *p)
 {
 	char *path;
-
+  struct stat st;
   if (p)
   {
     close(p[0]);
     close(p[1]);
   }
 	dup_fds(node->redirect);
+  // If command is absolute or relative path, try to exec directly
+  if (node->redirect->prev->command->command[0] == '/' || node->redirect->prev->command->command[0] == '.')
+  {
+      if (stat(node->redirect->prev->command->command, &st) == -1)
+      {
+          print(node->redirect->prev->command->command, ": No such file or directory", 127);
+          free_env(env);
+          ft_free_garbage(ft_function());
+          exit(127);
+      }
+      if (S_ISDIR(st.st_mode))
+      {
+          print(node->redirect->prev->command->command, ": Is a directory", 126);
+          free_env(env);
+          ft_free_garbage(ft_function());
+          exit(126);
+      }
+      if (access(node->redirect->prev->command->command, X_OK) == -1)
+      {
+          print(node->redirect->prev->command->command, ": Permission denied", 126);
+          free_env(env);
+          ft_free_garbage(ft_function());
+          exit(126);
+      }
+      execve(node->redirect->prev->command->command, node->redirect->prev->command->args, envp);
+      perror("minishell");
+      free_env(env);
+      ft_free_garbage(ft_function());
+      exit(127);
+  }
 	path = find_path(node->redirect->prev , env);
 	if (!path)
 	{
