@@ -66,7 +66,7 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 	tokenize(cmd, &minishell->list);
 	without_quotes(&minishell->list);
   expand(&minishell->list, env);
-  if (!minishell->list->content[0] && !minishell->list->next)
+  if (!minishell->list->content[0] && !minishell->list->next && !minishell->list->between_quoted)
   {
     //free(cmd);
     free_list(&minishell->list);

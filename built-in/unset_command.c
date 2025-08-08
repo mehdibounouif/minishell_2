@@ -28,9 +28,9 @@ void	unset_env_var(t_env **env, char *key)
 				prev->next = current->next;
 			else
 				*env = current->next;
-			free(current->key);
-			free(current->value);
-			free(current);
+			//free(current->key);
+			//free(current->value);
+			//free(current);
 			return ;
 		}
 		prev = current;
