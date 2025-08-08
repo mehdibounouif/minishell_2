@@ -272,7 +272,7 @@ void  dote_command(t_tree *node, t_env *env);
 void	execute_redirection_command(t_tree *node, t_env *env, char **envp, int *p);
 int	check_infile_in_directory(char *files);
 int	check_in_files(char *file);
-int	exist_check_permession_else_create(char *file, char *full_path, DIR *dir);
+int	exist_check_permession_else_create(char *file, DIR *dir);
 int	check_correct_path(char *file, char *full_path);
 int	in_directory(char *file);
 int	is_directory(char *file);
@@ -284,6 +284,7 @@ char	*ft_getenv(char *key, t_env *list);
 char	*find_path(t_tree *node, t_env *list);
 int	ft_arraylen(char **arr);
 int	len_slash(char *str, char c, int len);
+int only_space(char *str);
 
 // Print data
 void	print_her(t_herdoc *herdoc);

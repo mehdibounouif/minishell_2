@@ -22,6 +22,19 @@ int	ft_arraylen(char **arr)
 	return (i);
 }
 
+int only_space(char *str)
+{
+  int i;
+
+  i = 0;
+  if (!str[i])
+    return (0);
+  while (str[i])
+    if (!is_space(str[i++]))
+      return (0);
+  return (1);
+}
+
 int	len_slash(char *str, char c, int len)
 {
 	while(str[len] != c)

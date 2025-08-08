@@ -59,7 +59,7 @@ int	check_in_files(char *file)
 	return (1);
 }
 
-int	exist_check_permession_else_create(char *file, char *full_path, DIR *dir)
+int	exist_check_permession_else_create(char *file, DIR *dir)
 {
 	int	fd;
 
@@ -97,7 +97,7 @@ int	check_correct_path(char *file, char *full_path)
 	// correct path
 	else
 	{
-		if (!exist_check_permession_else_create(file, full_path, dir))
+		if (!exist_check_permession_else_create(file, dir))
 		{
 			closedir(dir);
 			return (0);
