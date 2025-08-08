@@ -6,29 +6,13 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:48 by moraouf           #+#    #+#             */
-/*   Updated: 2025/08/07 10:10:03 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/08 21:27:24 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	is_valid_identifier(char *str)
-{
-	int	i;
 
-	if (!str || !str[0])
-		return (0);
-	if (!ft_isalpha(str[0]) && str[0] != '_')
-		return (0);
-	i = 1;
-	while (str[i] && str[i] != '=')
-	{
-		if (!ft_isalnum(str[i]) && str[i] != '_')
-			return (0);
-		i++;
-	}
-	return (1);
-}
 void	unset_env_var(t_env **env, char *key)
 {
 	t_env	*current;
@@ -63,13 +47,6 @@ int	unset_command(t_env *env, char **args)
 
 	while (args[i])
 	{
-		if (!is_valid_identifier(args[i])) // check
-		{
-			ft_putstr_fd("minishell: unset : `", 2);
-			ft_putstr_fd(args[i], 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-			return (EXIT_FAILURE);
-		}
 		unset_env_var(&env, args[i]);
 		i++;
 	}
