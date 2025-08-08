@@ -66,6 +66,12 @@ int readline_and_parssing(t_mini *minishell, t_env *env)
 	tokenize(cmd, &minishell->list);
 	without_quotes(&minishell->list);
   expand(&minishell->list, env);
+  if (!minishell->list->content[0] && !minishell->list->next)
+  {
+    //free(cmd);
+    free_list(&minishell->list);
+		return (0);
+  }
 	join_b_space_nodes(&minishell->list);
 	if (!check_syntax(minishell->list))
 	{

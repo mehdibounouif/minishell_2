@@ -109,7 +109,7 @@ t_node *expand_list(t_node *prev, t_node *tmp, t_env *env)
     {
         node = create_node2(list[i], tmp->b_space, tmp->type, tmp->between_quoted);
         i++;
-        if (i < len && i > 0)
+        if (i < len)
           node->b_space = 0;
         if (i == len && content[ft_strlen(content) - 1] == ' ')
             node->b_space = 0;
