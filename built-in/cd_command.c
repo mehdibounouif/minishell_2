@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:42:07 by moraouf           #+#    #+#             */
-/*   Updated: 2025/08/08 22:01:54 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/09 18:36:23 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,14 @@ static int	change_to_home(t_env *env)
 	if (!home)
 	{
 		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
-		return (1);
+		return (global(1));
 	}
 	if (chdir(home) == -1)
 	{
 		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(home, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
-		return (1);
+		return (global(1));
 	}
 	return (0);
 }
