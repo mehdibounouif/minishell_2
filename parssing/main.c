@@ -24,30 +24,30 @@ int global(int state)
 	return value;
 }
 
-int	heredoc(int *flag, t_mini minishell, t_env *envp)
-{
-	pid_t pid;
-	int status;
+// int	heredoc(int *flag, t_mini minishell, t_env *envp)
+// {
+// 	pid_t pid;
+// 	int status;
 
-	sig_ctrl(1); //mode execution
-	pid = fork();
-	if(pid == 0)
-	{
-		signal(SIGINT, SIG_DFL);
-		//	signal(SIGQUIT, SIG_DFL);
-		open_herdocs(minishell.tree, envp);
-    exit(global(-1));
-	}
-	else if(pid > 0)
-	{
-		waitpid(pid, &status, 0);
-    /// printf("%s\n", WIFSIGNALED(status) ? "yes" : "no");
-		*flag = ft_return_signal(status);
-		sig_ctrl(0);
-		//ft_free_garbage(ft_function());
-	}
-	return (1);
-}
+// 	sig_ctrl(1); //mode execution
+// 	pid = fork();
+// 	if(pid == 0)
+// 	{
+// 		signal(SIGINT, SIG_DFL);
+// 		//	signal(SIGQUIT, SIG_DFL);
+// 		open_herdocs(flag, minishell.tree, envp);
+//     exit(global(-1));
+// 	}
+// 	else if(pid > 0)
+// 	{
+// 		waitpid(pid, &status, 0);
+//     /// printf("%s\n", WIFSIGNALED(status) ? "yes" : "no");
+// 		*flag = ft_return_signal(status);
+// 		sig_ctrl(0);
+// 		//ft_free_garbage(ft_function());
+// 	}
+// 	return (1);
+// }
 
 int	check_heredoc(t_tree *tree)
 {
@@ -85,15 +85,15 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 		if (!readline_and_parssing(&minishell, envp))
 			continue;
 		print_ast(minishell.tree, 0);
-		int flag = 0;
+	  int flag = 0;
 		if (check_heredoc(minishell.tree))
-			if (!heredoc(&flag, minishell, envp))
+			if (!open_herdocs(&flag, minishell.tree, envp))
 			{
 			  ft_free_garbage(ft_function());
 				exit(global(-1));
 			}
-		if (flag)
-			continue;
+		// if (flag) always is true so is never got to execution stage (check why)
+		// 	continue;
 		sig_ctrl(1); // Set execution mode
 		execute_full_command(minishell.tree, envp, env, 0, NULL);
 	  sig_ctrl(0); // Back to interactive mode

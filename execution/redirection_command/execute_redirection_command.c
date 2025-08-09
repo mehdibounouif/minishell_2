@@ -17,6 +17,8 @@ void	ulink_files(char **files)
 {
 	int	 i;
 
+  if (!files[0])
+    return ;
 	i = 0;
 	while (files[i])
 	{
@@ -115,8 +117,7 @@ void	fork_and_exec(t_tree *node, t_env *env, char **envp, int *p)
 			global(WEXITSTATUS(status));
 		else if (WIFSIGNALED(status))
 			global(128 + WTERMSIG(status));
-      if (node->redirect->heredocs)
-        ulink_files(node->redirect->heredocs);
+    ulink_files(node->redirect->heredocs);
 	}
 
 }

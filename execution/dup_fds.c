@@ -34,6 +34,7 @@ void	dup_input(t_redirection *node)
 		dup2(in_fd, 0);
 		close(in_fd);
 	}
+  ulink_files(node->heredocs);
 }
 
 void	dup_output(t_redirection *node)

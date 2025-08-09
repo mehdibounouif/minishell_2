@@ -179,7 +179,7 @@ char	**ft_split1(char const *s, char c);
 void	execute_pipe_node(t_tree *tree, t_env *env, char **envp);
 void print_env(t_env *env);
 void print_ast(t_tree *tree, int level);
-int	open_herdocs(t_tree *tree, t_env *env);
+int	open_herdocs(int *flag, t_tree *tree, t_env *env);
 void	skip_redirection(t_node **list);
 char **back_up();
 void	print(char *command, char *message, int code);
@@ -279,6 +279,7 @@ int	is_directory(char *file);
 int	just_file(t_redirection *node, char *file, int type);
 int	check_out_files(t_redirection *node, char *file, int type);
 int	check_if_exist(t_redirection *node);
+void	ulink_files(char **files);
 
 char	*ft_getenv(char *key, t_env *list);
 char	*find_path(t_tree *node, t_env *list);

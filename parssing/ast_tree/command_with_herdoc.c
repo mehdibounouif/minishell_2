@@ -81,13 +81,10 @@ int	get_lastfd(int *list)
 	return (list[i-1]);
 }
 
-int	check_line(t_share3 *share)
+void	check_line(t_share3 *share)
 {
-	if(!share->line)
-	{
 		if(share->file_name)
 		{
-			// free(share->file_name);
 			share->file_name = NULL;
 		}
 		if(share->fd >= 0)
@@ -95,42 +92,68 @@ int	check_line(t_share3 *share)
 			close(share->fd);
 			share->fd = -1;
 		}
-		return (0);
-	}
-	return (1);
 }
 
-int	read_lines(t_share3 *share, t_redirection *list, t_env *env)
+int	read_lines(int *flag, t_share3 *share, t_redirection *list, t_env *env)
 {
-	while (share->line && ft_strcmp(list->herdoc->delimeter, share->line))
+  pid_t pid;
+	int status;
+
+	sig_ctrl(1); //mode execution
+	pid = fork();
+	if(pid == 0)
 	{
-		if (!list->herdoc->quoted)
-		{
-			share->expand_line = expansion(share->line, env, 0);
-			write(share->fd, share->expand_line, ft_strlen(share->expand_line));
-			write(share->fd, "\n", 1);
-      share->expand_line = NULL;
-		}
-		else 
-		{
-			write(share->fd, share->line, ft_strlen(share->line));
-			write(share->fd, "\n", 1);
-		}
-		// free(share->line);
-		share->line = NULL;
-		share->line = readline(">");
-		if (!check_line(share))
-		return (0);
+		signal(SIGINT, SIG_DFL);
+    share->line = readline(">");
+    if(!share->line)
+    {
+      printf("bash: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", list->herdoc->delimeter);
+      check_line(share);
+      ft_free_garbage(ft_function());
+      free_env(env);
+      exit(global(-1));
+    }
+    while (share->line && ft_strcmp(list->herdoc->delimeter, share->line))
+    {
+      if (!list->herdoc->quoted)
+      {
+        share->expand_line = expansion(share->line, env, 0);
+        write(share->fd, share->expand_line, ft_strlen(share->expand_line));
+        write(share->fd, "\n", 1);
+        share->expand_line = NULL;
+      }
+      else
+      {
+        write(share->fd, share->line, ft_strlen(share->line));
+        write(share->fd, "\n", 1);
+      }
+      // free(share->line);
+      share->line = NULL;
+      share->line = readline(">");
+      if(!share->line)
+      {
+        printf("bash: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", list->herdoc->delimeter);
+        check_line(share);
+        ft_free_garbage(ft_function());
+        free_env(env);
+        exit(global(-1));
+      }
+    }
+    exit(0);
 	}
-	if(share->line)
+	else if(pid > 0)
 	{
-		// free(share->line);
-		share->line = NULL;
+		waitpid(pid, &status, 0);
+    /// printf("%s\n", WIFSIGNALED(status) ? "yes" : "no");
+		*flag = ft_return_signal(status);
+		sig_ctrl(0);
+    printf("%d\n", *flag); // always is 1 (why)
+		//ft_free_garbage(ft_function());
 	}
 	return (1);
 }
 
-int	create_heredoc(t_redirection *list, t_env *env, int i)
+int	create_heredoc(int *flag, t_redirection *list, t_env *env, int i)
 {
 	t_share3 *share;
 
@@ -144,26 +167,17 @@ int	create_heredoc(t_redirection *list, t_env *env, int i)
 	{
 		// free(share->file_name);
 		printf("open heredoc file failed!\n");
+    free_env(env);
+    ft_free_garbage(ft_function());
 		exit(0);
 	}
 	list->heredocs[i] = ft_strdup(share->file_name);
-	// free(share->file_name);
-	share->line = readline(">");
-	if(!share->line)
-	{
-		printf("bash: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", list->herdoc->delimeter);
-		//global(-1);
-    exit(global(-1));
-	}
-	if (!check_line(share))
-		return (0);
-	if (!read_lines(share, list, env))
-		return (0);
+	read_lines(flag, share, list, env);
 	close(share->fd);
 	return (1);
 }
 
-int	open_her(t_tree *tree, t_env *env)
+int	open_her(int *flag, t_tree *tree, t_env *env)
 {
 	int	i;
 
@@ -172,11 +186,12 @@ int	open_her(t_tree *tree, t_env *env)
 	ft_memset(tree->redirect->heredocs, 0, sizeof(char *) * 20);
 	while (tree->redirect->herdoc)
 	{
-		if (!create_heredoc(tree->redirect, env, i))
+		if (!create_heredoc(flag, tree->redirect, env, i))
 		{
-			free(tree->redirect->heredocs);
-			free(tree->redirect);
-			exit(global(-1));
+			//free(tree->redirect->heredocs);
+			//free(tree->redirect);
+			//exit(global(-1));
+      return (0);
 		}
 		tree->redirect->herdoc = tree->redirect->herdoc->next;
 		i++;
@@ -185,18 +200,19 @@ int	open_her(t_tree *tree, t_env *env)
 	return (1);
 }
 
-int	open_herdocs(t_tree *tree, t_env *env)
+int	open_herdocs(int *flag, t_tree *tree, t_env *env)
 {
 	if (!tree)
 		return (0);
 	if (tree->type == REDIRECT_NODE)
 	{
-		open_her(tree, env);
+		if (!open_her(flag, tree, env))
+      return (0);
 	}
 	else if (tree->type == PIPE_NODE)
 	{
-		open_herdocs(tree->pipe->left, env);
-		open_herdocs(tree->pipe->right, env);
+		open_herdocs(flag, tree->pipe->left, env);
+		open_herdocs(flag, tree->pipe->right, env);
 	}
 	return (1);
 }
