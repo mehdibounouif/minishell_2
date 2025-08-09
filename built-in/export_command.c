@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:57 by moraouf           #+#    #+#             */
-/*   Updated: 2025/08/06 22:03:27 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/09 16:05:29 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	print_env_export(t_env *env)
 	}
 }
 
-int	export_command(t_env *env, char **args)
+int	export_command(t_env **env, char **args)
 {
 	int		i;
 	char	*key;
@@ -63,7 +63,7 @@ int	export_command(t_env *env, char **args)
 	if (!args[1])
 	{
 		// sorted_env(env);
-		print_env_export(env);
+		print_env_export(*env);
 //		ft_free_garbage(ft_function());
 		return (EXIT_SUCCESS);
 	}
@@ -94,18 +94,18 @@ int	export_command(t_env *env, char **args)
 			// 	free(existing->value);
 			// 	existing->value = ft_strdup1(value);
 			// }
-			set_env_var(&env, key, value);
+			set_env_var(env, key, value);
 			//free(key);
 			//free(value);
 		}
 		else
 		{
-			existing = get_env_var(env, args[i]);
+			existing = get_env_var(*env, args[i]);
 			if (!existing)
 			{
 				// add at the last hna makynach
 				new = create_env_var(args[i], NULL);
-				ft_lstadd_node(&env, new);
+				ft_lstadd_node(env, new);
 			}
 		}
 		i++;

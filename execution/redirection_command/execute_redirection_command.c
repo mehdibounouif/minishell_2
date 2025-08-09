@@ -6,10 +6,10 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/01 21:38:58 by mbounoui         ###   ########.fr       */
-/*   Updated: 2025/07/30 11:54:07 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/09 16:01:00 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../../includes/minishell.h"
 
@@ -88,7 +88,7 @@ void	built_in(t_tree *node, t_env *env, char *cmd)
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
 	dup_fds(node->redirect, env);
-	int result = execute_builtin_command(cmd, node->redirect->prev->command->args, env);
+	int result = execute_builtin_command(cmd, node->redirect->prev->command->args, &env);
 	dup2(saved_stdin, STDIN_FILENO);
 	dup2(saved_stdout, STDOUT_FILENO);
 	close(saved_stdin);

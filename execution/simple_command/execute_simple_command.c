@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/01 15:41:37 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/09 16:02:31 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	parent_process(int status, pid_t pid)
 		global(WEXITSTATUS(status));
 }
 
-void	execute_command_node(t_tree *node, t_env *env, char **envp)
+void	execute_command_node(t_tree *node, t_env **env, char **envp)
 {
 	int status;
 
@@ -116,11 +116,11 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp)
   if (pid < 0)
   {
     ft_free_garbage(ft_function());
-    free_env(env);
+    free_env(*env);
     exit(1);
   }
 	else if (pid == 0)
-		child_process(node, env, envp);
+		child_process(node, *env, envp);
 	else
 		parent_process(status, pid);
 }

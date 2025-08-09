@@ -6,10 +6,10 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/02 23:04:57 by mbounoui         ###   ########.fr       */
-/*   Updated: 2025/07/24 13:25:37 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/09 16:04:46 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 #ifndef MINISHELL_H
@@ -153,8 +153,8 @@ typedef	struct t_share
 int cd_command(t_env *env, char **args);
 int echo_command(char **args);
 int pwd_command();
-int export_command(t_env *env, char **args);
-int unset_command(t_env *env, char **args);
+int export_command(t_env **env, char **args);
+int unset_command(t_env **env, char **args);
 int env_command(t_env *env, char **args);
 int	exit_command(t_tree *node, t_env *env, char **args);
 char *get_env_value(t_env *env, char *key);
@@ -183,9 +183,9 @@ int	open_herdocs(int *flag, t_tree *tree, t_env *env);
 void	skip_redirection(t_node **list);
 char **back_up();
 void	print(char *command, char *message, int code);
-int	execute_builtin(t_tree *node, t_env *env);
+int	execute_builtin(t_tree *node, t_env **env);
 int	is_builtin(char *command);
-int	execute_builtin_command(char *command, char **args, t_env *env);
+int	execute_builtin_command(char *command, char **args, t_env **env);
 void	dup_fds(t_redirection *node, t_env *env);
 // void	dup_output(t_redirection *node);
 // void	dup_input(t_redirection *node);
@@ -257,11 +257,11 @@ void	expand_exit_status(t_share *share);
 int	get_env_len(char *cmd, int i);
 
 // EXECUTE 
-void execute_full_command(t_tree *node, t_env *env, char **envp, int pipe_flag);
+void execute_full_command(t_tree *node, t_env **env, char **envp, int pipe_flag);
 // PIPE
 void	execute_pipe_node(t_tree *tree, t_env *env, char **envp);
 // SIMPLE
-void	execute_command_node(t_tree *node, t_env *env, char **envp);
+void	execute_command_node(t_tree *node, t_env **env, char **envp);
 void	print(char *command, char *message, int code);
 void	folder(t_env *env, char *command);
 void	command_is_directory(t_env *env, char *command);

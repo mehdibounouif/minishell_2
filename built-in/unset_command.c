@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:48 by moraouf           #+#    #+#             */
-/*   Updated: 2025/08/08 21:27:24 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/09 15:45:49 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,20 @@ void	unset_env_var(t_env **env, char *key)
 			if (prev)
 				prev->next = current->next;
 			else
-				*env = current->next;
+			{
+				*env = current->next; 
+				return ;
+			}
 			//free(current->key);
 			//free(current->value);
 			//free(current);
-			return ;
+			return;
 		}
 		prev = current;
 		current = current->next;
 	}
 }
-int	unset_command(t_env *env, char **args)
+int	unset_command(t_env **env, char **args)
 {
 	int i;
 
@@ -47,7 +50,7 @@ int	unset_command(t_env *env, char **args)
 
 	while (args[i])
 	{
-		unset_env_var(&env, args[i]);
+		unset_env_var(env, args[i]);
 		i++;
 	}
 	return (global(0));

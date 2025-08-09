@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipe_command.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:37 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/01 22:07:34 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/09 16:02:13 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include <unistd.h>
 
-int	left(pid_t p[2], t_env *env, t_tree *tree, char **envp)
+int	left(pid_t p[2], t_env **env, t_tree *tree, char **envp)
 {
 	pid_t	left;
 	left = fork();
   if (left < 0)
   {
     ft_free_garbage(ft_function());
-    free_env(env);
+    free_env(*env);
     exit(1);
   }
 	else if (left == 0)
@@ -30,7 +30,7 @@ int	left(pid_t p[2], t_env *env, t_tree *tree, char **envp)
     {
 	    perror("dup2 failed");
       ft_free_garbage(ft_function());
-      free_env(env);
+      free_env(*env);
 	    exit(1);
     }
 		close(p[1]);
@@ -42,7 +42,7 @@ int	left(pid_t p[2], t_env *env, t_tree *tree, char **envp)
 		return (left);
 }
 
-int	right(int *p, t_env *env, t_tree *tree, char **envp)
+int	right(int *p, t_env **env, t_tree *tree, char **envp)
 {
 	pid_t	right;
 
@@ -50,7 +50,7 @@ int	right(int *p, t_env *env, t_tree *tree, char **envp)
   if (right < 0)
   {
     ft_free_garbage(ft_function());
-    free_env(env);
+    free_env(*env);
     exit(1);
   }
 	else if (right == 0)
@@ -60,7 +60,7 @@ int	right(int *p, t_env *env, t_tree *tree, char **envp)
     {
 	    perror("dup2 failed");
       ft_free_garbage(ft_function());
-      free_env(env);
+      free_env(*env);
 	    exit(1);
     }
 		close(p[0]);
@@ -86,8 +86,8 @@ void	execute_pipe_node(t_tree *tree, t_env *env, char **envp)
     free_env(env);
     exit(1);
   }
-	l = left(p, env, tree, envp);
-	r = right(p, env, tree, envp);
+	l = left(p, &env, tree, envp);
+	r = right(p, &env, tree, envp);
 	close(p[0]);
 	close(p[1]);
 	waitpid(l, NULL, 0);
