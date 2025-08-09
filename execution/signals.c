@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: taha_laylay <taha_laylay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 11:06:57 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/30 16:43:56 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/09 22:51:42 by taha_laylay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ int	ft_return_signal(int status)
 	}
 	else if(WIFEXITED(status))
 	{
-		sig = WTERMSIG(status);
+		sig = WEXITSTATUS(status);
 		global(sig);
-		return (1);
+		return (0);  // Retourne 0 pour un exit normal, 1 seulement pour les signaux
 	}
 	return (0);
 }

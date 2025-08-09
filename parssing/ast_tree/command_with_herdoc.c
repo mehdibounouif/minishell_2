@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_with_herdoc.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: taha_laylay <taha_laylay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/02 16:03:29 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/09 23:13:34 by taha_laylay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,6 @@ int	read_lines(int *flag, t_share3 *share, t_redirection *list, t_env *env)
     /// printf("%s\n", WIFSIGNALED(status) ? "yes" : "no");
 		*flag = ft_return_signal(status);
 		sig_ctrl(0);
-    printf("%d\n", *flag); // always is 1 (why)
 		//ft_free_garbage(ft_function());
 	}
 	return (1);
@@ -183,6 +182,9 @@ int	create_heredoc(int *flag, t_redirection *list, t_env *env, int i)
 	list->heredocs[i] = ft_strdup(share->file_name);
 	read_lines(flag, share, list, env);
 	close(share->fd);
+	// signal here stop excution
+	if (*flag)
+		return (0);
 	return (1);
 }
 
@@ -202,6 +204,9 @@ int	open_her(int *flag, t_tree *tree, t_env *env)
 			//exit(global(-1));
       return (0);
 		}
+		// Stop here
+		if (*flag)
+			return (0);
 		tree->redirect->herdoc = tree->redirect->herdoc->next;
 		i++;
 	}
@@ -217,11 +222,20 @@ int	open_herdocs(int *flag, t_tree *tree, t_env *env)
 	{
 		if (!open_her(flag, tree, env))
       return (0);
+		// Stop here
+		if (*flag)
+			return (0);
 	}
 	else if (tree->type == PIPE_NODE)
 	{
-		open_herdocs(flag, tree->pipe->left, env);
-		open_herdocs(flag, tree->pipe->right, env);
+		if (!open_herdocs(flag, tree->pipe->left, env))
+			return (0);
+		if (*flag)
+			return (0);
+		if (!open_herdocs(flag, tree->pipe->right, env))
+			return (0);
+		if (*flag)
+			return (0);
 	}
 	return (1);
 }
