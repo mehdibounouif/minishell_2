@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/* ************************************************************************** */
-
 
 
 #include "../includes/minishell.h"
@@ -85,10 +83,11 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 		if (!readline_and_parssing(&minishell, envp))
 			continue;
 		// print_ast(minishell.tree, 0);
-	  int flag = 0;
+	  int flag_sig = 0;
 		if (check_heredoc(minishell.tree))
-			if (!open_herdocs(&flag, minishell.tree, envp))
+			if (!open_herdocs(&flag_sig, minishell.tree, envp))
 			{
+<<<<<<< HEAD
 				if (flag) // retourner au prompt
 					continue;
 				else // Erreur système, quitter
@@ -99,11 +98,19 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 			}
 		 if (flag) // Signal reçu pendant le heredoc, ne pas exécuter
 		 	continue;
+=======
+        free_env(envp);
+			  ft_free_garbage(ft_function());
+				exit(global(-1));
+			}
+		if (flag_sig) //always is true so is never got to execution stage (check why)
+			continue;
+>>>>>>> 328edac0bae6d505a147abcc2a40da78ac46ad2c
 		sig_ctrl(1); // Set execution mode
 		execute_full_command(minishell.tree, &envp, env, 0);
 	  sig_ctrl(0); // Back to interactive mode
 	}
+  free_env(envp);
   ft_free_garbage(ft_function());
 	exit(global(-1));
-	//return (0);
 }

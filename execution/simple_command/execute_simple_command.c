@@ -41,35 +41,7 @@ void	child_process(t_tree *node, t_env *env, char **envp)
     dote_command(node, env); // "." or . or ..
 
     // If command is absolute or relative path, try to exec directly
-    if (node->command->command[0] == '/' || node->command->command[0] == '.')
-    {
-        if (stat(node->command->command, &st) == -1)
-        {
-            print(node->command->command, ": No such file or directory", 127);
-            free_env(env);
-            ft_free_garbage(ft_function());
-            exit(127);
-        }
-        if (S_ISDIR(st.st_mode))
-        {
-            print(node->command->command, ": Is a directory", 126);
-            free_env(env);
-            ft_free_garbage(ft_function());
-            exit(126);
-        }
-        if (access(node->command->command, X_OK) == -1)
-        {
-            print(node->command->command, ": Permission denied", 126);
-            free_env(env);
-            ft_free_garbage(ft_function());
-            exit(126);
-        }
-        execve(node->command->command, node->command->args, envp);
-        perror("minishell");
-        free_env(env);
-        ft_free_garbage(ft_function());
-        exit(127);
-    }
+    absolute_path(node, env, envp);
     // Otherwise, search in PATH
     find_path_and_exec(node, env, envp);
 }

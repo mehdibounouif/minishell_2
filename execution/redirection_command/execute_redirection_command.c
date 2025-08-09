@@ -27,41 +27,43 @@ void	ulink_files(char **files)
 	}
 }
 
+void  print_and_exit(t_tree *node, t_env *env, int code, char *message)
+{
+  print(node->redirect->prev->command->command, message, code);
+  free_env(env);
+  ft_free_garbage(ft_function());
+  exit(code);
+}
+
+void  absolute_path(t_tree *node, t_env *env, char **envp)
+{
+  struct stat st;
+  char  *command;
+
+  command = node->command->command;
+  if (command[0] == '/' || command[0] == '.')
+  {
+    if (stat(command, &st) == -1)
+      print_and_exit(node, env, 127, ": No such file or directory");
+    if (S_ISDIR(st.st_mode))
+      print_and_exit(node, env, 126, ": Is a directory");
+    if (access(command, X_OK) == -1)
+      print_and_exit(node, env, 126, ": Permission denied");
+    execve(command, node->command->args, envp);
+    perror("minishell");
+    free_env(env);
+    ft_free_garbage(ft_function());
+    exit(127);
+  }
+}
+
 void	child_process_redi(t_tree *node, t_env *env, char **envp)
 {
 	char *path;
-  struct stat st;
+
 	dup_fds(node->redirect, env);
   // If command is absolute or relative path, try to exec directly
-  if (node->redirect->prev->command->command[0] == '/' || node->redirect->prev->command->command[0] == '.')
-  {
-      if (stat(node->redirect->prev->command->command, &st) == -1)
-      {
-          print(node->redirect->prev->command->command, ": No such file or directory", 127);
-          free_env(env);
-          ft_free_garbage(ft_function());
-          exit(127);
-      }
-      if (S_ISDIR(st.st_mode))
-      {
-          print(node->redirect->prev->command->command, ": Is a directory", 126);
-          free_env(env);
-          ft_free_garbage(ft_function());
-          exit(126);
-      }
-      if (access(node->redirect->prev->command->command, X_OK) == -1)
-      {
-          print(node->redirect->prev->command->command, ": Permission denied", 126);
-          free_env(env);
-          ft_free_garbage(ft_function());
-          exit(126);
-      }
-      execve(node->redirect->prev->command->command, node->redirect->prev->command->args, envp);
-      perror("minishell");
-      free_env(env);
-      ft_free_garbage(ft_function());
-      exit(127);
-  }
+  absolute_path(node->redirect->prev, env, envp);
 	path = find_path(node->redirect->prev , env);
 	if (!path)
 	{
@@ -118,7 +120,6 @@ void	fork_and_exec(t_tree *node, t_env *env, char **envp)
 			global(WEXITSTATUS(status));
 		else if (WIFSIGNALED(status))
 			global(128 + WTERMSIG(status));
-    //ulink_files(node->redirect->heredocs);
 	}
 
 }

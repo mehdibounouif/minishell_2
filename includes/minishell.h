@@ -268,6 +268,7 @@ void	command_is_directory(t_env *env, char *command);
 void	command_inside_directory(t_tree *node, char **envp, t_env *env);
 void	empty_command(t_tree *node, t_env *env);
 void  dote_command(t_tree *node, t_env *env);
+void  absolute_path(t_tree *node, t_env *env, char **envp);
 // REDIRECTION
 void	execute_redirection_command(t_tree *node, t_env *env, char **envp);
 int	check_infile_in_directory(char *files);
