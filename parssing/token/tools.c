@@ -117,5 +117,6 @@ t_node	*new_token(char *content, int b_space)
 	node->next = NULL;
 	node->prev = NULL;
 	node->between_quoted = between_quoted(content, ft_strlen(content));
+	node->contain_quoted = contain_quoted(content, ft_strlen(content));
 	return (node);
 }
