@@ -69,21 +69,23 @@ char	*find_path(t_tree *node, t_env *list)
 	char	*path_slash;
 	char	*full_path;
 
-	all_paths = ft_split(ft_getenv("PATH", list), ':');
+	if (!(all_paths = ft_split(ft_getenv("PATH", list), ':')))
+	{
+		print(node->command->command, ":  No such file or directory", 127);
+		free_env(list);
+		ft_free_garbage(ft_function());
+		exit(127);
+	}
 	i = 0;
 	while (all_paths[i])
 	{
 		path_slash = ft_strjoin(all_paths[i], "/");
 		full_path = ft_strjoin(path_slash, node->command->command);
-		//free(path_slash);
 		if (access(full_path, F_OK | X_OK) == 0)
 		{
-			//free_str(all_paths);
 			return (full_path);
 		}
-		//free(full_path);
 		i++;
 	}
-	//free_str(all_paths);
 	return (NULL);
 }
