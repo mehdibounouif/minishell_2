@@ -6,7 +6,7 @@
 /*   By: taha_laylay <taha_laylay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/09 23:13:34 by taha_laylay      ###   ########.fr       */
+/*   Updated: 2025/08/09 23:53:31 by taha_laylay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	check_line(t_share3 *share)
 		}
 }
 
-int	read_lines(int *flag_sig, t_share3 *share, t_redirection *list, t_env *env)
+int	read_lines(int *flag, t_share3 *share, t_redirection *list, t_env *env)
 {
   pid_t pid;
 	int status;
@@ -154,9 +154,8 @@ int	read_lines(int *flag_sig, t_share3 *share, t_redirection *list, t_env *env)
 	{
 		waitpid(pid, &status, 0);
     /// printf("%s\n", WIFSIGNALED(status) ? "yes" : "no");
-		*flag_sig = ft_return_signal(status);
+		*flag = ft_return_signal(status);
 		sig_ctrl(0);
-    printf("%d\n", *flag_sig); // always is 1 (why)
 		//ft_free_garbage(ft_function());
 	}
 	return (1);
