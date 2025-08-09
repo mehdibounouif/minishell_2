@@ -6,7 +6,7 @@
 /*   By: taha_laylay <taha_laylay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/09 22:48:14 by taha_laylay      ###   ########.fr       */
+/*   Updated: 2025/08/09 23:40:20 by taha_laylay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,16 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 		if (check_heredoc(minishell.tree))
 			if (!open_herdocs(&flag, minishell.tree, envp))
 			{
-			  ft_free_garbage(ft_function());
-				exit(global(-1));
+				if (flag) // retourner au prompt
+					continue;
+				else // Erreur système, quitter
+				{
+					ft_free_garbage(ft_function());
+					exit(global(-1));
+				}
 			}
-		 if (flag)// always is true so is never got to execution stage (check why)
-		// 	continue;
+		 if (flag) // Signal reçu pendant le heredoc, ne pas exécuter
+		 	continue;
 		sig_ctrl(1); // Set execution mode
 		execute_full_command(minishell.tree, &envp, env, 0);
 	  sig_ctrl(0); // Back to interactive mode
