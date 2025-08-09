@@ -118,8 +118,14 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp, int *p)
 		return ;
 	}
 	pid_t pid = fork();
-	if (pid == 0)
+  if (pid < 0)
+  {
+    ft_free_garbage(ft_function());
+    free_env(env);
+    exit(1);
+  }
+	else if (pid == 0)
 		child_process(node, env, envp, p);
-	else if (pid > 0)
+	else
 		parent_process(status, pid);
 }

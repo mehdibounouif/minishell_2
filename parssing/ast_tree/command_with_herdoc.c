@@ -101,7 +101,13 @@ int	read_lines(int *flag, t_share3 *share, t_redirection *list, t_env *env)
 
 	sig_ctrl(1); //mode execution
 	pid = fork();
-	if(pid == 0)
+  if (pid < 0)
+  {
+    ft_free_garbage(ft_function());
+    free_env(env);
+    exit(1);
+  }
+	else if(pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
     share->line = readline(">");
@@ -141,7 +147,7 @@ int	read_lines(int *flag, t_share3 *share, t_redirection *list, t_env *env)
     }
     exit(0);
 	}
-	else if(pid > 0)
+	else
 	{
 		waitpid(pid, &status, 0);
     /// printf("%s\n", WIFSIGNALED(status) ? "yes" : "no");

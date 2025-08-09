@@ -17,7 +17,13 @@ int	left(pid_t p[2], t_env *env, t_tree *tree, char **envp)
 {
 	pid_t	left;
 	left = fork();
-	if (left == 0)
+  if (left < 0)
+  {
+    ft_free_garbage(ft_function());
+    free_env(env);
+    exit(1);
+  }
+	else if (left == 0)
 	{
 		// first child process;
     if (dup2(p[1], 1) == -1)
@@ -40,7 +46,13 @@ int	right(int *p, t_env *env, t_tree *tree, char **envp)
 	pid_t	right;
 
 	right = fork();
-	if (right == 0)
+  if (right < 0)
+  {
+    ft_free_garbage(ft_function());
+    free_env(env);
+    exit(1);
+  }
+	else if (right == 0)
 	{
 		// second child process; // close write side of pipe;
 		dup2(p[0], 0);
