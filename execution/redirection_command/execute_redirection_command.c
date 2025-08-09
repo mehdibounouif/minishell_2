@@ -27,16 +27,11 @@ void	ulink_files(char **files)
 	}
 }
 
-void	child_process_redi(t_tree *node, t_env *env, char **envp, int *p)
+void	child_process_redi(t_tree *node, t_env *env, char **envp)
 {
 	char *path;
   struct stat st;
-  if (p)
-  {
-    close(p[0]);
-    close(p[1]);
-  }
-	dup_fds(node->redirect);
+	dup_fds(node->redirect, env);
   // If command is absolute or relative path, try to exec directly
   if (node->redirect->prev->command->command[0] == '/' || node->redirect->prev->command->command[0] == '.')
   {
@@ -92,7 +87,7 @@ void	built_in(t_tree *node, t_env *env, char *cmd)
 
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
-	dup_fds(node->redirect);
+	dup_fds(node->redirect, env);
 	int result = execute_builtin_command(cmd, node->redirect->prev->command->args, env);
 	dup2(saved_stdin, STDIN_FILENO);
 	dup2(saved_stdout, STDOUT_FILENO);
@@ -102,7 +97,7 @@ void	built_in(t_tree *node, t_env *env, char *cmd)
 	global(result);
 }
 
-void	fork_and_exec(t_tree *node, t_env *env, char **envp, int *p)
+void	fork_and_exec(t_tree *node, t_env *env, char **envp)
 {
 	pid_t pid;
 	int	status;
@@ -115,7 +110,7 @@ void	fork_and_exec(t_tree *node, t_env *env, char **envp, int *p)
     exit(1);
   }
 	else if (pid == 0)
-		child_process_redi(node, env, envp, p);
+		child_process_redi(node, env, envp);
 	else
 	{
 		waitpid(pid, &status, 0);
@@ -128,7 +123,7 @@ void	fork_and_exec(t_tree *node, t_env *env, char **envp, int *p)
 
 }
 
-void	execute_redirection_command(t_tree *node, t_env *env, char **envp, int *p)
+void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 {
 	char	*cmd;
 	if (!check_if_exist(node->redirect))
@@ -142,5 +137,5 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp, int *p)
 	if (is_builtin(cmd))
 		built_in(node, env, cmd);
 	else
-		fork_and_exec(node, env, envp, p);
+		fork_and_exec(node, env, envp);
 }

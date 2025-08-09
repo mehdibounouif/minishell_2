@@ -145,6 +145,9 @@ int	read_lines(int *flag, t_share3 *share, t_redirection *list, t_env *env)
         exit(global(-1));
       }
     }
+    check_line(share);
+    ft_free_garbage(ft_function());
+    free_env(env);
     exit(0);
 	}
 	else

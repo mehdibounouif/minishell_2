@@ -29,12 +29,13 @@ int	left(pid_t p[2], t_env *env, t_tree *tree, char **envp)
     if (dup2(p[1], 1) == -1)
     {
 	    perror("dup2 failed");
+      ft_free_garbage(ft_function());
+      free_env(env);
 	    exit(1);
     }
-    //close(1);
 		close(p[1]);
     close(p[0]);
-		execute_full_command(tree->pipe->left, env, envp, 1, p);
+		execute_full_command(tree->pipe->left, env, envp, 1);
 		exit(global(-1));
 	}
 	else
@@ -55,17 +56,20 @@ int	right(int *p, t_env *env, t_tree *tree, char **envp)
 	else if (right == 0)
 	{
 		// second child process; // close write side of pipe;
-		dup2(p[0], 0);
-    //close(0);
+    if (dup2(p[0], 0) == -1)
+    {
+	    perror("dup2 failed");
+      ft_free_garbage(ft_function());
+      free_env(env);
+	    exit(1);
+    }
 		close(p[0]);
     close(p[1]);
-		execute_full_command(tree->pipe->right, env, envp, 1, p);
+		execute_full_command(tree->pipe->right, env, envp, 1);
 		exit(global(-1));
 	}
 	else
-  {
 		return (right);
-  }
 }
 
 
@@ -76,7 +80,12 @@ void	execute_pipe_node(t_tree *tree, t_env *env, char **envp)
 	pid_t l;
 	pid_t r;
 
-	pipe(p);
+	if (pipe(p) == -1)
+  {
+    ft_free_garbage(ft_function());
+    free_env(env);
+    exit(1);
+  }
 	l = left(p, env, tree, envp);
 	r = right(p, env, tree, envp);
 	close(p[0]);

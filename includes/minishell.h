@@ -186,9 +186,9 @@ void	print(char *command, char *message, int code);
 int	execute_builtin(t_tree *node, t_env *env);
 int	is_builtin(char *command);
 int	execute_builtin_command(char *command, char **args, t_env *env);
-void	dup_fds(t_redirection *node);
-void	dup_output(t_redirection *node);
-void	dup_input(t_redirection *node);
+void	dup_fds(t_redirection *node, t_env *env);
+// void	dup_output(t_redirection *node);
+// void	dup_input(t_redirection *node);
 
 // Tokenize
 void	tokenize(char *cmd, t_node **list);
@@ -257,11 +257,11 @@ void	expand_exit_status(t_share *share);
 int	get_env_len(char *cmd, int i);
 
 // EXECUTE 
-void execute_full_command(t_tree *node, t_env *env, char **envp, int pipe_flag, int *p);
+void execute_full_command(t_tree *node, t_env *env, char **envp, int pipe_flag);
 // PIPE
 void	execute_pipe_node(t_tree *tree, t_env *env, char **envp);
 // SIMPLE
-void	execute_command_node(t_tree *node, t_env *env, char **envp, int *p);
+void	execute_command_node(t_tree *node, t_env *env, char **envp);
 void	print(char *command, char *message, int code);
 void	folder(t_env *env, char *command);
 void	command_is_directory(t_env *env, char *command);
@@ -269,7 +269,7 @@ void	command_inside_directory(t_tree *node, char **envp, t_env *env);
 void	empty_command(t_tree *node, t_env *env);
 void  dote_command(t_tree *node, t_env *env);
 // REDIRECTION
-void	execute_redirection_command(t_tree *node, t_env *env, char **envp, int *p);
+void	execute_redirection_command(t_tree *node, t_env *env, char **envp);
 int	check_infile_in_directory(char *files);
 int	check_in_files(char *file);
 int	exist_check_permession_else_create(char *file, DIR *dir);

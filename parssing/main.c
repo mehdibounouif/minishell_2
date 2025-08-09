@@ -95,7 +95,7 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 		// if (flag) always is true so is never got to execution stage (check why)
 		// 	continue;
 		sig_ctrl(1); // Set execution mode
-		execute_full_command(minishell.tree, envp, env, 0, NULL);
+		execute_full_command(minishell.tree, envp, env, 0);
 	  sig_ctrl(0); // Back to interactive mode
 	}
   ft_free_garbage(ft_function());

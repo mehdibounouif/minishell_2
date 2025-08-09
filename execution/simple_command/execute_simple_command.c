@@ -30,15 +30,10 @@ void	find_path_and_exec(t_tree *node, t_env *env ,char **envp)
 	exit(127);
 }
 
-void	child_process(t_tree *node, t_env *env, char **envp, int *p)
+void	child_process(t_tree *node, t_env *env, char **envp)
 {
     struct stat st;
 
-    if (p)
-    {
-      close(p[0]);
-      close(p[1]);
-    }
     signal(SIGINT, SIG_DFL);
     signal(SIGQUIT, SIG_DFL);
 
@@ -105,7 +100,7 @@ void	parent_process(int status, pid_t pid)
 		global(WEXITSTATUS(status));
 }
 
-void	execute_command_node(t_tree *node, t_env *env, char **envp, int *p)
+void	execute_command_node(t_tree *node, t_env *env, char **envp)
 {
 	int status;
 
@@ -125,7 +120,7 @@ void	execute_command_node(t_tree *node, t_env *env, char **envp, int *p)
     exit(1);
   }
 	else if (pid == 0)
-		child_process(node, env, envp, p);
+		child_process(node, env, envp);
 	else
 		parent_process(status, pid);
 }
