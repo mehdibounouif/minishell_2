@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_command.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: taha_laylay <taha_laylay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:57 by moraouf           #+#    #+#             */
-/*   Updated: 2025/08/09 16:05:29 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/10 00:48:49 by taha_laylay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,86 +30,57 @@ static int	is_valid_identifier(char *str)
 	return (1);
 }
 
-static void	print_env_export(t_env *env)
+static int	handle_invalid_identifier(char *arg)
 {
-	t_env	*current;
+	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+	return (global(1));
+}
 
-	current = env;
-	while (current)
+static void	handle_key_value(t_env **env, char *arg, char *equal_sign)
+{
+	char	*key;
+	char	*value;
+
+	key = ft_substr(arg, 0, equal_sign - arg);
+	value = ft_strdup(equal_sign + 1);
+	if (!key)
+		return ;
+	set_env_var(env, key, value);
+}
+
+static void	handle_no_value(t_env **env, char *arg)
+{
+	t_env	*existing;
+	t_env	*new;
+
+	existing = get_env_var(*env, arg);
+	if (!existing)
 	{
-		ft_putstr_fd("declare -x ", 1);
-		ft_putstr_fd(current->key, 1);
-		if (current->value)
-		{
-			ft_putstr_fd("=\"", 1);
-			ft_putstr_fd(current->value, 1);
-			ft_putstr_fd("\"", 1);
-		}
-		ft_putchar_fd('\n', 1);
-		current = current->next;
+		new = create_env_var(arg, NULL);
+		ft_lstadd_node(env, new);
 	}
 }
 
 int	export_command(t_env **env, char **args)
 {
 	int		i;
-	char	*key;
-	char	*value;
 	char	*equal_sign;
-	t_env	*existing;
-	t_env	*new;
 
-	i = 1;
 	if (!args[1])
-	{
-		// sorted_env(env);
-		print_env_export(*env);
-//		ft_free_garbage(ft_function());
-		return (EXIT_SUCCESS);
-	}
+		return (sorted_env(*env), print_env_export(*env), EXIT_SUCCESS);
+	i = 1;
 	while (args[i])
 	{
 		if (!is_valid_identifier(args[i]))
-		{
-			ft_putstr_fd("minishell: export: `", 2);
-			ft_putstr_fd(args[i], 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-			global(1);
-			//ft_free_garbage(ft_function());
-			return(1);
-		}
+			return (handle_invalid_identifier(args[i]));
 		equal_sign = ft_strchr(args[i], '=');
 		if (equal_sign)
-		{
-			key = ft_substr(args[i], 0, equal_sign - args[i]);
-			value = ft_strdup(equal_sign + 1);
-			if (!key)
-			{
-				//ft_free_garbage(ft_function());
-				return (EXIT_FAILURE);
-			}
-			// existing = get_env_var(env, key);
-			// if (existing)
-			// {
-			// 	free(existing->value);
-			// 	existing->value = ft_strdup1(value);
-			// }
-			set_env_var(env, key, value);
-			//free(key);
-			//free(value);
-		}
+			handle_key_value(env, args[i], equal_sign);
 		else
-		{
-			existing = get_env_var(*env, args[i]);
-			if (!existing)
-			{
-				// add at the last hna makynach
-				new = create_env_var(args[i], NULL);
-				ft_lstadd_node(env, new);
-			}
-		}
+			handle_no_value(env, args[i]);
 		i++;
 	}
-//	ft_free_garbage(ft_function());
 	return (EXIT_SUCCESS);
 }

@@ -1,53 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset_command.c                                    :+:      :+:    :+:   */
+/*   env_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: taha_laylay <taha_laylay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/25 16:41:48 by moraouf           #+#    #+#             */
-/*   Updated: 2025/08/10 00:33:19 by taha_laylay      ###   ########.fr       */
+/*   Created: 2025/08/10 01:29:59 by taha_laylay       #+#    #+#             */
+/*   Updated: 2025/08/10 01:32:13 by taha_laylay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	unset_env_var(t_env **env, char *key)
+int	check_size(char *str, char *str1)
 {
-	t_env	*current;
-	t_env	*prev;
+	size_t	len;
+	size_t	len1;
 
-	current = *env;
-	prev = NULL;
-	while (current)
-	{
-		if (current->key && ft_strncmp(current->key, key, ft_strlen(key)) == 0)
-		{
-			if (prev)
-				prev->next = current->next;
-			else
-			{
-				*env = current->next;
-				return ;
-			}
-			return ;
-		}
-		prev = current;
-		current = current->next;
-	}
+	len = ft_strlen(str);
+	len1 = ft_strlen(str1);
+	if (len > len1)
+		return (len);
+	return (len1);
 }
 
-int	unset_command(t_env **env, char **args)
+void	set_env_var(t_env **env, char *key, char *value)
 {
-	int	i;
+	t_env	*current;
+	t_env	*new;
 
-	if (!args[1])
-		return (EXIT_SUCCESS);
-	i = 1;
-	while (args[i])
+	current = *env;
+	while (current)
 	{
-		unset_env_var(env, args[i]);
-		i++;
+		if (ft_strncmp(current->key, key, check_size(current->key, key)) == 0)
+		{
+			free(current->value);
+			current->value = ft_strdup1(value);
+			return ;
+		}
+		current = current->next;
 	}
-	return (global(0));
+	new = create_env_var(key, value);
+	ft_lstadd_node(env, new);
 }

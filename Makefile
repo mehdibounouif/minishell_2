@@ -48,7 +48,8 @@ SRCS_FILES3 = cd_command.c\
 	      unset_command.c\
 	      env_command.c\
 	      env_utils.c\
-
+		 env_utils2.c\
+		 
 SRCS_FILES4 = tools.c\
 			  garbage_collector.c\
 

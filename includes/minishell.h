@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: taha_laylay <taha_laylay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/09 16:04:46 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/10 00:46:11 by taha_laylay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,7 @@ void	ft_lstadd_node(t_env **lst, t_env *node);
 t_env *create_env_var(char *key, char *value);
 t_env *get_env_var(t_env *env, const char *key);
 int  get_env(t_env **envp, char **env);
+void	print_env_export(t_env *env);
 
 // Custom_libft
 char	*ft_strjoin1(char const *s1, char const *s2);

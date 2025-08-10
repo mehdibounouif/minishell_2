@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: taha_laylay <taha_laylay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 13:16:34 by moraouf           #+#    #+#             */
-/*   Updated: 2025/06/26 16:53:18 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/10 01:12:56 by taha_laylay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,26 @@ void	sorted_env(t_env *env)
 			}
 			tmp = tmp->next;
 		}
+	}
+}
+
+void	print_env_export(t_env *env)
+{
+	t_env	*current;
+
+	current = env;
+	while (current)
+	{
+		ft_putstr_fd("declare -x ", 1);
+		ft_putstr_fd(current->key, 1);
+		if (current->value)
+		{
+			ft_putstr_fd("=\"", 1);
+			ft_putstr_fd(current->value, 1);
+			ft_putstr_fd("\"", 1);
+		}
+		ft_putchar_fd('\n', 1);
+		current = current->next;
 	}
 }
 

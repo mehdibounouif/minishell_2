@@ -6,7 +6,7 @@
 /*   By: taha_laylay <taha_laylay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/09 23:53:31 by taha_laylay      ###   ########.fr       */
+/*   Updated: 2025/08/10 02:47:27 by taha_laylay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,31 @@ typedef struct	s_share3
 	char	*file_name;
 	char	*expand_line;
 }	t_share3;
+
+// glovbal var 
+static t_share3 *g_current_share = NULL;
+static t_env *g_current_env = NULL;
+
+// gestion
+void heredoc_sigint_handler(int sig)
+{
+	(void)sig;
+	printf("\n");
+	
+	if (g_current_share && g_current_share->line)
+	{
+		free(g_current_share->line);
+		g_current_share->line = NULL;
+	}
+	if (g_current_share)
+		check_line(g_current_share);
+	if (g_current_env)
+	{
+		ft_free_garbage(ft_function());
+		free_env(g_current_env);
+	}
+	exit(130); 
+}
 
 static char	*generate_file_name(void)
 {
@@ -109,7 +134,11 @@ int	read_lines(int *flag, t_share3 *share, t_redirection *list, t_env *env)
   }
 	else if(pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
+		// Configurer les variables globales
+		g_current_share = share;
+		g_current_env = env;
+		signal(SIGINT, heredoc_sigint_handler);
+		
     share->line = readline(">");
     if(!share->line)
     {
@@ -133,8 +162,12 @@ int	read_lines(int *flag, t_share3 *share, t_redirection *list, t_env *env)
         write(share->fd, share->line, ft_strlen(share->line));
         write(share->fd, "\n", 1);
       }
-      // free(share->line);
-      share->line = NULL;
+      // Libérer la ligne précédente avant de lire la suivante
+      if (share->line)
+      {
+        free(share->line);
+        share->line = NULL;
+      }
       share->line = readline(">");
       if(!share->line)
       {
@@ -144,6 +177,12 @@ int	read_lines(int *flag, t_share3 *share, t_redirection *list, t_env *env)
         free_env(env);
         exit(global(-1));
       }
+    }
+    //free the last line if it exists
+    if (share->line)
+    {
+      free(share->line);
+      share->line = NULL;
     }
     check_line(share);
     ft_free_garbage(ft_function());

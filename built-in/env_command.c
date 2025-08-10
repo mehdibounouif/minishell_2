@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_command.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: taha_laylay <taha_laylay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:59 by moraouf           #+#    #+#             */
-/*   Updated: 2025/07/30 11:31:55 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/10 01:12:38 by taha_laylay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,13 @@
 
 int	env_command(t_env *env, char **args)
 {
-	t_env *current;
+	t_env	*current;
 
 	(void)args;
-
 	current = env;
 	while (current)
 	{
-		if (current->value) // Only print variables that have a value
+		if (current->value)
 		{
 			ft_putstr_fd(current->key, 1);
 			ft_putchar_fd('=', 1);

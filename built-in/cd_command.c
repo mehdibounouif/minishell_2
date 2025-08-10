@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_command.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: taha_laylay <taha_laylay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:42:07 by moraouf           #+#    #+#             */
-/*   Updated: 2025/08/09 18:36:23 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/10 00:29:49 by taha_laylay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	update_pwd(t_env *env)
 		return (1);
 	*(back_up()) = current_dir;
 	pwd = ft_strjoin("PWD=", current_dir);
-  free(current_dir);
+	free(current_dir);
 	if (update_env_var(env, pwd) == 1)
 		return (1);
 	return (0);
@@ -78,16 +78,13 @@ int	cd_command(t_env *env, char **args)
 		return (global(1));
 	}
 	else if (!args[0] || (args[0][0] == '-' && !args[0][1]))
-	{
-		ft_putstr_fd("minishell: cd: option not supported\n", 2);
-		global(1);
-	}
+		return (ft_putstr_fd("minishell: cd: option not supported\n", 2),
+			global(1));
 	else if (!args[1])
 	{
 		if (change_to_home(env) == 1)
 			return (1);
-		return(global(0));
-		
+		return (global(0));
 	}
 	if (update_oldpwd(env) == 1)
 		return (1);

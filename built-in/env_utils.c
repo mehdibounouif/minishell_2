@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: taha_laylay <taha_laylay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:59 by moraouf           #+#    #+#             */
-/*   Updated: 2025/08/06 22:09:43 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/10 01:30:10 by taha_laylay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ t_env	*create_env_var(char *key, char *value)
 	t_env	*new;
 
 	new = malloc(sizeof(t_env));
-  if (!new)
-    return (NULL);
+	if (!new)
+		return (NULL);
 	new->key = ft_strdup1(key);
 	new->value = ft_strdup1(value);
 	new->next = NULL;
@@ -51,40 +51,6 @@ char	*get_env_value(t_env *env, char *key)
 		current = current->next;
 	}
 	return (NULL);
-}
-int check_size(char *str, char *str1)
-{
-	size_t len;
-	size_t len1;
-
-	len = ft_strlen(str);
-	len1 = ft_strlen(str1);
-
-	if(len > len1)
-		return len;
-	return len1;
-}
-
-// set new var at the env
-void	set_env_var(t_env **env, char *key, char *value)
-{
-	t_env	*current;
-	t_env	*new;
-
-	current = *env;
-	while (current)
-	{
-		if (ft_strncmp(current->key, key, check_size(current->key , key)) == 0 )
-		{
-			free(current->value);
-			current->value = ft_strdup1(value);
-			return ;
-		}
-		current = current->next;
-	}
-	// add new variable || not found
-	new = create_env_var(key, value);
-	ft_lstadd_node(env, new);
 }
 
 // Helper function to update environment variable
