@@ -255,6 +255,9 @@ int	get_full_len(char *cmd, t_env *list);
 int	split_len(char *content);
 void	expand_exit_status(t_share *share);
 int	get_env_len(char *cmd, int i);
+void  free_node(t_node *node);
+void	replace_key(char *cmd, t_share *share, t_env *list);
+t_node *insert_sublist(t_node *start, t_node *new, t_node *next);
 
 // EXECUTE 
 void execute_full_command(t_tree *node, t_env **env, char **envp, int pipe_flag);

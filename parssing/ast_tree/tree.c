@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+// #include "../../includes/minishell.h"
 
-t_tree	*pars_command(t_node **list)
-{
-	t_tree	*tree;
+// t_tree	*pars_command(t_node **list)
+// {
+// 	t_tree	*tree;
 	
-	tree =  pars_pipe(list);
-	return (tree);
-}
+// 	tree =  pars_pipe(list);
+// 	return (tree);
+// }

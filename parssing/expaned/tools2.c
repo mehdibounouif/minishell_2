@@ -31,3 +31,52 @@ int	get_env_len(char *cmd, int i)
 	}
 	return (j);
 }
+
+void  free_node(t_node *node)
+{
+  if (node)
+  {
+    if (node->content)
+      free(node->content);
+    free(node);
+  }
+}
+
+void	replace_key(char *cmd, t_share *share, t_env *list)
+{
+	char	*value;
+	char	*key;
+	int	l;
+
+	l = 0;
+	key = get_env_key(cmd, share->i);
+	value = ft_getenv(key, list);
+	if (!value)
+		value = ft_strdup("");
+	while (value[l])
+		share->expanded_cmd[(share->j)++] = value[l++];
+	share->i += (ft_strlen(key) + 1);
+}
+
+t_node *insert_sublist(t_node *start, t_node *new, t_node *next)
+{
+  t_node *last;
+
+    if (!new)
+        return start;
+    if (start)
+    {
+        start->next = new;
+        new->prev = start;
+    }
+    last = new;
+    while (last->next)
+        last = last->next;
+    last->next = next;
+    if (next)
+        next->prev = last;
+    if (start)
+        return start;
+    else
+        return new;
+}
