@@ -6,7 +6,7 @@
 /*   By: taha_laylay <taha_laylay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/10 02:47:27 by taha_laylay      ###   ########.fr       */
+/*   Updated: 2025/08/10 15:45:11 by taha_laylay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,17 @@ typedef struct	s_share3
 static t_share3 *g_current_share = NULL;
 static t_env *g_current_env = NULL;
 
-void  check_line()
+void  check_line(t_share3 *share)
 {
-  
+	if(share->file_name)
+	{
+		share->file_name = NULL;
+	}
+	if(share->fd >= 0)
+	{
+		close(share->fd);
+		share->fd = -1;
+	}
 }
 
 // gestion
@@ -112,7 +120,7 @@ int	get_lastfd(int *list)
 
 void	protect_line(t_share3 *share, t_env *env, t_redirection *list)
 {
-		printf("bash: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", list->herdoc->delimeter);
+	printf("bash: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", list->herdoc->delimeter);
     ulink_files(list->heredocs);
     close(share->fd);
     ft_free_garbage(ft_function());
@@ -127,17 +135,16 @@ int	read_lines(int *flag, t_share3 *share, t_redirection *list, t_env *env)
 
 	sig_ctrl(1); //mode execution
 	pid = fork();
-  if (pid < 0)
-    protect(env, "Fork failed");
+ 	if (pid < 0)
+    	protect(env, "Fork failed");
 	else if(pid == 0)
 	{
-		// Configurer les variables globales
 		g_current_share = share;
 		g_current_env = env;
 		signal(SIGINT, heredoc_sigint_handler);
-    share->line = readline(">");
-    if(!share->line)
-      protect_line(share, env, list);
+    	share->line = readline(">");
+    	if(!share->line)
+      	protect_line(share, env, list);
     while (share->line && ft_strcmp(list->herdoc->delimeter, share->line))
     {
       if (!list->herdoc->quoted)
@@ -207,9 +214,9 @@ int	open_her(int *flag, t_tree *tree, t_env *env)
 	{
 		if (!create_heredoc(flag, tree->redirect, env, i))
 		{
-      return (0);
+     		return (0);
 		}
-		// Stop here
+		// Stop here if signal received
 		if (*flag)
 			return (0);
 		tree->redirect->herdoc = tree->redirect->herdoc->next;
