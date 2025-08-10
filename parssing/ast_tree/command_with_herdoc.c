@@ -6,7 +6,7 @@
 /*   By: taha_laylay <taha_laylay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/10 15:45:11 by taha_laylay      ###   ########.fr       */
+/*   Updated: 2025/08/10 17:53:07 by taha_laylay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,12 +120,12 @@ int	get_lastfd(int *list)
 
 void	protect_line(t_share3 *share, t_env *env, t_redirection *list)
 {
-	  printf("bash: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", list->herdoc->delimeter);
-    ulink_files(list->heredocs);
-    close(share->fd);
-    ft_free_garbage(ft_function());
-    free_env(env);
-    exit(global(-1));
+	printf("bash: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", list->herdoc->delimeter);
+	ulink_files(list->heredocs);
+	close(share->fd);
+	ft_free_garbage(ft_function());
+	free_env(env);
+	exit(1);
 }
 
 void  get_line(t_share3 *share, t_redirection *list, t_env *env)

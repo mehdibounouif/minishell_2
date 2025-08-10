@@ -6,7 +6,7 @@
 /*   By: taha_laylay <taha_laylay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 11:06:57 by moraouf           #+#    #+#             */
-/*   Updated: 2025/08/10 15:45:26 by taha_laylay      ###   ########.fr       */
+/*   Updated: 2025/08/10 17:51:50 by taha_laylay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,17 @@ int	ft_return_signal(int status)
 	else if(WIFEXITED(status))
 	{
 		sig = WEXITSTATUS(status);
-		global(sig);
 		if (sig == 130)
+		{
+			global(sig);
+			return (1); // Ctrl+C : flag = 1, global = 130
+		}
+		else if (sig == 1)
+		{
+			global(0); // EOF : flag = 1, mais global reste 0
 			return (1);
+		}
+		global(sig);
 		return (0);
 	}
 	return (0);
