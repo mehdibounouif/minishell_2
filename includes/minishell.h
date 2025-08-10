@@ -90,7 +90,6 @@ struct	s_herdoc {
 	char	*herdoc;
 	char	*delimeter;
 	int	quoted;
-//	int fd;
 	struct s_herdoc *next;
 };
 
@@ -188,8 +187,6 @@ int	execute_builtin(t_tree *node, t_env **env);
 int	is_builtin(char *command);
 int	execute_builtin_command(char *command, char **args, t_env **env);
 void	dup_fds(t_redirection *node, t_env *env);
-// void	dup_output(t_redirection *node);
-// void	dup_input(t_redirection *node);
 
 // Tokenize
 void	tokenize(char *cmd, t_node **list);
@@ -200,7 +197,6 @@ size_t	is_sep(char c);
 int	is_qoute(char c);
 size_t	get_close_token(char *cmd, char c, int *b_space);
 int     ft_strcmp(const char *s1, const char *s2);
-char *strjoin_and_free(char *s1, char *s2);
 t_node *create_node(const char *content, int b_space, int b_q);
 t_node *create_node2(const char *content, int b_space, int type, int b_q);
 void remove_node(t_node **head, t_node **end);
@@ -215,7 +211,6 @@ void print_list(t_node *list);
 
 
 // AST TREE
-//t_tree *pars_command(t_node **list);
 t_tree	*parss_one_side(t_node **list);
 t_tree  *parss_redirection(t_tree *node, t_node **list);
 t_tree	*parss_redirection_in_start(t_node **list);
@@ -253,7 +248,6 @@ char	*expansion(char *cmd, t_env *list, int b_q);
 int	contain_quoted(char *cmd, int len);
 int	between_quoted(char *cmd, int len);
 int	get_full_len(char *cmd, t_env *list);
-//int	split_len(char *content);
 void	expand_exit_status(t_share *share);
 int	get_env_len(char *cmd, int i);
 void  free_node(t_node *node);
@@ -267,9 +261,6 @@ void	execute_pipe_node(t_tree *tree, t_env *env, char **envp);
 // SIMPLE
 void	execute_command_node(t_tree *node, t_env **env, char **envp);
 void	print(char *command, char *message, int code);
-//void	folder(t_env *env, char *command);
-// void	command_is_directory(t_tree *node, t_env *env);
-// void	command_inside_directory(t_tree *node, char **envp, t_env *env);
 void	empty_command(t_tree *node, t_env *env);
 void  dote_command(t_tree *node, t_env *env);
 void  absolute_path(t_tree *node, t_env *env, char **envp);
@@ -277,14 +268,8 @@ void  print_and_exit(t_tree *node, t_env *env, int code, char *message);
 void protect(t_env *env, char *message);
 // REDIRECTION
 void	execute_redirection_command(t_tree *node, t_env *env, char **envp);
-//int	check_infile_in_directory(char *files);
 int	check_in_files(char *file);
-//int	exist_check_permession_else_create(char *file, DIR *dir);
-//int	check_correct_path(char *file, char *full_path);
 int	in_directory(char *file);
-//int	is_directory(char *file);
-//int	just_file(t_redirection *node, char *file, int type);
-//int	check_out_files(t_redirection *node, char *file, int type);
 int	check_if_exist(t_redirection *node);
 void	ulink_files(char **files);
 

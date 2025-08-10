@@ -25,6 +25,11 @@ typedef struct	s_share3
 static t_share3 *g_current_share = NULL;
 static t_env *g_current_env = NULL;
 
+void  check_line()
+{
+  
+}
+
 // gestion
 void heredoc_sigint_handler(int sig __attribute__((unused)))
 {
@@ -45,7 +50,7 @@ void heredoc_sigint_handler(int sig __attribute__((unused)))
 	exit(130); 
 }
 
-static char	*generate_file_name(void)
+static char	*generate_file_name(t_env *env)
 {
 	unsigned char	c;
 	char			*buffer;
@@ -54,14 +59,14 @@ static char	*generate_file_name(void)
 	buffer = ft_malloc(sizeof(char), 9);
 	fd = open("/dev/urandom", O_RDONLY);
 	if (fd < 0)
-		return (buffer);
+		protect(env, "Open failed");
 	i = 0;
 	while (i < 8)
 	{
-		if (read(fd, &c, 1) != 1)
+		if (read(fd, &c, 1) == -1)
 		{
 			close(fd);
-			return (NULL);
+			protect(env, "Read faild");
 		}
 		buffer[i++] = 'a' + (c % 26);
 	}
@@ -105,17 +110,14 @@ int	get_lastfd(int *list)
 	return (list[i-1]);
 }
 
-void	check_line(t_share3 *share)
+void	protect_line(t_share3 *share, t_env *env, t_redirection *list)
 {
-		if(share->file_name)
-		{
-			share->file_name = NULL;
-		}
-		if(share->fd >= 0)
-		{
-			close(share->fd);
-			share->fd = -1;
-		}
+		printf("bash: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", list->herdoc->delimeter);
+    ulink_files(list->heredocs);
+    close(share->fd);
+    ft_free_garbage(ft_function());
+    free_env(env);
+    exit(global(-1));
 }
 
 int	read_lines(int *flag, t_share3 *share, t_redirection *list, t_env *env)
@@ -126,27 +128,16 @@ int	read_lines(int *flag, t_share3 *share, t_redirection *list, t_env *env)
 	sig_ctrl(1); //mode execution
 	pid = fork();
   if (pid < 0)
-  {
-    ft_free_garbage(ft_function());
-    free_env(env);
-    exit(1);
-  }
+    protect(env, "Fork failed");
 	else if(pid == 0)
 	{
 		// Configurer les variables globales
 		g_current_share = share;
 		g_current_env = env;
 		signal(SIGINT, heredoc_sigint_handler);
-		
     share->line = readline(">");
     if(!share->line)
-    {
-      printf("bash: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", list->herdoc->delimeter);
-      check_line(share);
-      ft_free_garbage(ft_function());
-      free_env(env);
-      exit(global(-1));
-    }
+      protect_line(share, env, list);
     while (share->line && ft_strcmp(list->herdoc->delimeter, share->line))
     {
       if (!list->herdoc->quoted)
@@ -160,41 +151,26 @@ int	read_lines(int *flag, t_share3 *share, t_redirection *list, t_env *env)
       {
         write(share->fd, share->line, ft_strlen(share->line));
         write(share->fd, "\n", 1);
-      }
-      // Libérer la ligne précédente avant de lire la suivante
-      if (share->line)
-      {
         free(share->line);
-        share->line = NULL;
       }
       share->line = readline(">");
       if(!share->line)
-      {
-        printf("bash: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", list->herdoc->delimeter);
-        check_line(share);
-        ft_free_garbage(ft_function());
-        free_env(env);
-        exit(global(-1));
-      }
+        protect_line(share, env, list);
     }
     //free the last line if it exists
     if (share->line)
-    {
       free(share->line);
-      share->line = NULL;
-    }
-    check_line(share);
+    close(share->fd);
     ft_free_garbage(ft_function());
     free_env(env);
     exit(0);
 	}
 	else
 	{
-		waitpid(pid, &status, 0);
-    /// printf("%s\n", WIFSIGNALED(status) ? "yes" : "no");
+		if (waitpid(pid, &status, 0) == -1)
+      protect(env, "Waitpid faild");
 		*flag = ft_return_signal(status);
 		sig_ctrl(0);
-		//ft_free_garbage(ft_function());
 	}
 	return (1);
 }
@@ -207,16 +183,10 @@ int	create_heredoc(int *flag, t_redirection *list, t_env *env, int i)
 	share->expand_line = NULL;
 	share->line = NULL;
 	share->fd = -1;
-	share->file_name = generate_file_name();
+	share->file_name = generate_file_name(env);
 	share->fd = open(share->file_name, O_RDWR | O_CREAT | O_TRUNC,  0777);
-	if (share->fd == -1)
-	{
-		// free(share->file_name);
-		printf("open heredoc file failed!\n");
-    free_env(env);
-    ft_free_garbage(ft_function());
-		exit(0);
-	}
+  if (share->fd == -1)
+    protect(env, "Open failed");
 	list->heredocs[i] = ft_strdup(share->file_name);
 	read_lines(flag, share, list, env);
 	close(share->fd);
@@ -237,9 +207,6 @@ int	open_her(int *flag, t_tree *tree, t_env *env)
 	{
 		if (!create_heredoc(flag, tree->redirect, env, i))
 		{
-			//free(tree->redirect->heredocs);
-			//free(tree->redirect);
-			//exit(global(-1));
       return (0);
 		}
 		// Stop here
