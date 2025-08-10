@@ -3,7 +3,8 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstsize_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mbounoui <moraouf@42.fr>                    +#+  +:+      
+	+#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 13:29:30 by mbounoui          #+#    #+#             */
 /*   Updated: 2024/11/08 16:27:35 by mbounoui         ###   ########.fr       */

@@ -3,7 +3,8 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mbounoui <moraouf@42.fr>                    +#+  +:+      
+	+#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 18:19:10 by mbounoui          #+#    #+#             */
 /*   Updated: 2024/11/08 16:59:48 by mbounoui         ###   ########.fr       */

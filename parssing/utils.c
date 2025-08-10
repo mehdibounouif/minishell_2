@@ -21,10 +21,8 @@ int	is_empty(char *s)
 
 int	is_redirection(t_node *node)
 {
-	if (node && (node->type == R_OUT ||
-			node->type == R_IN ||
-			node->type == R_APPEND ||
-			node->type == HEREDOC))
+	if (node && (node->type == R_OUT || node->type == R_IN
+			|| node->type == R_APPEND || node->type == HEREDOC))
 		return (1);
 	return (0);
 }
@@ -36,19 +34,17 @@ int	is_space(char c)
 	return (0);
 }
 
-int is_separator(char *line, int i)
+int	is_separator(char *line, int i)
 {
-		if ((line[i] && line[i + 1]
-		&& (!ft_strncmp(&line[i], ">>", 2)
-		|| !ft_strncmp(&line[i], "<<", 2)))
-		|| (line[i] && (!ft_strncmp(&line[i], "|", 1)
-		|| !ft_strncmp(&line[i], ">", 1)
-		|| !ft_strncmp(&line[i], "<", 1))))
+	if ((line[i] && line[i + 1] && (!ft_strncmp(&line[i], ">>", 2)
+				|| !ft_strncmp(&line[i], "<<", 2))) || (line[i]
+			&& (!ft_strncmp(&line[i], "|", 1) || !ft_strncmp(&line[i], ">", 1)
+				|| !ft_strncmp(&line[i], "<", 1))))
 		return (1);
 	return (0);
 }
 
-int is_real_separator(char *cmd, int i)
+int	is_real_separator(char *cmd, int i)
 {
 	// if (i > 0 && cmd[i - 1] == '\\' &&  is_separator(&cmd[i], i))
 	//  return (0);
@@ -58,9 +54,9 @@ int is_real_separator(char *cmd, int i)
 		return (0);
 }
 
-int count_args(t_node *list)
+int	count_args(t_node *list)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (list && list->type != PIPE)
@@ -79,40 +75,45 @@ int count_args(t_node *list)
 	return (i);
 }
 
-t_node *create_node(const char *content, int b_space, int b_q)
+t_node	*create_node(const char *content, int b_space, int b_q)
 {
-    t_node *new = malloc(sizeof(t_node));
-    new->content = ft_strdup1(content);
-    new->b_space = b_space;
+	t_node	*new;
+
+	new = malloc(sizeof(t_node));
+	new->content = ft_strdup1(content);
+	new->b_space = b_space;
 	new->between_quoted = b_q;
 	new->contain_quoted = 1;
 	new->type = 2;
-    new->next = NULL;
-    new->prev = NULL;
-    return new;
+	new->next = NULL;
+	new->prev = NULL;
+	return (new);
 }
 
-t_node *create_node2(const char *content, int b_space, int type, int b_q)
+t_node	*create_node2(const char *content, int b_space, int type, int b_q)
 {
-    t_node *new = malloc(sizeof(t_node));
-    new->content = ft_strdup1(content);
-    new->b_space = b_space;
+	t_node	*new;
+
+	new = malloc(sizeof(t_node));
+	new->content = ft_strdup1(content);
+	new->b_space = b_space;
 	new->between_quoted = b_q;
 	new->contain_quoted = 1;
 	new->type = type;
-    new->next = NULL;
-    new->prev = NULL;
-    return new;
+	new->next = NULL;
+	new->prev = NULL;
+	return (new);
 }
 
 void	add_back3(t_herdoc **list, t_herdoc *node)
 {
 	t_herdoc	*tmp;
+
 	if (!list || !node)
 		return ;
 	if (!*list)
 		*list = node;
-	else 
+	else
 	{
 		tmp = *list;
 		while (tmp->next)
@@ -124,11 +125,12 @@ void	add_back3(t_herdoc **list, t_herdoc *node)
 void	add_back2(t_env **list, t_env *node)
 {
 	t_env	*tmp;
+
 	if (!list || !node)
 		return ;
 	if (!*list)
 		*list = node;
-	else 
+	else
 	{
 		tmp = *list;
 		while (tmp->next)
@@ -139,7 +141,8 @@ void	add_back2(t_env **list, t_env *node)
 
 void	add_back1(t_files **list, t_files *node)
 {
-	t_files *tmp;
+	t_files	*tmp;
+
 	if (!list || !node)
 		return ;
 	if (!*list)
@@ -156,11 +159,12 @@ void	add_back1(t_files **list, t_files *node)
 void	add_back(t_node **list, t_node *node)
 {
 	t_node	*tmp;
+
 	if (!list || !node)
 		return ;
 	if (!*list)
 		*list = node;
-	else 
+	else
 	{
 		tmp = *list;
 		while (tmp && tmp->next)

@@ -18,54 +18,53 @@ void	print(char *command, char *message, int code)
 	global(code);
 }
 
-void  print_and_exit(t_tree *node, t_env *env, int code, char *message)
+void	print_and_exit(t_tree *node, t_env *env, int code, char *message)
 {
-  print(node->command->command, message, code);
-  free_env(env);
-  ft_free_garbage(ft_function());
-  exit(code);
+	print(node->command->command, message, code);
+	free_env(env);
+	ft_free_garbage(ft_function());
+	exit(code);
 }
 
 void	empty_command(t_tree *node, t_env *env)
 {
 	if (node->command->command[0] == '\0')
-    print_and_exit(node, env, 127, ": command not found");
+		print_and_exit(node, env, 127, ": command not found");
 }
 
-void  dote_command(t_tree *node, t_env *env)
+void	dote_command(t_tree *node, t_env *env)
 {
-  if (node->command->command[0] == '.' && !node->command->command[1])
+	if (node->command->command[0] == '.' && !node->command->command[1])
 	{
 		print(node->command->command, ": filename argument required", 2);
-    ft_putendl_fd(".: usage: . filename [arguments]", 2);
-    free_env(env);
+		ft_putendl_fd(".: usage: . filename [arguments]", 2);
+		free_env(env);
 		ft_free_garbage(ft_function());
 		exit(global(-1));
 	}
-  else if (node->command->command[0] == '.' && !ft_strchr(node->command->command, '/'))
-    print_and_exit(node, env, 127, ": command not found");
+	else if (node->command->command[0] == '.'
+		&& !ft_strchr(node->command->command, '/'))
+		print_and_exit(node, env, 127, ": command not found");
 }
 
-void absolute_path(t_tree *node, t_env *env, char **envp)
+void	absolute_path(t_tree *node, t_env *env, char **envp)
 {
-    struct stat st;
-    char *command = node->command->command;
+	struct stat	st;
+	char		*command;
 
-    if (command[0] == '/' || command[0] == '.')
-    {
-        if (stat(command, &st) == -1)
-            print_and_exit(node, env, 127, ": No such file or directory");
-
-        if (S_ISDIR(st.st_mode))
-            print_and_exit(node, env, 126, ": Is a directory");
-
-        if (access(command, X_OK) == -1)
-            print_and_exit(node, env, 126, ": Permission denied");
-
-        execve(command, node->command->args, envp);
-        perror("minishell");
-        free_env(env);
-        ft_free_garbage(ft_function());
-        exit(127);
-    }
+	command = node->command->command;
+	if (command[0] == '/' || command[0] == '.')
+	{
+		if (stat(command, &st) == -1)
+			print_and_exit(node, env, 127, ": No such file or directory");
+		if (S_ISDIR(st.st_mode))
+			print_and_exit(node, env, 126, ": Is a directory");
+		if (access(command, X_OK) == -1)
+			print_and_exit(node, env, 126, ": Permission denied");
+		execve(command, node->command->args, envp);
+		perror("minishell");
+		free_env(env);
+		ft_free_garbage(ft_function());
+		exit(127);
+	}
 }

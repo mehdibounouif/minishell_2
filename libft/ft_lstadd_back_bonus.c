@@ -3,7 +3,8 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstadd_back_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mbounoui <moraouf@42.fr>                    +#+  +:+      
+	+#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 17:41:40 by mbounoui          #+#    #+#             */
 /*   Updated: 2025/05/19 07:58:46 by mbounoui         ###   ########.fr       */

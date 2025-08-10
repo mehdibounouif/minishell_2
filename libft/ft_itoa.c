@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mbounoui <moraouf@42.fr>                    +#+  +:+      
+	+#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 18:44:30 by mbounoui          #+#    #+#             */
 /*   Updated: 2025/07/26 22:00:49 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "../includes/minishell.h"
+#include "libft.h"
 
 static int	count_len(long n)
 {
@@ -51,7 +52,7 @@ char	*ft_itoa(int n)
 	len = count_len(nb);
 	if (nb < 0)
 		hand_num(&nb, &sign);
-	result = ft_malloc(sizeof(char) , len + 1);
+	result = ft_malloc(sizeof(char), len + 1);
 	result[len] = '\0';
 	while (len)
 	{

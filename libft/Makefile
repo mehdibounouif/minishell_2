@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mbounoui <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: mbounoui <moraouf@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/06 17:29:17 by mbounoui          #+#    #+#              #
 #    Updated: 2024/11/11 08:31:27 by mbounoui         ###   ########.fr        #

@@ -12,11 +12,11 @@
 
 #include "../../includes/minishell.h"
 
-void	execute_full_command(t_tree *node, t_env **env, char **envp, int pipe_flag)
+void	execute_full_command(t_tree *node, t_env **env, char **envp,
+		int pipe_flag)
 {
 	if (!node)
 		return ;
-
 	if (node->type == COMMAND_NODE)
 		execute_command_node(node, env, envp);
 	else if (node->type == PIPE_NODE)

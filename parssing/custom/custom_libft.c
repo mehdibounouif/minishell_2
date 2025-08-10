@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   custom_libft.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moraouf <moraouf@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/11 00:23:36 by moraouf            #+#    #+#             */
+/*   Updated: 2025/08/11 00:23:37 by moraouf           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 char	*ft_strdup1(const char *s)
@@ -6,8 +18,8 @@ char	*ft_strdup1(const char *s)
 	char	*res;
 	size_t	len;
 
-	if(!s)
-		return NULL;
+	if (!s)
+		return (NULL);
 	len = ft_strlen(s) + 1;
 	res = malloc(sizeof(char) * len);
 	if (!res)
@@ -48,10 +60,10 @@ char	*ft_substr1(char const *s, unsigned int start, size_t len)
 
 char	*ft_strjoin1(char const *s1, char const *s2)
 {
-	char	*str;
-	size_t	s1_len;
-	size_t	s2_len;
-	size_t	totlen;
+	char *str;
+	size_t s1_len;
+	size_t s2_len;
+	size_t totlen;
 
 	if (s1 && !s2)
 		return (ft_strdup1(s1));

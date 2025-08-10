@@ -16,7 +16,7 @@ int	check_sides(t_node *list)
 {
 	if (list && (list->type == PIPE || list->content[0] == '#'))
 		return (1);
-	while(list && list->next)
+	while (list && list->next)
 		list = list->next;
 	if (list && !list->between_quoted && list->type == PIPE)
 		return (1);
@@ -27,10 +27,10 @@ int	syntax(t_node *list)
 {
 	while (list)
 	{
-		if ((!list->between_quoted && list->type == PIPE && list->next->type == PIPE)
-			|| (is_redirection(list)
-			&& !list->between_quoted
-			&& (!list->next || list->next->type != WORD)))
+		if ((!list->between_quoted && list->type == PIPE
+				&& list->next->type == PIPE) || (is_redirection(list)
+				&& !list->between_quoted && (!list->next
+					|| list->next->type != WORD)))
 		{
 			if (list->next)
 			{

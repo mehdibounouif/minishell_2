@@ -14,7 +14,7 @@
 
 void	free_str(char **list)
 {
-	int i;
+	int	i;
 
 	if (!list || !*list)
 		return ;
@@ -28,9 +28,9 @@ void	free_str(char **list)
 	free(list);
 }
 
-void free_env(t_env *env)
+void	free_env(t_env *env)
 {
-	t_env *temp;
+	t_env	*temp;
 
 	while (env)
 	{
@@ -44,7 +44,8 @@ void free_env(t_env *env)
 
 void	free_list(t_node **list)
 {
-	t_node *tmp;
+	t_node	*tmp;
+
 	tmp = *list;
 	while (*list)
 	{
@@ -54,15 +55,3 @@ void	free_list(t_node **list)
 		tmp = (*list);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-

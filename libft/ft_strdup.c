@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "../includes/minishell.h"
+#include "libft.h"
 
 char	*ft_strdup(const char *s)
 {
@@ -19,10 +19,10 @@ char	*ft_strdup(const char *s)
 	char	*res;
 	size_t	len;
 
-	if(!s)
-		return NULL;
+	if (!s)
+		return (NULL);
 	len = ft_strlen(s) + 1;
-	res = ft_malloc(sizeof(char) , len);
+	res = ft_malloc(sizeof(char), len);
 	if (!res)
 		return (NULL);
 	i = 0;

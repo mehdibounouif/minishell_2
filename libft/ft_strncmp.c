@@ -3,7 +3,8 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mbounoui <moraouf@42.fr>                    +#+  +:+      
+	+#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 18:57:40 by mbounoui          #+#    #+#             */
 /*   Updated: 2025/07/30 17:07:44 by mbounoui         ###   ########.fr       */
@@ -25,7 +26,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	i = 0;
 	while (str1[i] == str2[i] && str1[i] != '\0')
 	{
-		if (i < (n -1))
+		if (i < (n - 1))
 			i++;
 		else
 			return (0);

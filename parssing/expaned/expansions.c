@@ -16,11 +16,11 @@ void	expand_cmd(char *cmd, t_share *share, t_env *env, int b_q)
 {
 	while (cmd[share->i])
 	{
-		while (is_dollar(cmd, share->i) && b_q != 1
-			&& (ft_isalpha(cmd[share->i + 1]) || cmd[share->i + 1] == '_'))
-				replace_key(cmd, share, env);
-    if (!cmd[share->i])
-      break;
+		while (is_dollar(cmd, share->i) && b_q != 1 && (ft_isalpha(cmd[share->i
+					+ 1]) || cmd[share->i + 1] == '_'))
+			replace_key(cmd, share, env);
+		if (!cmd[share->i])
+			break ;
 		if (is_dollar(cmd, share->i) && cmd[share->i + 1] == '?' && b_q != 1)
 			expand_exit_status(share);
 		else
@@ -45,65 +45,65 @@ char	*expansion(char *cmd, t_env *env, int b_q)
 	return (share->expanded_cmd);
 }
 
-
-t_node  *create_list(char *content, t_node *tmp)
+t_node	*create_list(char *content, t_node *tmp)
 {
-  char **list;
-  t_node *node;
-  t_node *head;
-  int i;
-  int  len;
+	char	**list;
+	t_node	*node;
+	t_node	*head;
+	int		i;
+	int		len;
 
-  i = 0;
-  head = NULL;
-  list = ft_split(content, ' ');
-  len = ft_arraylen(list);
-  while (list[i])
-  {
-      node = create_node2(list[i], tmp->b_space, tmp->type, tmp->between_quoted);
-      i++;
-      if (i < len || (i == len && content[ft_strlen(content) - 1] == ' '))
-          node->b_space = 0;
-      add_back(&head, node);
-  }
-  return (head);
+	i = 0;
+	head = NULL;
+	list = ft_split(content, ' ');
+	len = ft_arraylen(list);
+	while (list[i])
+	{
+		node = create_node2(list[i], tmp->b_space, tmp->type,
+				tmp->between_quoted);
+		i++;
+		if (i < len || (i == len && content[ft_strlen(content) - 1] == ' '))
+			node->b_space = 0;
+		add_back(&head, node);
+	}
+	return (head);
 }
 
-static t_node *expand_list(t_node *prev, t_node *tmp, t_env *env)
+static t_node	*expand_list(t_node *prev, t_node *tmp, t_env *env)
 {
-    char *content;
+	char	*content;
 
-    content = expansion(tmp->content, env, tmp->between_quoted);
-    if (tmp->between_quoted || content[0] == '\0' || only_space(content))
-      return (create_node(content, tmp->b_space, tmp->between_quoted));
-    if (content[0] == ' ' && prev)
-      prev->b_space = 0;
-    return (create_list(content, tmp));
+	content = expansion(tmp->content, env, tmp->between_quoted);
+	if (tmp->between_quoted || content[0] == '\0' || only_space(content))
+		return (create_node(content, tmp->b_space, tmp->between_quoted));
+	if (content[0] == ' ' && prev)
+		prev->b_space = 0;
+	return (create_list(content, tmp));
 }
 
-void expand(t_node **list, t_env *env)
+void	expand(t_node **list, t_env *env)
 {
-    t_node *tmp = *list;
-    t_node *start, *next, *sub_list, *new_list, *to_free;
+	t_node	*tmp;
 
-    while (tmp)
-    {
-        if (tmp->type == HEREDOC)
-        {
-            tmp = tmp->next;
-            if (tmp)
-                tmp = tmp->next;
-            continue;
-        }
-        start = tmp->prev;
-        next = tmp->next;
-        to_free = tmp;
-        sub_list = expand_list(tmp->prev, tmp, env);
-        new_list = insert_sublist(start, sub_list, next);
-        if (!start)
-            *list = new_list;
-        tmp = next;
-        free_node(to_free);  // now safe
-    }
+	tmp = *list;
+	t_node *start, *next, *sub_list, *new_list, *to_free;
+	while (tmp)
+	{
+		if (tmp->type == HEREDOC)
+		{
+			tmp = tmp->next;
+			if (tmp)
+				tmp = tmp->next;
+			continue ;
+		}
+		start = tmp->prev;
+		next = tmp->next;
+		to_free = tmp;
+		sub_list = expand_list(tmp->prev, tmp, env);
+		new_list = insert_sublist(start, sub_list, next);
+		if (!start)
+			*list = new_list;
+		tmp = next;
+		free_node(to_free); // now safe
+	}
 }
-

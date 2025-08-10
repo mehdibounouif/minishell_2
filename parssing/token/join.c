@@ -12,74 +12,78 @@
 
 #include "../../includes/minishell.h"
 
-void remove_node(t_node **head, t_node **end)
+void	remove_node(t_node **head, t_node **end)
 {
-	t_node *tmp;
+	t_node	*tmp;
+	t_node	*next;
+
 	tmp = *head;
 	while (tmp != *end)
 	{
-		t_node *next = tmp->next;
+		next = tmp->next;
 		free(tmp->content);
 		free(tmp);
 		tmp = next;
 	}
 }
 
-static char *join_nodes_content(t_node *start, t_node *end)
+static char	*join_nodes_content(t_node *start, t_node *end)
 {
-    char *joined = NULL;
-    t_node *tmp = start;
+	char	*joined;
+	t_node	*tmp;
 
-    while (tmp != end)
-    {
-        joined = ft_strjoin(joined, tmp->content);
-        tmp = tmp->next;
-    }
-    return joined;
+	joined = NULL;
+	tmp = start;
+	while (tmp != end)
+	{
+		joined = ft_strjoin(joined, tmp->content);
+		tmp = tmp->next;
+	}
+	return (joined);
 }
 
-static void replace_b_space_sequence(t_node **head, t_node *start, t_node *end)
+static void	replace_b_space_sequence(t_node **head, t_node *start, t_node *end)
 {
-    char *joined = join_nodes_content(start, end);
-    t_node *new_node = create_node(joined, 0, 0);
-    if (!new_node)
-        return;
+	char	*joined;
+	t_node	*new_node;
 
-    new_node->prev = start->prev;
-    new_node->next = end;
-    if (start->prev)
-        start->prev->next = new_node;
-    else
-        *head = new_node;
-    if (end)
-        end->prev = new_node;
-
-    remove_node(&start, &end);
+	joined = join_nodes_content(start, end);
+	new_node = create_node(joined, 0, 0);
+	if (!new_node)
+		return ;
+	new_node->prev = start->prev;
+	new_node->next = end;
+	if (start->prev)
+		start->prev->next = new_node;
+	else
+		*head = new_node;
+	if (end)
+		end->prev = new_node;
+	remove_node(&start, &end);
 }
 
-void join_b_space_nodes(t_node **head)
+void	join_b_space_nodes(t_node **head)
 {
-    t_node  (*tmp), (*prev), (*start), (*end);
-
-    tmp = *head;
-    while (tmp)
-    {
-        if (tmp->b_space == 1)
-        {
-            prev = tmp->prev;
-            start = tmp;
-            end = tmp;
-            while (end && end->b_space == 1)
-                end = end->next;
-            if (end)
-                end = end->next;
-            replace_b_space_sequence(head, start, end);
-            if (prev)
-                tmp = prev->next;
-            else
-                tmp = *head;
-        }
-        else
-            tmp = tmp->next;
-    }
+	t_node(*tmp), (*prev), (*start), (*end);
+	tmp = *head;
+	while (tmp)
+	{
+		if (tmp->b_space == 1)
+		{
+			prev = tmp->prev;
+			start = tmp;
+			end = tmp;
+			while (end && end->b_space == 1)
+				end = end->next;
+			if (end)
+				end = end->next;
+			replace_b_space_sequence(head, start, end);
+			if (prev)
+				tmp = prev->next;
+			else
+				tmp = *head;
+		}
+		else
+			tmp = tmp->next;
+	}
 }

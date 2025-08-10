@@ -12,10 +12,10 @@
 
 #include "../includes/minishell.h"
 
-int check_quotes(char *cmd, size_t i)
+int	check_quotes(char *cmd, size_t i)
 {
-	size_t j;
-	int flag;
+	size_t	j;
+	int		flag;
 
 	j = 0;
 	flag = 0;

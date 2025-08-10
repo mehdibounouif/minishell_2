@@ -61,7 +61,7 @@ void	ft_free_garbage(t_gcollect **list)
 
 void	*ft_malloc(int type, int size)
 {
-	void	*result;
+	void		*result;
 	t_gcollect	**head;
 
 	head = ft_function();

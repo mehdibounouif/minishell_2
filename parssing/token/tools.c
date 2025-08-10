@@ -28,12 +28,11 @@ size_t	get_close_token(char *cmd, char c, int *b_space)
 
 size_t	get_separetor(char *cmd)
 {
-	int len;
+	int	len;
 
 	len = 0;
-	if (cmd[len + 1]
-		&& ((cmd[len] == '<' && cmd[len + 1] == '<')
-		|| (cmd[len] == '>' && cmd[len + 1] == '>')))
+	if (cmd[len + 1] && ((cmd[len] == '<' && cmd[len + 1] == '<')
+			|| (cmd[len] == '>' && cmd[len + 1] == '>')))
 		return (2);
 	else
 		return (1);
@@ -44,8 +43,8 @@ size_t	get_token_len(char *cmd, int *b_space)
 	int	len;
 
 	len = 0;
-	while (cmd[len] && !is_qoute(cmd[len])
-		&& !is_space(cmd[len]) && !is_sep(cmd[len]))
+	while (cmd[len] && !is_qoute(cmd[len]) && !is_space(cmd[len])
+		&& !is_sep(cmd[len]))
 		len++;
 	if (cmd[len] && !is_space(cmd[len]) && !is_sep(cmd[len]))
 		*b_space = 1;
@@ -54,7 +53,7 @@ size_t	get_token_len(char *cmd, int *b_space)
 
 t_node	*new_token(char *content, int b_space)
 {
-	t_node	*node;
+	t_node *node;
 
 	node = malloc(sizeof(t_node));
 	node->content = ft_strdup1(content);

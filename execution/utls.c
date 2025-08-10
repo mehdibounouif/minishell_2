@@ -22,22 +22,22 @@ int	ft_arraylen(char **arr)
 	return (i);
 }
 
-int only_space(char *str)
+int	only_space(char *str)
 {
-  int i;
+	int	i;
 
-  i = 0;
-  if (!str[i])
-    return (0);
-  while (str[i])
-    if (!is_space(str[i++]))
-      return (0);
-  return (1);
+	i = 0;
+	if (!str[i])
+		return (0);
+	while (str[i])
+		if (!is_space(str[i++]))
+			return (0);
+	return (1);
 }
 
 int	len_slash(char *str, char c, int len)
 {
-	while(str[len] != c)
+	while (str[len] != c)
 		len--;
 	return (len);
 }

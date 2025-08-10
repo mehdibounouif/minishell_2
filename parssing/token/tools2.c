@@ -3,6 +3,7 @@
 int	contain_quoted(char *cmd, int len)
 {
 	int	i;
+
 	if (!cmd)
 		return (0);
 	i = 0;

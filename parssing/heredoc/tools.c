@@ -1,30 +1,32 @@
 #include "../../includes/minishell.h"
 
-// Fonction for stock 
-t_share3 *get_current_share(t_share3 *share)
+// Fonction for stock
+t_share3	*get_current_share(t_share3 *share)
 {
-	static t_share3 *current_share = NULL;
+	static t_share3	*current_share = NULL;
+
 	if (share != (t_share3 *)-1) // -1 for recup
 		current_share = share;
-	return current_share;
+	return (current_share);
 }
 
-t_env *get_current_env(t_env *env)
+t_env	*get_current_env(t_env *env)
 {
-	static t_env *current_env = NULL;
-	if (env != (t_env *)-1) 
+	static t_env	*current_env = NULL;
+
+	if (env != (t_env *)-1)
 		current_env = env;
-	return current_env;
+	return (current_env);
 }
 
-void  check_line(t_share3 *share)
+void	check_line(t_share3 *share)
 {
-	if(share->file_name)
+	if (share->file_name)
 	{
-    //free(share->file_name);
+		// free(share->file_name);
 		share->file_name = NULL;
 	}
-	if(share->fd >= 0)
+	if (share->fd >= 0)
 	{
 		close(share->fd);
 		share->fd = -1;
@@ -32,11 +34,11 @@ void  check_line(t_share3 *share)
 }
 
 // gestion
-void heredoc_sigint_handler(int sig __attribute__((unused)))
+void	heredoc_sigint_handler(int sig __attribute__((unused)))
 {
-	t_share3 *current_share;
-	t_env *current_env;
-	
+	t_share3	*current_share;
+	t_env		*current_env;
+
 	ft_putchar_fd('\n', 1);
 	current_share = get_current_share((t_share3 *)-1);
 	current_env = get_current_env((t_env *)-1);
@@ -52,13 +54,13 @@ void heredoc_sigint_handler(int sig __attribute__((unused)))
 		ft_free_garbage(ft_function());
 		free_env(current_env);
 	}
-	exit(130); 
+	exit(130);
 }
 
 char	*generate_file_name(t_env *env)
 {
-	unsigned char	c;
-	char			*buffer;
+	unsigned char c;
+	char *buffer;
 
 	int fd, i;
 	buffer = ft_malloc(sizeof(char), 9);

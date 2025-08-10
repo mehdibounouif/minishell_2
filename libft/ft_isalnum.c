@@ -3,7 +3,8 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mbounoui <moraouf@42.fr>                    +#+  +:+      
+	+#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 18:41:15 by mbounoui          #+#    #+#             */
 /*   Updated: 2024/11/08 16:00:38 by mbounoui         ###   ########.fr       */
@@ -14,7 +15,6 @@
 
 int	ft_isalnum(int ch)
 {
-	return ((ch >= 'a' && ch <= 'z')
-		|| (ch >= 'A' && ch <= 'Z')
-		|| (ch >= '0' && ch <= '9'));
+	return ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0'
+			&& ch <= '9'));
 }

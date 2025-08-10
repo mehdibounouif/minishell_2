@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mbounoui <moraouf@42.fr>                    +#+  +:+      
+	+#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 16:52:36 by mbounoui          #+#    #+#             */
 /*   Updated: 2024/11/08 16:54:34 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "../includes/minishell.h"
+#include "libft.h"
 
 static int	count_word(char const *s, char c)
 {
@@ -95,7 +96,7 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	count = count_word(s, c);
-	ar = (char **)ft_malloc((count + 1) , sizeof(char *));
+	ar = (char **)ft_malloc((count + 1), sizeof(char *));
 	check_and_put(ar, s, c);
 	return (ar);
 }

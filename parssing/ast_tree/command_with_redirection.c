@@ -16,11 +16,11 @@ typedef struct s_share4
 {
 	t_tree	*redirect_node;
 	t_tree	*prev;
-	t_node *tmp;
-	int	i;
-	int	j;
+	t_node	*tmp;
+	int		i;
+	int		j;
 
-}	t_share4;
+}			t_share4;
 
 void	init(t_tree *node)
 {
@@ -32,14 +32,14 @@ void	init(t_tree *node)
 	node->redirect->hdc = 0;
 	node->redirect->files = NULL;
 	node->redirect->herdoc = NULL;
-  node->redirect->heredocs = NULL;
+	node->redirect->heredocs = NULL;
 }
 
 t_files	*new_node(char *content, int type)
 {
-	t_files *node;
+	t_files	*node;
 
-	node = ft_malloc(sizeof(t_files) , 1);
+	node = ft_malloc(sizeof(t_files), 1);
 	node->file = ft_strdup(content);
 	node->type = type;
 	node->next = NULL;
@@ -55,7 +55,7 @@ void	assing_io(t_node **list, t_share4 *share)
 		share->redirect_node->redirect->out_type = (*list)->type;
 		*list = (*list)->next;
 		file = new_node((*list)->content, (*list)->prev->type);
-		add_back1(&share->redirect_node->redirect->files,file);
+		add_back1(&share->redirect_node->redirect->files, file);
 		share->redirect_node->redirect->out_files[share->j++] = ft_strdup((*list)->content);
 		*list = (*list)->next;
 	}
@@ -64,7 +64,7 @@ void	assing_io(t_node **list, t_share4 *share)
 		*list = (*list)->next;
 		share->redirect_node->redirect->in_files[share->i++] = ft_strdup((*list)->content);
 		file = new_node((*list)->content, R_IN);
-		add_back1(&share->redirect_node->redirect->files,file);
+		add_back1(&share->redirect_node->redirect->files, file);
 		*list = (*list)->next;
 	}
 }
@@ -76,10 +76,8 @@ void	collect_in_out_files(t_node **list, t_share4 *share)
 		if ((*list)->type == HEREDOC)
 			skip_redirection(list);
 		assing_io(list, share);
-		if (*list && (*list)->type != R_IN &&
-			(*list)->type != R_APPEND
-			&& (*list)->type != R_OUT
-			&& (*list)->type != HEREDOC
+		if (*list && (*list)->type != R_IN && (*list)->type != R_APPEND
+			&& (*list)->type != R_OUT && (*list)->type != HEREDOC
 			&& (*list)->type != PIPE)
 			*list = (*list)->next;
 	}
@@ -118,14 +116,14 @@ void	allocat_files_array(t_tree *node)
 
 	infile_num = node->redirect->in_count + 1;
 	outfile_num = node->redirect->out_count + 1;
-	node->redirect->in_files = ft_malloc(sizeof(char *) , infile_num);
-	node->redirect->out_files = ft_malloc(sizeof(char *) , outfile_num);
+	node->redirect->in_files = ft_malloc(sizeof(char *), infile_num);
+	node->redirect->out_files = ft_malloc(sizeof(char *), outfile_num);
 }
 
 void	skip_redirection(t_node **list)
 {
-		*list = (*list)->next;
-		*list = (*list)->next;
+	*list = (*list)->next;
+	*list = (*list)->next;
 }
 
 void	allocat_node(t_share4 *share)
@@ -136,7 +134,7 @@ void	allocat_node(t_share4 *share)
 
 t_tree	*parss_redirection_in_start(t_node **list)
 {
-	t_share4 *share;
+	t_share4	*share;
 
 	share = ft_malloc(sizeof(t_share4), 1);
 	share = ft_memset(share, 0, sizeof(t_share4));
@@ -158,10 +156,10 @@ t_tree	*parss_redirection_in_start(t_node **list)
 	return (share->redirect_node);
 }
 
-t_tree  *parss_redirection(t_tree *node, t_node **list)
+t_tree	*parss_redirection(t_tree *node, t_node **list)
 {
-	t_share4 *share;
-	t_node	*tmp;
+	t_share4	*share;
+	t_node		*tmp;
 
 	share = ft_malloc(sizeof(t_share4), 1);
 	share = ft_memset(share, 0, sizeof(t_share4));

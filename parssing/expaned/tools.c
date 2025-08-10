@@ -19,7 +19,7 @@ typedef struct s_share2
 	char	*value;
 	char	*key;
 
-}	t_share2;
+}			t_share2;
 
 char	*get_env_key(char *cmd, int i)
 {
@@ -41,8 +41,8 @@ void	init_share(t_share2 *share, char *cmd)
 }
 int	split_len(char *content)
 {
-	int	 len;
-	int	 i;
+	int	len;
+	int	i;
 
 	i = 0;
 	len = 0;
@@ -68,12 +68,13 @@ int	split_len(char *content)
 int	get_full_len(char *cmd, t_env *list)
 {
 	t_share2	*share;
+
 	share = ft_malloc(sizeof(t_share2), 1);
 	init_share(share, cmd);
 	while (cmd[share->i])
 	{
-		if (is_dollar(cmd, share->i)
-			&& (ft_isalpha(cmd[share->i + 1]) || cmd[share->i + 1] == '_'))
+		if (is_dollar(cmd, share->i) && (ft_isalpha(cmd[share->i + 1])
+				|| cmd[share->i + 1] == '_'))
 		{
 			share->key = get_env_key(cmd, share->i++);
 			share->value = ft_getenv(share->key, list);
@@ -81,7 +82,7 @@ int	get_full_len(char *cmd, t_env *list)
 				share->value = ft_strdup("");
 			share->full_len -= (ft_strlen(share->key) + 1);
 			share->full_len += ft_strlen(share->value);
-		}  
+		}
 		share->i++;
 	}
 	return (share->full_len + 1);

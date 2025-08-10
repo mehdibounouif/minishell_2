@@ -15,7 +15,7 @@
 void	collect_args(char *cmd, t_node **list, char **args)
 {
 	t_node	*tmp;
-	int	i;
+	int		i;
 
 	i = 0;
 	args[i++] = ft_strdup(cmd);
@@ -39,17 +39,17 @@ void	collect_args(char *cmd, t_node **list, char **args)
 	args[i] = 0;
 }
 
-t_tree  *command_without_redirection(t_node **list)
+t_tree	*command_without_redirection(t_node **list)
 {
 	t_tree	*node;
-	char    *cmd;
-	char    **args;
-	int len;
+	char	*cmd;
+	char	**args;
+	int		len;
 
 	len = count_args(*list) + 1;
 	if (!(cmd = ft_strdup((*list)->content)))
 		return (NULL);
-	args = ft_malloc(sizeof(char *) , len);
+	args = ft_malloc(sizeof(char *), len);
 	collect_args(cmd, list, args);
 	node = ft_malloc(sizeof(t_tree), 1);
 	node->command = ft_malloc(sizeof(t_command), 1);

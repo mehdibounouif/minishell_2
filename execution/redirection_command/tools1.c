@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tools.c                                            :+:      :+:    :+:   */
+/*   tools1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: moraouf <moraouf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 16:19:35 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/30 16:20:15 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/11 00:42:32 by moraouf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-
 static int	check_infile_in_directory(char *files)
 {
-	DIR *dir;
-	char *full_path;
-	int l;
+	DIR		*dir;
+	char	*full_path;
+	int		l;
 
 	l = 0;
 	if (ft_strchr(files, '/'))
@@ -40,7 +39,7 @@ static int	check_infile_in_directory(char *files)
 
 int	check_in_files(char *file)
 {
-	DIR *dir;
+	DIR	*dir;
 
 	if ((dir = opendir(file)))
 	{
@@ -54,7 +53,7 @@ int	check_in_files(char *file)
 	{
 		print_message(file, ": No such file or directory");
 		global(1);
-		return 0;
+		return (0);
 	}
 	return (1);
 }
@@ -74,7 +73,8 @@ static int	exist_check_permession_else_create(char *file, DIR *dir)
 	}
 	else
 	{
-		if ((fd = open(file, O_RDWR | O_CREAT, 0644)) == -1)
+    fd  = open(file, O_RDWR | O_CREAT, 0644);
+		if (fd == -1)
 		{
 			perror("Open");
 			closedir(dir);
@@ -88,13 +88,14 @@ static int	exist_check_permession_else_create(char *file, DIR *dir)
 static int	check_correct_path(char *file, char *full_path)
 {
 	DIR	*dir;
-	if (!(dir = opendir(full_path)))
+
+	dir = opendir(full_path);
+	if (!dir)
 	{
 		print_message(file, ": No such file or directory");
 		global(1);
-		return 0;
+		return (0);
 	}
-	// correct path
 	else
 	{
 		if (!exist_check_permession_else_create(file, dir))
@@ -109,8 +110,8 @@ static int	check_correct_path(char *file, char *full_path)
 
 int	in_directory(char *file)
 {
-	char *full_path;
-	int l;
+	char	*full_path;
+	int		l;
 
 	l = len_slash(file, '/', ft_strlen(file) - 1);
 	full_path = ft_substr(file, 0, l);
@@ -118,5 +119,3 @@ int	in_directory(char *file)
 		return (0);
 	return (1);
 }
-
-
