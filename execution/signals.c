@@ -29,7 +29,7 @@ int	ft_return_signal(int status)
 	sig = 0;
 	if(WIFSIGNALED(status))
 	{
-		printf("\n");
+		ft_putchar_fd('\n', 1);
 		sig = WTERMSIG(status);
 		sig += 128;
 		global(sig);
@@ -50,7 +50,7 @@ void	handler_sigint(int sig __attribute__((unused)))
 {
 	if(sig_ctrl(-1) != 1) // interactive mode 
 	{
-		printf("\n");
+		ft_putchar_fd('\n', 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();

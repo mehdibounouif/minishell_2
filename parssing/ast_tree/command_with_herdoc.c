@@ -41,7 +41,7 @@ void  check_line(t_share3 *share)
 // gestion
 void heredoc_sigint_handler(int sig __attribute__((unused)))
 {
-	printf("\n");
+	ft_putchar_fd('\n', 1);
 	
 	if (g_current_share && g_current_share->line)
 	{
@@ -120,7 +120,7 @@ int	get_lastfd(int *list)
 
 void	protect_line(t_share3 *share, t_env *env, t_redirection *list)
 {
-	printf("bash: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", list->herdoc->delimeter);
+	  printf("bash: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", list->herdoc->delimeter);
     ulink_files(list->heredocs);
     close(share->fd);
     ft_free_garbage(ft_function());
@@ -128,7 +128,27 @@ void	protect_line(t_share3 *share, t_env *env, t_redirection *list)
     exit(global(-1));
 }
 
-int	read_lines(int *flag, t_share3 *share, t_redirection *list, t_env *env)
+void  get_line(t_share3 *share, t_redirection *list, t_env *env)
+{
+  if (!list->herdoc->quoted)
+  {
+    share->expand_line = expansion(share->line, env, 0);
+    write(share->fd, share->expand_line, ft_strlen(share->expand_line));
+    write(share->fd, "\n", 1);
+    share->expand_line = NULL;
+  }
+  else
+  {
+    write(share->fd, share->line, ft_strlen(share->line));
+    write(share->fd, "\n", 1);
+    free(share->line);
+  }
+  share->line = readline(">");
+  if(!share->line)
+    protect_line(share, env, list);
+}
+
+void	read_lines(int *flag, t_share3 *share, t_redirection *list, t_env *env)
 {
   pid_t pid;
 	int status;
@@ -146,24 +166,7 @@ int	read_lines(int *flag, t_share3 *share, t_redirection *list, t_env *env)
     	if(!share->line)
       	protect_line(share, env, list);
     while (share->line && ft_strcmp(list->herdoc->delimeter, share->line))
-    {
-      if (!list->herdoc->quoted)
-      {
-        share->expand_line = expansion(share->line, env, 0);
-        write(share->fd, share->expand_line, ft_strlen(share->expand_line));
-        write(share->fd, "\n", 1);
-        share->expand_line = NULL;
-      }
-      else
-      {
-        write(share->fd, share->line, ft_strlen(share->line));
-        write(share->fd, "\n", 1);
-        free(share->line);
-      }
-      share->line = readline(">");
-      if(!share->line)
-        protect_line(share, env, list);
-    }
+      get_line(share, list, env);
     //free the last line if it exists
     if (share->line)
       free(share->line);
@@ -179,12 +182,12 @@ int	read_lines(int *flag, t_share3 *share, t_redirection *list, t_env *env)
 		*flag = ft_return_signal(status);
 		sig_ctrl(0);
 	}
-	return (1);
 }
 
-int	create_heredoc(int *flag, t_redirection *list, t_env *env, int i)
+int	create_heredoc(t_redirection *list, t_env *env, int i)
 {
 	t_share3 *share;
+  int sig_flag;
 
 	share = ft_malloc(sizeof(t_share3), 1);
 	share->expand_line = NULL;
@@ -195,15 +198,15 @@ int	create_heredoc(int *flag, t_redirection *list, t_env *env, int i)
   if (share->fd == -1)
     protect(env, "Open failed");
 	list->heredocs[i] = ft_strdup(share->file_name);
-	read_lines(flag, share, list, env);
+	read_lines(&sig_flag, share, list, env);
 	close(share->fd);
 	// signal here stop excution
-	if (*flag)
+	if (sig_flag)
 		return (0);
 	return (1);
 }
 
-int	open_her(int *flag, t_tree *tree, t_env *env)
+int	open_her(t_tree *tree, t_env *env)
 {
 	int	i;
 
@@ -212,13 +215,8 @@ int	open_her(int *flag, t_tree *tree, t_env *env)
 	ft_memset(tree->redirect->heredocs, 0, sizeof(char *) * 20);
 	while (tree->redirect->herdoc)
 	{
-		if (!create_heredoc(flag, tree->redirect, env, i))
-		{
+		if (!create_heredoc(tree->redirect, env, i))
      		return (0);
-		}
-		// Stop here if signal received
-		if (*flag)
-			return (0);
 		tree->redirect->herdoc = tree->redirect->herdoc->next;
 		i++;
 	}
@@ -226,27 +224,20 @@ int	open_her(int *flag, t_tree *tree, t_env *env)
 	return (1);
 }
 
-int	open_herdocs(int *flag, t_tree *tree, t_env *env)
+int	open_herdocs(t_tree *tree, t_env *env)
 {
 	if (!tree)
 		return (0);
 	if (tree->type == REDIRECT_NODE)
 	{
-		if (!open_her(flag, tree, env))
+		if (!open_her(tree, env))
       return (0);
-		// Stop here
-		if (*flag)
-			return (0);
 	}
 	else if (tree->type == PIPE_NODE)
 	{
-		if (!open_herdocs(flag, tree->pipe->left, env))
+		if (!open_herdocs(tree->pipe->left, env))
 			return (0);
-		if (*flag)
-			return (0);
-		if (!open_herdocs(flag, tree->pipe->right, env))
-			return (0);
-		if (*flag)
+		if (!open_herdocs(tree->pipe->right, env))
 			return (0);
 	}
 	return (1);

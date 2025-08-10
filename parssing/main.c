@@ -41,22 +41,9 @@ static int	check_heredoc(t_tree *tree)
 
 static int handel_heredocs(t_tree *tree, t_env *envp)
 {
-  int flag;
-
-  flag = 0;
   if (check_heredoc(tree))
-    if (!open_herdocs(&flag, tree, envp))
-    {
-      if (flag) // retourner au prompt
+    if (!open_herdocs(tree, envp))
         return (0);
-      else // Erreur système, quitter
-      {
-        ft_free_garbage(ft_function());
-        exit(global(-1));
-      }
-    }
-  if (flag) // Signal reçu pendant le heredoc, ne pas exécuter
-    return (0);
   return (1);
 }
 

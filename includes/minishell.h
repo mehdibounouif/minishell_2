@@ -179,7 +179,7 @@ char	**ft_split1(char const *s, char c);
 void	execute_pipe_node(t_tree *tree, t_env *env, char **envp);
 void print_env(t_env *env);
 void print_ast(t_tree *tree, int level);
-int	open_herdocs(int *flag, t_tree *tree, t_env *env);
+int	open_herdocs(t_tree *tree, t_env *env);
 void	skip_redirection(t_node **list);
 char **back_up();
 void	print(char *command, char *message, int code);

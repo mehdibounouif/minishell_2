@@ -25,7 +25,6 @@ void remove_node(t_node **head, t_node **end)
 	}
 }
 
-// Joins content of nodes from start to end (exclusive)
 static char *join_nodes_content(t_node *start, t_node *end)
 {
     char *joined = NULL;
@@ -39,7 +38,6 @@ static char *join_nodes_content(t_node *start, t_node *end)
     return joined;
 }
 
-// Creates replacement node, rewires list, removes old sequence
 static void replace_b_space_sequence(t_node **head, t_node *start, t_node *end)
 {
     char *joined = join_nodes_content(start, end);
@@ -59,23 +57,25 @@ static void replace_b_space_sequence(t_node **head, t_node *start, t_node *end)
     remove_node(&start, &end);
 }
 
-// Finds b_space sequences and replaces them
 void join_b_space_nodes(t_node **head)
 {
-    t_node *tmp = *head;
+    t_node  (*tmp), (*prev), (*start), (*end);
+
+    tmp = *head;
     while (tmp)
     {
         if (tmp->b_space == 1)
         {
-            t_node *start = tmp;
-            t_node *end = tmp;
+            prev = tmp->prev;
+            start = tmp;
+            end = tmp;
             while (end && end->b_space == 1)
                 end = end->next;
             if (end)
                 end = end->next;
             replace_b_space_sequence(head, start, end);
-            if (start->prev)
-                tmp = start->prev->next;
+            if (prev)
+                tmp = prev->next;
             else
                 tmp = *head;
         }
