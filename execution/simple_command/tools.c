@@ -18,82 +18,18 @@ void	print(char *command, char *message, int code)
 	global(code);
 }
 
-void	folder(t_env *env, char *command)
+void  print_and_exit(t_tree *node, t_env *env, int code, char *message)
 {
-	DIR *dir;
-
-	if ((dir = opendir(command)))
-	{
-		if (ft_strchr(command, '/'))
-		{
-			print(command, ": Is a directory", 126);
-			closedir(dir);
-			free_env(env);
-			ft_free_garbage(ft_function());
-			exit(126);
-		}
-		else
-		{
-			print(command, ": command not found", 127);
-			closedir(dir);
-			free_env(env);
-			ft_free_garbage(ft_function());
-			exit(127);
-		}
-	}
-}
-
-void	command_is_directory(t_env *env, char *command)
-{
-	DIR	*dir;
-
-	dir = opendir(command);
-	// Exmple /parssing
-	if (!dir && command[0] == '/')
-	{
-		print(command, ": No such file or directory", 127);
-		free_env(env);
-		ft_free_garbage(ft_function());
-		exit(127);
-	}
-	closedir(dir);
-	// Example parssing or ./parssing/
-	folder(env, command);
-}
-
-void	command_inside_directory(t_tree *node, char **envp, t_env *env)
-{
-	struct stat	info;
-	if (!stat(node->command->command, &info))
-	{
-		if (info.st_mode & (S_IXGRP | S_IXUSR | S_IXOTH)) // executable
-			execve(node->command->command, node->command->args, envp);
-		else // not executable
-		{
-			print(node->command->command, ": Permission denied", 126);
-			free_env(env);
-			ft_free_garbage(ft_function());
-			exit(126);
-		}
-	}
-	else
-	{
-		print(node->command->command, ": No such file or directory", 127);
-		free_env(env);
-		ft_free_garbage(ft_function());
-		exit(127);
-	}
+  print(node->command->command, message, code);
+  free_env(env);
+  ft_free_garbage(ft_function());
+  exit(code);
 }
 
 void	empty_command(t_tree *node, t_env *env)
 {
 	if (node->command->command[0] == '\0')
-	{
-		print(node->command->command, ": command not found", 127);
-		free_env(env);
-		ft_free_garbage(ft_function());
-		exit(global(-1));
-	}
+    print_and_exit(node, env, 127, ": command not found");
 }
 
 void  dote_command(t_tree *node, t_env *env)
@@ -107,10 +43,29 @@ void  dote_command(t_tree *node, t_env *env)
 		exit(global(-1));
 	}
   else if (node->command->command[0] == '.' && !ft_strchr(node->command->command, '/'))
-  {
-    print(node->command->command, ": command not found", 127);
-		free_env(env);
-		ft_free_garbage(ft_function());
-		exit(global(-1));
-  }
+    print_and_exit(node, env, 127, ": command not found");
+}
+
+void absolute_path(t_tree *node, t_env *env, char **envp)
+{
+    struct stat st;
+    char *command = node->command->command;
+
+    if (command[0] == '/' || command[0] == '.')
+    {
+        if (stat(command, &st) == -1)
+            print_and_exit(node, env, 127, ": No such file or directory");
+
+        if (S_ISDIR(st.st_mode))
+            print_and_exit(node, env, 126, ": Is a directory");
+
+        if (access(command, X_OK) == -1)
+            print_and_exit(node, env, 126, ": Permission denied");
+
+        execve(command, node->command->args, envp);
+        perror("minishell");
+        free_env(env);
+        ft_free_garbage(ft_function());
+        exit(127);
+    }
 }

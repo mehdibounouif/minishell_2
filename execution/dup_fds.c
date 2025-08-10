@@ -16,19 +16,9 @@ static void  herdoc(t_redirection *node, t_env *env)
   int	in_fd;
 
 		if ((in_fd = open(node->hrc_file, O_RDONLY)) == -1)
-		{
-      perror("open");
-      free_env(env);
-			ft_free_garbage(ft_function());
-			exit(1);
-		}
+      protect(env, "Open failed");
     if (dup2(in_fd, 0) == -1)
-    {
-      perror("dup2");
-      ft_free_garbage(ft_function());
-      free_env(env);
-	    exit(1);
-    }
+      protect(env, "Dup2 failed");
     ulink_files(node->heredocs);
 		close(in_fd);
 }
@@ -38,19 +28,9 @@ static void  input(t_redirection *node, t_env *env)
   int	in_fd;
 
 		if ((in_fd = open(node->in_file, O_RDONLY)) == -1)
-		{
-      perror("open");
-      free_env(env);
-			ft_free_garbage(ft_function());
-			exit(1);
-		}
+      protect(env, "Open failed");
     if (dup2(in_fd, 0) == -1)
-    {
-      perror("dup2");
-      ft_free_garbage(ft_function());
-      free_env(env);
-	    exit(1);
-    }
+      protect(env, "Dup2 failed");
 		close(in_fd);
 }
 
@@ -59,19 +39,9 @@ static void appand(t_redirection *node, t_env *env)
   int	out_fd;
 
 		if ((out_fd = open(node->out_file, O_WRONLY | O_CREAT | O_APPEND, 0777)) == -1)
-		{
-      perror("open");
-      free_env(env);
-			ft_free_garbage(ft_function());
-			exit(1);
-		}
+      protect(env, "Open failed");
 		if (dup2(out_fd, 1) == -1)
-    {
-      perror("dup2");
-      ft_free_garbage(ft_function());
-      free_env(env);
-	    exit(1);
-    }
+      protect(env, "Dup2 failed");
 		close(out_fd);
 }
 
@@ -80,19 +50,9 @@ static void trunce(t_redirection *node, t_env *env)
   int	out_fd;
 
 		if ((out_fd = open(node->out_file,O_WRONLY | O_CREAT | O_TRUNC, 0777)) == -1)
-		{
-      perror("open");
-      free_env(env);
-			ft_free_garbage(ft_function());
-			exit(1);
-		}
+      protect(env, "Open failed");
     if (dup2(out_fd, 1) == -1)
-    {
-      perror("dup2");
-      ft_free_garbage(ft_function());
-      free_env(env);
-	    exit(1);
-    }
+      protect(env, "Dup2 failed");
 		close(out_fd);
 }
 

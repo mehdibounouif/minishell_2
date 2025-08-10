@@ -12,48 +12,43 @@
 
 #include "../../includes/minishell.h"
 
-void	find_path_and_exec(t_tree *node, t_env *env ,char **envp)
+void protect(t_env *env, char *message)
 {
-	char *path = find_path(node , env);
-	if (!path)
-	{
-		print(node->command->command, ": command not found", 127);
-		free_env(env);
-		ft_free_garbage(ft_function());
-		exit(127);
-	}
-	execve(path, node->command->args, envp);
-	free_env(env);
-	//free(path);
-	ft_free_garbage(ft_function());
-	perror("minishell");
-	exit(127);
+  ft_putendl_fd(message, 2);
+  ft_free_garbage(ft_function());
+  free_env(env);
+  exit(1);
 }
 
 void	child_process(t_tree *node, t_env *env, char **envp)
 {
-    struct stat st;
+    char *path;
 
     signal(SIGINT, SIG_DFL);
     signal(SIGQUIT, SIG_DFL);
 
-    empty_command(node, env); // ""
-    dote_command(node, env); // "." or . or ..
-
-    // If command is absolute or relative path, try to exec directly
+    empty_command(node, env);
+    dote_command(node, env);
     absolute_path(node, env, envp);
-    // Otherwise, search in PATH
-    find_path_and_exec(node, env, envp);
+    path = find_path(node , env);
+    if (!path)
+      print_and_exit(node, env, 127, ": command not found");
+    execve(path, node->command->args, envp);
+    free_env(env);
+    ft_free_garbage(ft_function());
+    perror("minishell");
+    exit(127);
 }
 
-void	parent_process(int status, pid_t pid)
+void	parent_process(t_env *env, int status, pid_t pid)
 {
 	int sige;
 
 	sige = WTERMSIG(status);
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-	waitpid(pid, &status, 0);
+	if (waitpid(pid, &status, 0) == -1)
+    protect(env, "Waitpid failed");
 	if (WIFSIGNALED(status))
 	{
 		int sige = WTERMSIG(status);
@@ -81,18 +76,13 @@ void	execute_command_node(t_tree *node, t_env **env, char **envp)
 	if (is_builtin(node->command->command))
 	{
 		execute_builtin(node, env);
-    //ft_free_garbage(ft_function());
 		return ;
 	}
 	pid_t pid = fork();
   if (pid < 0)
-  {
-    ft_free_garbage(ft_function());
-    free_env(*env);
-    exit(1);
-  }
+      protect(*env, "Fork failed");
 	else if (pid == 0)
 		child_process(node, *env, envp);
 	else
-		parent_process(status, pid);
+		parent_process(*env, status, pid);
 }
