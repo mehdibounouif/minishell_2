@@ -6,7 +6,7 @@
 /*   By: taha_laylay <taha_laylay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 11:59:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/10 17:53:07 by taha_laylay      ###   ########.fr       */
+/*   Updated: 2025/08/10 18:14:20 by taha_laylay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,22 @@ typedef struct	s_share3
 	char	*expand_line;
 }	t_share3;
 
-// glovbal var 
-static t_share3 *g_current_share = NULL;
-static t_env *g_current_env = NULL;
+// Fonction for stock 
+t_share3 *get_current_share(t_share3 *share)
+{
+	static t_share3 *current_share = NULL;
+	if (share != (t_share3 *)-1) // -1 for recup
+		current_share = share;
+	return current_share;
+}
+
+t_env *get_current_env(t_env *env)
+{
+	static t_env *current_env = NULL;
+	if (env != (t_env *)-1) 
+		current_env = env;
+	return current_env;
+}
 
 void  check_line(t_share3 *share)
 {
@@ -41,19 +54,23 @@ void  check_line(t_share3 *share)
 // gestion
 void heredoc_sigint_handler(int sig __attribute__((unused)))
 {
-	ft_putchar_fd('\n', 1);
+	t_share3 *current_share;
+	t_env *current_env;
 	
-	if (g_current_share && g_current_share->line)
+	ft_putchar_fd('\n', 1);
+	current_share = get_current_share((t_share3 *)-1);
+	current_env = get_current_env((t_env *)-1);
+	if (current_share && current_share->line)
 	{
-		free(g_current_share->line);
-		g_current_share->line = NULL;
+		free(current_share->line);
+		current_share->line = NULL;
 	}
-	if (g_current_share)
-		check_line(g_current_share);
-	if (g_current_env)
+	if (current_share)
+		check_line(current_share);
+	if (current_env)
 	{
 		ft_free_garbage(ft_function());
-		free_env(g_current_env);
+		free_env(current_env);
 	}
 	exit(130); 
 }
@@ -159,8 +176,9 @@ void	read_lines(int *flag, t_share3 *share, t_redirection *list, t_env *env)
     	protect(env, "Fork failed");
 	else if(pid == 0)
 	{
-		g_current_share = share;
-		g_current_env = env;
+		// Stocker les pointeurs pour le gestionnaire de signal
+		get_current_share(share);
+		get_current_env(env);
 		signal(SIGINT, heredoc_sigint_handler);
     	share->line = readline(">");
     	if(!share->line)
