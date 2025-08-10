@@ -26,9 +26,8 @@ static t_share3 *g_current_share = NULL;
 static t_env *g_current_env = NULL;
 
 // gestion
-void heredoc_sigint_handler(int sig)
+void heredoc_sigint_handler(int sig __attribute__((unused)))
 {
-	(void)sig;
 	printf("\n");
 	
 	if (g_current_share && g_current_share->line)

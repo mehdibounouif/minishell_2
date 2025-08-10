@@ -44,10 +44,8 @@ int	ft_return_signal(int status)
 	return (0);
 }
 
-void	handler_sigint(int sig)
+void	handler_sigint(int sig __attribute__((unused)))
 {
-	(void)sig;
-
 	if(sig_ctrl(-1) != 1) // interactive mode 
 	{
 		printf("\n");

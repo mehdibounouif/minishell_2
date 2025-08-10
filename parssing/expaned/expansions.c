@@ -27,7 +27,6 @@ void	expand_cmd(char *cmd, t_share *share, t_env *env, int b_q)
 			share->expanded_cmd[share->j++] = cmd[share->i++];
 	}
 }
-
 char	*expansion(char *cmd, t_env *env, int b_q)
 {
 	int		full_len;
@@ -45,6 +44,7 @@ char	*expansion(char *cmd, t_env *env, int b_q)
 	share->expanded_cmd[share->j] = '\0';
 	return (share->expanded_cmd);
 }
+
 
 t_node  *create_list(char *content, t_node *tmp)
 {
@@ -72,7 +72,7 @@ t_node  *create_list(char *content, t_node *tmp)
   return (head);
 }
 
-t_node *expand_list(t_node *prev, t_node *tmp, t_env *env)
+static t_node *expand_list(t_node *prev, t_node *tmp, t_env *env)
 {
     char *content;
 

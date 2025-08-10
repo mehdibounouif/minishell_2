@@ -13,7 +13,7 @@
 #include "../../includes/minishell.h"
 
 
-int	check_infile_in_directory(char *files)
+static int	check_infile_in_directory(char *files)
 {
 	DIR *dir;
 	char *full_path;
@@ -59,7 +59,7 @@ int	check_in_files(char *file)
 	return (1);
 }
 
-int	exist_check_permession_else_create(char *file, DIR *dir)
+static int	exist_check_permession_else_create(char *file, DIR *dir)
 {
 	int	fd;
 
@@ -85,7 +85,7 @@ int	exist_check_permession_else_create(char *file, DIR *dir)
 	return (1);
 }
 
-int	check_correct_path(char *file, char *full_path)
+static int	check_correct_path(char *file, char *full_path)
 {
 	DIR	*dir;
 	if (!(dir = opendir(full_path)))

@@ -11,31 +11,39 @@
 /* ************************************************************************** */
 #include "../../includes/minishell.h"
 
+int quotes(char *cmd)
+{
+    int len;
+    
+    len = ft_strlen(cmd);
+    if (len < 2)
+        return 0;
 
+    if ((cmd[0] == '\'' && cmd[len - 1] == '\'') ||
+        (cmd[0] == '\"' && cmd[len - 1] == '\"'))
+        return 1;
+    return 0;
+}
 
 char  *remove_quotes(char *cmd)
 {
 	char  *clear_cmd;
-	int	(len), (i), (j), (start);
+	int (j), (start);
+  size_t  i;
 
-	len = ft_strlen(cmd);
 	i = 0;
 	j = 0;
-	if ((cmd[i] == '\'' && cmd[len - 1] == '\'')
-		|| (cmd[i] == '\"' && cmd[len - 1] == '\"') )
+	if (quotes(cmd))
 	{
-		clear_cmd = malloc(sizeof(char)* len - 1);
+		clear_cmd = malloc(sizeof(char)* ft_strlen(cmd) - 1);
 		i = 1;
 	}
 	else 
-	{
-		clear_cmd = malloc(sizeof(char)* len + 1);
-		i = 0;
-	}
+		clear_cmd = malloc(sizeof(char)* ft_strlen(cmd) + 1);
 	start = i;
 	while (cmd[i])
 	{
-		if (i == (len - 1) && start == 1)
+		if (i == (ft_strlen(cmd) - 1) && start == 1)
 			break;
 		clear_cmd[j++] = cmd[i++];
 	}
@@ -59,17 +67,28 @@ void	token_type(t_node *node)
 		node->type = WORD;
 }
 
+size_t  calc_len(char *cmd, int i, int *b_space)
+{
+  size_t  len;
+
+  len = 0;
+  if (is_qoute(cmd[i]))
+    len = get_close_token(&cmd[i], cmd[i], b_space);
+  else if (is_sep(cmd[i]))
+    len = get_separetor(&cmd[i]);
+  else
+    len = get_token_len(&cmd[i], b_space);
+  return (len);
+}
+
 void	tokenize(char *cmd, t_node **list)
 {
-	int	i;
-	int	start;
-	int	b_space;
+	int	(b_space), (i), (start);
 	size_t	len;
 	char	*content;
 	t_node *token;
 
 	i = 0;
-	len = 0;
 	while (cmd[i])
 	{
 		b_space = 0;
@@ -77,12 +96,7 @@ void	tokenize(char *cmd, t_node **list)
 			i++;
     if (!cmd[i])
       break;
-		if (is_qoute(cmd[i]))
-			len = get_close_token(&cmd[i], cmd[i], &b_space);
-		else if (is_sep(cmd[i]))
-			len = get_separetor(&cmd[i]);
-		else
-			len = get_token_len(&cmd[i], &b_space);
+		len = calc_len(cmd, i, &b_space);
 		start = i;
 		i += len;
 		content = ft_substr1(cmd, start, len);

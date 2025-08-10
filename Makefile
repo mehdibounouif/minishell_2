@@ -14,6 +14,7 @@ SRCS_FILES1 = main.c\
 			 custom/custom_split.c\
 	     token/tokenize.c\
 	     token/tools.c\
+	     token/tools2.c\
 	     token/join.c\
 	     ast_tree/print_ast.c\
 	     ast_tree/command_with_redirection.c\

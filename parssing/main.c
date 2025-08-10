@@ -24,32 +24,7 @@ int global(int state)
 	return value;
 }
 
-// int	heredoc(int *flag, t_mini minishell, t_env *envp)
-// {
-// 	pid_t pid;
-// 	int status;
-
-// 	sig_ctrl(1); //mode execution
-// 	pid = fork();
-// 	if(pid == 0)
-// 	{
-// 		signal(SIGINT, SIG_DFL);
-// 		//	signal(SIGQUIT, SIG_DFL);
-// 		open_herdocs(flag, minishell.tree, envp);
-//     exit(global(-1));
-// 	}
-// 	else if(pid > 0)
-// 	{
-// 		waitpid(pid, &status, 0);
-//     /// printf("%s\n", WIFSIGNALED(status) ? "yes" : "no");
-// 		*flag = ft_return_signal(status);
-// 		sig_ctrl(0);
-// 		//ft_free_garbage(ft_function());
-// 	}
-// 	return (1);
-// }
-
-int	check_heredoc(t_tree *tree)
+static int	check_heredoc(t_tree *tree)
 {
 	if (tree->type == REDIRECT_NODE)
 	{
@@ -62,6 +37,27 @@ int	check_heredoc(t_tree *tree)
 		return (check_heredoc(tree->pipe->right));
 	}
 	return (0);
+}
+
+static int handel_heredocs(t_tree *tree, t_env *envp)
+{
+  int flag;
+
+  flag = 0;
+  if (check_heredoc(tree))
+    if (!open_herdocs(&flag, tree, envp))
+    {
+      if (flag) // retourner au prompt
+        return (0);
+      else // Erreur système, quitter
+      {
+        ft_free_garbage(ft_function());
+        exit(global(-1));
+      }
+    }
+  if (flag) // Signal reçu pendant le heredoc, ne pas exécuter
+    return (0);
+  return (1);
 }
 
 int	main(int c, char **v __attribute__((unused)), char **env)
@@ -84,26 +80,13 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 		handle_signal();
 		if (!readline_and_parssing(&minishell, envp))
 			continue;
-		// print_ast(minishell.tree, 0);
-	  int flag = 0;
-		if (check_heredoc(minishell.tree))
-			if (!open_herdocs(&flag, minishell.tree, envp))
-			{
-				if (flag) // retourner au prompt
-					continue;
-				else // Erreur système, quitter
-				{
-					ft_free_garbage(ft_function());
-					exit(global(-1));
-				}
-			}
-		 if (flag) // Signal reçu pendant le heredoc, ne pas exécuter
-		 	continue;
+		//  print_ast(minishell.tree, 0);
+     if (!handel_heredocs(minishell.tree, envp))
+      continue;
 		sig_ctrl(1); // Set execution mode
 		execute_full_command(minishell.tree, &envp, env, 0);
 	  sig_ctrl(0); // Back to interactive mode
 	}
   ft_free_garbage(ft_function());
 	exit(global(-1));
-	//return (0);
 }

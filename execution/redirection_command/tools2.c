@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-int	is_directory(char *file)
+static int	is_directory(char *file)
 {
 	DIR	*dir;
 	if ((dir = opendir(file)))
@@ -25,9 +25,8 @@ int	is_directory(char *file)
 	return (1);
 }
 
-int	just_file(t_redirection *node, char *file, int type)
+static int	just_file(char *file, int type)
 {
-	(void)node;
 	int	fd;
 	if (type == R_APPEND)
 		fd = open(file, O_CREAT | O_APPEND, 0777);
@@ -42,7 +41,7 @@ int	just_file(t_redirection *node, char *file, int type)
 	return (1);
 }
 
-int	check_out_files(t_redirection *node, char *file, int type)
+static int	check_out_files(char *file, int type)
 {
 	if (!is_directory(file))
 		return (0);
@@ -52,7 +51,7 @@ int	check_out_files(t_redirection *node, char *file, int type)
 			return (0);
 	}
 	else
-		if (!just_file(node, file, type))
+		if (!just_file(file, type))
 			return (0);
 	return (1);
 }
@@ -67,7 +66,7 @@ int	check_if_exist(t_redirection *node)
 				return (0);
 		// check out files
 		if (node->files->type == R_OUT || node->files->type == R_APPEND)
-			if (!check_out_files(node, node->files->file, node->files->type))
+			if (!check_out_files(node->files->file, node->files->type))
 				return (0);
 		node->files = node->files->next;
 	}
