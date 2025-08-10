@@ -43,11 +43,6 @@ int	ft_return_signal(int status)
 			global(sig);
 			return (1); // Ctrl+C : flag = 1, global = 130
 		}
-		else if (sig == 1)
-		{
-			global(0); // EOF : flag = 1, mais global reste 0
-			return (1);
-		}
 		global(sig);
 		return (0);
 	}

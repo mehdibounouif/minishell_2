@@ -179,7 +179,7 @@ char	**ft_split1(char const *s, char c);
 void	execute_pipe_node(t_tree *tree, t_env *env, char **envp);
 void print_env(t_env *env);
 void print_ast(t_tree *tree, int level);
-int	open_herdocs(t_tree *tree, t_env *env);
+//int	open_herdocs(t_tree *tree, t_env *env);
 void	skip_redirection(t_node **list);
 char **back_up();
 void	print(char *command, char *message, int code);
@@ -217,8 +217,7 @@ t_tree	*parss_redirection_in_start(t_node **list);
 t_tree  *command_without_redirection(t_node **list);
 t_tree  *pars_pipe(t_node **list);
 void	collect_herdoc(t_tree *node, t_node *list);
-char	*get_last_herdoc(t_herdoc *list);
-char	*get_last_file(char **list);
+ char	*get_last_herdoc(t_herdoc *list);
 void	print_f(int *list);
 
 // free
@@ -253,6 +252,24 @@ int	get_env_len(char *cmd, int i);
 void  free_node(t_node *node);
 void	replace_key(char *cmd, t_share *share, t_env *list);
 t_node *insert_sublist(t_node *start, t_node *new, t_node *next);
+
+
+// HEREDOC
+typedef struct	s_share3
+{
+	int	fd;
+	char	*line;
+	char	*file_name;
+	char	*expand_line;
+}	t_share3;
+int	open_herdocs(t_tree *tree, t_env *env);
+void	read_lines(int *flag, t_share3 *share, t_redirection *list, t_env *env);
+char	*get_last_file(char **list);
+char	*generate_file_name(t_env *env);
+void heredoc_sigint_handler(int sig __attribute__((unused)));
+t_env *get_current_env(t_env *env);
+t_share3 *get_current_share(t_share3 *share);
+void  check_line(t_share3 *share);
 
 // EXECUTE 
 void execute_full_command(t_tree *node, t_env **env, char **envp, int pipe_flag);

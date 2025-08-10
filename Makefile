@@ -17,16 +17,19 @@ SRCS_FILES1 = main.c\
 	     token/tools2.c\
 	     token/join.c\
 	     ast_tree/print_ast.c\
-	     ast_tree/command_with_redirection.c\
 	     ast_tree/command_with_herdoc.c\
+	     ast_tree/command_with_redirection.c\
 	     ast_tree/designing_tree.c\
-		 ast_tree/simple_command.c\
+			 ast_tree/simple_command.c\
 	     check_quotes.c\
 	     check_command.c\
 	     check_syntax.c\
 	     expaned/expansions.c\
 	     expaned/tools.c\
 	     expaned/tools2.c\
+			 heredoc/heredoc.c\
+			 heredoc/utils.c\
+			 heredoc/tools.c\
 
 SRCS_FILES2 = pipe_command/execute_pipe_command.c\
 		  pipe_command/execution.c\

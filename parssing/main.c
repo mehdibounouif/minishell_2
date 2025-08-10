@@ -24,29 +24,6 @@ int global(int state)
 	return value;
 }
 
-static int	check_heredoc(t_tree *tree)
-{
-	if (tree->type == REDIRECT_NODE)
-	{
-		if (tree->redirect->herdoc)
-			return (1);
-	}
-	if (tree->type == PIPE_NODE)
-	{
-		return (check_heredoc(tree->pipe->left));
-		return (check_heredoc(tree->pipe->right));
-	}
-	return (0);
-}
-
-static int handel_heredocs(t_tree *tree, t_env *envp)
-{
-  if (check_heredoc(tree))
-    if (!open_herdocs(tree, envp))
-        return (0);
-  return (1);
-}
-
 int	main(int c, char **v __attribute__((unused)), char **env)
 {
 	t_mini  minishell;
@@ -67,8 +44,8 @@ int	main(int c, char **v __attribute__((unused)), char **env)
 		handle_signal();
 		if (!readline_and_parssing(&minishell, envp))
 			continue;
-		print_ast(minishell.tree, 0);
-     if (!handel_heredocs(minishell.tree, envp))
+		// print_ast(minishell.tree, 0);
+     if (!open_herdocs(minishell.tree, envp))
       continue;
 		sig_ctrl(1); // Set execution mode
 		execute_full_command(minishell.tree, &envp, env, 0);
