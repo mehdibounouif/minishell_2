@@ -256,6 +256,9 @@ int	get_full_len(char *cmd, t_env *list);
 int	split_len(char *content);
 void	expand_exit_status(t_share *share);
 int	get_env_len(char *cmd, int i);
+void  free_node(t_node *node);
+void	replace_key(char *cmd, t_share *share, t_env *list);
+t_node *insert_sublist(t_node *start, t_node *new, t_node *next);
 
 // EXECUTE 
 void execute_full_command(t_tree *node, t_env **env, char **envp, int pipe_flag);
@@ -264,12 +267,14 @@ void	execute_pipe_node(t_tree *tree, t_env *env, char **envp);
 // SIMPLE
 void	execute_command_node(t_tree *node, t_env **env, char **envp);
 void	print(char *command, char *message, int code);
-void	folder(t_env *env, char *command);
-void	command_is_directory(t_env *env, char *command);
-void	command_inside_directory(t_tree *node, char **envp, t_env *env);
+//void	folder(t_env *env, char *command);
+// void	command_is_directory(t_tree *node, t_env *env);
+// void	command_inside_directory(t_tree *node, char **envp, t_env *env);
 void	empty_command(t_tree *node, t_env *env);
 void  dote_command(t_tree *node, t_env *env);
 void  absolute_path(t_tree *node, t_env *env, char **envp);
+void  print_and_exit(t_tree *node, t_env *env, int code, char *message);
+void protect(t_env *env, char *message);
 // REDIRECTION
 void	execute_redirection_command(t_tree *node, t_env *env, char **envp);
 int	check_infile_in_directory(char *files);

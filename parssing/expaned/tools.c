@@ -81,7 +81,6 @@ int	get_full_len(char *cmd, t_env *list)
 				share->value = ft_strdup("");
 			share->full_len -= (ft_strlen(share->key) + 1);
 			share->full_len += ft_strlen(share->value);
-			//free(share->key);
 		}  
 		share->i++;
 	}

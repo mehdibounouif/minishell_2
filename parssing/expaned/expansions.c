@@ -12,22 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-void	replace_key(char *cmd, t_share *share, t_env *list)
-{
-	char	*value;
-	char	*key;
-	int	l;
-
-	l = 0;
-	key = get_env_key(cmd, share->i);
-	value = ft_getenv(key, list);
-	if (!value)
-		value = ft_strdup("");
-	while (value[l])
-		share->expanded_cmd[(share->j)++] = value[l++];
-	share->i += (ft_strlen(key) + 1);
-}
-
 void	expand_cmd(char *cmd, t_share *share, t_env *env, int b_q)
 {
 	while (cmd[share->i])
@@ -62,143 +46,43 @@ char	*expansion(char *cmd, t_env *env, int b_q)
 	return (share->expanded_cmd);
 }
 
-t_node *insert_sublist(t_node *start, t_node *new, t_node *next)
+t_node  *create_list(char *content, t_node *tmp)
 {
-  t_node *last;
+  char **list;
+  t_node *node;
+  t_node *head;
+  int i;
 
-    if (!new)
-        return start;
-    if (start)
-    {
-        start->next = new;
-        new->prev = start;
-    }
-    last = new;
-    while (last->next)
-        last = last->next;
-    last->next = next;
-    if (next)
-        next->prev = last;
-    if (start)
-        return start;
-    else
-        return new;
+  i = 0;
+  head = NULL;
+  list = ft_split(content, ' ');
+  while (list[i])
+  {
+      node = create_node2(list[i], tmp->b_space, tmp->type, tmp->between_quoted);
+      i++;
+      if (list[i])
+      {
+        if (i < ft_arraylen(list))
+          node->b_space = 0;
+        if (i == ft_arraylen(list) && content[ft_strlen(content) - 1] == ' ')
+            node->b_space = 0;
+      }
+      add_back(&head, node);
+  }
+  return (head);
 }
 
 t_node *expand_list(t_node *prev, t_node *tmp, t_env *env)
 {
-    t_node *head;
-    t_node *node;
-    int i;
     char *content;
-    char **list;
 
-    head = NULL;
-    content = NULL;
     content = expansion(tmp->content, env, tmp->between_quoted);
     if (tmp->between_quoted || content[0] == '\0' || only_space(content))
-    {
       return (create_node(content, tmp->b_space, tmp->between_quoted));
-    }
     if (content[0] == ' ' && prev)
       prev->b_space = 0;
-    i = 0;
-    list = ft_split(content, ' ');
-    int len = ft_arraylen(list);
-    while (list[i])
-    {
-        node = create_node2(list[i], tmp->b_space, tmp->type, tmp->between_quoted);
-        i++;
-        if (i < len)
-          node->b_space = 0;
-        if (i == len && content[ft_strlen(content) - 1] == ' ')
-            node->b_space = 0;
-        add_back(&head, node);
-    }
-    return head;
+    return (create_list(content, tmp));
 }
-
-void  free_node(t_node *node)
-{
-  if (node)
-  {
-    if (node->content)
-      free(node->content);
-    free(node);
-  }
-}
-
-// void expand(t_node **list, t_env *env)
-// {
-//     int flag;
-//     t_node (*start), (*next), (*sub_list), (*new_list), (*end), (*tmp), (*to_free);
-
-//     tmp = *list;
-//     flag = 0;
-//     while (tmp)
-//     {
-//         if (tmp->type == HEREDOC)
-//           flag = 1;
-//         else if (flag)
-//         {
-//             tmp = tmp->next;
-//             flag = 0;
-//             continue;
-//         }
-//         start = tmp->prev;
-//         next = tmp->next;
-//         to_free = tmp;
-//         sub_list = expand_list(tmp, env);
-//         new_list = insert_sublist(start, sub_list, next);
-//         if (!start)
-//             *list = new_list;
-//         end = new_list;
-//         while (end && end->next != next)
-//             end = end->next;
-//         tmp = next;
-//         free_node(to_free);
-//     }
-// }
-
-// void expand(t_node **list, t_env *env)
-// {
-//     t_node *tmp = *list;
-//     t_node *start, *next, *sub_list, *new_list, *end;
-
-//     while (tmp)
-//     {
-//         if (tmp->type == HEREDOC)
-//         {
-//             tmp = tmp->next;
-//             if (tmp)
-//                 tmp = tmp->next;
-//             continue;
-//         }
-
-//         start = tmp->prev;
-//         next = tmp->next;
-
-//         sub_list = expand_list(tmp, env);
-//         if (!sub_list)
-//         {
-//             tmp = next;
-//             continue;
-//         }
-
-//         new_list = insert_sublist(start, sub_list, next);
-//         if (!start)
-//             *list = new_list;
-
-//         // Move tmp to the end of the newly inserted list
-//         end = new_list;
-//         while (end && end->next != next)
-//             end = end->next;
-
-//         tmp = next;
-//         free_node(tmp->prev);  // assuming the old node is at tmp->prev now
-//     }
-// }
-
 
 void expand(t_node **list, t_env *env)
 {
@@ -214,23 +98,13 @@ void expand(t_node **list, t_env *env)
                 tmp = tmp->next;
             continue;
         }
-
         start = tmp->prev;
         next = tmp->next;
         to_free = tmp;
-
         sub_list = expand_list(tmp->prev, tmp, env);
-        if (!sub_list)
-        {
-            tmp = next;
-            continue;
-        }
-
         new_list = insert_sublist(start, sub_list, next);
-
         if (!start)
             *list = new_list;
-
         tmp = next;
         free_node(to_free);  // now safe
     }
