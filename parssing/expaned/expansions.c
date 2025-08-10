@@ -52,21 +52,18 @@ t_node  *create_list(char *content, t_node *tmp)
   t_node *node;
   t_node *head;
   int i;
+  int  len;
 
   i = 0;
   head = NULL;
   list = ft_split(content, ' ');
+  len = ft_arraylen(list);
   while (list[i])
   {
       node = create_node2(list[i], tmp->b_space, tmp->type, tmp->between_quoted);
       i++;
-      if (list[i])
-      {
-        if (i < ft_arraylen(list))
+      if (i < len || (i == len && content[ft_strlen(content) - 1] == ' '))
           node->b_space = 0;
-        if (i == ft_arraylen(list) && content[ft_strlen(content) - 1] == ' ')
-            node->b_space = 0;
-      }
       add_back(&head, node);
   }
   return (head);
