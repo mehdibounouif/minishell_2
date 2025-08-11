@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dup_fds.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moraouf <moraouf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 15:33:34 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/11 00:47:07 by moraouf           ###   ########.fr       */
+/*   Updated: 2025/08/11 01:16:47 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ static void	herdoc(t_redirection *node, t_env *env)
 {
 	int	in_fd;
 
-	if ((in_fd = open(node->hrc_file, O_RDONLY)) == -1)
+	in_fd = open(node->hrc_file, O_RDONLY);
+	if (in_fd == -1)
 		protect(env, "Open failed");
 	if (dup2(in_fd, 0) == -1)
 		protect(env, "Dup2 failed");
@@ -28,7 +29,8 @@ static void	input(t_redirection *node, t_env *env)
 {
 	int	in_fd;
 
-	if ((in_fd = open(node->in_file, O_RDONLY)) == -1)
+	in_fd = open(node->in_file, O_RDONLY);
+	if (in_fd == -1)
 		protect(env, "Open failed");
 	if (dup2(in_fd, 0) == -1)
 		protect(env, "Dup2 failed");
@@ -39,8 +41,8 @@ static void	appand(t_redirection *node, t_env *env)
 {
 	int	out_fd;
 
-	if ((out_fd = open(node->out_file, O_WRONLY | O_CREAT | O_APPEND, 0777)) ==
-		-1)
+	out_fd = open(node->out_file, O_WRONLY | O_CREAT | O_APPEND, 0777);
+	if (out_fd == -1)
 		protect(env, "Open failed");
 	if (dup2(out_fd, 1) == -1)
 		protect(env, "Dup2 failed");
@@ -51,8 +53,8 @@ static void	trunce(t_redirection *node, t_env *env)
 {
 	int	out_fd;
 
-	if ((out_fd = open(node->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0777)) ==
-		-1)
+	out_fd = open(node->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (out_fd == -1)
 		protect(env, "Open failed");
 	if (dup2(out_fd, 1) == -1)
 		protect(env, "Dup2 failed");

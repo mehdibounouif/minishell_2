@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   designing_tree.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 16:38:25 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/30 13:20:45 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/11 01:37:37 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	init(t_tree *node)
+{
+	node->type = REDIRECT_NODE;
+	node->redirect->in = 0;
+	node->redirect->out_type = 0;
+	node->redirect->in_count = 0;
+	node->redirect->out_count = 0;
+	node->redirect->hdc = 0;
+	node->redirect->files = NULL;
+	node->redirect->herdoc = NULL;
+	node->redirect->heredocs = NULL;
+}
 
 t_tree	*parss_one_side(t_node **list)
 {

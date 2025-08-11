@@ -3,111 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   command_with_redirection.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:57 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/30 13:16:48 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/11 01:33:37 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-typedef struct s_share4
-{
-	t_tree	*redirect_node;
-	t_tree	*prev;
-	t_node	*tmp;
-	int		i;
-	int		j;
-
-}			t_share4;
-
-void	init(t_tree *node)
-{
-	node->type = REDIRECT_NODE;
-	node->redirect->in = 0;
-	node->redirect->out_type = 0;
-	node->redirect->in_count = 0;
-	node->redirect->out_count = 0;
-	node->redirect->hdc = 0;
-	node->redirect->files = NULL;
-	node->redirect->herdoc = NULL;
-	node->redirect->heredocs = NULL;
-}
-
-t_files	*new_node(char *content, int type)
-{
-	t_files	*node;
-
-	node = ft_malloc(sizeof(t_files), 1);
-	node->file = ft_strdup(content);
-	node->type = type;
-	node->next = NULL;
-	return (node);
-}
-
-void	assing_io(t_node **list, t_share4 *share)
-{
-	t_files	*file;
-
-	if (*list && ((*list)->type == R_OUT || (*list)->type == R_APPEND))
-	{
-		share->redirect_node->redirect->out_type = (*list)->type;
-		*list = (*list)->next;
-		file = new_node((*list)->content, (*list)->prev->type);
-		add_back1(&share->redirect_node->redirect->files, file);
-		share->redirect_node->redirect->out_files[share->j++] = ft_strdup((*list)->content);
-		*list = (*list)->next;
-	}
-	else if (*list && (*list)->type == R_IN)
-	{
-		*list = (*list)->next;
-		share->redirect_node->redirect->in_files[share->i++] = ft_strdup((*list)->content);
-		file = new_node((*list)->content, R_IN);
-		add_back1(&share->redirect_node->redirect->files, file);
-		*list = (*list)->next;
-	}
-}
-
-void	collect_in_out_files(t_node **list, t_share4 *share)
-{
-	while (*list && (*list)->type != PIPE)
-	{
-		if ((*list)->type == HEREDOC)
-			skip_redirection(list);
-		assing_io(list, share);
-		if (*list && (*list)->type != R_IN && (*list)->type != R_APPEND
-			&& (*list)->type != R_OUT && (*list)->type != HEREDOC
-			&& (*list)->type != PIPE)
-			*list = (*list)->next;
-	}
-}
-
-void	collect_in_out_files2(t_node **list, t_share4 *share)
-{
-	while (*list && is_redirection(*list))
-	{
-		if ((*list)->type == HEREDOC)
-			skip_redirection(list);
-		assing_io(list, share);
-	}
-}
-
-void	assign_last_file(t_tree *node)
-{
-	char	*last_in_file;
-	char	*last_out_file;
-	char	*last_herdoc;
-
-	last_in_file = get_last_file(node->redirect->in_files);
-	last_out_file = get_last_file(node->redirect->out_files);
-	last_herdoc = get_last_herdoc(node->redirect->herdoc);
-	node->redirect->out_file = ft_strdup(last_out_file);
-	if (node->redirect->in)
-		node->redirect->in_file = ft_strdup(last_in_file);
-	else
-		node->redirect->in_file = ft_strdup(last_herdoc);
-}
 
 void	allocat_files_array(t_tree *node)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moraouf <moraouf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 16:19:35 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/11 00:42:32 by moraouf           ###   ########.fr       */
+/*   Updated: 2025/08/11 01:25:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ static int	check_infile_in_directory(char *files)
 	{
 		l = len_slash(files, '/', ft_strlen(files) - 1);
 		full_path = ft_substr(files, 0, l);
-		if (!(dir = opendir(full_path)))
+		dir = opendir(full_path);
+		if (!dir)
 		{
 			return (print(files, ": No such file or directory", 1), 0);
 		}
@@ -41,7 +42,8 @@ int	check_in_files(char *file)
 {
 	DIR	*dir;
 
-	if ((dir = opendir(file)))
+	dir = opendir(file);
+	if (dir)
 	{
 		closedir(dir);
 		global(1);
@@ -73,7 +75,7 @@ static int	exist_check_permession_else_create(char *file, DIR *dir)
 	}
 	else
 	{
-    fd  = open(file, O_RDWR | O_CREAT, 0644);
+		fd = open(file, O_RDWR | O_CREAT, 0644);
 		if (fd == -1)
 		{
 			perror("Open");

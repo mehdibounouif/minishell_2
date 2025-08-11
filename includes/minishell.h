@@ -151,6 +151,16 @@ typedef struct t_share
 	char						*expanded_cmd;
 }								t_share;
 
+// ast
+typedef struct s_share4
+{
+    t_tree    *redirect_node;
+    t_tree    *prev;
+    t_node    *tmp;
+    int        i;
+    int        j;
+
+}            t_share4;
 // built-in functions
 // Function declarations
 int								cd_command(t_env *env, char **args);
@@ -159,8 +169,9 @@ int								pwd_command(void);
 int								export_command(t_env **env, char **args);
 int								unset_command(t_env **env, char **args);
 int								env_command(t_env *env, char **args);
-int								exit_command(t_tree *node, t_env *env,
-									char **args);
+
+int	exit_command(t_tree *node, t_env *env, char **args);
+
 char							*get_env_value(t_env *env, char *key);
 int								update_env_var(t_env *env, char *var);
 void							set_env_var(t_env **env, char *key,
@@ -231,6 +242,12 @@ t_tree							*pars_pipe(t_node **list);
 void							collect_herdoc(t_tree *node, t_node *list);
 char							*get_last_herdoc(t_herdoc *list);
 void							print_f(int *list);
+void	assign_last_file(t_tree *node);
+void	collect_in_out_files2(t_node **list, t_share4 *share);
+void	collect_in_out_files(t_node **list, t_share4 *share);
+void	assing_io(t_node **list, t_share4 *share);
+t_files	*new_node(char *content, int type);
+void	init(t_tree *node);
 
 // free
 void							free_env(t_env *env);

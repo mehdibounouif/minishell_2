@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 16:40:20 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/30 16:40:33 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/11 02:54:58 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,24 +47,32 @@ void	dote_command(t_tree *node, t_env *env)
 		print_and_exit(node, env, 127, ": command not found");
 }
 
-void	absolute_path(t_tree *node, t_env *env, char **envp)
+void absolute_path(t_tree *node, t_env *env, char **envp)
 {
-	struct stat	st;
-	char		*command;
+    struct stat st;
+    char *command;
 
-	command = node->command->command;
-	if (command[0] == '/' || command[0] == '.')
-	{
-		if (stat(command, &st) == -1)
-			print_and_exit(node, env, 127, ": No such file or directory");
-		if (S_ISDIR(st.st_mode))
-			print_and_exit(node, env, 126, ": Is a directory");
-		if (access(command, X_OK) == -1)
-			print_and_exit(node, env, 126, ": Permission denied");
-		execve(command, node->command->args, envp);
-		perror("minishell");
-		free_env(env);
-		ft_free_garbage(ft_function());
-		exit(127);
-	}
+    command = node->command->command;
+
+    // Only treat command as path if it contains '/'
+    if (!ft_strchr(command, '/'))
+        return;  // Not a path, handle PATH lookup elsewhere
+
+    if (stat(command, &st) == -1)
+        print_and_exit(node, env, 127, ": No such file or directory");
+
+    if (S_ISDIR(st.st_mode))
+        print_and_exit(node, env, 126, ": Is a directory");
+
+    // Check execute permission for current user
+    if (access(command, X_OK) == -1)
+        print_and_exit(node, env, 126, ": Permission denied");
+
+    execve(command, node->command->args, envp);
+
+    // If execve returns, an error occurred
+    perror("minishell");
+    free_env(env);
+    ft_free_garbage(ft_function());
+    exit(127);
 }
