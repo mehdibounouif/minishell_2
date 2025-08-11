@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>    +#+  +:+       +#+                */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/09 23:51:22 by moraouf      ###   ########.fr           */
+/*   Updated: 2025/08/11 19:22:46 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	global(int state)
 
 void  mini_shell(t_mini *minishell, char **env, t_env *envp)
 {
+	(void)env;
   while (1)
 	{
 		handle_signal();

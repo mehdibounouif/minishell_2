@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 19:07:26 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/02 15:02:47 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/11 17:06:52 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	replace_key(char *cmd, t_share *share, t_env *list)
 
 t_node	*insert_sublist(t_node *start, t_node *new, t_node *next)
 {
-	t_node *last;
+	t_node	*last;
 
 	if (!new)
 		return (start);

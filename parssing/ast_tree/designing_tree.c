@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 16:38:25 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/11 01:37:37 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/11 23:25:02 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ t_tree	*pars_pipe(t_node **list)
 	while (*list && (*list)->type == PIPE)
 	{
 		*list = (*list)->next;
-		right = parss_one_side(list);
+		if (*list)
+			right = parss_one_side(list);
+		else 
+			right = NULL;
 		pipe_cmd = ft_malloc(sizeof(t_tree), 1);
 		pipe_cmd->pipe = ft_malloc(sizeof(t_pipe), 1);
 		pipe_cmd->pipe->right = right;

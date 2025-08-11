@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 08:45:19 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/02 20:48:20 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/11 17:20:37 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ size_t	get_token_len(char *cmd, int *b_space)
 
 t_node	*new_token(char *content, int b_space)
 {
-	t_node *node;
+	t_node	*node;
 
 	node = malloc(sizeof(t_node));
 	node->content = ft_strdup1(content);

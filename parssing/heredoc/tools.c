@@ -1,11 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tools.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/11 17:11:19 by mbounoui          #+#    #+#             */
+/*   Updated: 2025/08/11 17:18:04 by mbounoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-// Fonction for stock
 t_share3	*get_current_share(t_share3 *share)
 {
 	static t_share3	*current_share = NULL;
 
-	if (share != (t_share3 *)-1) // -1 for recup
+	if (share != (t_share3 *)-1)
 		current_share = share;
 	return (current_share);
 }
@@ -23,7 +34,6 @@ void	check_line(t_share3 *share)
 {
 	if (share->file_name)
 	{
-		// free(share->file_name);
 		share->file_name = NULL;
 	}
 	if (share->fd >= 0)
@@ -33,7 +43,6 @@ void	check_line(t_share3 *share)
 	}
 }
 
-// gestion
 void	heredoc_sigint_handler(int sig __attribute__((unused)))
 {
 	t_share3	*current_share;
@@ -59,10 +68,11 @@ void	heredoc_sigint_handler(int sig __attribute__((unused)))
 
 char	*generate_file_name(t_env *env)
 {
-	unsigned char c;
-	char *buffer;
+	unsigned char	c;
+	char			*buffer;
+	int				fd;
+	int				i;
 
-	int fd, i;
 	buffer = ft_malloc(sizeof(char), 9);
 	fd = open("/dev/urandom", O_RDONLY);
 	if (fd < 0)

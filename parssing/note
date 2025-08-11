@@ -5,23 +5,10 @@ typedef struct s_redirection {
     struct s_tree *prev;        // the command associated with the redirection
 } t_redirection;
 
-test 3
-append in >>
-
-note "replace calloc in malloc"
-
-test 4
-minishell>echo hhhhhhh > out | chmod 000 out | > out
-munmap_chunk(): invalid pointer
-munmap_chunk(): invalid pointer
-
-test 5
-minishell>export a="s -l"
-minishell>l$a
-minishell : ls -l: command not found
-minishell>
-exit
-[3]    356289 segmentation fault (core dumped)  ./minishell
+unset PATH
+minishell > cd /bin
+minishell > ls
+leak
 
 if ((*list)->type == HEREDOC) // HEREDOC is the `<<` token
 {

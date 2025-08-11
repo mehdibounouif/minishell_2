@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 14:09:23 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/02 23:09:54 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/11 17:06:14 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	init_share(t_share2 *share, char *cmd)
 	share->key = NULL;
 	share->value = NULL;
 }
+
 int	split_len(char *content)
 {
 	int	len;

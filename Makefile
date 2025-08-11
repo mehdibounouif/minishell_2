@@ -1,7 +1,7 @@
 NAME = minishell
 RM = rm -f
 CC = cc
-FLAGS = -Wall -Wextra -g
+FLAGS = -Wall -Wextra -Werror -g
 LIBFT_DIR = ./libft
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 SRCS_DIR1 = ./parssing
@@ -10,6 +10,7 @@ SRCS_DIR3 = ./built-in
 SRCS_DIR4 = ./free
 SRCS_FILES1 = main.c\
 	     utils.c\
+	     tools.c\
 			 custom/custom_libft.c\
 			 custom/custom_split.c\
 	     token/tokenize.c\
@@ -19,8 +20,8 @@ SRCS_FILES1 = main.c\
 	     ast_tree/command_with_herdoc.c\
 	     ast_tree/command_with_redirection.c\
 	     ast_tree/designing_tree.c\
-			 ast_tree/simple_command.c\
-			 ast_tree/tools.c\
+		 ast_tree/simple_command.c\
+		 ast_tree/tools.c\
 	     check_quotes.c\
 	     check_command.c\
 	     check_syntax.c\

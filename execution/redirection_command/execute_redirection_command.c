@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_redirection_command.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moraouf <moraouf@student.42.fr>    +#+  +:+       +#+        */
+/*   By: moraouf <moraouf@student.42.fr>    +#+  +:+       +#+                */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/10 00:25:45 by moraouf      ###   ########.fr       */
+/*   Updated: 2025/08/11 15:39:54 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,16 @@ void	child_process_redi(t_tree *node, t_env *env, char **envp)
 
 void	built_in(int i, t_tree *node, t_env *env, char *cmd)
 {
-	int	saved_stdin;
-	int	saved_stdout;
-	int	result;
+	int		saved_stdin;
+	int		saved_stdout;
+	int		result;
+	char	**args;
 
+	args = node->redirect->prev->command->args;
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
 	dup_fds(node->redirect, env);
-	result = execute_builtin_command(i, cmd, node->redirect->prev->command->args,
-			&env);
+	result = execute_builtin_command(i, cmd, args, &env);
 	dup2(saved_stdin, STDIN_FILENO);
 	dup2(saved_stdout, STDOUT_FILENO);
 	close(saved_stdin);
@@ -90,7 +91,8 @@ void	fork_and_exec(t_tree *node, t_env *env, char **envp)
 	}
 }
 
-void	execute_redirection_command(int i, t_tree *node, t_env *env, char **envp)
+void	execute_redirection_command(int i, t_tree *node, t_env *env,
+								char **envp)
 {
 	char	*cmd;
 

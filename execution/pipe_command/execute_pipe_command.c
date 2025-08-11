@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:37 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/11 01:22:18 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/11 23:30:22 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,21 @@ void	execute_pipe_node(t_tree *tree, t_env *env, char **envp)
 	pid_t	l;
 	pid_t	r;
 
+	status = 0;
 	if (pipe(p) == -1)
 		protect(env, "Pipe failed");
 	l = left(p, &env, tree, envp);
-	r = right(p, &env, tree, envp);
+	if (tree->pipe->right)
+		r = right(p, &env, tree, envp);
 	close(p[0]);
 	close(p[1]);
-	if (waitpid(l, NULL, 0) == -1 || waitpid(r, &status, 0) == -1)
-		protect(env, "Waitpid failed");
+	if (tree->pipe->right)
+	{
+		if (waitpid(l, NULL, 0) == -1 ||waitpid(r, &status, 0) == -1)
+			protect(env, "Waitpid failed");
+	}
+	else 
+		if (waitpid(l, &status, 0) == -1)
+			protect(env, "Waitpid failed");
 	global(WEXITSTATUS(status));
 }

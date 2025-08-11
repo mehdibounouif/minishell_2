@@ -6,7 +6,7 @@
 /*   By: taha_laylay <taha_laylay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 16:40:20 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/11 04:34:46 by taha_laylay      ###   ########.fr       */
+/*   Updated: 2025/08/11 15:45:49 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ void	dote_command(t_tree *node, t_env *env)
 		print_and_exit(node, env, 127, ": command not found");
 }
 
-void absolute_path(t_tree *node, t_env *env, char **envp)
+void	absolute_path(t_tree *node, t_env *env, char **envp)
 {
-    struct stat st;
-    char *command;
+	struct stat	st;
+	char		*command;
 
 	command = node->command->command;
 	if (ft_strchr(command, '/')

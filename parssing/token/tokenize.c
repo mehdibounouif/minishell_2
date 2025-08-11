@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 07:52:30 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/02 11:44:41 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/11 17:22:06 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../../includes/minishell.h"
@@ -18,8 +18,8 @@ int	quotes(char *cmd)
 	len = ft_strlen(cmd);
 	if (len < 2)
 		return (0);
-	if ((cmd[0] == '\'' && cmd[len - 1] == '\'') || (cmd[0] == '\"' && cmd[len
-			- 1] == '\"'))
+	if ((cmd[0] == '\'' && cmd[len - 1] == '\'')
+		|| (cmd[0] == '\"' && cmd[len - 1] == '\"'))
 		return (1);
 	return (0);
 }
@@ -29,7 +29,7 @@ char	*remove_quotes(char *cmd)
 	char	*clear_cmd;
 	size_t	i;
 
-	int(j), (start);
+	int (j), (start);
 	i = 0;
 	j = 0;
 	if (quotes(cmd))
@@ -86,7 +86,7 @@ void	tokenize(char *cmd, t_node **list)
 	char	*content;
 	t_node	*token;
 
-	int(b_space), (i), (start);
+	int (b_space), (i), (start);
 	i = 0;
 	while (cmd[i])
 	{

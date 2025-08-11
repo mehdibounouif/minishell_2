@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 15:23:34 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/02 23:34:25 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/11 17:07:57 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	expand_cmd(char *cmd, t_share *share, t_env *env, int b_q)
 {
 	while (cmd[share->i])
 	{
-		while (is_dollar(cmd, share->i) && b_q != 1 && (ft_isalpha(cmd[share->i
-					+ 1]) || cmd[share->i + 1] == '_'))
+		while (is_dollar(cmd, share->i) && b_q != 1
+			&& (ft_isalpha(cmd[share->i + 1]) || cmd[share->i + 1] == '_'))
 			replace_key(cmd, share, env);
 		if (!cmd[share->i])
 			break ;
@@ -27,6 +27,7 @@ void	expand_cmd(char *cmd, t_share *share, t_env *env, int b_q)
 			share->expanded_cmd[share->j++] = cmd[share->i++];
 	}
 }
+
 char	*expansion(char *cmd, t_env *env, int b_q)
 {
 	int		full_len;
@@ -83,10 +84,8 @@ static t_node	*expand_list(t_node *prev, t_node *tmp, t_env *env)
 
 void	expand(t_node **list, t_env *env)
 {
-	t_node	*tmp;
-
+	t_node	(*start), (*next), (*sub_list), (*new_list), (*to_free), (*tmp);
 	tmp = *list;
-	t_node *start, *next, *sub_list, *new_list, *to_free;
 	while (tmp)
 	{
 		if (tmp->type == HEREDOC)
@@ -104,6 +103,6 @@ void	expand(t_node **list, t_env *env)
 		if (!start)
 			*list = new_list;
 		tmp = next;
-		free_node(to_free); // now safe
+		free_node(to_free);
 	}
 }

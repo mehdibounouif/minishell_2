@@ -6,19 +6,19 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 11:51:06 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/30 16:55:35 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/11 23:17:31 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	check_sides(t_node *list)
+int	check_sides(t_node *list, int flag)
 {
-	if (list && (list->type == PIPE || list->content[0] == '#'))
+	if (list && list->type == PIPE && !list->between_quoted)
 		return (1);
 	while (list && list->next)
 		list = list->next;
-	if (list && !list->between_quoted && list->type == PIPE)
+	if (list && !list->between_quoted && list->type == PIPE && !flag)
 		return (1);
 	return (0);
 }
@@ -27,7 +27,7 @@ int	syntax(t_node *list)
 {
 	while (list)
 	{
-		if ((!list->between_quoted && list->type == PIPE
+		if ((list->next && !list->between_quoted && list->type == PIPE
 				&& list->next->type == PIPE) || (is_redirection(list)
 				&& !list->between_quoted && (!list->next
 					|| list->next->type != WORD)))
@@ -49,9 +49,9 @@ int	syntax(t_node *list)
 	return (1);
 }
 
-int	check_syntax(t_node *list)
+int	check_syntax(t_node *list, int flag)
 {
-	if (check_sides(list))
+	if (check_sides(list, flag))
 	{
 		ft_putendl_fd("bash: syntax error near unexpected token |", 2);
 		global(2);

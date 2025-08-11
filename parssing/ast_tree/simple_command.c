@@ -6,11 +6,40 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 09:27:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/11 01:47:54 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/11 16:48:45 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int	is_real_separator(char *cmd, int i)
+{
+	if (is_separator(&cmd[i], i) && check_quotes(cmd, i) == 0)
+		return (1);
+	else
+		return (0);
+}
+
+int	count_args(t_node *list)
+{
+	int	i;
+
+	i = 0;
+	while (list && list->type != PIPE)
+	{
+		if (list && list->type == WORD)
+		{
+			i++;
+			list = list->next;
+		}
+		else if (list && is_redirection(list) && list->next)
+		{
+			list = list->next;
+			list = list->next;
+		}
+	}
+	return (i);
+}
 
 void	collect_args(char *cmd, t_node **list, char **args)
 {

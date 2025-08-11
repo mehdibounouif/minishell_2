@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_command.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moraouf <moraouf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: moraouf <moraouf@student.42.fr>              +#+  +:+       +#+      */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/11 00:26:50 by moraouf            #+#    #+#             */
-/*   Updated: 2025/08/11 00:26:51 by moraouf           ###   ########.fr       */
+/*   Created: 2025/08/11 00:26:50 by moraouf            #+#    #+#            */
+/*   Updated: 2025/08/11 23:32:07 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,26 +52,129 @@ void	without_quotes(t_node **list)
 	}
 }
 
+void remove_empty(t_node **list, int *start, int *end)
+{
+	t_node *tmp;
+	t_node *next;
+	t_node *prev;
+	int	flag;
+
+	tmp = *list;
+	flag = 0;
+	while (tmp)
+	{
+		if (tmp->content && tmp->content[0] == '\0' && !tmp->between_quoted)
+		{
+			*start = 1;
+			if (flag)
+				*end = 1;
+			next = tmp->next;
+			prev = tmp->prev;
+			if (prev)
+				prev->next = next;
+			else
+				*list = next;
+			if (next)
+				next->prev = prev;
+			free(tmp->content);
+			free(tmp);
+			tmp = next;
+		}
+		else
+		{
+			if (tmp->type != PIPE)
+				flag = 1;
+			tmp = tmp->next;
+		}
+	}
+}
+
+void remove_pipe_in_end(t_node **list, int flag)
+{
+	t_node *tmp;
+	t_node *current;
+
+	if (!list || !*list)
+		return;
+	tmp = *list;
+	while (tmp->next)
+		tmp = tmp->next;
+	while (tmp && tmp->type == PIPE)
+	{
+		if (flag)
+			if (tmp->type == PIPE && tmp->prev && tmp->prev->type != PIPE)
+				break;
+		current = tmp;
+		tmp = tmp->prev;
+		if (tmp)
+			tmp->next = current->next;
+		else
+			*list = NULL;
+		free(current->content);
+		free(current);
+	}
+}
+
+void remove_pipe_in_start(t_node **list, int flag)
+{
+	t_node *tmp;
+	t_node *current;
+
+	tmp = *list;
+	while (tmp && tmp->type == PIPE)
+	{
+		if (!flag)
+			if (tmp->type == PIPE && tmp->next->type != PIPE)
+				break;
+		current = tmp;
+		tmp = tmp->next;
+		if (tmp)
+			tmp->prev = current->prev;
+		if (current->prev)
+			current->prev->next = tmp;
+		else
+			*list = tmp;
+		free(current->content);
+		free(current);
+	}
+}
+
+void	print_list(t_node *list)
+{
+	while (list)
+	{
+		printf(" %s ", list->content);
+		list = list->next;
+	}
+	printf("\n");
+}
+
 int	process_command(char *cmd, t_node **list, t_env *env)
 {
+	int end;
+	int start;
 	if (check_quotes(cmd, ft_strlen(cmd)))
 	{
 		free(cmd);
 		ft_putendl_fd("Qoutes not closed!", 2);
 		return (0);
 	}
+	end = 0;
+	start = 0;
 	tokenize(cmd, list);
 	without_quotes(list);
 	expand(list, env);
-	if(!(*list))
+	if (!(*list))
 		return (0);
-	if (!(*list)->content[0] && !(*list)->next && !(*list)->between_quoted)
-	{
-		free_list(list);
-		return (global(0));
-	}
+	remove_empty(list, &start,  &end);
+	if (!(*list))
+		return (0);
 	join_b_space_nodes(list);
-	if (!check_syntax(*list))
+	remove_pipe_in_start(list, start);
+	remove_pipe_in_end(list, end);
+	if (!(*list))
+		return (0);
+	if (!check_syntax(*list, end))
 	{
 		free_list(list);
 		return (0);
@@ -84,7 +187,7 @@ int	readline_and_parssing(t_mini *minishell, t_env *env)
 	char	*cmd;
 	t_node	*tmp;
 
-	cmd = readline("minishell>");
+	cmd = readline("minishell > ");
 	if (!cmd)
 	{
 		printf("exit\n");

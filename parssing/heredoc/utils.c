@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/11 17:11:55 by mbounoui          #+#    #+#             */
+/*   Updated: 2025/08/11 17:17:28 by mbounoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 char	*get_last_file(char **list)
@@ -14,9 +26,8 @@ char	*get_last_file(char **list)
 
 void	protect_line(t_share3 *share, t_env *env, t_redirection *list)
 {
-	printf("bash: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n",
+	printf("bash: warning: (wanted `%s')\n",
 		list->herdoc->delimeter);
-	// ulink_files(list->heredocs);
 	close(share->fd);
 	ft_free_garbage(ft_function());
 	free_env(env);
@@ -45,7 +56,6 @@ void	get_line(t_share3 *share, t_redirection *list, t_env *env)
 
 void	child(t_share3 *share, t_redirection *list, t_env *env)
 {
-	// Stocker les pointeurs pour le gestionnaire de signal
 	get_current_share(share);
 	get_current_env(env);
 	signal(SIGINT, heredoc_sigint_handler);
@@ -54,7 +64,6 @@ void	child(t_share3 *share, t_redirection *list, t_env *env)
 		protect_line(share, env, list);
 	while (share->line && ft_strcmp(list->herdoc->delimeter, share->line))
 		get_line(share, list, env);
-	// free the last line if it exists
 	if (share->line)
 		free(share->line);
 	close(share->fd);
@@ -65,10 +74,10 @@ void	child(t_share3 *share, t_redirection *list, t_env *env)
 
 void	read_lines(int *flag, t_share3 *share, t_redirection *list, t_env *env)
 {
-	pid_t pid;
-	int status;
+	pid_t	pid;
+	int		status;
 
-	sig_ctrl(1); // mode execution
+	sig_ctrl(1);
 	pid = fork();
 	if (pid < 0)
 		protect(env, "Fork failed");

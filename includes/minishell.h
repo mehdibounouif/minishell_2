@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/10 00:46:11 by moraouf      ###   ########.fr       */
+/*   Updated: 2025/08/11 23:14:03 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,10 +262,9 @@ int								is_empty(char *s);
 int								is_space(char c);
 int								is_real_separator(char *cmd, int i);
 int								count_args(t_node *list);
-int								check_sides(t_node *list);
 int								readline_and_parssing(t_mini *minishell,
 									t_env *env);
-int								check_syntax(t_node *list);
+int								check_syntax(t_node *list, int flag);
 int								is_redirection(t_node *node);
 int								global(int state);
 
@@ -282,7 +281,7 @@ int								get_env_len(char *cmd, int i);
 void							free_node(t_node *node);
 void							replace_key(char *cmd, t_share *share,
 									t_env *list);
-t_node							*insert_sublist(t_node *start, t_node *new,
+t_node							*insert_sublist(t_node *start, t_node *_new,
 									t_node *next);
 
 // HEREDOC

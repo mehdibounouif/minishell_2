@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/11 17:10:55 by mbounoui          #+#    #+#             */
+/*   Updated: 2025/08/11 17:11:04 by mbounoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 int	create_heredoc(t_redirection *list, t_env *env, int i)
@@ -16,7 +28,6 @@ int	create_heredoc(t_redirection *list, t_env *env, int i)
 	list->heredocs[i] = ft_strdup(share->file_name);
 	read_lines(&sig_flag, share, list, env);
 	close(share->fd);
-	// signal here stop excution
 	if (sig_flag)
 		return (0);
 	return (1);
