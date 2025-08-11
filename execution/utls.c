@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utls.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 10:06:24 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/30 15:29:00 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/11 01:20:42 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,6 @@ int	only_space(char *str)
 		if (!is_space(str[i++]))
 			return (0);
 	return (1);
-}
-
-int	len_slash(char *str, char c, int len)
-{
-	while (str[len] != c)
-		len--;
-	return (len);
 }
 
 void	print_message(char *file, char *message)
@@ -69,7 +62,8 @@ char	*find_path(t_tree *node, t_env *list)
 	char	*path_slash;
 	char	*full_path;
 
-	if (!(all_paths = ft_split(ft_getenv("PATH", list), ':')))
+	all_paths = ft_split(ft_getenv("PATH", list), ':');
+	if (!all_paths)
 	{
 		print(node->command->command, ":  No such file or directory", 127);
 		free_env(list);

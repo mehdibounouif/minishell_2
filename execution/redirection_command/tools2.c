@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moraouf <moraouf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 16:21:43 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/11 00:36:48 by moraouf           ###   ########.fr       */
+/*   Updated: 2025/08/11 01:23:22 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,11 @@ int	check_if_exist(t_redirection *node)
 		node->files = node->files->next;
 	}
 	return (1);
+}
+
+int	len_slash(char *str, char c, int len)
+{
+	while (str[len] != c)
+		len--;
+	return (len);
 }

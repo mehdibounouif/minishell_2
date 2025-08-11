@@ -16,11 +16,11 @@ SRCS_FILES1 = main.c\
 	     token/tools.c\
 	     token/tools2.c\
 	     token/join.c\
-	     ast_tree/print_ast.c\
 	     ast_tree/command_with_herdoc.c\
 	     ast_tree/command_with_redirection.c\
 	     ast_tree/designing_tree.c\
 			 ast_tree/simple_command.c\
+			 ast_tree/tools.c\
 	     check_quotes.c\
 	     check_command.c\
 	     check_syntax.c\

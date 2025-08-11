@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_command.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 09:27:09 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/30 13:19:21 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/11 01:47:54 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ t_tree	*command_without_redirection(t_node **list)
 	int		len;
 
 	len = count_args(*list) + 1;
-	if (!(cmd = ft_strdup((*list)->content)))
+	cmd = ft_strdup((*list)->content);
+	if (!cmd)
 		return (NULL);
 	args = ft_malloc(sizeof(char *), len);
 	collect_args(cmd, list, args);

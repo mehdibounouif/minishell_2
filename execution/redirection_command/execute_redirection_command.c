@@ -50,7 +50,7 @@ void	child_process_redi(t_tree *node, t_env *env, char **envp)
 	global(126);
 }
 
-void	built_in(t_tree *node, t_env *env, char *cmd)
+void	built_in(int i, t_tree *node, t_env *env, char *cmd)
 {
 	int	saved_stdin;
 	int	saved_stdout;
@@ -59,7 +59,7 @@ void	built_in(t_tree *node, t_env *env, char *cmd)
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
 	dup_fds(node->redirect, env);
-	result = execute_builtin_command(cmd, node->redirect->prev->command->args,
+	result = execute_builtin_command(i, cmd, node->redirect->prev->command->args,
 			&env);
 	dup2(saved_stdin, STDIN_FILENO);
 	dup2(saved_stdout, STDOUT_FILENO);
@@ -90,7 +90,7 @@ void	fork_and_exec(t_tree *node, t_env *env, char **envp)
 	}
 }
 
-void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
+void	execute_redirection_command(int i, t_tree *node, t_env *env, char **envp)
 {
 	char	*cmd;
 
@@ -103,7 +103,7 @@ void	execute_redirection_command(t_tree *node, t_env *env, char **envp)
 	}
 	cmd = node->redirect->prev->command->command;
 	if (is_builtin(cmd))
-		built_in(node, env, cmd);
+		built_in(i, node, env, cmd);
 	else
 		fork_and_exec(node, env, envp);
 }

@@ -151,6 +151,16 @@ typedef struct t_share
 	char						*expanded_cmd;
 }								t_share;
 
+
+typedef struct s_share4
+{
+    t_tree    *redirect_node;
+    t_tree    *prev;
+    t_node    *tmp;
+    int        i;
+    int        j;
+
+}            t_share4;
 // built-in functions
 // Function declarations
 int								cd_command(t_env *env, char **args);
@@ -159,7 +169,7 @@ int								pwd_command(void);
 int								export_command(t_env **env, char **args);
 int								unset_command(t_env **env, char **args);
 int								env_command(t_env *env, char **args);
-int								exit_command(t_tree *node, t_env *env,
+int								exit_command(int i, t_tree *node, t_env *env,
 									char **args);
 // exit_utils.c helper functions
 int								handle_sign(char *str, int i, int *sign);
@@ -200,9 +210,9 @@ void							print_ast(t_tree *tree, int level);
 void							skip_redirection(t_node **list);
 char							**back_up(void);
 void							print(char *command, char *message, int code);
-int								execute_builtin(t_tree *node, t_env **env);
+int								execute_builtin(int i, t_tree *node, t_env **env);
 int								is_builtin(char *command);
-int								execute_builtin_command(char *command,
+int								execute_builtin_command(int i, char *command,
 									char **args, t_env **env);
 void							dup_fds(t_redirection *node, t_env *env);
 
@@ -293,6 +303,14 @@ void							heredoc_sigint_handler(int sig
 t_env							*get_current_env(t_env *env);
 t_share3						*get_current_share(t_share3 *share);
 void							check_line(t_share3 *share);
+char	*get_last_herdoc(t_herdoc *list);
+void	take_heredoc(t_tree *node, t_node *list);
+void	collect_herdoc(t_tree *node, t_node *list);
+void	init(t_tree *node);
+void	collect_in_out_files2(t_node **list, t_share4 *share);
+void	collect_in_out_files(t_node **list, t_share4 *share);
+void	assing_io(t_node **list, t_share4 *share);
+void	assign_last_file(t_tree *node);
 
 // EXECUTE
 void							execute_full_command(t_tree *node, t_env **env,
@@ -301,7 +319,7 @@ void							execute_full_command(t_tree *node, t_env **env,
 void							execute_pipe_node(t_tree *tree, t_env *env,
 									char **envp);
 // SIMPLE
-void							execute_command_node(t_tree *node, t_env **env,
+void							execute_command_node(int i, t_tree *node, t_env **env,
 									char **envp);
 void							print(char *command, char *message, int code);
 void							empty_command(t_tree *node, t_env *env);
@@ -312,8 +330,7 @@ void							print_and_exit(t_tree *node, t_env *env,
 									int code, char *message);
 void							protect(t_env *env, char *message);
 // REDIRECTION
-void							execute_redirection_command(t_tree *node,
-									t_env *env, char **envp);
+void	execute_redirection_command(int i, t_tree *node, t_env *env, char **envp);
 int								check_in_files(char *file);
 int								in_directory(char *file);
 int								check_if_exist(t_redirection *node);
@@ -326,9 +343,9 @@ int								len_slash(char *str, char c, int len);
 int								only_space(char *str);
 
 // Print data
-void							print_her(t_herdoc *herdoc);
-void							print_data(t_redirection *node);
-void							print_redirection_data(t_tree *tree);
+// void							print_her(t_herdoc *herdoc);
+// void							print_data(t_redirection *node);
+// void							print_redirection_data(t_tree *tree);
 void							print_message(char *file, char *message);
 
 // SIGNALS
@@ -342,5 +359,5 @@ int								ft_return_signal(int status);
 void							*ft_malloc(int type, int size);
 void							ft_free_garbage(t_gcollect **list);
 t_gcollect						**ft_function(void);
-char							*get_next_line(int fd);
+// char							*get_next_line(int fd);
 #endif

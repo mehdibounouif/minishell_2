@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   custom_libft.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moraouf <moraouf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/11 00:23:36 by moraouf            #+#    #+#             */
-/*   Updated: 2025/08/11 00:23:37 by moraouf           ###   ########.fr       */
+/*   Created: 2025/08/11 00:23:36 by moraouf           #+#    #+#             */
+/*   Updated: 2025/08/11 01:59:16 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ char	*ft_substr1(char const *s, unsigned int start, size_t len)
 
 char	*ft_strjoin1(char const *s1, char const *s2)
 {
-	char *str;
-	size_t s1_len;
-	size_t s2_len;
-	size_t totlen;
+	char	*str;
+	size_t	s1_len;
+	size_t	s2_len;
+	size_t	totlen;
 
 	if (s1 && !s2)
 		return (ft_strdup1(s1));
