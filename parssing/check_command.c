@@ -63,10 +63,12 @@ int	process_command(char *cmd, t_node **list, t_env *env)
 	tokenize(cmd, list);
 	without_quotes(list);
 	expand(list, env);
+	if(!(*list))
+		return (0);
 	if (!(*list)->content[0] && !(*list)->next && !(*list)->between_quoted)
 	{
 		free_list(list);
-		return (0);
+		return (global(0));
 	}
 	join_b_space_nodes(list);
 	if (!check_syntax(*list))
