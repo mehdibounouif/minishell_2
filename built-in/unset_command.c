@@ -25,11 +25,11 @@ void	unset_env_var(t_env **env, char *key)
 		{
 			if (prev)
 				prev->next = current->next;
-			else
-			{
+			else 
 				*env = current->next;
-				return ;
-			}
+			free(current->value);
+			free(current->key);
+			free(current);
 			return ;
 		}
 		prev = current;
@@ -42,7 +42,7 @@ int	unset_command(t_env **env, char **args)
 	int	i;
 
 	if (!args[1])
-		return (EXIT_SUCCESS);
+		return (global(0));
 	i = 1;
 	while (args[i])
 	{

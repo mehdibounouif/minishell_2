@@ -22,13 +22,13 @@ int	pwd_command(void)
 		{
 			ft_putstr_fd(*(back_up()), 1);
 			ft_putchar_fd('\n', 1);
-			return (EXIT_SUCCESS);
+			return (global(0));
 		}
 		else
 		{
 			ft_putstr_fd("minishell: pwd: error retrieving current directory\n",
 				2);
-			return (EXIT_FAILURE);
+			return (global(1));
 		}
 	}
 	ft_putstr_fd(cwd, 1);

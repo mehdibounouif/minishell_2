@@ -343,9 +343,9 @@ int								len_slash(char *str, char c, int len);
 int								only_space(char *str);
 
 // Print data
-// void							print_her(t_herdoc *herdoc);
-// void							print_data(t_redirection *node);
-// void							print_redirection_data(t_tree *tree);
+void							print_her(t_herdoc *herdoc);
+void							print_data(t_redirection *node);
+void							print_redirection_data(t_tree *tree);
 void							print_message(char *file, char *message);
 
 // SIGNALS

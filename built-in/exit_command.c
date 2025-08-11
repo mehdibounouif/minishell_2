@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: moraouf <moraouf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:59 by moraouf           #+#    #+#             */
-/*   Updated: 2025/08/11 04:06:47 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/11 04:06:47 by moraouf           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,21 +77,20 @@ static int	calculate_exit_status(char *arg, t_env *env)
 int	exit_command(int i, t_tree *node, t_env *env, char **args)
 {
 	(void)node;
-  if (!i)
+  	if (!i)
 	  ft_putstr_fd("exit\n", 1);
 	if (!args[1])
 	{
 		ft_free_garbage(ft_function());
 		free_env(env);
-		exit(0);
+		exit(global(-1));
 	}
 	if (args[2])
 	{
 		if (!is_numeric(args[1]))
 			exit_with_error(args[1], env);
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		global(1);
-		return (1);
+		return (global(1));
 	}
 	exit(calculate_exit_status(args[1], env));
 }
