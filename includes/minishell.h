@@ -21,7 +21,7 @@
 # include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
-#include <limits.h>
+# include <limits.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/stat.h>
@@ -45,7 +45,6 @@
 # define END_NODE 13
 
 # define HEREDOC_FILE ".heredoc_file_"
-extern int						ret;
 
 typedef struct s_command		t_command;
 typedef struct s_redirection	t_redirection;
@@ -106,20 +105,20 @@ struct							s_files
 
 struct							s_redirection
 {
-	t_tree *prev;     // previous node;
-	char *in_file;    // last input file;
-	char **in_files;  // all input files;
-	char *out_file;   // last output file;
-	char **out_files; // all output file;
+	t_tree						*prev;
+	char						*in_file;
+	char						**in_files;
+	char						*out_file;
+	char						**out_files;
 	char						**heredocs;
-	char *hrc_file; // last output file;
-	int in;         // flag to know if the last input file is the stdin or not;
-	int hdc;        // flag to know if the last herdoc file is the stdin or not;
-	int in_count;   // number of input files;
-	int out_count;  // number of output files;
-	int out_type;   // type of output file (trunk or append);
+	char						*hrc_file;
+	int							in;
+	int							hdc;
+	int							in_count;
+	int							out_count;
+	int							out_type;
 	t_files						*files;
-	t_herdoc *herdoc; // list of command heredocs;
+	t_herdoc					*herdoc;
 };
 
 struct							s_tree
@@ -289,7 +288,8 @@ void							read_lines(int *flag, t_share3 *share,
 									t_redirection *list, t_env *env);
 char							*get_last_file(char **list);
 char							*generate_file_name(t_env *env);
-void							heredoc_sigint_handler(int sig __attribute__((unused)));
+void							heredoc_sigint_handler(int sig
+									__attribute__((unused)));
 t_env							*get_current_env(t_env *env);
 t_share3						*get_current_share(t_share3 *share);
 void							check_line(t_share3 *share);
