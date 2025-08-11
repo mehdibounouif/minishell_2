@@ -65,7 +65,7 @@ void	parent_process(t_env *env, int status, pid_t pid)
 		global(WEXITSTATUS(status));
 }
 
-void	execute_command_node(t_tree *node, t_env **env, char **envp)
+void	execute_command_node(int i, t_tree *node, t_env **env, char **envp)
 {
 	int		status;
 	pid_t	pid;
@@ -74,7 +74,7 @@ void	execute_command_node(t_tree *node, t_env **env, char **envp)
 	sig_ctrl(1);
 	if (is_builtin(node->command->command))
 	{
-		execute_builtin(node, env);
+		execute_builtin(i, node, env);
 		return ;
 	}
 	pid = fork();

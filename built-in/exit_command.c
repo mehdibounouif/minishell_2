@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taha_laylay <taha_laylay@student.42.fr>    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:41:59 by moraouf           #+#    #+#             */
-/*   Updated: 2025/08/11 01:26:23 by taha_laylay      ###   ########.fr       */
+/*   Updated: 2025/08/11 04:06:47 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,11 @@ static int	calculate_exit_status(char *arg, t_env *env)
 	return (normalize_exit_status(status));
 }
 
-int	exit_command(t_tree *node, t_env *env, char **args)
+int	exit_command(int i, t_tree *node, t_env *env, char **args)
 {
 	(void)node;
-	ft_putstr_fd("exit\n", 1);
+  if (!i)
+	  ft_putstr_fd("exit\n", 1);
 	if (!args[1])
 	{
 		ft_free_garbage(ft_function());

@@ -34,7 +34,7 @@ int	is_builtin(char *command)
 	return (0);
 }
 
-int	execute_builtin(t_tree *node, t_env **env)
+int	execute_builtin(int i, t_tree *node, t_env **env)
 {
 	char	*command;
 
@@ -52,11 +52,11 @@ int	execute_builtin(t_tree *node, t_env **env)
 	else if (ft_strncmp(command, "env", 4) == 0)
 		return (env_command(*env, node->command->args));
 	else if (ft_strncmp(command, "exit", 5) == 0)
-		return (exit_command(node, *env, node->command->args));
+		return (exit_command(i, node, *env, node->command->args));
 	return (1);
 }
 
-int	execute_builtin_command(char *command, char **args, t_env **env)
+int	execute_builtin_command(int i, char *command, char **args, t_env **env)
 {
 	if (ft_strncmp(command, "cd", 3) == 0)
 		return (cd_command(*env, args));
@@ -71,6 +71,6 @@ int	execute_builtin_command(char *command, char **args, t_env **env)
 	else if (ft_strncmp(command, "env", 4) == 0)
 		return (env_command(*env, args));
 	else if (ft_strncmp(command, "exit", 5) == 0)
-		return (exit_command(NULL, *env, args));
+		return (exit_command(i, NULL, *env, args));
 	return (1);
 }
