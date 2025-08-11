@@ -29,6 +29,11 @@ void	child_process(t_tree *node, t_env *env, char **envp)
 	empty_command(node, env);
 	dote_command(node, env);
 	absolute_path(node, env, envp);
+	if (ft_strchr(node->command->command, '.') || ft_strcmp(node->command->command,"sudo") == 0)
+	{
+		if (access(node->command->command, X_OK) == -1)
+			print_and_exit(node, env, 126, ": Permission denied");
+	}
 	path = find_path(node, env);
 	if (!path)
 		print_and_exit(node, env, 127, ": command not found");
