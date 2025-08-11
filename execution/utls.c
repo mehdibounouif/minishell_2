@@ -55,12 +55,13 @@ char	*ft_getenv(char *key, t_env *list)
 	return (NULL);
 }
 
-char	*find_path(t_tree *node, t_env *list)
+char	*find_path(t_tree *node, t_env *list, int *flag)
 {
 	int		i;
 	char	**all_paths;
 	char	*path_slash;
 	char	*full_path;
+	// char 	*check;
 
 	all_paths = ft_split(ft_getenv("PATH", list), ':');
 	if (!all_paths)
@@ -75,8 +76,13 @@ char	*find_path(t_tree *node, t_env *list)
 	{
 		path_slash = ft_strjoin(all_paths[i], "/");
 		full_path = ft_strjoin(path_slash, node->command->command);
-		if (access(full_path, F_OK | X_OK) == 0)
-			return (full_path);
+		if (!access(full_path, F_OK))
+		{
+			if(!access(full_path,X_OK))
+				return (full_path);
+			else
+				*flag = 1;
+		}
 		i++;
 	}
 	return (NULL);

@@ -23,20 +23,19 @@ void	protect(t_env *env, char *message)
 void	child_process(t_tree *node, t_env *env, char **envp)
 {
 	char	*path;
+	int		flag;
 
+	flag = 0;
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	empty_command(node, env);
 	dote_command(node, env);
 	absolute_path(node, env, envp);
-	if (ft_strchr(node->command->command, '.') || ft_strcmp(node->command->command,"sudo") == 0)
-	{
-		if (access(node->command->command, X_OK) == -1)
-			print_and_exit(node, env, 126, ": Permission denied");
-	}
-	path = find_path(node, env);
-	if (!path)
+	path = find_path(node, env, &flag);
+	if (!path && !flag)
 		print_and_exit(node, env, 127, ": command not found");
+	else if(flag)
+		print_and_exit(node, env, 126, ": Permisson denied");
 	execve(path, node->command->args, envp);
 	free_env(env);
 	ft_free_garbage(ft_function());

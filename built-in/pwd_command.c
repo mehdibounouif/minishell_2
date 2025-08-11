@@ -26,8 +26,7 @@ int	pwd_command(void)
 		}
 		else
 		{
-			ft_putstr_fd("minishell: pwd: error retrieving current directory\n",
-				2);
+			ft_putstr_fd("minishell: pwd: err retrieving cur directory\n", 2);
 			return (global(1));
 		}
 	}

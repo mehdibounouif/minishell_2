@@ -29,10 +29,12 @@ void	ulink_files(char **files)
 void	child_process_redi(t_tree *node, t_env *env, char **envp)
 {
 	char	*path;
+	int 	flag;
 
+	flag = 0;
 	dup_fds(node->redirect, env);
 	absolute_path(node->redirect->prev, env, envp);
-	path = find_path(node->redirect->prev, env);
+	path = find_path(node->redirect->prev, env, &flag);
 	if (!path)
 	{
 		ft_putstr_fd(node->redirect->prev->command->command, 2);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taha_laylay <taha_laylay@student.42.fr>    +#+  +:+       +#+        */
+/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 16:40:20 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/11 04:34:46 by taha_laylay      ###   ########.fr       */
+/*   Updated: 2025/08/11 21:37:21 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ void absolute_path(t_tree *node, t_env *env, char **envp)
     char *command;
 
 	command = node->command->command;
-	if (ft_strchr(command, '/')
-		|| (command[0] == '.' && (command[1] == '/' || command[1] == '\0')))
+	if (ft_strchr(command, '/'))
 	{
 		if (stat(command, &st) == -1)
 			print_and_exit(node, env, 127, ": No such file or directory");

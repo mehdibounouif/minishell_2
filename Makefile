@@ -1,7 +1,7 @@
 NAME = minishell
 RM = rm -f
 CC = cc
-FLAGS = -Wall -Wextra -g
+FLAGS = -Wall -Wextra -Werror -g
 LIBFT_DIR = ./libft
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 SRCS_DIR1 = ./parssing
@@ -9,6 +9,7 @@ SRCS_DIR2 = ./execution
 SRCS_DIR3 = ./built-in
 SRCS_DIR4 = ./free
 SRCS_FILES1 = main.c\
+			print_ast.c\
 	     utils.c\
 			 custom/custom_libft.c\
 			 custom/custom_split.c\
@@ -54,6 +55,7 @@ SRCS_FILES3 = cd_command.c\
 	      env_command.c\
 	      env_utils.c\
 		 env_utils2.c\
+		 get_next_line.c\
 		 
 SRCS_FILES4 = tools.c\
 			  garbage_collector.c\

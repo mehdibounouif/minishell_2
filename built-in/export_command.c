@@ -67,7 +67,7 @@ int	export_command(t_env **env, char **args)
 {
 	int		i;
 	char	*equal_sign;
-	int 	flag;
+	int		flag;
 
 	flag = 0;
 	if (!args[1])
