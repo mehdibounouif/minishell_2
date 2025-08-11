@@ -49,6 +49,7 @@ SRCS_FILES3 = cd_command.c\
 	      export_command.c\
 	      export_utils.c\
 	      exit_command.c\
+	      exit_utils.c\
 	      unset_command.c\
 	      env_command.c\
 	      env_utils.c\

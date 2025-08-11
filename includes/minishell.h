@@ -21,6 +21,7 @@
 # include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
+#include <limits.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/stat.h>
@@ -161,6 +162,14 @@ int								unset_command(t_env **env, char **args);
 int								env_command(t_env *env, char **args);
 int								exit_command(t_tree *node, t_env *env,
 									char **args);
+// exit_utils.c helper functions
+int								handle_sign(char *str, int i, int *sign);
+int								validate_digits(char *str, int start);
+int								check_overflow(long long result, char digit,
+									int negative);
+long long						parse_number(char *str, int *i, int sign,
+									int *error);
+int								normalize_exit_status(long long status);
 char							*get_env_value(t_env *env, char *key);
 int								update_env_var(t_env *env, char *var);
 void							set_env_var(t_env **env, char *key,
