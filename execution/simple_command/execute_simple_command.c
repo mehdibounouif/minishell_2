@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/12 13:24:55 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/12 20:22:57 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	child_process(t_tree *node, t_env *env, char **envp)
 		print_and_exit(node, env, 127, ": command not found");
 	else if (flag)
 		print_and_exit(node, env, 126, ": Permisson denied");
-	execve(path, node->command->args, envp);
+	execve(path, node->command->args, env_list_to_array(env));
 	free_env(env);
 	ft_free_garbage(ft_function());
 	perror("minishell");

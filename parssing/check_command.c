@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 00:26:50 by moraouf           #+#    #+#             */
-/*   Updated: 2025/08/12 17:33:33 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/12 20:34:11 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	without_quotes(t_node **list)
 	}
 }
 
-void	remove_empty(t_node **list, int *start, int *end)
+void	remove_empty(t_node **list, int *end)
 {
 	t_node	*tmp;
 	t_node	*next;
@@ -65,7 +65,6 @@ void	remove_empty(t_node **list, int *start, int *end)
 	{
 		if (tmp->content && tmp->content[0] == '\0' && !tmp->between_quoted)
 		{
-			*start = 1;
 			if (flag)
 				*end = 1;
 			next = tmp->next;
@@ -115,7 +114,7 @@ void	remove_pipe_in_end(t_node **list, int flag)
 	}
 }
 
-void	remove_pipe_in_start(t_node **list, int flag)
+void	remove_pipe_in_start(t_node **list)
 {
 	t_node	*tmp;
 	t_node	*current;
@@ -123,9 +122,6 @@ void	remove_pipe_in_start(t_node **list, int flag)
 	tmp = *list;
 	while (tmp && tmp->type == PIPE)
 	{
-		if (flag)
-			if (tmp->type == PIPE && tmp->next->type != PIPE)
-				break ;
 		current = tmp;
 		tmp = tmp->next;
 		if (tmp)
@@ -163,26 +159,29 @@ int	process_command(char *cmd, t_node **list, t_env *env)
 	tokenize(cmd, list);
 	without_quotes(list);
 	expand(list, env);
-	if (!(*list))
-  {
-    global(0);
-		return (0);
-  }
-	if (double_pipe(*list))
+	if (double_pipe(*list) || check_sides(*list))
 	{
-    global(2);
+		global(2);
+		ft_putendl_fd("bash: syntax error near unexpected token |", 2);
 		free_list(list);
 		return (0);
+	} 
+	remove_empty(list, &end);
+	if (!(*list))
+	{
+		global(0);
+		return (0);
 	}
-	remove_empty(list, &start, &end);
 	if (!(*list))
 		return (0);
 	join_b_space_nodes(list);
-	remove_pipe_in_start(list, start);
+	remove_pipe_in_start(list);
+	//print_list2(*list);
 	remove_pipe_in_end(list, end);
+	//kprint_list2(*list);
 	if (!(*list))
 		return (0);
-	if (!check_syntax(*list, end, start))
+	if (!check_syntax(*list))
 	{
 		free_list(list);
 		return (0);

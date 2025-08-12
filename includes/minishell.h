@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/12 05:29:54 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/12 20:21:46 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,7 +264,8 @@ int								is_real_separator(char *cmd, int i);
 int								count_args(t_node *list);
 int								readline_and_parssing(t_mini *minishell,
 									t_env *env);
-int								check_syntax(t_node *list, int flag, int start);
+int								check_syntax(t_node *list);
+int	check_sides(t_node *list);
 int								double_pipe(t_node *list);
 int								is_redirection(t_node *node);
 int								global(int state);
@@ -324,6 +325,7 @@ void							execute_pipe_node(t_tree *tree, t_env *env,
 // SIMPLE
 void							execute_command_node(int i, t_tree *node,
 									t_env **env, char **envp);
+char    **env_list_to_array(t_env *env);
 void							print(char *command, char *message, int code);
 void							empty_command(t_tree *node, t_env *env);
 void							dote_command(t_tree *node, t_env *env);

@@ -6,11 +6,42 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 16:40:20 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/12 13:25:53 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/12 20:24:44 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+char    **env_list_to_array(t_env *env)
+{
+    int        count;
+    t_env    *tmp;
+    char    **envp;
+    size_t    len;
+
+    count = 0;
+    tmp = env;
+    while (tmp)
+    {
+        count++;
+        tmp = tmp->next;
+    }
+    envp = malloc(sizeof(char *) * (count + 1));
+    if (!envp)
+        return (NULL);
+    tmp = env;
+    for (int i = 0; i < count; i++)
+    {
+        len = strlen(tmp->key) + strlen(tmp->value) + 2;
+        envp[i] = malloc(len);
+        if (!envp[i])
+            return (free_str(envp), NULL);
+        snprintf(envp[i], len, "%s=%s", tmp->key, tmp->value);
+        tmp = tmp->next;
+    }
+    envp[count] = NULL;
+    return (envp);
+}
 
 void	print(char *command, char *message, int code)
 {
@@ -52,6 +83,7 @@ void	absolute_path(t_tree *node, t_env *env, char **envp)
 	struct stat	st;
 	char		*command;
 	int			code;
+	(void)envp;
 
 	command = node->command->command;
 	if (ft_strchr(command, '/'))
@@ -68,7 +100,7 @@ void	absolute_path(t_tree *node, t_env *env, char **envp)
 			print_and_exit(node, env, 126, ": Is a directory");
 		if (access(command, X_OK) == -1)
 			print_and_exit(node, env, 126, ": Permission denied");
-		execve(command, node->command->args, envp);
+		execve(command, node->command->args, env_list_to_array(env));
 		perror("minishell");
 		free_env(env);
 		ft_free_garbage(ft_function());

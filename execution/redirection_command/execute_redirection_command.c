@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/12 16:56:53 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/12 20:26:20 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	child_process_redi(t_tree *node, t_env *env, char **envp)
 		global(127);
 		exit(127);
 	}
-	execve(path, node->redirect->prev->command->args, envp);
+	execve(path, node->redirect->prev->command->args, env_list_to_array(env));
 	ft_putstr_fd(node->redirect->prev->command->command, 2);
 	ft_putendl_fd(": command not found", 2);
 	ft_free_garbage(ft_function());
