@@ -6,8 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 16:40:20 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/12 00:30:43 by mbounoui         ###   ########.fr       */
-/*   Updated: 2025/08/11 21:37:21 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/12 13:25:53 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +51,7 @@ void	absolute_path(t_tree *node, t_env *env, char **envp)
 {
 	struct stat	st;
 	char		*command;
-	int	code;
+	int			code;
 
 	command = node->command->command;
 	if (ft_strchr(command, '/'))

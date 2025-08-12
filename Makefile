@@ -9,7 +9,6 @@ SRCS_DIR2 = ./execution
 SRCS_DIR3 = ./built-in
 SRCS_DIR4 = ./free
 SRCS_FILES1 = main.c\
-			print_ast.c\
 	     utils.c\
 	     tools.c\
 			 custom/custom_libft.c\
@@ -56,7 +55,6 @@ SRCS_FILES3 = cd_command.c\
 	      env_command.c\
 	      env_utils.c\
 		 env_utils2.c\
-		 get_next_line.c\
 		 
 SRCS_FILES4 = tools.c\
 			  garbage_collector.c\

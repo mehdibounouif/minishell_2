@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansions.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 15:23:34 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/11 17:07:57 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/12 13:15:43 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,13 @@ static t_node	*expand_list(t_node *prev, t_node *tmp, t_env *env)
 
 void	expand(t_node **list, t_env *env)
 {
-	t_node	(*start), (*next), (*sub_list), (*new_list), (*to_free), (*tmp);
+	t_node	*start;
+	t_node	*next;
+	t_node	*sub_list;
+	t_node	*new_list;
+	t_node	*to_free;
+	t_node	*tmp;
+
 	tmp = *list;
 	while (tmp)
 	{

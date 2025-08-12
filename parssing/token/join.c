@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 11:41:03 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/11 17:20:11 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/12 13:07:54 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,11 @@ static void	replace_b_space_sequence(t_node **head, t_node *start, t_node *end)
 
 void	join_b_space_nodes(t_node **head)
 {
-	t_node (*tmp), (*prev), (*start), (*end);
+	t_node	*tmp;
+	t_node	*prev;
+	t_node	*start;
+	t_node	*end;
+
 	tmp = *head;
 	while (tmp)
 	{

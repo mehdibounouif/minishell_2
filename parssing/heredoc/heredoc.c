@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 17:10:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/12 03:59:29 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/12 12:30:54 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int	check_heredoc(t_tree *tree)
 	{
 		if (tree->pipe->left)
 			if (check_heredoc(tree->pipe->left))
-			return (1);
+				return (1);
 		if (tree->pipe->right)
 			if (check_heredoc(tree->pipe->right))
 				return (1);

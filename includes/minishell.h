@@ -152,16 +152,14 @@ typedef struct t_share
 	char						*expanded_cmd;
 }								t_share;
 
-
 typedef struct s_share4
 {
-    t_tree    *redirect_node;
-    t_tree    *prev;
-    t_node    *tmp;
-    int        i;
-    int        j;
-
-}            t_share4;
+	t_tree						*redirect_node;
+	t_tree						*prev;
+	t_node						*tmp;
+	int							i;
+	int							j;
+}								t_share4;
 // built-in functions
 // Function declarations
 int								cd_command(t_env *env, char **args);
@@ -211,7 +209,8 @@ void							print_ast(t_tree *tree, int level);
 void							skip_redirection(t_node **list);
 char							**back_up(void);
 void							print(char *command, char *message, int code);
-int								execute_builtin(int i, t_tree *node, t_env **env);
+int								execute_builtin(int i, t_tree *node,
+									t_env **env);
 int								is_builtin(char *command);
 int								execute_builtin_command(int i, char *command,
 									char **args, t_env **env);
@@ -266,9 +265,10 @@ int								count_args(t_node *list);
 int								readline_and_parssing(t_mini *minishell,
 									t_env *env);
 int								check_syntax(t_node *list, int flag, int start);
-int	double_pipe(t_node *list);
+int								double_pipe(t_node *list);
 int								is_redirection(t_node *node);
 int								global(int state);
+int								has_executable_command(t_tree *tree);
 
 // EXPANSION
 void							expand(t_node **list, t_env *env);
@@ -304,14 +304,16 @@ void							heredoc_sigint_handler(int sig
 t_env							*get_current_env(t_env *env);
 t_share3						*get_current_share(t_share3 *share);
 void							check_line(t_share3 *share);
-char	*get_last_herdoc(t_herdoc *list);
-void	take_heredoc(t_tree *node, t_node *list);
-void	collect_herdoc(t_tree *node, t_node *list);
-void	init(t_tree *node);
-void	collect_in_out_files2(t_node **list, t_share4 *share);
-void	collect_in_out_files(t_node **list, t_share4 *share);
-void	assing_io(t_node **list, t_share4 *share);
-void	assign_last_file(t_tree *node);
+char							*get_last_herdoc(t_herdoc *list);
+void							take_heredoc(t_tree *node, t_node *list);
+void							collect_herdoc(t_tree *node, t_node *list);
+void							init(t_tree *node);
+void							collect_in_out_files2(t_node **list,
+									t_share4 *share);
+void							collect_in_out_files(t_node **list,
+									t_share4 *share);
+void							assing_io(t_node **list, t_share4 *share);
+void							assign_last_file(t_tree *node);
 
 // EXECUTE
 void							execute_full_command(t_tree *node, t_env **env,
@@ -320,8 +322,8 @@ void							execute_full_command(t_tree *node, t_env **env,
 void							execute_pipe_node(t_tree *tree, t_env *env,
 									char **envp);
 // SIMPLE
-void							execute_command_node(int i, t_tree *node, t_env **env,
-									char **envp);
+void							execute_command_node(int i, t_tree *node,
+									t_env **env, char **envp);
 void							print(char *command, char *message, int code);
 void							empty_command(t_tree *node, t_env *env);
 void							dote_command(t_tree *node, t_env *env);
@@ -331,14 +333,16 @@ void							print_and_exit(t_tree *node, t_env *env,
 									int code, char *message);
 void							protect(t_env *env, char *message);
 // REDIRECTION
-void	execute_redirection_command(int i, t_tree *node, t_env *env, char **envp);
+void							execute_redirection_command(int i, t_tree *node,
+									t_env *env, char **envp);
 int								check_in_files(char *file);
 int								in_directory(char *file);
 int								check_if_exist(t_redirection *node);
 void							ulink_files(char **files);
 
 char							*ft_getenv(char *key, t_env *list);
-char							*find_path(t_tree *node, t_env *list, int *flag);
+char							*find_path(t_tree *node, t_env *list,
+									int *flag);
 int								ft_arraylen(char **arr);
 int								len_slash(char *str, char c, int len);
 int								only_space(char *str);

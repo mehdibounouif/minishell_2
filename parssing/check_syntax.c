@@ -39,9 +39,8 @@ int	syntax(t_node *list)
 {
 	while (list)
 	{
-		if (is_redirection(list)
-			&& !list->between_quoted
-			&& (!list->next || list->next->type != WORD))
+		if (is_redirection(list) && !list->between_quoted && (!list->next
+				|| list->next->type != WORD))
 		{
 			if (list->next)
 			{

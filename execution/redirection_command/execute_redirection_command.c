@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_redirection_command.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moraouf <moraouf@student.42.fr>    +#+  +:+       +#+                */
+/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/11 15:39:54 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/12 13:18:22 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ulink_files(char **files)
 void	child_process_redi(t_tree *node, t_env *env, char **envp)
 {
 	char	*path;
-	int 	flag;
+	int		flag;
 
 	flag = 0;
 	dup_fds(node->redirect, env);

@@ -6,8 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:37 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/12 04:02:46 by mbounoui         ###   ########.fr       */
-/*   Updated: 2025/08/11 12:59:46 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/12 13:26:16 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +54,7 @@ int	right(int *p, t_env **env, t_tree *tree, char **envp)
 void	execute_pipe_node(t_tree *tree, t_env *env, char **envp)
 {
 	int		p[2];
-	int		status = 0;
+	int		status;
 	pid_t	l;
 	pid_t	r;
 
@@ -73,12 +72,12 @@ void	execute_pipe_node(t_tree *tree, t_env *env, char **envp)
 		if (waitpid(l, NULL, 0) == -1 || waitpid(r, &status, 0) == -1)
 			protect(env, "Waitpid failed");
 	}
-	else if (tree->pipe->left && !tree->pipe->right) 
+	else if (tree->pipe->left && !tree->pipe->right)
 	{
 		if (waitpid(l, &status, 0) == -1)
 			protect(env, "Waitpid failed");
 	}
-	else if (!tree->pipe->left && tree->pipe->right) 
+	else if (!tree->pipe->left && tree->pipe->right)
 		if (waitpid(r, &status, 0) == -1)
 			protect(env, "Waitpid failed");
 	global(WEXITSTATUS(status));

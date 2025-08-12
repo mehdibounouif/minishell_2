@@ -3,7 +3,8 @@
 /*                                                        :::      ::::::::   */
 /*   utls.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moraouf <moraouf@student.42.fr>              +#+  +:+       +#+        */
+/*   By: moraouf <moraouf@student.42.fr>              +#+  +:+      
+	+#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 10:06:24 by mbounoui          #+#    #+#             */
 /*   Updated: 2025/08/12 01:13:41 by mbounoui         ###   ########.fr       */
@@ -58,13 +59,12 @@ char	*ft_getenv(char *key, t_env *list)
 
 char	*find_path(t_tree *node, t_env *list, int *flag)
 {
-	int		i;
-	char	**all_paths;
-	char	*path_slash;
-	char	*full_path;
-	int idx;
-	struct stat st;
-	//char 	*check;
+	int			i;
+	char		**all_paths;
+	char		*path_slash;
+	char		*full_path;
+	int			idx;
+	struct stat	st;
 
 	all_paths = ft_split(ft_getenv("PATH", list), ':');
 	idx = -1;
@@ -84,7 +84,7 @@ char	*find_path(t_tree *node, t_env *list, int *flag)
 		stat(full_path, &st);
 		if (!access(full_path, F_OK) && !S_ISDIR(st.st_mode))
 		{
-			if(!access(full_path,X_OK))
+			if (!access(full_path, X_OK))
 				return (*flag = 0, full_path);
 			else
 			{
@@ -94,7 +94,7 @@ char	*find_path(t_tree *node, t_env *list, int *flag)
 		}
 		i++;
 	}
-	if (idx!=-1)
+	if (idx != -1)
 	{
 		path_slash = ft_strjoin(all_paths[idx], "/");
 		full_path = ft_strjoin(path_slash, node->command->command);

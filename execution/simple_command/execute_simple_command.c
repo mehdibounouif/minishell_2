@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_simple_command.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moraouf <moraouf@student.42.fr>              +#+  +:+       +#+      */
+/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/11 23:44:50 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/12 13:24:55 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,12 @@ void	child_process(t_tree *node, t_env *env, char **envp)
 	empty_command(node, env);
 	dote_command(node, env);
 	absolute_path(node, env, envp);
-	if (ft_strchr(node->command->command, '.')
-		|| ft_strcmp(node->command->command, "sudo") == 0)
-	{
-		if (access(node->command->command, X_OK) == -1)
-			print_and_exit(node, env, 126, ": Permission denied");
-	}
 	path = find_path(node, env, &flag);
 	if (!path)
 		path = find_path(node, env, &flag);
 	if (!path && !flag)
 		print_and_exit(node, env, 127, ": command not found");
-	else if(flag)
+	else if (flag)
 		print_and_exit(node, env, 126, ": Permisson denied");
 	execve(path, node->command->args, envp);
 	free_env(env);
