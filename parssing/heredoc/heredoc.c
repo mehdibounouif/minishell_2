@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 17:10:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/11 17:11:04 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/12 03:59:29 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,12 @@ static int	check_heredoc(t_tree *tree)
 	}
 	if (tree->type == PIPE_NODE)
 	{
-		if (check_heredoc(tree->pipe->left))
+		if (tree->pipe->left)
+			if (check_heredoc(tree->pipe->left))
 			return (1);
-		if (check_heredoc(tree->pipe->right))
-			return (1);
+		if (tree->pipe->right)
+			if (check_heredoc(tree->pipe->right))
+				return (1);
 	}
 	return (0);
 }

@@ -11,6 +11,29 @@ minishell > ls
 leak
 cat > o2 | chmod 000 o2 | < o2
 
+minishell > cat | cat | ls | cat
+built-in
+execution
+free
+includes
+libft
+Makefile
+minishell
+parssing
+readline.supp
+README.md
+^C
+minishell > echo $?
+130
+
+minishell > << ii << ppp
+>
+bash: warning: (wanted `ii')
+>
+bash: warning: (wanted `ppp')
+minishell > echo $?
+1
+
 minishell > mkdir cat
 minishell > export PATH="$PWD:$PATH:$PWD"
 minishell > cat

@@ -6,20 +6,32 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 11:51:06 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/11 23:17:31 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/12 05:28:55 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	check_sides(t_node *list, int flag)
+int	check_sides(t_node *list, int end, int start)
 {
-	if (list && list->type == PIPE && !list->between_quoted)
+	if (list && list->type == PIPE && !list->between_quoted && !start)
 		return (1);
 	while (list && list->next)
 		list = list->next;
-	if (list && !list->between_quoted && list->type == PIPE && !flag)
+	if (list && !list->between_quoted && list->type == PIPE && !end)
 		return (1);
+	return (0);
+}
+
+int	double_pipe(t_node *list)
+{
+	while (list)
+	{
+		if ((list->next && !list->between_quoted && list->type == PIPE
+				&& list->next->type == PIPE))
+			return (1);
+		list = list->next;
+	}
 	return (0);
 }
 
@@ -27,10 +39,9 @@ int	syntax(t_node *list)
 {
 	while (list)
 	{
-		if ((list->next && !list->between_quoted && list->type == PIPE
-				&& list->next->type == PIPE) || (is_redirection(list)
-				&& !list->between_quoted && (!list->next
-					|| list->next->type != WORD)))
+		if (is_redirection(list)
+			&& !list->between_quoted
+			&& (!list->next || list->next->type != WORD))
 		{
 			if (list->next)
 			{
@@ -49,9 +60,9 @@ int	syntax(t_node *list)
 	return (1);
 }
 
-int	check_syntax(t_node *list, int flag)
+int	check_syntax(t_node *list, int end, int start)
 {
-	if (check_sides(list, flag))
+	if (check_sides(list, end, start))
 	{
 		ft_putendl_fd("bash: syntax error near unexpected token |", 2);
 		global(2);

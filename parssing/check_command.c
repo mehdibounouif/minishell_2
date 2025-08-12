@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>              +#+  +:+       +#+      */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 00:26:50 by moraouf            #+#    #+#            */
-/*   Updated: 2025/08/11 23:46:29 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/12 06:31:20 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void remove_pipe_in_start(t_node **list, int flag)
 	tmp = *list;
 	while (tmp && tmp->type == PIPE)
 	{
-		if (!flag)
+		if (flag)
 			if (tmp->type == PIPE && tmp->next->type != PIPE)
 				break;
 		current = tmp;
@@ -138,8 +138,7 @@ void remove_pipe_in_start(t_node **list, int flag)
 		free(current);
 	}
 }
-/*
-void	print_list(t_node *list)
+void	print_list2(t_node *list)
 {
 	while (list)
 	{
@@ -148,7 +147,6 @@ void	print_list(t_node *list)
 	}
 	printf("\n");
 }
-*/
 int	process_command(char *cmd, t_node **list, t_env *env)
 {
 	int end;
@@ -166,28 +164,69 @@ int	process_command(char *cmd, t_node **list, t_env *env)
 	expand(list, env);
 	if (!(*list))
 		return (0);
+	if (double_pipe(*list))
+	{
+		free_list(list);
+		return (0);
+	}
 	remove_empty(list, &start,  &end);
 	if (!(*list))
 		return (0);
 	join_b_space_nodes(list);
 	remove_pipe_in_start(list, start);
+//	print_list2(*list);
 	remove_pipe_in_end(list, end);
+//	print_list2(*list);
 	if (!(*list))
 		return (0);
-	if (!check_syntax(*list, end))
+	if (!check_syntax(*list, end, start))
 	{
 		free_list(list);
 		return (0);
 	}
 	return (1);
 }
+#define BUFFER_SIZE 1
+
+char *get_next_line(int fd)
+{
+    static char buffer[BUFFER_SIZE];
+    static int read_byt;
+    static int position;
+    int i = 0;
+    char *line = malloc(1000);
+
+    if (fd < 0 || BUFFER_SIZE <= 0 || !line)
+        return NULL;
+    while (1)
+    {
+        if (position >= read_byt)
+        {
+            read_byt = read(fd, buffer, BUFFER_SIZE);
+            position = 0;
+            if (read_byt <= 0)
+                break;
+        }
+        if ((line[i++] = buffer[position++]) == '\n')
+            break;
+    }
+    line[i] = '\0';
+    if (i == 0)
+    {
+        free (line);
+        return NULL;
+    }
+    return line;
+}
 
 int	readline_and_parssing(t_mini *minishell, t_env *env)
 {
 	char	*cmd;
 	t_node	*tmp;
-
-	cmd = readline("minishell > ");
+	if (isatty(0))
+		cmd = readline("minishell > ");
+	else 
+		cmd = get_next_line(0);
 	if (!cmd)
 	{
 		printf("exit\n");

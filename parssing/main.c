@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/11 23:45:36 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/12 06:31:22 by mbounoui         ###   ########.fr       */
 /*   Updated: 2025/08/11 17:27:15 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -24,13 +24,16 @@ int	global(int state)
 
 void  mini_shell(t_mini *minishell, char **env, t_env *envp)
 {
-	(void)env;
   while (1)
 	{
 		handle_signal();
+		if(isatty(0))
+		{
+			
+		}
 		if (!readline_and_parssing(minishell, envp))
 			continue ;
-		// print_ast(minishell->tree, 0);
+		//print_ast(minishell->tree, 0);
 		if (!open_herdocs(minishell->tree, envp))
 			continue ;
 		sig_ctrl(1);

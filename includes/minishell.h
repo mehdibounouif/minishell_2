@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 08:10:15 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/11 23:14:03 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/12 05:29:54 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,7 +265,8 @@ int								is_real_separator(char *cmd, int i);
 int								count_args(t_node *list);
 int								readline_and_parssing(t_mini *minishell,
 									t_env *env);
-int								check_syntax(t_node *list, int flag);
+int								check_syntax(t_node *list, int flag, int start);
+int	double_pipe(t_node *list);
 int								is_redirection(t_node *node);
 int								global(int state);
 
