@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_redirection_command.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/12 13:18:22 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/12 16:56:53 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void	execute_redirection_command(int i, t_tree *node, t_env *env,
 	if (!node->redirect->prev)
 	{
 		check_if_exist(node->redirect);
+    global(0);
 		return ;
 	}
 	cmd = node->redirect->prev->command->command;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 11:51:06 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/12 05:28:55 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/12 17:41:30 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,12 @@ int	double_pipe(t_node *list)
 	while (list)
 	{
 		if ((list->next && !list->between_quoted && list->type == PIPE
-				&& list->next->type == PIPE))
+				&& list->next->type == PIPE)
+        || (list->type == PIPE && !list->next && !list->prev))
+    {
+      ft_putendl_fd("bash: syntax error near unexpected token |", 2);
 			return (1);
+    }
 		list = list->next;
 	}
 	return (0);

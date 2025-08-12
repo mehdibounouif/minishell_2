@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_command.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 00:26:50 by moraouf           #+#    #+#             */
-/*   Updated: 2025/08/12 13:43:04 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/12 17:33:33 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,9 +164,13 @@ int	process_command(char *cmd, t_node **list, t_env *env)
 	without_quotes(list);
 	expand(list, env);
 	if (!(*list))
+  {
+    global(0);
 		return (0);
+  }
 	if (double_pipe(*list))
 	{
+    global(2);
 		free_list(list);
 		return (0);
 	}
@@ -219,6 +223,8 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
+
+
 
 int	readline_and_parssing(t_mini *minishell, t_env *env)
 {
