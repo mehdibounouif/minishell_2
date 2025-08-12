@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taha_laylay <taha_laylay@student.42.fr>    +#+  +:+       +#+        */
+/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 18:30:00 by taha_laylay       #+#    #+#             */
-/*   Updated: 2025/08/11 01:13:54 by taha_laylay      ###   ########.fr       */
+/*   Updated: 2025/08/13 00:09:51 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,30 +49,28 @@ int	validate_digits(char *str, int start)
 	return (1);
 }
 
-int	check_overflow(long long result, char digit, int negative)
-{
-	if (result > LLONG_MAX / 10)
-		return (1);
-	if (result == LLONG_MAX / 10 && (digit - '0') > LLONG_MAX % 10)
-		return (1);
-	if (negative && result > (LLONG_MAX / 10) + 1)
-		return (1);
-	return (0);
-}
-
 long long	parse_number(char *str, int *i, int sign, int *error)
 {
 	long long	result;
 
 	result = 0;
-	while (str[*i] >= '0' && str[*i] <= '9')
+	while (str[*i])
 	{
-		if (check_overflow(result, str[*i], sign == -1))
+		int digit = str[*i] - '0';
+		if (str[*i] >= '0' && str[*i] <= '9')
 		{
-			*error = 1;
-			return (0);
+			if (sign > 0)
+			{
+				if (result > ((LLONG_MAX - digit) / 10))
+					*error = 1;
+			}
+			else if (sign < 0)
+			{
+				if (-result < ((LLONG_MIN + digit) / 10))
+					*error = 1;
+			}
 		}
-		result = (result * 10) + (str[*i] - '0');
+		result = (result * 10) + digit;
 		(*i)++;
 	}
 	return (result);
