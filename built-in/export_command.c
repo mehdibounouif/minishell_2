@@ -67,14 +67,19 @@ int	export_command(t_env **env, char **args)
 {
 	int		i;
 	char	*equal_sign;
+	int		flag;
 
+	flag = 0;
 	if (!args[1])
-		return (sorted_env(*env), print_env_export(*env), EXIT_SUCCESS);
+		return (sorted_env(*env), print_env_export(*env), global(0));
 	i = 1;
 	while (args[i])
 	{
 		if (!is_valid_identifier(args[i]))
-			return (handle_invalid_identifier(args[i]));
+		{
+			handle_invalid_identifier(args[i]);
+			flag = 1;
+		}
 		equal_sign = ft_strchr(args[i], '=');
 		if (equal_sign)
 			handle_key_value(env, args[i], equal_sign);
@@ -82,5 +87,5 @@ int	export_command(t_env **env, char **args)
 			handle_no_value(env, args[i]);
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	return (global(flag));
 }

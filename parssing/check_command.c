@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>              +#+  +:+       +#+      */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 00:26:50 by moraouf            #+#    #+#            */
-/*   Updated: 2025/08/11 23:32:07 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/11 23:46:29 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ void remove_pipe_in_start(t_node **list, int flag)
 		free(current);
 	}
 }
-
+/*
 void	print_list(t_node *list)
 {
 	while (list)
@@ -148,7 +148,7 @@ void	print_list(t_node *list)
 	}
 	printf("\n");
 }
-
+*/
 int	process_command(char *cmd, t_node **list, t_env *env)
 {
 	int end;

@@ -29,5 +29,5 @@ int	env_command(t_env *env, char **args)
 		}
 		current = current->next;
 	}
-	return (0);
+	return (global(0));
 }

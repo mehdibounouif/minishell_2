@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   utls.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: moraouf <moraouf@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 10:06:24 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/11 01:20:42 by marvin           ###   ########.fr       */
+/*   Updated: 2025/08/12 01:13:41 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <sys/stat.h>
 
 int	ft_arraylen(char **arr)
 {
@@ -55,14 +56,18 @@ char	*ft_getenv(char *key, t_env *list)
 	return (NULL);
 }
 
-char	*find_path(t_tree *node, t_env *list)
+char	*find_path(t_tree *node, t_env *list, int *flag)
 {
 	int		i;
 	char	**all_paths;
 	char	*path_slash;
 	char	*full_path;
+	int idx;
+	struct stat st;
+	//char 	*check;
 
 	all_paths = ft_split(ft_getenv("PATH", list), ':');
+	idx = -1;
 	if (!all_paths)
 	{
 		print(node->command->command, ":  No such file or directory", 127);
@@ -75,9 +80,25 @@ char	*find_path(t_tree *node, t_env *list)
 	{
 		path_slash = ft_strjoin(all_paths[i], "/");
 		full_path = ft_strjoin(path_slash, node->command->command);
-		if (access(full_path, F_OK | X_OK) == 0)
-			return (full_path);
+		ft_memset(&st, 0, sizeof(struct stat));
+		stat(full_path, &st);
+		if (!access(full_path, F_OK) && !S_ISDIR(st.st_mode))
+		{
+			if(!access(full_path,X_OK))
+				return (*flag = 0, full_path);
+			else
+			{
+				idx = i;
+				*flag = 1;
+			}
+		}
 		i++;
+	}
+	if (idx!=-1)
+	{
+		path_slash = ft_strjoin(all_paths[idx], "/");
+		full_path = ft_strjoin(path_slash, node->command->command);
+		return (full_path);
 	}
 	return (NULL);
 }

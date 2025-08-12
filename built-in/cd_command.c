@@ -17,11 +17,8 @@ static int	update_oldpwd(t_env *env)
 	char	*oldpwd;
 	char	*current_dir;
 
-	current_dir = getcwd(NULL, 0);
-	if (!current_dir)
-		return (1);
+	current_dir = ft_strdup(get_env_value(env, "PWD"));
 	oldpwd = ft_strjoin("OLDPWD=", current_dir);
-	free(current_dir);
 	if (update_env_var(env, oldpwd) == 1)
 		return (1);
 	return (0);
@@ -35,7 +32,7 @@ static int	update_pwd(t_env *env)
 	current_dir = getcwd(NULL, 0);
 	if (!current_dir)
 		return (1);
-	*(back_up()) = current_dir;
+	*(back_up()) = ft_strdup(current_dir);
 	pwd = ft_strjoin("PWD=", current_dir);
 	free(current_dir);
 	if (update_env_var(env, pwd) == 1)
@@ -72,28 +69,27 @@ char	**back_up(void)
 
 int	cd_command(t_env *env, char **args)
 {
-	if (args[2] != NULL)
-	{
-		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
-		return (global(1));
-	}
+	int	len;
+
+	len = ft_arraylen(args);
+	if (len >= 2 && args[2] != NULL)
+		return (ft_putstr_fd("minishell: too many arguments\n", 2), global(1));
 	else if (!args[0] || (args[0][0] == '-' && !args[0][1]))
-		return (ft_putstr_fd("minishell: cd: option not supported\n", 2),
-			global(1));
+		return (ft_putstr_fd("minishell: option not supported\n", 2), global(1));
 	else if (!args[1])
 	{
 		if (change_to_home(env) == 1)
 			return (1);
 		return (global(0));
 	}
-	if (update_oldpwd(env) == 1)
-		return (1);
 	if (chdir(args[1]) == -1)
 	{
 		perror("minishell: cd");
-		global(1);
+		return (global(1));
 	}
+	if (update_oldpwd(env) == 1)
+		return (1);
 	if (update_pwd(env) == 1)
 		return (1);
-	return (0);
+	return (global(0));
 }

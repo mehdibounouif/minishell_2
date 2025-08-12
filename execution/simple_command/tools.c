@@ -3,10 +3,11 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: taha_laylay <taha_laylay@student.42.fr>    +#+  +:+       +#+        */
+/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 16:40:20 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/11 15:45:49 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/12 00:30:43 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/11 21:37:21 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +52,19 @@ void	absolute_path(t_tree *node, t_env *env, char **envp)
 {
 	struct stat	st;
 	char		*command;
+	int	code;
 
 	command = node->command->command;
-	if (ft_strchr(command, '/')
-		|| (command[0] == '.' && (command[1] == '/' || command[1] == '\0')))
+	if (ft_strchr(command, '/'))
 	{
 		if (stat(command, &st) == -1)
-			print_and_exit(node, env, 127, ": No such file or directory");
+		{
+			if (errno == ENOENT)
+				code = 127;
+			else
+				code = 126;
+			print_and_exit(node, env, code, strerror(errno));
+		}
 		if (S_ISDIR(st.st_mode))
 			print_and_exit(node, env, 126, ": Is a directory");
 		if (access(command, X_OK) == -1)

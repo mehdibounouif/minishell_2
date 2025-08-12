@@ -9,7 +9,14 @@ unset PATH
 minishell > cd /bin
 minishell > ls
 leak
+cat > o2 | chmod 000 o2 | < o2
 
+minishell > mkdir cat
+minishell > export PATH="$PWD:$PATH:$PWD"
+minishell > cat
+minishell: Permission denied
+minishell > ./includes/minishell.h/ls
+minishell : ./includes/minishell.h/ls: No such file or director
 if ((*list)->type == HEREDOC) // HEREDOC is the `<<` token
 {
     char *heredoc_filename;

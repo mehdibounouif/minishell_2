@@ -60,8 +60,10 @@ static int	check_heredoc(t_tree *tree)
 	}
 	if (tree->type == PIPE_NODE)
 	{
-		return (check_heredoc(tree->pipe->left));
-		return (check_heredoc(tree->pipe->right));
+		if (check_heredoc(tree->pipe->left))
+			return (1);
+		if (check_heredoc(tree->pipe->right))
+			return (1);
 	}
 	return (0);
 }

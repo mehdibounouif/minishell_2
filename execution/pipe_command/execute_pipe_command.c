@@ -3,10 +3,11 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipe_command.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:37 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/11 23:30:22 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/11 23:45:20 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/11 12:59:46 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +55,7 @@ int	right(int *p, t_env **env, t_tree *tree, char **envp)
 void	execute_pipe_node(t_tree *tree, t_env *env, char **envp)
 {
 	int		p[2];
-	int		status;
+	int		status = 0;
 	pid_t	l;
 	pid_t	r;
 

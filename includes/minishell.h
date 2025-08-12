@@ -28,6 +28,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <errno.h>
 
 # define EMPTY 0
 # define PIPE 1
@@ -336,15 +337,15 @@ int								check_if_exist(t_redirection *node);
 void							ulink_files(char **files);
 
 char							*ft_getenv(char *key, t_env *list);
-char							*find_path(t_tree *node, t_env *list);
+char							*find_path(t_tree *node, t_env *list, int *flag);
 int								ft_arraylen(char **arr);
 int								len_slash(char *str, char c, int len);
 int								only_space(char *str);
 
 // Print data
-// void							print_her(t_herdoc *herdoc);
-// void							print_data(t_redirection *node);
-// void							print_redirection_data(t_tree *tree);
+void							print_her(t_herdoc *herdoc);
+void							print_data(t_redirection *node);
+void							print_redirection_data(t_tree *tree);
 void							print_message(char *file, char *message);
 
 // SIGNALS
@@ -358,5 +359,5 @@ int								ft_return_signal(int status);
 void							*ft_malloc(int type, int size);
 void							ft_free_garbage(t_gcollect **list);
 t_gcollect						**ft_function(void);
-// char							*get_next_line(int fd);
+char							*get_next_line(int fd);
 #endif

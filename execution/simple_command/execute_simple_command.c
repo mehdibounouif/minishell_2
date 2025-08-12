@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>              +#+  +:+       +#+      */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/11 15:45:34 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/11 23:44:50 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ void	protect(t_env *env, char *message)
 void	child_process(t_tree *node, t_env *env, char **envp)
 {
 	char	*path;
+	int		flag;
 
+	flag = 0;
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	empty_command(node, env);
@@ -35,9 +37,13 @@ void	child_process(t_tree *node, t_env *env, char **envp)
 		if (access(node->command->command, X_OK) == -1)
 			print_and_exit(node, env, 126, ": Permission denied");
 	}
-	path = find_path(node, env);
+	path = find_path(node, env, &flag);
 	if (!path)
+		path = find_path(node, env, &flag);
+	if (!path && !flag)
 		print_and_exit(node, env, 127, ": command not found");
+	else if(flag)
+		print_and_exit(node, env, 126, ": Permisson denied");
 	execve(path, node->command->args, envp);
 	free_env(env);
 	ft_free_garbage(ft_function());
