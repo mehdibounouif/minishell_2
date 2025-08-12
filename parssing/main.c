@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 08:03:44 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/12 20:33:46 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/12 22:19:03 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void	mini_shell(t_mini *minishell, char **env, t_env *envp)
 		handle_signal();
 		if (!readline_and_parssing(minishell, envp))
 			continue ;
-    print_ast(minishell->tree, 0);
+//    print_ast(minishell->tree, 0);
 		if (!open_herdocs(minishell->tree, envp))
 			continue ;
     sig_ctrl(1);
