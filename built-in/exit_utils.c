@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 18:30:00 by taha_laylay       #+#    #+#             */
-/*   Updated: 2025/08/13 00:09:51 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/13 02:34:51 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,12 @@ int	validate_digits(char *str, int start)
 long long	parse_number(char *str, int *i, int sign, int *error)
 {
 	long long	result;
+	int			digit;
 
 	result = 0;
 	while (str[*i])
 	{
-		int digit = str[*i] - '0';
+		digit = str[*i] - '0';
 		if (str[*i] >= '0' && str[*i] <= '9')
 		{
 			if (sign > 0)
