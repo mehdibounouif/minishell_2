@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 00:26:50 by moraouf           #+#    #+#             */
-/*   Updated: 2025/08/13 01:37:24 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/13 18:52:55 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	readline_and_parssing(t_mini *minishell, t_env *env)
 	cmd = readline("minishell > ");
 	if (!cmd)
 	{
+		ft_putendl_fd("exit", 1);
 		free_env(env);
 		ft_free_garbage(ft_function());
 		exit(global(-1));
