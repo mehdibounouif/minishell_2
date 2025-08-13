@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 01:55:26 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/13 02:32:25 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/13 02:39:09 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define STRUCT_H
 
 # include <stddef.h>
+# include <sys/stat.h>
 
 typedef struct s_command		t_command;
 typedef struct s_redirection	t_redirection;
@@ -157,5 +158,16 @@ typedef struct s_expand
 	t_node	*tmp;
 
 }	t_expand;
+
+typedef struct s_find_path
+{
+	int			i;
+	char		**all;
+	char		*slash;
+	char		*full;
+	int			idx;
+	struct stat	st;
+
+}	t_find_path;
 
 #endif

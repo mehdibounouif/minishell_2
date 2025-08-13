@@ -3,11 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utls.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moraouf <moraouf@student.42.fr>              +#+  +:+      
-	+#+        */
+/*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/24 10:06:24 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/12 01:13:41 by mbounoui         ###   ########.fr       */
+/*   Created: 2025/08/13 02:40:31 by mbounoui          #+#    #+#             */
+/*   Updated: 2025/08/13 02:40:34 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +45,6 @@ char	*ft_getenv(char *key, t_env *list)
 	}
 	return (NULL);
 }
-
-typedef struct s_find_path
-{
-	int			i;
-	char		**all;
-	char		*slash;
-	char		*full;
-	int			idx;
-	struct stat	st;
-
-}	t_find_path;
 
 char	*get_path(t_tree *node, t_find_path *share, int *flag)
 {
