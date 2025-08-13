@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 15:23:34 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/12 13:15:43 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/13 02:01:01 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,32 +83,28 @@ static t_node	*expand_list(t_node *prev, t_node *tmp, t_env *env)
 }
 
 void	expand(t_node **list, t_env *env)
-{
-	t_node	*start;
-	t_node	*next;
-	t_node	*sub_list;
-	t_node	*new_list;
-	t_node	*to_free;
-	t_node	*tmp;
+{	
+	t_expand	*s;
 
-	tmp = *list;
-	while (tmp)
+	s = ft_malloc(sizeof(t_expand), 1);
+	s->tmp = *list;
+	while (s->tmp)
 	{
-		if (tmp->type == HEREDOC)
+		if (s->tmp->type == HEREDOC)
 		{
-			tmp = tmp->next;
-			if (tmp)
-				tmp = tmp->next;
+			s->tmp = s->tmp->next;
+			if (s->tmp)
+				s->tmp = s->tmp->next;
 			continue ;
 		}
-		start = tmp->prev;
-		next = tmp->next;
-		to_free = tmp;
-		sub_list = expand_list(tmp->prev, tmp, env);
-		new_list = insert_sublist(start, sub_list, next);
-		if (!start)
-			*list = new_list;
-		tmp = next;
-		free_node(to_free);
+		s->start = s->tmp->prev;
+		s->next = s->tmp->next;
+		s->to_free = s->tmp;
+		s->sub_list = expand_list(s->tmp->prev, s->tmp, env);
+		s->new_list = insert_sublist(s->start, s->sub_list, s->next);
+		if (!s->start)
+			*list = s->new_list;
+		s->tmp = s->next;
+		free_node(s->to_free);
 	}
 }

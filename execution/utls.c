@@ -14,16 +14,6 @@
 #include "../includes/minishell.h"
 #include <sys/stat.h>
 
-int	ft_arraylen(char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i])
-		i++;
-	return (i);
-}
-
 int	only_space(char *str)
 {
 	int	i;
@@ -57,48 +47,66 @@ char	*ft_getenv(char *key, t_env *list)
 	return (NULL);
 }
 
-char	*find_path(t_tree *node, t_env *list, int *flag)
+typedef struct s_find_path
 {
 	int			i;
-	char		**all_paths;
-	char		*path_slash;
-	char		*full_path;
+	char		**all;
+	char		*slash;
+	char		*full;
 	int			idx;
 	struct stat	st;
 
-	all_paths = ft_split(ft_getenv("PATH", list), ':');
-	idx = -1;
-	if (!all_paths)
+}	t_find_path;
+
+char	*get_path(t_tree *node, t_find_path *share, int *flag)
+{
+	int		i;
+
+	i = 0;
+	while (share->all[i])
+	{
+		share->slash = ft_strjoin(share->all[i], "/");
+		share->full = ft_strjoin(share->slash, node->command->command);
+		ft_memset(&share->st, 0, sizeof(struct stat));
+		stat(share->full, &share->st);
+		if (!access(share->full, F_OK) && !S_ISDIR(share->st.st_mode))
+		{
+			if (!access(share->full, X_OK))
+				return (*flag = 0, share->full);
+			else
+			{
+				share->idx = i;
+				*flag = 1;
+			}
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+char	*find_path(t_tree *node, t_env *list, int *flag)
+{
+	t_find_path	*share;
+
+	share = ft_malloc(sizeof(t_find_path), 1);
+	share->all = ft_split(ft_getenv("PATH", list), ':');
+	share->idx = -1;
+	if (!share->all)
 	{
 		print(node->command->command, ":  No such file or directory", 127);
 		free_env(list);
 		ft_free_garbage(ft_function());
 		exit(127);
 	}
-	i = 0;
-	while (all_paths[i])
+	if (!get_path(node, share, flag))
 	{
-		path_slash = ft_strjoin(all_paths[i], "/");
-		full_path = ft_strjoin(path_slash, node->command->command);
-		ft_memset(&st, 0, sizeof(struct stat));
-		stat(full_path, &st);
-		if (!access(full_path, F_OK) && !S_ISDIR(st.st_mode))
+		if (share->idx != -1)
 		{
-			if (!access(full_path, X_OK))
-				return (*flag = 0, full_path);
-			else
-			{
-				idx = i;
-				*flag = 1;
-			}
+			share->slash = ft_strjoin(share->all[share->idx], "/");
+			share->full = ft_strjoin(share->slash, node->command->command);
+			return (share->full);
 		}
-		i++;
+		return (NULL);
 	}
-	if (idx != -1)
-	{
-		path_slash = ft_strjoin(all_paths[idx], "/");
-		full_path = ft_strjoin(path_slash, node->command->command);
-		return (full_path);
-	}
-	return (NULL);
+	return (share->full);
 }

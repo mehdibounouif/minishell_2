@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 17:10:55 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/12 12:30:54 by moraouf          ###   ########.fr       */
+/*   Updated: 2025/08/13 02:04:55 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,3 @@ int	open_herdocs(t_tree *tree, t_env *env)
 	}
 	return (1);
 }
-
-// static int handel_heredocs(t_tree *tree, t_env *envp)
-// {
-//   if (check_heredoc(tree))
-//     if (!open_herdocs(tree, envp))
-//         return (0);
-//   return (1);
-// }

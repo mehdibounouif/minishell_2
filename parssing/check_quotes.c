@@ -6,7 +6,7 @@
 /*   By: mbounoui <mbounoui@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 16:45:26 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/07/30 16:45:27 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/13 00:47:05 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,14 @@ int	check_quotes(char *cmd, size_t i)
 		j++;
 	}
 	return (flag);
+}
+
+int	ft_arraylen(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
 }

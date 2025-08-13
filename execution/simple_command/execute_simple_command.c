@@ -6,11 +6,40 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/12 20:22:57 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/13 01:05:01 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+char	**env_list_to_array(t_env *env)
+{
+	int		count;
+	t_env	*tmp;
+	char	**envp;
+	size_t	len;
+	int		i;
+
+	count = 0;
+	tmp = env;
+	while (tmp)
+	{
+		count++;
+		tmp = tmp->next;
+	}
+	envp = ft_malloc(sizeof(char *), (count + 1));
+	tmp = env;
+	i = 0;
+	while (i < count)
+	{
+		len = ft_strlen(tmp->key) + ft_strlen(tmp->value) + 2;
+		envp[i] = ft_malloc(sizeof(char), len);
+		snprintf(envp[i++], len, "%s=%s", tmp->key, tmp->value);
+		tmp = tmp->next;
+	}
+	envp[count] = NULL;
+	return (envp);
+}
 
 void	protect(t_env *env, char *message)
 {
@@ -20,7 +49,7 @@ void	protect(t_env *env, char *message)
 	exit(1);
 }
 
-void	child_process(t_tree *node, t_env *env, char **envp)
+void	child_process(t_tree *node, t_env *env)
 {
 	char	*path;
 	int		flag;
@@ -30,10 +59,8 @@ void	child_process(t_tree *node, t_env *env, char **envp)
 	signal(SIGQUIT, SIG_DFL);
 	empty_command(node, env);
 	dote_command(node, env);
-	absolute_path(node, env, envp);
+	absolute_path(node, env);
 	path = find_path(node, env, &flag);
-	if (!path)
-		path = find_path(node, env, &flag);
 	if (!path && !flag)
 		print_and_exit(node, env, 127, ": command not found");
 	else if (flag)
@@ -72,7 +99,7 @@ void	parent_process(t_env *env, int status, pid_t pid)
 		global(WEXITSTATUS(status));
 }
 
-void	execute_command_node(int i, t_tree *node, t_env **env, char **envp)
+void	execute_command_node(int i, t_tree *node, t_env **env)
 {
 	int		status;
 	pid_t	pid;
@@ -88,7 +115,7 @@ void	execute_command_node(int i, t_tree *node, t_env **env, char **envp)
 	if (pid < 0)
 		protect(*env, "Fork failed");
 	else if (pid == 0)
-		child_process(node, *env, envp);
+		child_process(node, *env);
 	else
 		parent_process(*env, status, pid);
 }

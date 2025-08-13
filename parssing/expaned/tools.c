@@ -12,15 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-typedef struct s_share2
-{
-	int		i;
-	size_t	full_len;
-	char	*value;
-	char	*key;
-
-}			t_share2;
-
 char	*get_env_key(char *cmd, int i)
 {
 	int		len;

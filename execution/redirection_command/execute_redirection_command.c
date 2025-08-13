@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:00:40 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/12 20:26:20 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/13 00:57:28 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ void	ulink_files(char **files)
 	}
 }
 
-void	child_process_redi(t_tree *node, t_env *env, char **envp)
+void	child_process_redi(t_tree *node, t_env *env)
 {
 	char	*path;
 	int		flag;
 
 	flag = 0;
 	dup_fds(node->redirect, env);
-	absolute_path(node->redirect->prev, env, envp);
+	absolute_path(node->redirect->prev, env);
 	path = find_path(node->redirect->prev, env, &flag);
 	if (!path)
 	{
@@ -72,7 +72,7 @@ void	built_in(int i, t_tree *node, t_env *env, char *cmd)
 	global(result);
 }
 
-void	fork_and_exec(t_tree *node, t_env *env, char **envp)
+void	fork_and_exec(t_tree *node, t_env *env)
 {
 	pid_t	pid;
 	int		status;
@@ -81,7 +81,7 @@ void	fork_and_exec(t_tree *node, t_env *env, char **envp)
 	if (pid < 0)
 		protect(env, "Fork failed");
 	else if (pid == 0)
-		child_process_redi(node, env, envp);
+		child_process_redi(node, env);
 	else
 	{
 		if (waitpid(pid, &status, 0) == -1)
@@ -93,8 +93,7 @@ void	fork_and_exec(t_tree *node, t_env *env, char **envp)
 	}
 }
 
-void	execute_redirection_command(int i, t_tree *node, t_env *env,
-								char **envp)
+void	execute_redirection_command(int i, t_tree *node, t_env *env)
 {
 	char	*cmd;
 
@@ -103,12 +102,12 @@ void	execute_redirection_command(int i, t_tree *node, t_env *env,
 	if (!node->redirect->prev)
 	{
 		check_if_exist(node->redirect);
-    global(0);
+		global(0);
 		return ;
 	}
 	cmd = node->redirect->prev->command->command;
 	if (is_builtin(cmd))
 		built_in(i, node, env, cmd);
 	else
-		fork_and_exec(node, env, envp);
+		fork_and_exec(node, env);
 }

@@ -6,14 +6,14 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:37 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/12 22:24:50 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/13 01:01:04 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include <unistd.h>
 
-int	left(pid_t p[2], t_env **env, t_tree *tree, char **envp)
+int	left(pid_t p[2], t_env **env, t_tree *tree)
 {
 	pid_t	left;
 
@@ -28,16 +28,18 @@ int	left(pid_t p[2], t_env **env, t_tree *tree, char **envp)
 		close(p[0]);
 		if (tree->pipe->left)
 		{
-			execute_full_command(tree->pipe->left, env, envp, 1);
+			execute_full_command(tree->pipe->left, env, 1);
 			exit(global(-1));
-		}
+		}	
 		else
+		{
 			exit(0);
+		}
 	}
 	return (left);
 }
 
-int	right(int *p, t_env **env, t_tree *tree, char **envp)
+int	right(int *p, t_env **env, t_tree *tree)
 {
 	pid_t	right;
 
@@ -52,7 +54,7 @@ int	right(int *p, t_env **env, t_tree *tree, char **envp)
 		close(p[1]);
 		if (tree->pipe->right)
 		{
-			execute_full_command(tree->pipe->right, env, envp, 1);
+			execute_full_command(tree->pipe->right, env, 1);
 			exit(global(-1));
 		}
 		else
@@ -61,7 +63,7 @@ int	right(int *p, t_env **env, t_tree *tree, char **envp)
 	return (right);
 }
 
-void	execute_pipe_node(t_tree *tree, t_env *env, char **envp)
+void	execute_pipe_node(t_tree *tree, t_env *env)
 {
 	int		p[2];
 	int		status;
@@ -71,19 +73,11 @@ void	execute_pipe_node(t_tree *tree, t_env *env, char **envp)
 	status = 0;
 	if (pipe(p) == -1)
 		protect(env, "Pipe failed");
-	l = left(p, &env, tree, envp);
-	r = right(p, &env, tree, envp);
+	l = left(p, &env, tree);
+	r = right(p, &env, tree);
 	close(p[0]);
 	close(p[1]);
 	if (waitpid(l, NULL, 0) == -1 || waitpid(r, &status, 0) == -1)
 		protect(env, "Waitpid failed");
-//	else if (tree->pipe->left && !tree->pipe->right)
-//	{
-//		if (waitpid(l, &status, 0) == -1)
-//			protect(env, "Waitpid failed");
-//	}
-//	else if (!tree->pipe->left && tree->pipe->right)
-//		if (waitpid(r, &status, 0) == -1)
-//			protect(env, "Waitpid failed");
 	global(WEXITSTATUS(status));
 }

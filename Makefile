@@ -11,6 +11,7 @@ SRCS_DIR4 = ./free
 SRCS_FILES1 = main.c\
 	     utils.c\
 	     tools.c\
+	     tools2.c\
 			 custom/custom_libft.c\
 			 custom/custom_split.c\
 	     token/tokenize.c\
