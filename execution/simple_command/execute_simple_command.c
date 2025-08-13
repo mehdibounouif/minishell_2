@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 14:40:47 by mbounoui          #+#    #+#             */
-/*   Updated: 2025/08/13 01:05:01 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/13 17:58:45 by moraouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	**env_list_to_array(t_env *env)
 	int		count;
 	t_env	*tmp;
 	char	**envp;
-	size_t	len;
+	char	*temp;
 	int		i;
 
 	count = 0;
@@ -32,9 +32,9 @@ char	**env_list_to_array(t_env *env)
 	i = 0;
 	while (i < count)
 	{
-		len = ft_strlen(tmp->key) + ft_strlen(tmp->value) + 2;
-		envp[i] = ft_malloc(sizeof(char), len);
-		snprintf(envp[i++], len, "%s=%s", tmp->key, tmp->value);
+		temp = ft_strjoin(tmp->key, "=");
+		envp[i++] = ft_strjoin(temp, tmp->value);
+		free(temp);
 		tmp = tmp->next;
 	}
 	envp[count] = NULL;

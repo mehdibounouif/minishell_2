@@ -56,24 +56,21 @@ char	*get_env_value(t_env *env, char *key)
 // Helper function to update environment variable
 int	update_env_var(t_env *env, char *var)
 {
+	char	**split_var;
 	char	*key;
 	char	*value;
-	t_env	*current;
+	int		result;
 
-	key = strtok(var, "=");
-	value = strtok(NULL, "=");
-	current = env;
-	while (current)
-	{
-		if (ft_strncmp(current->key, key, ft_strlen(key)) == 0)
-		{
-			free(current->value);
-			current->value = ft_strdup1(value);
-			return (0);
-		}
-		current = current->next;
-	}
-	return (1);
+	split_var = parse_env_var(var);
+	if (!split_var)
+		return (1);
+	key = split_var[0];
+	value = split_var[1];
+	if (!value)
+		value = "";
+	result = find_and_update_env(env, key, value);
+	free_str(split_var);
+	return (result);
 }
 
 // Helper function to print environment variables

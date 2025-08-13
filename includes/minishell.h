@@ -68,6 +68,9 @@ long long						parse_number(char *str, int *i, int sign,
 int								normalize_exit_status(long long status);
 char							*get_env_value(t_env *env, char *key);
 int								update_env_var(t_env *env, char *var);
+char							**parse_env_var(char *var);
+int								find_and_update_env(t_env *env, char *key,
+									char *value);
 void							set_env_var(t_env **env, char *key,
 									char *value);
 void							free_env(t_env *env);
