@@ -6,7 +6,7 @@
 /*   By: moraouf <moraouf@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 11:06:57 by moraouf           #+#    #+#             */
-/*   Updated: 2025/08/12 23:40:25 by mbounoui         ###   ########.fr       */
+/*   Updated: 2025/08/13 07:18:44 by mbounoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,9 @@ int	ft_return_signal(int status)
 		if (sig == 130)
 		{
 			global(sig);
-			printf("taha\n");
 			return (1);
 		}
 		global(sig);
-		printf("mehdi\n");
 		return (0);
 	}
 	return (0);
